@@ -1,14 +1,14 @@
+import React from "react"
 import { history } from "./../history";
 import { connect } from "react-redux";
-import React, { Suspense, lazy } from "react"
-import { Router, Switch, Route } from "react-router-dom"
-import {NotificationContainer} from "react-notifications";
-import {isUserIntoStoreValid} from "../helpers/helpers";
-import Spinner from "../components/@vuexy/spinner/Loading-spinner";
-import {setAuthUser} from "../redux/actions/auth";
-import {disableAppLoading} from "../redux/actions/AppLoadingAction";
 import AuthRoutes from "./AuthRoutes";
+import { Router } from "react-router-dom"
 import UnauthRoutes from "./UnauthRoutes";
+import {setAuthUser} from "../redux/actions/auth";
+import {isUserIntoStoreValid} from "../helpers/helpers";
+import {NotificationContainer} from "react-notifications";
+import Spinner from "../components/@vuexy/spinner/Loading-spinner";
+import {disableAppLoading} from "../redux/actions/AppLoadingAction";
 import RequestGlobalLoader from "../components/RequestGlobalLoader";
 
 class AppRouter extends React.Component {
@@ -28,7 +28,6 @@ class AppRouter extends React.Component {
     render() {
         const _isUserIntoStoreValid = isUserIntoStoreValid(this.props.authUser.data);
         const { location, match, authUser, appLoading } = this.props;
-        console.log("_isUserIntoStoreValid => ", _isUserIntoStoreValid);
 
         return (
             <>

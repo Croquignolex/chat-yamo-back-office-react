@@ -221,8 +221,6 @@ class NavbarUser extends React.PureComponent {
       )
     })
 
-    console.log("this.props => ", this.props);
-
     return (
       <ul className="nav navbar-nav navbar-nav-user float-right">
         <IntlContext.Consumer>
