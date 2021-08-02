@@ -1,10 +1,8 @@
 import React from "react"
-import { Link } from "react-router-dom"
-import { CardBody, FormGroup, Form, Input, Button, Label } from "reactstrap"
-import { Mail, Lock, Check } from "react-feather"
-import { loginWithJWT } from "../../../../redux/actions/auth"
 import { connect } from "react-redux"
-import { history } from "../../../../history"
+import { Mail, Lock } from "react-feather"
+import { loginWithJWT } from "../../../../redux/actions/auth"
+import { CardBody, FormGroup, Form, Input, Button, Label } from "reactstrap"
 import {setRequestGlobalAction} from "../../../../redux/actions/RequestGlobalAction";
 
 class LoginJWT extends React.Component {
@@ -67,7 +65,7 @@ class LoginJWT extends React.Component {
               </div>
             </FormGroup>*/}
             <div className="d-flex justify-content-between">
-              <Button.Ripple
+              {/*<Button.Ripple
                 color="primary"
                 outline
                 onClick={() => {
@@ -75,7 +73,7 @@ class LoginJWT extends React.Component {
                 }}
               >
                 Register
-              </Button.Ripple>
+              </Button.Ripple>*/}
               <Button.Ripple color="primary" type="submit">
                 Login
               </Button.Ripple>
