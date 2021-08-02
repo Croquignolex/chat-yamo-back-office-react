@@ -1,0 +1,61 @@
+
+.global-loader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 9998;
+
+  & div:first-child {
+    height: 6px !important;
+  }
+
+  &-overlay {
+    position: fixed;
+    background: rgba(255, 255, 255, 0.8);
+    top: 6px;
+    left: 0;
+    right: 0;
+    bottom: 0px;
+    z-index: 9999;
+    align-items: center;
+    overflow: hidden;
+    margin: 0 auto;
+    transition: all .4s;
+  }
+}
+
+.custom-progress-horizontal {
+  display: block;
+  width: 100%;
+  height: 10px;
+  margin: 0;
+  background-color: #323165;
+
+  .custom-bar-horizontal {
+    width: 50%;
+    height: 100%;
+    margin-left: 0;
+    background-color: #7367f0;
+
+    animation-name: spinner;
+    animation-duration: 750ms;
+    animation-timing-function: ease-in-out;
+    animation-play-state: running;
+    animation-iteration-count: infinite;
+  }
+
+  @keyframes spinner {
+    0% {
+      width: 0;
+    }
+    50% {
+      width: 100%;
+      margin-left: 50%;
+    }
+    100% {
+      width: 0;
+      margin-left: 100%;
+    }
+  }
+}

@@ -11,6 +11,9 @@ import Spinner from "./components/@vuexy/spinner/Fallback-spinner"
 import "./index.scss"
 import "./@fake-db"
 
+// notifications
+import 'react-notifications/lib/notifications.css';
+
 const LazyApp = lazy(() => import("./App"))
 
 // configureDatabase()

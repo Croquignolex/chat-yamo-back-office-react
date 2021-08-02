@@ -4,9 +4,12 @@ import emailReducer from "./email/"
 import chatReducer from "./chat/"
 import todoReducer from "./todo/"
 import customizer from "./customizer/"
-import auth from "./auth/"
+import auth from "./auth/indexOld"
+import authUser from "./auth/";
 import navbar from "./navbar/Index"
 import dataList from "./data-list/"
+import appLoading from './AppLoadingReducer';
+import requestGlobalLoader from './RequestGlobalReducer';
 
 const rootReducer = combineReducers({
   calendar: calenderReducer,
@@ -15,8 +18,11 @@ const rootReducer = combineReducers({
   chatApp: chatReducer,
   customizer: customizer,
   auth: auth,
+  authUser,
   navbar: navbar,
-  dataList: dataList
-})
+  dataList: dataList,
+  appLoading,
+  requestGlobalLoader,
+});
 
-export default rootReducer
+export default rootReducer;
