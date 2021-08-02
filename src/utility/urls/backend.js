@@ -1,3 +1,7 @@
+/**
+ * This file expose backend's routes
+ *
+ */
 
 
 export const AUTH = {
@@ -10,4 +14,9 @@ export const AUTH = {
         MAIN: 'auth/reset-password',
         LINK: 'auth/send-reset-password-link',
     },
+};
+
+export const TICKETS = {
+    GET_ALL: '/feedbacks/cases',
+
 };

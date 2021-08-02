@@ -8,3 +8,8 @@ export const AUTH = {
     FORGOT_PASSWORD: '/user/forgot-password',
     RESET_PASSWORD: '/user/reset-password',
 };
+
+export const TICKETS = {
+    LIST: '/tickets',
+    SHOW: '/tickets/:id',
+};

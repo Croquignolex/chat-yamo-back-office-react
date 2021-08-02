@@ -1,7 +1,9 @@
 import React from "react"
 import * as Icon from "react-feather"
+import {TICKETS} from "../utility/urls/frontend";
+
 const navigationConfig = [
-  {
+  /*{
     id: "dashboard",
     title: "Dashboard",
     type: "collapse",
@@ -26,25 +28,20 @@ const navigationConfig = [
         navLink: "/ecommerce-dashboard"
       }
     ]
-  },
-  {
-    type: "groupHeader",
-    groupTitle: "APPS"
-  },
+  },*/
   {
     id: "email",
-    title: "Email",
+    title: "Tickets",
     type: "item",
-    icon: <Icon.Mail size={20} />,
+    icon: <Icon.MessageSquare size={20} />,
     permissions: ["admin", "editor"],
-    navLink: "/email/:filter",
-    filterBase: "/email/inbox"
+    navLink: TICKETS.LIST,
   },
   {
     id: "chat",
     title: "Chat",
     type: "item",
-    icon: <Icon.MessageSquare size={20} />,
+    icon: <Icon.Type size={20} />,
     permissions: ["admin", "editor"],
     navLink: "/chat"
   },

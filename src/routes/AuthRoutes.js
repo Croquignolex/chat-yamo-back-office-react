@@ -2,6 +2,7 @@ import React from "react";
 import RouteWrapper from "./RouteWrapper";
 import { Switch } from "react-router-dom";
 import { Redirect } from "react-router-dom";
+import {TICKETS} from "../utility/urls/frontend";
 import * as DynamicImports from "../views/lazy-imports";
 import knowledgeBaseCategory from "../views/pages/knowledge-base/Category";
 import knowledgeBaseQuestion from "../views/pages/knowledge-base/Questions";
@@ -11,6 +12,7 @@ class AuthRoutes extends React.Component {
         return (
             <Switch>
                 <RouteWrapper exact path="/" component={DynamicImports.analyticsDashboard} />
+                <RouteWrapper path={TICKETS.LIST} component={DynamicImports.tickets} />
                 <RouteWrapper
                     path="/ecommerce-dashboard"
                     component={DynamicImports.ecommerceDashboard}

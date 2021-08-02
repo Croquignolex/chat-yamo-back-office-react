@@ -1,6 +1,11 @@
 // Route-based code splitting
 import {lazy} from "react";
 
+export const tickets = lazy(() =>
+    import("./../views/tickets")
+);
+
+
 export const analyticsDashboard = lazy(() =>
     import("./../views/dashboard/analytics/AnalyticsDashboard")
 )

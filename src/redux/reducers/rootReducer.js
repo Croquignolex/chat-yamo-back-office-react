@@ -10,6 +10,7 @@ import navbar from "./navbar/Index"
 import dataList from "./data-list/"
 import appLoading from './AppLoadingReducer';
 import requestGlobalLoader from './RequestGlobalReducer';
+import tickets from './TicketsReducer';
 
 const rootReducer = combineReducers({
   calendar: calenderReducer,
@@ -23,6 +24,7 @@ const rootReducer = combineReducers({
   dataList: dataList,
   appLoading,
   requestGlobalLoader,
+  tickets,
 });
 
 export default rootReducer;
