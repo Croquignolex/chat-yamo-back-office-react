@@ -3,10 +3,7 @@ import { Navbar } from "reactstrap"
 import { connect } from "react-redux"
 import classnames from "classnames"
 import { useAuth0 } from "../../../authServices/auth0/auth0Service"
-import {
-  logoutWithJWT,
-  logoutWithFirebase
-} from "../../../redux/actions/auth/loginActions"
+import { logoutWithJWT} from "../../../redux/actions/auth"
 import NavbarBookmarks from "./NavbarBookmarks"
 import NavbarUser from "./NavbarUser"
 import userImg from "../../../assets/img/portrait/small/avatar-s-11.jpg"
@@ -87,12 +84,12 @@ const ThemeNavbar = props => {
               <NavbarUser
                 handleAppOverlay={props.handleAppOverlay}
                 changeCurrentLang={props.changeCurrentLang}
-                userName={<UserName userdata={user} {...props} />}
+                userName={props.authUser.name}
                 userImg={
                   props.user.login.values !== undefined &&
                   props.user.login.values.loggedInWith !== "jwt" &&
                   props.user.login.values.photoUrl
-                    ? props.user.login.values.photoUrl 
+                    ? props.user.login.values.photoUrl
                     : user !== undefined && user.picture ? user.picture
                     : userImg
                 }
@@ -103,7 +100,6 @@ const ThemeNavbar = props => {
                     : null
                 }
                 logoutWithJWT={props.logoutWithJWT}
-                logoutWithFirebase={props.logoutWithFirebase}
               />
             </div>
           </div>
@@ -115,12 +111,12 @@ const ThemeNavbar = props => {
 
 const mapStateToProps = state => {
   return {
-    user: state.auth
+    user: state.auth,
+    authUser: state.authUser.data,
   }
-}
+};
 
 export default connect(mapStateToProps, {
   logoutWithJWT,
-  logoutWithFirebase,
   useAuth0
 })(ThemeNavbar)
