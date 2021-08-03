@@ -13,8 +13,8 @@ export default {
     },
 };
 
-export const ERROR_401 = 'request.error.401';
-export const ERROR_403 = 'request.error.403';
-export const ERROR_404 = 'request.error.404';
-export const ERROR_500 = 'request.error.500';
-
+export const ERROR_401 = "Votre connection a expiré. Veuillez vous reconnecter";
+export const ERROR_403 = "Vous n'avez pas les droits pour effectuer cette action";
+export const ERROR_404 = 'Non trouvé. Veuillez ressayer plus tard';
+export const ERROR_500 = 'Une erreur est survenue. Veuillez ressayer plus tard';
+export const ERROR_UNKNOWN = 'Impossible d\'effectuer toutes requetes. Veuillez verifier votre connexion internet et ressayer. Si le problème persiste veuillez contacter le support.';
