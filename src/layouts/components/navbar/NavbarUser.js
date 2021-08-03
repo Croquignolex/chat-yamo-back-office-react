@@ -70,25 +70,8 @@ const UserDropdown = props => {
         tag="a"
         href="/pages/login"
         onClick={e => {
-          e.preventDefault()
-          if (isAuthenticated) {
-            return logout({
-              returnTo: window.location.origin + process.env.REACT_APP_PUBLIC_PATH
-            })
-          } else {
-            const provider = props.loggedInWith
-            if (provider !== null) {
-              if (provider === "jwt") {
-                return props.logoutWithJWT()
-              }
-              if (provider === "firebase") {
-                return props.logoutWithFirebase()
-              }
-            } else {
-              history.push("/pages/login")
-            }
-          }
-
+          e.preventDefault();
+          props.logoutWithJWT();
         }}
       >
         <Icon.Power size={14} className="mr-50" />
@@ -192,7 +175,7 @@ class NavbarUser extends React.PureComponent {
   }
 
   handleLangDropdown = () =>
-    this.setState({ langDropdown: !this.state.langDropdown })
+    this.setState({ langDropdown: !this.state.langDropdown });
 
   render() {
     const renderCartItems = this.state.shoppingCart.map(item => {

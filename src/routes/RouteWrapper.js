@@ -1,0 +1,41 @@
+import { connect } from "react-redux"
+import React, { Suspense } from "react"
+import { Route } from "react-router-dom"
+import { ContextLayout } from "../utility/context/Layout"
+import Spinner from "../components/@vuexy/spinner/Loading-spinner";
+
+const RouteConfig = ({ component: Component, fullLayout, ...rest }) => (
+    <Route
+        {...rest}
+        render={props => {
+            return (
+                <ContextLayout.Consumer>
+                    {context => {
+                        let LayoutTag =
+                            fullLayout === true
+                                ? context.fullLayout
+                                : context.state.activeLayout === "horizontal"
+                                ? context.horizontalLayout
+                                : context.VerticalLayout
+                        return (
+                            <LayoutTag {...props} permission={props.user}>
+                                <Suspense fallback={<Spinner />}>
+                                    <Component {...props} />
+                                </Suspense>
+                            </LayoutTag>
+                        )
+                    }}
+                </ContextLayout.Consumer>
+            )
+        }}
+    />
+);
+
+const mapStateToProps = state => {
+    return {
+        user: ''
+    }
+};
+
+const RouteWrapper = connect(mapStateToProps)(RouteConfig);
+export default RouteWrapper;

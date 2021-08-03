@@ -4,6 +4,7 @@ import "firebase/auth"
 import "firebase/database"
 import axios from "axios"
 import { config } from "../../../authServices/firebase/firebaseConfig"
+import {AUTH} from "../../../utility/urls/backend";
 
 // Init firebase if not already initialized
 if (!firebase.apps.length) {
@@ -182,7 +183,7 @@ export const loginWithGithub = () => {
 export const loginWithJWT = user => {
   return dispatch => {
     axios
-      .post("/api/authenticate/login/user", {
+      .post(AUTH.LOGIN, {
         email: user.email,
         password: user.password
       })
@@ -191,6 +192,7 @@ export const loginWithJWT = user => {
 
         if (response.data) {
           loggedInUser = response.data.user
+          console.log("loggedInUser => ", loggedInUser);
 
           dispatch({
             type: "LOGIN_WITH_JWT",

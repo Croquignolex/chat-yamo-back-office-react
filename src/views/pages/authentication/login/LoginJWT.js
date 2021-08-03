@@ -1,23 +1,26 @@
 import React from "react"
-import { Link } from "react-router-dom"
-import { CardBody, FormGroup, Form, Input, Button, Label } from "reactstrap"
-import Checkbox from "../../../../components/@vuexy/checkbox/CheckboxesVuexy"
-import { Mail, Lock, Check } from "react-feather"
-import { loginWithJWT } from "../../../../redux/actions/auth/loginActions"
 import { connect } from "react-redux"
-import { history } from "../../../../history"
+import { Mail, Lock } from "react-feather"
+import { loginWithJWT } from "../../../../redux/actions/auth"
+import { CardBody, FormGroup, Form, Input, Button, Label } from "reactstrap"
+import {setRequestGlobalAction} from "../../../../redux/actions/RequestGlobalAction";
 
 class LoginJWT extends React.Component {
   state = {
-    email: "demo@demo.com",
-    password: "demodemo",
+    email: "croquignolex",
+    password: "croquignolex",
     remember: false
-  }
+  };
 
   handleLogin = e => {
-    e.preventDefault()
+    e.preventDefault();
+    this.props.setRequestGlobalAction(true);
     this.props.loginWithJWT(this.state)
-  }
+        .finally(() => {
+          this.props.setRequestGlobalAction(false);
+        });
+  };
+
   render() {
     return (
       <React.Fragment>
@@ -25,7 +28,7 @@ class LoginJWT extends React.Component {
           <Form action="/" onSubmit={this.handleLogin}>
             <FormGroup className="form-label-group position-relative has-icon-left">
               <Input
-                type="email"
+                // type="email"
                 placeholder="Email"
                 value={this.state.email}
                 onChange={e => this.setState({ email: e.target.value })}
@@ -34,7 +37,7 @@ class LoginJWT extends React.Component {
               <div className="form-control-position">
                 <Mail size={15} />
               </div>
-              <Label>Email</Label>
+              <Label size="large">Login</Label>
             </FormGroup>
             <FormGroup className="form-label-group position-relative has-icon-left">
               <Input
@@ -49,7 +52,7 @@ class LoginJWT extends React.Component {
               </div>
               <Label>Password</Label>
             </FormGroup>
-            <FormGroup className="d-flex justify-content-between align-items-center">
+            {/*<FormGroup className="d-flex justify-content-between align-items-center">
               <Checkbox
                 color="primary"
                 icon={<Check className="vx-icon" size={16} />}
@@ -60,9 +63,9 @@ class LoginJWT extends React.Component {
               <div className="float-right">
                 <Link to="/pages/forgot-password">Forgot Password?</Link>
               </div>
-            </FormGroup>
+            </FormGroup>*/}
             <div className="d-flex justify-content-between">
-              <Button.Ripple
+              {/*<Button.Ripple
                 color="primary"
                 outline
                 onClick={() => {
@@ -70,7 +73,7 @@ class LoginJWT extends React.Component {
                 }}
               >
                 Register
-              </Button.Ripple>
+              </Button.Ripple>*/}
               <Button.Ripple color="primary" type="submit">
                 Login
               </Button.Ripple>
@@ -86,4 +89,4 @@ const mapStateToProps = state => {
     values: state.auth.login
   }
 }
-export default connect(mapStateToProps, { loginWithJWT })(LoginJWT)
+export default connect(mapStateToProps, { setRequestGlobalAction, loginWithJWT })(LoginJWT)

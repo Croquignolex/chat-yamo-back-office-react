@@ -242,7 +242,7 @@ select.form-control {
     }
     &:not(:focus) {
       &:not(:placeholder-shown) ~ label {
-        color: rgba($black, 0.4) !important;
+        color: rgba($black, 0.8) !important;
       }
     }
     // form-label after entering text in input box
