@@ -13,3 +13,9 @@ export const backendConfig = {
     baseUrl : backendBaseUrl,
     timeout: 15000,
 };
+
+export const urlConfig = {
+    params: {
+        caseId: "ci"
+    }
+};

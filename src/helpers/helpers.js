@@ -374,3 +374,13 @@ export const fromEntries = (arr) => {
 };
 
 export const formatMessage = msg => msg;
+
+/**
+ * Get the value of a given parameter in the browser url
+ * @param param
+ * @returns {string}
+ */
+export const searchUrlParams = (param) => {
+    const url = new URL(window.location);
+    return url.searchParams.get(param);
+};

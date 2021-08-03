@@ -1,31 +1,42 @@
 import React from "react"
-import Sidebar from "react-sidebar"
-import { ContextLayout } from "../../utility/context/Layout"
-import ChatSidebarContent from "./ChatSidebar"
 import ChatLog from "./ChatLog"
-import ReceiverSidebar from "./receiverProfile"
+import Sidebar from "react-sidebar"
+import {connect} from "react-redux";
+import ChatSidebar from "./ChatSidebar"
 import UserSidebar from "./UserSidebar"
+import {withRouter} from "react-router-dom";
 import "../../assets/scss/pages/app-chat.scss"
-const mql = window.matchMedia(`(min-width: 992px)`)
+import ReceiverSidebar from "./receiverProfile"
+import {urlConfig} from "../../configs/AppConfig";
+import {searchUrlParams} from "../../helpers/helpers";
+import {ContextLayout} from "../../utility/context/Layout"
+
+const mql = window.matchMedia(`(min-width: 992px)`);
 
 class Ticket extends React.Component {
-    state = {
-        userProfile: false,
-        sidebarDocked: mql.matches,
-        sidebarOpen: false,
-        activeChatID: null,
-        activeChat: null,
-        activeUser: null,
-        receiverProfile: false,
-        userSidebar: false
-    };
+    constructor(props) {
+        super(props);
 
-    componentDidMount() {
-        this.loadData();
+        const caseId = searchUrlParams(urlConfig.params.caseId);
+
+        this.state = {
+            userProfile: false,
+            sidebarDocked: mql.matches,
+            sidebarOpen: false,
+            activeChatID: Number(caseId) || null,
+            activeChat: null,
+            activeUser: null,
+            receiverProfile: false,
+            userSidebar: false
+        };
     }
 
-    loadData = () => {
-        // this.props.get
+    updateUrlParams = (caseId) => {
+        if (caseId) {
+            const url = new URL(window.location);
+            url.searchParams.set(urlConfig.params.caseId, `${caseId}`);
+            window.history.pushState({}, '', url);
+        }
     };
 
     // mounted = false
@@ -39,15 +50,15 @@ class Ticket extends React.Component {
         userProfile: false
       })
     }
-  }
+  };
 
-  handleActiveChat = (id, user, chats) => {
-    this.setState({
-      activeChatID: id,
-      activeUser: user,
-      activeChat: chats
-    })
-  }
+    handleActiveChat = (caseId, user) => {
+        this.setState({
+            activeChatID: caseId,
+            activeUser: user
+        });
+        this.updateUrlParams(caseId);
+    };
 
   UNSAFE_componentWillMount() {
     mql.addListener(this.mediaQueryChanged)
@@ -63,16 +74,6 @@ class Ticket extends React.Component {
 
   mediaQueryChanged = () => {
     this.setState({ sidebarDocked: mql.matches, sidebarOpen: false })
-  }
-
-  handleReceiverSidebar = status => {
-    status === "open"
-      ? this.setState({
-          receiverProfile: true
-        })
-      : this.setState({
-          receiverProfile: false
-        })
   }
 
   render() {
@@ -96,11 +97,11 @@ class Ticket extends React.Component {
           {context => (
             <Sidebar
               sidebar={
-                <ChatSidebarContent
-                  activeChatID={this.state.activeChatID}
-                  handleActiveChat={this.handleActiveChat}
-                  handleUserSidebar={this.handleUserSidebar}
-                  mainSidebar={this.onSetSidebarOpen}
+                <ChatSidebar
+                    activeChatId={this.state.activeChatID}
+                    handleActiveChat={this.handleActiveChat}
+                    handleUserSidebar={this.handleUserSidebar}
+                    mainSidebar={this.onSetSidebarOpen}
                 />
               }
               docked={this.state.sidebarDocked}
@@ -109,7 +110,7 @@ class Ticket extends React.Component {
               sidebarClassName="chat-sidebar"
               contentClassName="sidebar-children d-none"
               pullRight={context.state.direction === "rtl"}>
-              ""
+                {null}
             </Sidebar>
           )}
         </ContextLayout.Consumer>
@@ -118,12 +119,11 @@ class Ticket extends React.Component {
           handleUserSidebar={this.handleUserSidebar}
         />
         <ChatLog
-          activeChat={this.state.activeChat}
-          activeUser={this.state.activeUser}
-          handleReceiverSidebar={this.handleReceiverSidebar}
-          mainSidebar={this.onSetSidebarOpen}
-          mql={mql}
-          handleActiveChat={this.handleActiveChat}
+            mql={mql}
+            activeUser={this.state.activeUser}
+            mainSidebar={this.onSetSidebarOpen}
+            activeCaseId={this.state.activeChatID}
+            handleReceiverSidebar={this.handleReceiverSidebar}
         />
         <ReceiverSidebar
           activeUser={this.state.activeUser}
@@ -135,4 +135,8 @@ class Ticket extends React.Component {
   }
 }
 
-export default Ticket
+const mapStateToProps = ({ tickets }) => ({
+    // tickets
+});
+
+export default connect(mapStateToProps, {})(withRouter(Ticket));
