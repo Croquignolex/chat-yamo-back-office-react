@@ -11,7 +11,8 @@ import {
 import api from '../../../utility/api';
 import * as loginAction from "./loginActions";
 import {AUTH} from "../../../utility/urls/backend";
-import {removeAuthToken, saveAuthToken} from "../../../helpers/tokens";
+import {getUniqueId} from "../../../helpers/helpers";
+import {removeAuthToken, saveAuthToken, getAuthToken} from "../../../helpers/tokens";
 
 
 /**
@@ -20,7 +21,19 @@ import {removeAuthToken, saveAuthToken} from "../../../helpers/tokens";
 export const setAuthUser = () => (dispatch) => {
     dispatch({ type: SET_AUTH_USER });
 
-    return api
+    // Fake the api request since the profile route does not exists
+    return new Promise((resolve, reject) => {
+        const tokens = getAuthToken();
+        if (tokens.accessToken) {
+            dispatch({ type: SET_AUTH_USER_SUCCESS, payload: {id: getUniqueId(), name: "Back office"} });
+            resolve();
+        } else {
+            dispatch({ type: SET_AUTH_USER_FAILURE });
+            // NotificationManager.error(error.message);
+            return reject();
+        }
+    });
+    /*return api
         .get(`${AUTH.PROFILE.INFORMATION}`, {skipError: true})
         .then((response) => {
             dispatch({ type: SET_AUTH_USER_SUCCESS, payload: response.data });
@@ -30,7 +43,7 @@ export const setAuthUser = () => (dispatch) => {
             dispatch({ type: SET_AUTH_USER_FAILURE });
             // NotificationManager.error(error.message);
             return Promise.reject();
-        });
+        });*/
 };
 
 export const loginWithJWT = user => dispatch => {
