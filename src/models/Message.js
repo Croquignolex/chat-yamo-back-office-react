@@ -4,6 +4,5 @@ export default class Message {
     constructor(message) {
         Object.assign(this, message);
         this.createdAt = dayjs(message.createdAt);
-        this.updatedAt = dayjs(message.updatedAt);
     }
 }

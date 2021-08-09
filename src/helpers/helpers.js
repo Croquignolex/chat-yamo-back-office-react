@@ -217,7 +217,7 @@ export const canArray = (permissions, some = true) => {
  *
  * @returns {string}
  */
-const getUniqueId = () => {
+export const getUniqueId = () => {
     const d0 = Math.random()*0xffffffff|0;
     const d1 = Math.random()*0xffffffff|0;
     const d2 = Math.random()*0xffffffff|0;

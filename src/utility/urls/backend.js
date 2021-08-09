@@ -17,9 +17,24 @@ export const AUTH = {
 };
 
 export const TICKETS = {
-    GET_ALL: '/feedbacks/cases',
+    GET_ALL: '/feedbacks/cases/messages',
     MESSAGES: {
-        GET_ALL: '/feedbacks/:userId/case'
+        // GET_ALL: '/feedbacks/{userId}/messages',
+        SEND: '/{backOfficeUserId}/{userId}/newmessage',
+
+    }
+};
+
+export const USERS = {
+    GET_ONE: '/service/profile/{userId}',
+};
+
+export const MEDIA = {
+    CHATROOMS: {
+        CREATE: '/service/media/chatrooms/{chatroomId}/medias'
+    },
+    USERS: {
+        GET_ONE: '/service/media/chatrooms/$chatroomId/medias'
     }
 };
 

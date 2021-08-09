@@ -6,6 +6,7 @@ import {Input, Button, Spinner} from "reactstrap";
 import PerfectScrollbar from "react-perfect-scrollbar";
 import { MessageSquare, Menu, Star, Send } from "react-feather";
 import {getCaseMessages} from "../../redux/actions/IndependentActions";
+import ChatInput from "./messages/ChatInput";
 
 class ChatLog extends React.Component {
     constructor(props) {
@@ -54,22 +55,8 @@ class ChatLog extends React.Component {
         }
     };
 
-    handleMsgSubmit = e => {
-        e.preventDefault();
-        // TODO: Handle submit message
-        /*this.handleSendMessage(
-            this.props.activeUser.uid,
-            false,
-            this.state.msg,
-            this.props.activeUser
-        )*/
-    };
+    notifyChanges = () => {
 
-    onChangeMsg = e => {
-        e.preventDefault();
-        this.setState({
-            msg: e.target.value
-        })
     };
 
     renderEmptyUser = (
@@ -149,21 +136,10 @@ class ChatLog extends React.Component {
                                     </PerfectScrollbar>
 
                                     <div className="chat-app-form">
-                                        <form
-                                            className="chat-app-input d-flex align-items-center"
-                                            onSubmit={this.handleMsgSubmit}>
-                                            <Input
-                                                type="text"
-                                                value={this.state.msg}
-                                                className="message mr-1 ml-50"
-                                                placeholder="Type your message"
-                                                onChange={this.onChangeMsg}
-                                            />
-                                            <Button color="primary">
-                                                <Send className="d-lg-none" size={15} />
-                                                <span className="d-lg-block d-none">Send</span>
-                                            </Button>
-                                        </form>
+                                        <ChatInput
+                                            userId={activeUser.id}
+                                            notifyChanges={this.notifyChanges}
+                                        />
                                     </div>
                                 </>
                             )}

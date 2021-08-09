@@ -19,3 +19,5 @@ export const urlConfig = {
         caseId: "ci"
     }
 };
+
+export const BACK_OFFICE_USER_ID = 'XXXX-XXXX-XXXX-XXXX';

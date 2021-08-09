@@ -1,21 +1,63 @@
-import React from 'react';
-import {Badge} from "reactstrap";
+import {Spinner} from "reactstrap";
+import User from "../../models/User";
+import Error500 from "../pages/misc/error/500";
+import React, {useState, useEffect} from 'react';
+import {getUserProfile} from "../../redux/actions/IndependentActions";
 
 /**
  * Display a ticket item
  * @param isActive
  * @param user
- * @param lastMessage
- * @param unreadMessages
  * @param onClickItem
  * @returns {*}
  * @constructor
  */
-const TicketUserItem = ({ isActive, user, lastMessage, unreadMessages, onClickItem }) => {
+const TicketUserItem = ({ isActive, onClickItem }) => {
+    const [userData, setUserData] = useState({
+        loading: true,
+        data: null,
+        error: null
+    });
+
+    useEffect(() => {
+        loadData();
+    }, []);
+
+    const loadData = () => {
+        getUserProfile()
+            .then(data => {
+                setUserData({
+                    data: new User(data),
+                    error: null,
+                    loading: false,
+                });
+            })
+            .catch(error => {
+                setUserData({
+                    error,
+                    data: null,
+                    loading: false,
+                });
+            });
+    };
+
+    if (userData.loading) {
+        return (
+            <Spinner color="primary" />
+        );
+    }
+
+    if (userData.error) {
+        return (
+            <Error500 onLinkClick={loadData} />
+        )
+    }
+
+    const user = userData.data;
+
     return (
         <li
-            key={user.id}
-            onClick={onClickItem}
+            onClick={() => onClickItem(user)}
             className={`${isActive ? "active" : ""}`}
         >
             <div className="pr-1">
@@ -31,25 +73,6 @@ const TicketUserItem = ({ isActive, user, lastMessage, unreadMessages, onClickIt
             <div className="user-chat-info">
                 <div className="contact-info">
                     <h5 className="text-bold-600 mb-0">{user.name}</h5>
-                    <p className="truncate">
-                        {lastMessage && lastMessage.content}
-                    </p>
-                </div>
-                <div className="contact-meta d-flex- flex-column">
-                    <span className="float-right mb-25">
-                      Aug 21
-                    </span>
-                    {unreadMessages > 0 && (
-                        <div className="unseen-msg">
-                            <Badge
-                                pill
-                                color="primary"
-                                className="badge-md float-right"
-                            >
-                                {unreadMessages}
-                            </Badge>
-                        </div>
-                    )}
                 </div>
             </div>
         </li>

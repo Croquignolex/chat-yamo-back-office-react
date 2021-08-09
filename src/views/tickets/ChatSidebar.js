@@ -20,18 +20,11 @@ const ChatSidebar = ({ activeChatId, tickets, getTickets, mainSidebar, handleUse
         loadData();
     }, []);
 
-    // TODO: Mark messages as seen
-    const markSeenAllMessages = (caseId) => {
-
-    };
-
-    const onClickItem = (feedbackCase) => {
+    const onClickItem = (caseId, user) => {
         // Update the chat log
-        handleActiveChat(feedbackCase.caseId, feedbackCase.user);
+        handleActiveChat(caseId, user);
         // Hide sidebar if opened
         mainSidebar(false);
-        // Mark messages as seen
-        markSeenAllMessages(feedbackCase.caseId);
     };
 
     const getStatusConfig = useCallback(() => {
@@ -85,23 +78,16 @@ const ChatSidebar = ({ activeChatId, tickets, getTickets, mainSidebar, handleUse
                             wheelPropagation: false
                         }}
                     >
-                        <h3 className="primary p-1 mb-0">Tickets en cours</h3>
+                        {/*<h3 className="primary p-1 mb-0">Tickets en cours</h3>*/}
                         <ul className="chat-users-list-wrapper media-list">
                             {data.map(item => (
                                 <TicketUserItem
                                     key={item.caseId}
-                                    user={item.user}
-                                    onClickItem={onClickItem}
-                                    lastMessage={item.lastMessage}
-                                    unreadMessages={item.unreadMessages}
                                     isActive={activeChatId === item.caseId}
+                                    onClickItem={user => onClickItem(item.caseId, user)}
                                 />
                             ))}
                         </ul>
-                        {/*<h3 className="text-danger p-1 mb-0">Tickets fermés</h3>
-                        <ul className="chat-users-list-wrapper media-list">
-                            {renderContacts}
-                        </ul>*/}
                     </PerfectScrollbar>
                 </>
             )}
