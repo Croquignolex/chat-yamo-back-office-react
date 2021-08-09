@@ -23,7 +23,7 @@ class Ticket extends React.Component {
             userProfile: false,
             sidebarDocked: mql.matches,
             sidebarOpen: false,
-            activeChatID: Number(caseId) || null,
+            activeChatID: caseId || null,
             activeChat: null,
             activeUser: null,
             receiverProfile: false,
@@ -41,15 +41,7 @@ class Ticket extends React.Component {
 
     // mounted = false
   handleUserSidebar = status => {
-    if (status === "open") {
-      this.setState({
-        userProfile: true
-      })
-    } else {
-      this.setState({
-        userProfile: false
-      })
-    }
+      this.setState({userProfile: status === "open"});
   };
 
     handleActiveChat = (caseId, user) => {
@@ -114,22 +106,22 @@ class Ticket extends React.Component {
             </Sidebar>
           )}
         </ContextLayout.Consumer>
-        <UserSidebar
+        {/*<UserSidebar
           userProfile={this.state.userSidebar}
           handleUserSidebar={this.handleUserSidebar}
-        />
+        />*/}
         <ChatLog
             mql={mql}
+            caseId={this.state.activeChatID}
             activeUser={this.state.activeUser}
             mainSidebar={this.onSetSidebarOpen}
-            activeCaseId={this.state.activeChatID}
             handleReceiverSidebar={this.handleReceiverSidebar}
         />
-        <ReceiverSidebar
+        {/*<ReceiverSidebar
           activeUser={this.state.activeUser}
           receiverProfile={this.state.receiverProfile}
           handleReceiverSidebar={this.handleReceiverSidebar}
-        />
+        />*/}
       </div>
     )
   }

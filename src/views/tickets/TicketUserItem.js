@@ -12,7 +12,7 @@ import {getUserProfile} from "../../redux/actions/IndependentActions";
  * @returns {*}
  * @constructor
  */
-const TicketUserItem = ({ isActive, onClickItem }) => {
+const TicketUserItem = ({ userId, isActive, onClickItem }) => {
     const [userData, setUserData] = useState({
         loading: true,
         data: null,
@@ -24,7 +24,7 @@ const TicketUserItem = ({ isActive, onClickItem }) => {
     }, []);
 
     const loadData = () => {
-        getUserProfile()
+        getUserProfile(userId)
             .then(data => {
                 setUserData({
                     data: new User(data),
@@ -49,7 +49,9 @@ const TicketUserItem = ({ isActive, onClickItem }) => {
 
     if (userData.error) {
         return (
-            <Error500 onLinkClick={loadData} />
+            <li>
+                <Error500 onLinkClick={loadData} />
+            </li>
         )
     }
 

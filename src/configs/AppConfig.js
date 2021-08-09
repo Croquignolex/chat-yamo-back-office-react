@@ -11,6 +11,7 @@ const backendBaseUrl = (function (mode) {
 
 export const backendConfig = {
     baseUrl : backendBaseUrl,
+    baseUrlWithService : backendBaseUrl + '/service',
     timeout: 15000,
 };
 

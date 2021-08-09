@@ -1,14 +1,13 @@
-import {makeRequest} from "../../helpers/helpers";
 import {
     USERS,
     MEDIA,
     TICKETS,
     joinBaseUrlWithParams,
-    joinBaseUrlWithParamsId,
 } from "../../utility/urls/backend";
+import {makeRequest} from "../../helpers/helpers";
 
-export const getCaseMessages = async (caseId) => {
-    return makeRequest('get', joinBaseUrlWithParamsId(TICKETS.MESSAGES.GET_ALL, caseId));
+export const getCaseMessages = async (userId) => {
+    return makeRequest('get', joinBaseUrlWithParams(TICKETS.GET_ONE, [{param: 'userId', value: userId}]));
 };
 
 export const getUserProfile = async (userId) => {

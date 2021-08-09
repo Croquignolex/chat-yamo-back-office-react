@@ -40,13 +40,13 @@ const ChatSidebar = ({ activeChatId, tickets, getTickets, mainSidebar, handleUse
     }, [status]);
 
     const { data, loading } = tickets;
-
+    console.log('tickets => ', tickets);
     return (
         <Card className="sidebar-content h-100">
             {loading && (
                 <Spinner color="primary" />
             )}
-            {!data ? (
+            {!loading && !data ? (
                 <Error500 onLinkClick={loadData} />
             ) : (
                 <>
@@ -80,9 +80,10 @@ const ChatSidebar = ({ activeChatId, tickets, getTickets, mainSidebar, handleUse
                     >
                         {/*<h3 className="primary p-1 mb-0">Tickets en cours</h3>*/}
                         <ul className="chat-users-list-wrapper media-list">
-                            {data.map(item => (
+                            {data && data.map(item => (
                                 <TicketUserItem
                                     key={item.caseId}
+                                    userId={item.userId}
                                     isActive={activeChatId === item.caseId}
                                     onClickItem={user => onClickItem(item.caseId, user)}
                                 />

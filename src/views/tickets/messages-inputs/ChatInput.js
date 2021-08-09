@@ -1,15 +1,17 @@
-import {Send} from "react-feather";
+import MediaInput from "./MediaInput";
 import React, {Component} from 'react';
-import {Button, Input} from "reactstrap";
-import {createMedia, sendMessage} from "../../../redux/actions/IndependentActions";
-import {BACK_OFFICE_USER_ID} from "../../../configs/AppConfig";
+import {Paperclip, Send} from "react-feather";
 import Message from "../../../models/Message";
-import {NotificationManager} from "react-notifications";
+import {Button, FormGroup, Input} from "reactstrap";
 import {getUniqueId} from "../../../helpers/helpers";
+import {NotificationManager} from "react-notifications";
+import {BACK_OFFICE_USER_ID} from "../../../configs/AppConfig";
+import {createMedia, sendMessage} from "../../../redux/actions/IndependentActions";
 
 class ChatInput extends Component {
     state = {
-        msg: ''
+        msg: '',
+        show: false
     };
 
     onChangeMsg = (e) => {
@@ -17,8 +19,7 @@ class ChatInput extends Component {
         this.setState({msg: e.target.value});
     };
 
-    handleMsgSubmit = async (e, file = null) => {
-        e.preventDefault();
+    handleMsgSubmit = async (file = null) => {
         const {caseId, userId, notifyChanges} = this.props;
         const message = this.state.msg;
 
@@ -26,6 +27,10 @@ class ChatInput extends Component {
             NotificationManager.warning("Vous devez remplir le champ message");
             return;
         }
+
+        // Reset input and hide modal to show outgoing message
+        this.toggleMediaInput();
+        this.resetMessage();
 
         const _msg = {
             userId,
@@ -63,6 +68,7 @@ class ChatInput extends Component {
                         error: e || "An error occurred"
                     }
                 }));
+                return;
             }
         }
         const data = {feedbackText: message};
@@ -93,25 +99,53 @@ class ChatInput extends Component {
         }
     };
 
+    toggleMediaInput = (show) => {
+        this.setState({show});
+    };
+
+    resetMessage = () => {
+        this.setState({msg: ''});
+    };
+
     render() {
-        const { msg } = this.state;
+        const { show, msg } = this.state;
 
         return (
-            <form
-                className="chat-app-input d-flex align-items-center"
-                onSubmit={e => this.handleMsgSubmit(e)}>
-                <Input
-                    type="text"
-                    value={msg}
-                    className="message mr-1 ml-50"
-                    placeholder="Type your message"
-                    onChange={this.onChangeMsg}
+            <>
+                <form
+                    className="chat-app-input d-flex align-items-center w-100"
+                    onSubmit={e => {
+                        e.preventDefault();
+                        this.handleMsgSubmit();
+                    }}>
+                    <FormGroup className="position-relative has-icon-left mr-1 ml-50">
+                        <Input type="text" placeholder="Icon Left, Default Input" />
+                        <Input
+                            type="text"
+                            value={msg}
+                            className="message"
+                            placeholder="Type your message"
+                            onChange={this.onChangeMsg}
+                        />
+                        <div
+                            onClick={() => this.toggleMediaInput(true)}
+                            className="form-control-position cursor-pointer">
+                            <Paperclip size={15} />
+                        </div>
+                    </FormGroup>
+                    <Button color="primary">
+                        <Send className="d-lg-none" size={15} />
+                        <span className="d-lg-block d-none">Envoyer</span>
+                    </Button>
+                </form>
+                <MediaInput
+                    show={show}
+                    message={msg}
+                    onMsgChange={this.onChangeMsg}
+                    onSubmit={this.handleMsgSubmit}
+                    onClose={() => this.toggleMediaInput(false)}
                 />
-                <Button color="primary">
-                    <Send className="d-lg-none" size={15} />
-                    <span className="d-lg-block d-none">Send</span>
-                </Button>
-            </form>
+            </>
         );
     }
 }

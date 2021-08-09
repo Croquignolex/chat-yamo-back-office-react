@@ -1,12 +1,13 @@
 import React from "react"
 import ReactDOM from "react-dom"
+import {Spinner} from "reactstrap";
+import Message from "../../models/Message";
 import ChatLogContent from "./ChatLogContent";
 import Error500 from "../pages/misc/error/500";
-import {Input, Button, Spinner} from "reactstrap";
+import ChatInput from "./messages-inputs/ChatInput";
+import { MessageSquare, Menu } from "react-feather";
 import PerfectScrollbar from "react-perfect-scrollbar";
-import { MessageSquare, Menu, Star, Send } from "react-feather";
 import {getCaseMessages} from "../../redux/actions/IndependentActions";
-import ChatInput from "./messages/ChatInput";
 
 class ChatLog extends React.Component {
     constructor(props) {
@@ -23,28 +24,22 @@ class ChatLog extends React.Component {
         this.scrollToBottom();
     }
 
-    componentDidUpdate() {
+    componentDidUpdate(prevProps, prevState, snapshot) {
         this.scrollToBottom();
+        if (prevProps.caseId !== this.props.caseId) {
+            this.loadData();
+        }
     }
 
     loadData = () => {
-        if (this.props.activeCaseId) {
+        if (this.props.caseId) {
             this.setState({ loading: true });
-            getCaseMessages(this.props.activeCaseId)
-                .then(messages => {
-                    this.setState({ messages });
+            getCaseMessages(this.props.caseId)
+                .then(data => {
+                    this.setState({ messages: data.messages.map(m => new Message(m)) });
                 })
                 .catch(() => this.setState({messages: null}))
-                .finally(() => this.setState({ loading: false }));
-        }
-    };
-
-    handleSendMessage = (id, isPinned, text) => {
-        if (text.length > 0) {
-            this.props.sendMessage(id, isPinned, text)
-            this.setState({
-                msg: ""
-            })
+                .finally(() => this.setState({loading: false}));
         }
     };
 
@@ -55,8 +50,17 @@ class ChatLog extends React.Component {
         }
     };
 
-    notifyChanges = () => {
+    notifyChanges = (messageObj) => {
+        const _messages = [...this.state.messages];
+        const messageItemIndex = _messages.findIndex(m => m.id === messageObj.id);
 
+        if (messageItemIndex === -1) {
+            _messages.push(messageObj);
+        } else {
+            _messages[messageItemIndex] = messageObj;
+        }
+
+        this.setState(({ messages: _messages }));
     };
 
     renderEmptyUser = (
@@ -80,7 +84,7 @@ class ChatLog extends React.Component {
 
     render() {
         const { messages, loading } = this.state;
-        const { activeUser } = this.props;
+        const { activeUser, caseId } = this.props;
 
         return (
             <div className="content-right">
@@ -117,7 +121,7 @@ class ChatLog extends React.Component {
 
                             {loading ? (
                                 <Spinner color="primary" />
-                            ) : messages ? (
+                            ) : !messages ? (
                                 <Error500 onLinkClick={this.loadData} />
                             ) : (
                                 <>
@@ -137,13 +141,13 @@ class ChatLog extends React.Component {
 
                                     <div className="chat-app-form">
                                         <ChatInput
+                                            caseId={caseId}
                                             userId={activeUser.id}
                                             notifyChanges={this.notifyChanges}
                                         />
                                     </div>
                                 </>
                             )}
-
                         </div>
                     )}
                 </div>

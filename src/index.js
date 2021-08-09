@@ -10,6 +10,12 @@ import { store } from "./redux/storeConfig/store"
 import Spinner from "./components/@vuexy/spinner/Fallback-spinner"
 import "./index.scss"
 import "./@fake-db"
+import dayjs from "dayjs";
+
+const localizedFormat = require('dayjs/plugin/localizedFormat');
+const  relativeTime = require('dayjs/plugin/relativeTime');
+dayjs.extend(localizedFormat);
+dayjs.extend(relativeTime);
 
 const LazyApp = lazy(() => import("./App"))
 
