@@ -5,10 +5,15 @@ export default {
             MESSAGE: "Login et/ou mot de passe incorrect",
             DESCRIPTION: `"The plan with name " +name+ " already exists"`
         },
-        USER_NOT_FOUND: {
-            CODE: 'USER_NOT_FOUND',
-            MESSAGE: "Utilisateur non trouvé",
-            DESCRIPTION: `"The plan with name " +name+ " already exists"`
+        INVALID_TOKEN_ERROR: {
+            CODE: 'INVALID_TOKEN_ERROR',
+            MESSAGE: "Connexion expiré. Veuillez vous reconnectez",
+            DESCRIPTION: `INVALID_TOKEN_ERROR`
+        },
+        BAD_IMAGE_TYPE: {
+            CODE: 'BAD_IMAGE_TYPE',
+            MESSAGE: "Format d'image non autorisé. Veuillez changer ce format svp.",
+            DESCRIPTION: `BAD_IMAGE_TYPE`
         },
     },
 };
