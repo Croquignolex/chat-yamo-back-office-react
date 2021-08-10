@@ -26,6 +26,9 @@ const Wrapper = styled.div`
     }
     
     &.chat-right {
+        .card {
+            float: right;
+        }
         .c-hour {
             text-align: right;
         }
@@ -49,12 +52,12 @@ const Wrapper = styled.div`
             margin-left: 5px;
         }
     }
-   
 `;
 
 const CardWrapper = styled(Card)`
     background: none !important;
     box-shadow: none !important;
+    margin-bottom: 0 !important;
 `;
 
 const areSameDay = (day1, day2) => {

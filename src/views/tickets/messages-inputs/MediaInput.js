@@ -14,7 +14,7 @@ const MediaInput = ({ message, onMsgChange, show, onClose, onSubmit }) => {
     const [files, setFiles] = useState([]);
     const { getRootProps, getInputProps } = useDropzone({
         maxFiles: 1,
-        accept: "image/*",
+        accept: "image/jpg,image/jpeg",
         onDrop: acceptedFiles => {
             setFiles(
                 acceptedFiles.map(file =>
@@ -57,7 +57,7 @@ const MediaInput = ({ message, onMsgChange, show, onClose, onSubmit }) => {
             <ModalHeader toggle={onClose}>
                 Envoyer un message
             </ModalHeader>
-            <ModalBody className="modal-dialog-centered">
+            <ModalBody className="">
                 <div>
                     <section className="w-100">
                         <div {...getRootProps({ className: "dropzone" })}>

@@ -13,7 +13,6 @@ class ChatLog extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            msg: "",
             messages: null,
             loading: false,
         }
@@ -89,7 +88,7 @@ class ChatLog extends React.Component {
     render() {
         const { messages, loading } = this.state;
         const { activeUser, caseId } = this.props;
-
+        console.log("messages => ", messages);
         return (
             <div className="content-right">
                 <div className="chat-app-window">

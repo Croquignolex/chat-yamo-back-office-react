@@ -14,8 +14,10 @@ export const getUserProfile = async (userId) => {
     return makeRequest('get', joinBaseUrlWithParams(USERS.GET_ONE, [{param: 'userId', value: userId}]));
 };
 
-export const createMedia = async (caseId) => {
-    return makeRequest('post', joinBaseUrlWithParams(MEDIA.CHATROOMS.CREATE, [{param: 'chatroomId', value: caseId}]));
+export const createMedia = async (caseId, data) => {
+    const url = joinBaseUrlWithParams(MEDIA.CHATROOMS.CREATE, [{param: 'chatroomId', value: caseId}]);
+
+    return makeRequest('post', url, data, {shouldParseFormData: true, fileData: ['picture']});
 };
 
 export const sendMessage = async (backOfficeUserId, userId, data) => {
