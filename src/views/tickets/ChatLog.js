@@ -80,7 +80,7 @@ class ChatLog extends React.Component {
                         return null
                     }
                 }}>
-                Start Conversation
+                Commencer Une Conversation
             </h4>
         </div>
     );
@@ -115,9 +115,16 @@ class ChatLog extends React.Component {
                                                 className={activeUser.getStatus()}
                                             />
                                         </div>
-                                        <h6 className="mb-0">
-                                            {activeUser.userName}
-                                        </h6>
+                                        <a
+                                            href="#"
+                                            className="mb-0"
+                                            onClick={(e) => {
+                                                e.preventDefault();
+                                                this.props.handleReceiverSidebar("open");
+                                            }}
+                                        >
+                                            Voir les informations
+                                        </a>
                                     </div>
                                     <Button
                                         onClick={this.loadData}
@@ -129,7 +136,9 @@ class ChatLog extends React.Component {
                             </div>
 
                             {loading ? (
-                                <Spinner color="primary" />
+                                <div className="w-100 d-flex align-items-center justify-content-center my-2">
+                                    <Spinner color="primary" />
+                                </div>
                             ) : !messages ? (
                                 <Error500 onLinkClick={this.loadData} />
                             ) : (

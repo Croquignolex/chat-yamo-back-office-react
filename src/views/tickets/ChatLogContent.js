@@ -134,7 +134,6 @@ const ChatLogContent = ({ activeUser, messages }) => {
                                             <p className="c-hour text-muted">
                                                 <span className="timer">{message.createdAt.format('HH:mm')}</span>
                                                 <span className="request">
-                                                    {/*Clock, CheckCircle, XCircle*/}
                                                     {message.request && (
                                                         <>
                                                             {message.request.loading ? (

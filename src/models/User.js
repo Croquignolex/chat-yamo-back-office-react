@@ -11,9 +11,7 @@ export default class User {
     }
 
     get imageUrl() {
-        // return `${this.id}`;
         return joinBaseUrlWithParams(MEDIA.USERS.GET_ONE, [{param: 'userId', value: this.id}], true);
-        // return `https://picsum.photos/200`;
     }
 
     getStatus() {

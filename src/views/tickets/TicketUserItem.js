@@ -1,6 +1,7 @@
 import {Spinner} from "reactstrap";
 import User from "../../models/User";
 import Error500 from "../pages/misc/error/500";
+import {CheckCircle, Star} from "react-feather";
 import React, {useState, useEffect} from 'react';
 import {getUserProfile} from "../../redux/actions/IndependentActions";
 
@@ -74,7 +75,19 @@ const TicketUserItem = ({ userId, isActive, onClickItem }) => {
             </div>
             <div className="user-chat-info">
                 <div className="contact-info">
-                    <h5 className={`text-bold-600 mb-0 ${user.isDeleted ? 'text-danger' : ''}`}>{user.name}</h5>
+                    <h5 className={`text-bold-600 mb-0 ${user.isDeleted ? 'text-danger' : ''}`}>
+                        <span style={{marginTop: "2px"}}>{user.name}</span>
+                        {user.verified && (
+                            <span className="ml-1">
+                                <CheckCircle size={17} className="text-success" />
+                            </span>
+                        )}
+                        {user.isPremium && (
+                            <span className="ml-1">
+                                <Star size={17} className="text-warning" />
+                            </span>
+                        )}
+                    </h5>
                     <h6 className="text-bold-600 mb-0">{user.localisation}</h6>
                 </div>
             </div>
