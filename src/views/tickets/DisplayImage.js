@@ -5,9 +5,9 @@ const Wrapper = styled.div`
     background-image: url(${props => props.src})
 `;
 
-const DisplayImage = ({src}) => {
+const DisplayImage = ({src, className = ''}) => {
     return (
-        <div className="c-image">
+        <div className={`c-image ${className}`}>
             <Wrapper src={src} className="c-image-content"/>
         </div>
     );

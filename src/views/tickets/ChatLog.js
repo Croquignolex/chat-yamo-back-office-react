@@ -36,7 +36,11 @@ class ChatLog extends React.Component {
             this.setState({ loading: true });
             getCaseMessages(this.props.caseId)
                 .then(data => {
-                    this.setState({ messages: data.messages.map(m => new Message(m)) });
+                    const messages = data.messages
+                        .sort((a, b) => a.createdAt - b.createdAt)
+                        .map(m => new Message(m));
+
+                    this.setState({ messages });
                 })
                 .catch(() => this.setState({messages: null}))
                 .finally(() => this.setState({loading: false}));

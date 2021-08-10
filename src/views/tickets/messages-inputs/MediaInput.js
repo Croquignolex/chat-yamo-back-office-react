@@ -8,6 +8,7 @@ import {
 import {Send} from "react-feather";
 import {useDropzone} from "react-dropzone";
 import React, {useEffect, useState} from 'react';
+import "../../../assets/scss/plugins/extensions/dropzone.scss";
 
 const MediaInput = ({ message, onMsgChange, show, onClose, onSubmit }) => {
     const [files, setFiles] = useState([]);
@@ -57,30 +58,34 @@ const MediaInput = ({ message, onMsgChange, show, onClose, onSubmit }) => {
                 Envoyer un message
             </ModalHeader>
             <ModalBody className="modal-dialog-centered">
-                <section>
-                    <div {...getRootProps({ className: "dropzone" })}>
-                        <input {...getInputProps()} />
-                        <p className="mx-1">
-                            Téléverser une image içi
-                        </p>
+                <div>
+                    <section className="w-100">
+                        <div {...getRootProps({ className: "dropzone" })}>
+                            <input {...getInputProps()} />
+                            <p className="mx-1">
+                                Téléverser une image içi
+                            </p>
+                        </div>
+                        <aside className="thumb-container">{thumbs}</aside>
+                    </section>
+                    <div>
+                        <form
+                            className="chat-app-input d-flex align-items-center mt-2"
+                            onSubmit={_onSubmit}>
+                            <Input
+                                type="text"
+                                value={message}
+                                className="message mr-1 ml-50"
+                                placeholder="Type your message"
+                                onChange={onMsgChange}
+                            />
+                            <Button color="primary">
+                                <Send className="d-lg-none" size={15} />
+                                <span className="d-lg-block d-none">Envoyer</span>
+                            </Button>
+                        </form>
                     </div>
-                    <aside className="thumb-container">{thumbs}</aside>
-                </section>
-                <form
-                    className="chat-app-input d-flex align-items-center mt-2"
-                    onSubmit={_onSubmit}>
-                    <Input
-                        type="text"
-                        value={message}
-                        className="message mr-1 ml-50"
-                        placeholder="Type your message"
-                        onChange={onMsgChange}
-                    />
-                    <Button color="primary">
-                        <Send className="d-lg-none" size={15} />
-                        <span className="d-lg-block d-none">Envoyer</span>
-                    </Button>
-                </form>
+                </div>
             </ModalBody>
         </Modal>
     )

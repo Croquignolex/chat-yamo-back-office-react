@@ -113,13 +113,12 @@ class ChatInput extends Component {
         return (
             <>
                 <form
-                    className="chat-app-input d-flex align-items-center w-100"
+                    className="chat-app-input d-flex align-items-center"
                     onSubmit={e => {
                         e.preventDefault();
                         this.handleMsgSubmit();
                     }}>
-                    <FormGroup className="position-relative has-icon-left mr-1 ml-50">
-                        <Input type="text" placeholder="Icon Left, Default Input" />
+                    <FormGroup className="position-relative has-icon-left mr-1 ml-50 w-100 mb-0">
                         <Input
                             type="text"
                             value={msg}

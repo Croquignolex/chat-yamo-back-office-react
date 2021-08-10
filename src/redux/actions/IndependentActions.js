@@ -18,7 +18,7 @@ export const createMedia = async (caseId) => {
     return makeRequest('post', joinBaseUrlWithParams(MEDIA.CHATROOMS.CREATE, [{param: 'chatroomId', value: caseId}]));
 };
 
-export const sendMessage = async (backOfficeUserId, userId) => {
+export const sendMessage = async (backOfficeUserId, userId, data) => {
     const url = joinBaseUrlWithParams(
         TICKETS.MESSAGES.SEND,
         [
@@ -27,5 +27,5 @@ export const sendMessage = async (backOfficeUserId, userId) => {
         ]
     );
 
-    return makeRequest('post', url);
+    return makeRequest('post', url, data);
 };
