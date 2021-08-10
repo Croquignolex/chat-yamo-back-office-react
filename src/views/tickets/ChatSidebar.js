@@ -1,17 +1,14 @@
 import { X } from "react-feather";
 import { connect } from "react-redux";
-import {Card, Spinner} from "reactstrap";
-import TicketSearch from "./TicketSearch";
+import {Button, Card, Spinner} from "reactstrap";
 import TicketUserItem from "./TicketUserItem";
 import Error500 from "../pages/misc/error/500";
-import React, {useCallback, useEffect} from "react";
+import React, {useEffect} from "react";
 import PerfectScrollbar from "react-perfect-scrollbar";
 import {getTickets} from "../../redux/actions/GeneralActions";
-import userImg from "../../assets/img/portrait/small/avatar-s-11.jpg";
-
-const status = "dnd";
 
 const ChatSidebar = ({ activeChatId, tickets, getTickets, mainSidebar, handleUserSidebar, handleActiveChat }) => {
+
     const loadData = () => {
         getTickets();
     };
@@ -27,25 +24,10 @@ const ChatSidebar = ({ activeChatId, tickets, getTickets, mainSidebar, handleUse
         mainSidebar(false);
     };
 
-    const getStatusConfig = useCallback(() => {
-        return {
-            className: status === "dnd"
-                ? "avatar-status-busy"
-                : status === "away"
-                    ? "avatar-status-away"
-                    : status === "offline"
-                        ? "avatar-status-offline"
-                        : "avatar-status-online"
-        };
-    }, [status]);
-
     const { data, loading } = tickets;
-    console.log('tickets => ', tickets);
+
     return (
         <Card className="sidebar-content h-100">
-            {loading && (
-                <Spinner color="primary" />
-            )}
             {!loading && !data ? (
                 <Error500 onLinkClick={loadData} />
             ) : (
@@ -58,18 +40,11 @@ const ChatSidebar = ({ activeChatId, tickets, getTickets, mainSidebar, handleUse
                     </span>
                     <div className="chat-fixed-search">
                         <div className="d-flex align-items-center">
-                            <div className="sidebar-profile-toggle position-relative d-inline-flex">
-                                <div
-                                    className="avatar"
-                                    onClick={() => handleUserSidebar("open")}
-                                >
-                                    <img src={userImg} alt="User Profile" height="40" width="40" />
-                                    <span
-                                        className={getStatusConfig.className}
-                                    />
-                                </div>
-                            </div>
-                            <TicketSearch />
+                            <Button
+                                onClick={loadData}
+                                color="primary">
+                                Actualiser
+                            </Button>
                         </div>
                     </div>
                     <PerfectScrollbar
@@ -78,6 +53,11 @@ const ChatSidebar = ({ activeChatId, tickets, getTickets, mainSidebar, handleUse
                             wheelPropagation: false
                         }}
                     >
+                        {loading && (
+                            <div className="w-100 d-flex align-items-center justify-content-center my-2">
+                                <Spinner color="primary" />
+                            </div>
+                        )}
                         {/*<h3 className="primary p-1 mb-0">Tickets en cours</h3>*/}
                         <ul className="chat-users-list-wrapper media-list">
                             {data && data.map(item => (

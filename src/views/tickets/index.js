@@ -17,13 +17,13 @@ class Ticket extends React.Component {
     constructor(props) {
         super(props);
 
-        const caseId = searchUrlParams(urlConfig.params.caseId);
+        // const caseId = searchUrlParams(urlConfig.params.caseId);
 
         this.state = {
             userProfile: false,
             sidebarDocked: mql.matches,
             sidebarOpen: false,
-            activeChatID: caseId || null,
+            activeChatID: null,
             activeChat: null,
             activeUser: null,
             receiverProfile: false,
@@ -40,16 +40,22 @@ class Ticket extends React.Component {
     };
 
     // mounted = false
-  handleUserSidebar = status => {
-      this.setState({userProfile: status === "open"});
-  };
+    handleUserSidebar = status => {
+        this.setState({userProfile: status === "open"});
+    };
+
+    handleReceiverSidebar = status => {
+        this.setState({
+            receiverProfile: status === "open"
+        });
+    };
 
     handleActiveChat = (caseId, user) => {
         this.setState({
             activeChatID: caseId,
             activeUser: user
         });
-        this.updateUrlParams(caseId);
+        // this.updateUrlParams(caseId);
     };
 
   UNSAFE_componentWillMount() {
@@ -117,11 +123,11 @@ class Ticket extends React.Component {
             mainSidebar={this.onSetSidebarOpen}
             handleReceiverSidebar={this.handleReceiverSidebar}
         />
-        {/*<ReceiverSidebar
+        <ReceiverSidebar
           activeUser={this.state.activeUser}
           receiverProfile={this.state.receiverProfile}
           handleReceiverSidebar={this.handleReceiverSidebar}
-        />*/}
+        />
       </div>
     )
   }

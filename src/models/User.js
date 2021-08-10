@@ -28,4 +28,12 @@ export default class User {
                 return "avatar-status-online";
         }
     }
+
+    get isDeleted() {
+        return this.name === "chat_yamo_deleted_account";
+    }
+
+    get localisation() {
+        return `${this.city}, ${this.country}`;
+    }
 }

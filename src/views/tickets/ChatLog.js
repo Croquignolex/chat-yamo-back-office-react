@@ -1,11 +1,11 @@
 import React from "react"
 import ReactDOM from "react-dom"
-import {Spinner} from "reactstrap";
+import {Button, Spinner} from "reactstrap";
 import Message from "../../models/Message";
 import ChatLogContent from "./ChatLogContent";
 import Error500 from "../pages/misc/error/500";
 import ChatInput from "./messages-inputs/ChatInput";
-import { MessageSquare, Menu } from "react-feather";
+import {MessageSquare, Menu, Loader} from "react-feather";
 import PerfectScrollbar from "react-perfect-scrollbar";
 import {getCaseMessages} from "../../redux/actions/IndependentActions";
 
@@ -88,7 +88,7 @@ class ChatLog extends React.Component {
     render() {
         const { messages, loading } = this.state;
         const { activeUser, caseId } = this.props;
-        console.log("messages => ", messages);
+
         return (
             <div className="content-right">
                 <div className="chat-app-window">
@@ -119,6 +119,12 @@ class ChatLog extends React.Component {
                                             {activeUser.userName}
                                         </h6>
                                     </div>
+                                    <Button
+                                        onClick={this.loadData}
+                                        color="primary">
+                                        <Loader className="d-lg-none" size={15} />
+                                        <span className="d-lg-block d-none">Actualiser</span>
+                                    </Button>
                                 </header>
                             </div>
 

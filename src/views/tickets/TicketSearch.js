@@ -1,5 +1,5 @@
+import React from 'react';
 import {Search} from "react-feather";
-import React, {useState} from 'react';
 import {FormGroup, Input} from "reactstrap";
 
 // TODO: Handle tickets search function
@@ -9,19 +9,17 @@ import {FormGroup, Input} from "reactstrap";
  * @returns {*}
  * @constructor
  */
-const TicketSearch = (props) => {
-    const [value, setValue] = useState();
-
+const TicketSearch = ({search, setSearch}) => {
     const handleOnChange = (e) => {
         e.preventDefault();
-        setValue(e.target.value);
+        setSearch(e.target.value);
     };
 
     return (
         <FormGroup className="position-relative has-icon-left mx-1 my-0 w-100">
             <Input
                 type="text"
-                value={value}
+                value={search}
                 className="round"
                 onChange={handleOnChange}
                 placeholder="Search tickets, users..."

@@ -74,7 +74,8 @@ const TicketUserItem = ({ userId, isActive, onClickItem }) => {
             </div>
             <div className="user-chat-info">
                 <div className="contact-info">
-                    <h5 className="text-bold-600 mb-0">{user.name}</h5>
+                    <h5 className={`text-bold-600 mb-0 ${user.isDeleted ? 'text-danger' : ''}`}>{user.name}</h5>
+                    <h6 className="text-bold-600 mb-0">{user.localisation}</h6>
                 </div>
             </div>
         </li>
