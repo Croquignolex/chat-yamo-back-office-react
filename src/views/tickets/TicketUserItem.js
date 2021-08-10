@@ -1,6 +1,6 @@
 import {Spinner} from "reactstrap";
 import User from "../../models/User";
-import Error500 from "../pages/misc/error/500";
+import Error500 from "../Error500";
 import {CheckCircle, Star} from "react-feather";
 import React, {useState, useEffect} from 'react';
 import {getUserProfile} from "../../redux/actions/IndependentActions";

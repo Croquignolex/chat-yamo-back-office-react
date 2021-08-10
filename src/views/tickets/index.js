@@ -3,12 +3,10 @@ import ChatLog from "./ChatLog"
 import Sidebar from "react-sidebar"
 import {connect} from "react-redux";
 import ChatSidebar from "./ChatSidebar"
-import UserSidebar from "./UserSidebar"
 import {withRouter} from "react-router-dom";
 import "../../assets/scss/pages/app-chat.scss"
 import ReceiverSidebar from "./receiverProfile"
 import {urlConfig} from "../../configs/AppConfig";
-import {searchUrlParams} from "../../helpers/helpers";
 import {ContextLayout} from "../../utility/context/Layout"
 
 const mql = window.matchMedia(`(min-width: 992px)`);

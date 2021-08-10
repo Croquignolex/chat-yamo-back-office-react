@@ -1,9 +1,9 @@
 import { X } from "react-feather";
+import Error500 from "../Error500";
 import { connect } from "react-redux";
-import {Button, Card, Spinner} from "reactstrap";
-import TicketUserItem from "./TicketUserItem";
-import Error500 from "../pages/misc/error/500";
 import React, {useEffect} from "react";
+import TicketUserItem from "./TicketUserItem";
+import {Button, Card, Spinner} from "reactstrap";
 import PerfectScrollbar from "react-perfect-scrollbar";
 import {getTickets} from "../../redux/actions/GeneralActions";
 
