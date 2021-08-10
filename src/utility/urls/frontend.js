@@ -10,6 +10,5 @@ export const AUTH = {
 };
 
 export const TICKETS = {
-    LIST: '/tickets',
-    SHOW: '/tickets/:id',
+    LIST: '/support',
 };
