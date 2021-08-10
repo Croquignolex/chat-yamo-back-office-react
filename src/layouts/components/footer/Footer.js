@@ -16,18 +16,7 @@ const Footer = props => {
       <p className="mb-0 clearfix">
         <span className="float-md-left d-block d-md-inline-block mt-25">
           COPYRIGHT © {new Date().getFullYear()}
-          <a
-            href="https://themeforest.net/user/pixinvent/portfolio?ref=pixinvent"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Pixinvent,
-          </a>
           All rights reserved
-        </span>
-        <span className="float-md-right d-none d-md-block">
-          <span className="align-middle">Hand-crafted & Made with</span>{" "}
-          <Heart className="text-danger" size={15} />
         </span>
       </p>
       {props.hideScrollToTop === false ? (

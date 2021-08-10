@@ -3,7 +3,7 @@ import ReactDOM from "react-dom"
 import {Button, Spinner} from "reactstrap";
 import Message from "../../models/Message";
 import ChatLogContent from "./ChatLogContent";
-import Error500 from "../pages/misc/error/500";
+import Error500 from "../Error500";
 import ChatInput from "./messages-inputs/ChatInput";
 import {MessageSquare, Menu, Loader} from "react-feather";
 import PerfectScrollbar from "react-perfect-scrollbar";
