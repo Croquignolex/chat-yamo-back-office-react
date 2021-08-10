@@ -1,6 +1,8 @@
-import React from "react"
-import { X } from "react-feather"
+import React from "react";
+import { X } from "react-feather";
+import "../../assets/scss/pages/users.scss";
 import PerfectScrollbar from "react-perfect-scrollbar"
+
 class ReceiverProfile extends React.Component {
   static getDerivedStateFromProps(props, state) {
     if (props.activeUser !== state.activeUser) {
@@ -16,7 +18,11 @@ class ReceiverProfile extends React.Component {
   }
 
   render() {
-    const { activeUser } = this.state
+    const { activeUser } = this.state;
+
+    if (!activeUser)
+      return null;
+
     return (
       <div
         className={`user-profile-sidebar ${
@@ -33,25 +39,14 @@ class ReceiverProfile extends React.Component {
           <div className="header-profile-sidebar">
             <div className="avatar">
               <img
-                src={activeUser !== null ? activeUser.photoURL : null}
-                alt={activeUser !== null ? activeUser.displayName : null}
+                src={activeUser !== null ? activeUser.imageUrl : null}
+                alt={activeUser !== null ? activeUser.name : null}
                 height="66"
                 width="66"
               />
-              <span
-                className={`${
-                  activeUser !== null && activeUser.status === "do not disturb"
-                    ? "avatar-status-busy"
-                    : activeUser !== null && activeUser.status === "away"
-                    ? "avatar-status-away"
-                    : activeUser !== null && activeUser.status === "offline"
-                    ? "avatar-status-offline"
-                    : "avatar-status-online"
-                } avatar-status-lg`}
-              />
             </div>
             <h4 className="chat-user-name">
-              {activeUser !== null ? activeUser.displayName : null}
+              {activeUser !== null ? activeUser.name : null}
             </h4>
           </div>
         </header>
@@ -61,8 +56,62 @@ class ReceiverProfile extends React.Component {
             wheelPropagation: false
           }}
         >
-          <h6>About</h6>
-          <p>{activeUser !== null ? activeUser.about : null}</p>
+          <div className="users-page-view-table">
+            <div className="d-flex user-info">
+              <div className="user-info-title font-weight-bold">
+                Premium
+              </div>
+              <div>{activeUser.isPremium ? 'Oui' : 'Non'}</div>
+            </div>
+            <div className="d-flex user-info">
+              <div className="user-info-title font-weight-bold">
+                Verifié
+              </div>
+              <div>{activeUser.verified ? 'Oui' : 'Non'}</div>
+            </div>
+            <div className="d-flex user-info">
+              <div className="user-info-title font-weight-bold">
+                Age
+              </div>
+              <div>{activeUser.age}</div>
+            </div>
+            <div className="d-flex user-info">
+              <div className="user-info-title font-weight-bold">
+                Genre
+              </div>
+              <div>{activeUser.gender}</div>
+            </div>
+            <div className="d-flex user-info">
+              <div className="user-info-title font-weight-bold">
+                Cité
+              </div>
+              <div>{activeUser.city}</div>
+            </div>
+            <div className="d-flex user-info">
+              <div className="user-info-title font-weight-bold">
+                Province
+              </div>
+              <div>{activeUser.province}</div>
+            </div>
+            <div className="d-flex user-info">
+              <div className="user-info-title font-weight-bold">
+                Pays
+              </div>
+              <div>{activeUser.country}</div>
+            </div>
+            <div className="d-flex user-info">
+              <div className="user-info-title font-weight-bold">
+                Pays d'origine
+              </div>
+              <div>{activeUser.homeCountry}</div>
+            </div>
+            <div className="d-flex user-info">
+              <div className="user-info-title font-weight-bold">
+                Text de salutation
+              </div>
+              <div>{activeUser.greetingText}</div>
+            </div>
+          </div>
         </PerfectScrollbar>
       </div>
     )

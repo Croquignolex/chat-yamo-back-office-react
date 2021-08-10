@@ -31,10 +31,10 @@ const navigationConfig = [
   },*/
   {
     id: "email",
-    title: "Tickets",
+    title: "Support",
     type: "item",
     icon: <Icon.MessageSquare size={20} />,
-    permissions: ["admin", "editor"],
+    // permissions: ["admin", "editor"],
     navLink: TICKETS.LIST,
   },
   {

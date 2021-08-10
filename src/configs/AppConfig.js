@@ -11,5 +11,14 @@ const backendBaseUrl = (function (mode) {
 
 export const backendConfig = {
     baseUrl : backendBaseUrl,
+    baseUrlWithService : backendBaseUrl + '/service',
     timeout: 15000,
 };
+
+export const urlConfig = {
+    params: {
+        caseId: "ci"
+    }
+};
+
+export const BACK_OFFICE_USER_ID = 'XXXX-XXXX-XXXX-XXXX';

@@ -8,7 +8,7 @@ import {objectToFormData, toCamelCase, toSnakeCase, formatMessage} from "../help
 
 const customAxios =
     axios.create({
-        baseURL: backendConfig.baseUrl + '/service',
+        baseURL: backendConfig.baseUrlWithService,
         timeout: 15000,
     });
 

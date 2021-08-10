@@ -217,7 +217,7 @@ export const canArray = (permissions, some = true) => {
  *
  * @returns {string}
  */
-const getUniqueId = () => {
+export const getUniqueId = () => {
     const d0 = Math.random()*0xffffffff|0;
     const d1 = Math.random()*0xffffffff|0;
     const d2 = Math.random()*0xffffffff|0;
@@ -374,3 +374,13 @@ export const fromEntries = (arr) => {
 };
 
 export const formatMessage = msg => msg;
+
+/**
+ * Get the value of a given parameter in the browser url
+ * @param param
+ * @returns {string}
+ */
+export const searchUrlParams = (param) => {
+    const url = new URL(window.location);
+    return url.searchParams.get(param);
+};
