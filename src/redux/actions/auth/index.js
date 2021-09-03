@@ -13,6 +13,7 @@ import * as loginAction from "./loginActions";
 import {AUTH} from "../../../utility/urls/backend";
 import {getUniqueId} from "../../../helpers/helpers";
 import {removeAuthToken, saveAuthToken, getAuthToken} from "../../../helpers/tokens";
+import {APP_SERVICE_JWT} from "../../../configs/AppConfig";
 
 
 /**
@@ -56,14 +57,16 @@ export const loginWithJWT = user => dispatch => {
     return api.post(AUTH.LOGIN, data)
         .then(response => {
             const data = {
-                accessToken: response.data.token,
+                accessToken: APP_SERVICE_JWT, // the global token used for accessing all endpoint!!!
+                //accessToken: response.data.token, // the global token used for accessing all endpoint!!!
+                userAccessToken: response.data.userToken, // the user specific token, this should be saved also!!!
                 tokenType: response.data.tokenType,
                 expiresIn: response.data.expiresIn,
                 refreshToken: response.data.refreshToken,
             };
 
             // Persist data into localstorage
-            saveAuthToken(data.accessToken, data.tokenType || 'Bearer', data.expiresIn || 2000, data.refreshToken || 'Fake refresh Token');
+            saveAuthToken(data.accessToken, data.userAccessToken, data.tokenType || 'Bearer', data.expiresIn || 2000, data.refreshToken || 'Fake refresh Token');
 
             // Fetch user data
             dispatch(setAuthUser());

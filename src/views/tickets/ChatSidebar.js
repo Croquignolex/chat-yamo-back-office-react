@@ -60,7 +60,7 @@ const ChatSidebar = ({ activeChatId, tickets, getTickets, mainSidebar, handleUse
                         )}
                         {/*<h3 className="primary p-1 mb-0">Tickets en cours</h3>*/}
                         <ul className="chat-users-list-wrapper media-list">
-                            {data && data.map(item => (
+                            {data && data.messages && data.messages.map(item => (
                                 <TicketUserItem
                                     key={item.caseId}
                                     userId={item.userId}

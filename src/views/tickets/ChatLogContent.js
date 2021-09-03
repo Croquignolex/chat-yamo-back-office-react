@@ -5,6 +5,7 @@ import styled from "styled-components";
 import img1 from "../../assets/img/pages/content-img-1.jpg";
 import {BACK_OFFICE_USER_ID} from "../../configs/AppConfig";
 import {Clock, CheckCircle, XCircle} from "react-feather";
+import {getUserProfileImage} from "../../redux/actions/IndependentActions";
 
 const Wrapper = styled.div`
     .c-image-wrapper {
@@ -96,7 +97,8 @@ const ChatLogContent = ({ activeUser, messages }) => {
                     <img
                         width="40"
                         height="40"
-                        alt="chat avatar"
+                        //alt="chat avatar"
+                        // imageUrl does not work. The image binary is behind the service and accessible with the JWT.
                         src={isBackUser ? '' : user.imageUrl}
                     />
                 </div>
@@ -126,7 +128,7 @@ const ChatLogContent = ({ activeUser, messages }) => {
                                         {gotImage && (
                                             <DisplayImage
                                                 className=""
-                                                src={message.getImageUrl()}
+                                                src={message.imageSrc()}
                                             />
                                         )}
                                         <div className={`chat-content ${gotImage ? 'got-image' : ''}`}>

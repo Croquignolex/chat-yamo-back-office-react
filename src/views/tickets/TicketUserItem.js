@@ -66,8 +66,9 @@ const TicketUserItem = ({ userId, isActive, onClickItem }) => {
             <div className="pr-1">
                   <span className="avatar avatar-md m-0">
                     <img
+                        // imageUrl does not work. The image binary is behind the service and accessible with the JWT.
                         src={user.imageUrl}
-                        alt={user.name}
+                        //alt={user.name} // not needed!!!
                         height="38"
                         width="38"
                     />

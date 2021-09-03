@@ -14,10 +14,10 @@ export const getUserProfile = async (userId) => {
     return makeRequest('get', joinBaseUrlWithParams(USERS.GET_ONE, [{param: 'userId', value: userId}]));
 };
 
-export const createMedia = async (caseId, data) => {
-    const url = joinBaseUrlWithParams(MEDIA.CHATROOMS.CREATE, [{param: 'chatroomId', value: caseId}]);
+export const createMedia = async (userId, backOfficeUserId, data) => {
+    const url = joinBaseUrlWithParams(MEDIA.CHATROOMS.CREATE, [{param: 'chatroomId', value: "${userId}:${backOfficeUserId}"}]);
 
-    return makeRequest('post', url, data, {shouldParseFormData: true, fileData: ['picture']});
+    return makeRequest('put', url, data, {shouldParseFormData: true, fileData: ['picture']});
 };
 
 export const sendMessage = async (backOfficeUserId, userId, data) => {
@@ -30,4 +30,12 @@ export const sendMessage = async (backOfficeUserId, userId, data) => {
     );
 
     return makeRequest('post', url, data);
+};
+
+export const getUserProfileImage = async (userId) => {
+    const url = joinBaseUrlWithParams(
+        MEDIA.USERS.GET_ONE, [{param: 'userId', value: userId}],
+        true
+    );
+    return makeRequest('get', url);
 };

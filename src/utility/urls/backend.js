@@ -7,8 +7,10 @@ import {backendConfig} from "../../configs/AppConfig";
 
 
 export const AUTH = {
-    LOGIN: '/auth/login',
-    REGISTER: '/register',
+    LOGIN: '/feedbacks/backoffice/login',
+    //LOGIN: '/auth/login',
+    REGISTER: '/feedbacks/backoffice/1/registerwithout',
+    //REGISTER: '/register',
     PROFILE: {
         INFORMATION: 'auth/profile'
     },
@@ -23,7 +25,7 @@ export const TICKETS = {
     GET_ALL: '/feedbacks/cases/messages',
     MESSAGES: {
         GET_ALL: '/feedbacks/cases/messages',
-        SEND: '/{backOfficeUserId}/{userId}/newmessage',
+        SEND: '/feedbacks/{userId}/{backOfficeUserId}/newmessage',
 
     }
 };

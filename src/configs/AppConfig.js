@@ -21,4 +21,5 @@ export const urlConfig = {
     }
 };
 
-export const BACK_OFFICE_USER_ID = 'XXXX-XXXX-XXXX-XXXX';
+export const BACK_OFFICE_USER_ID = process.env.REACT_APP_BACK_OFFICE_USER_ID;
+export const APP_SERVICE_JWT = process.env.REACT_APP_SERVICE_JWT;

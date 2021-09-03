@@ -22,6 +22,7 @@ class ChatInput extends Component {
     handleMsgSubmit = async (file = null) => {
         const {caseId, userId, notifyChanges} = this.props;
         const message = this.state.msg;
+        const authorId = BACK_OFFICE_USER_ID;
 
         if (!file && message.length === 0) {
             NotificationManager.warning("Vous devez remplir le champ message");
@@ -38,7 +39,7 @@ class ChatInput extends Component {
             mediaId: null,
             content: message,
             messageId: getUniqueId(),
-            authorId: BACK_OFFICE_USER_ID,
+            authorId: authorId,
             createdAt: Date.now(),
             request: {
                 file,
@@ -54,7 +55,7 @@ class ChatInput extends Component {
 
         if (file) {
             try {
-                const res = await createMedia(caseId, {picture: file});
+                const res = await createMedia(userId, authorId, {picture: file});
                 if (res && res.mediaId) {
                     mediaId = res.mediaId;
                 }

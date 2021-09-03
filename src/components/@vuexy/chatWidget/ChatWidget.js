@@ -78,7 +78,7 @@ class ChatWidget extends React.Component {
             <div className="avatar m-0">
               <img
                 src={chat.isSent ? senderImg : receiverImg}
-                alt="chat avatar"
+                //alt="chat avatar" // not needed!!!
                 height="40"
                 width="40"
               />
