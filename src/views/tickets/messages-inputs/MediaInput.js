@@ -29,18 +29,10 @@ const MediaInput = ({ message, onMsgChange, show, onClose, onSubmit }) => {
     const thumbs = files.map(file => (
         <div className="dz-thumb" key={file.name}>
             <div className="dz-thumb-inner">
-                <img src={file.preview} className="dz-img" alt={file.name} />
+                <img src={file.preview} className="dz-img" alt="..." />
             </div>
         </div>
     ));
-
-    /*useEffect(
-        () => () => {
-            // Make sure to revoke the data uris to avoid memory leaks
-            files.forEach(file => URL.revokeObjectURL(file.preview))
-        },
-        [files]
-    );*/
 
     const _onSubmit = (e) => {
         e.preventDefault();

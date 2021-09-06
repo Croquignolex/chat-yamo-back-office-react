@@ -7,7 +7,9 @@ export default class Message {
         this.createdAt = dayjs(message.createdAt);
         this.id = message.messageId;
 
-        if(this.mediaId) this.media = require("../assets/img/unknown-user.png");
+        if(this.mediaId) {
+            this.media = require("../assets/img/unknown-user.png");
+        }
     }
 
     set setMedia(media) {

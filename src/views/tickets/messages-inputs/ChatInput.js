@@ -36,13 +36,12 @@ class ChatInput extends Component {
         const _msg = {
             userId,
             caseId,
-            mediaId: null,
+            mediaId: file ? "ok" : null,
             content: message,
             messageId: getUniqueId(),
             authorId: authorId,
             createdAt: Date.now(),
             request: {
-                file,
                 loading: true,
                 error: null,
                 data: null
@@ -60,43 +59,52 @@ class ChatInput extends Component {
                     mediaId = res.mediaId;
                 }
             } catch (e) {
-                notifyChanges(new Message({
+                const responseMessage = new Message({
                     ..._msg,
                     request: {
                         ..._msg.request,
                         loading: false,
                         data: null,
-                        error: e || "An error occurred"
+                        error: e.message || "An error occurred"
                     }
-                }));
+                });
+                notifyChanges(responseMessage);
                 return;
             }
         }
         const data = {feedbackText: message};
-        if (mediaId)
+        if (mediaId) {
             data.mediaId = mediaId;
+        }
 
         try {
-            const res = await sendMessage(BACK_OFFICE_USER_ID, this.props.userId, data);
-            notifyChanges(new Message({
+            await sendMessage(BACK_OFFICE_USER_ID, this.props.userId, data);
+            const responseMessage = new Message({
                 ..._msg,
+                mediaId,
                 request: {
                     ..._msg.request,
                     loading: false,
-                    error: null,
-                    data: res || true
+                    data: "ok",
+                    error: null
                 }
-            }));
+            });
+            if (mediaId) {
+                responseMessage.setMedia = file.preview;
+            }
+            notifyChanges(responseMessage);
         } catch (e) {
-            notifyChanges(new Message({
+            const responseMessage = new Message({
                 ..._msg,
+                mediaId,
                 request: {
                     ..._msg.request,
                     loading: false,
                     data: null,
-                    error: e || "An error occurred"
+                    error: e.message || "An error occurred"
                 }
-            }));
+            });
+            notifyChanges(responseMessage);
         }
     };
 
