@@ -1,8 +1,7 @@
 import React from 'react';
-import {Card, CardBody, Spinner} from "reactstrap";
-import DisplayImage from "./DisplayImage";
 import styled from "styled-components";
-import {BACK_OFFICE_USER_ID} from "../../configs/AppConfig";
+import {Card, CardBody} from "reactstrap";
+import DisplayImage from "./DisplayImage";
 import {Clock, CheckCircle, XCircle} from "react-feather";
 
 const Wrapper = styled.div`
@@ -85,10 +84,7 @@ const ChatLogContent = ({ activeUser, messages }) => {
         }
     };
 
-    const renderAvatar = (user, isBackUser) => {
-        if (isBackUser)
-            return null;
-
+    const renderAvatar = (user) => {
         return (
             <div className="chat-avatar">
                 <div className="avatar m-0">
@@ -101,36 +97,22 @@ const ChatLogContent = ({ activeUser, messages }) => {
     return (
         <>
             {messages.map((message, index, arr) => {
-                const isBackUser = message.authorId === BACK_OFFICE_USER_ID;
-                const gotImage = !!(message.request
-                    ? message.request.file
-                    : message.mediaId);
                 return (
                     <React.Fragment key={message.id}>
                         {renderSentTime(index, index > 0 ? arr[index - 1].createdAt : null, message.createdAt)}
                         <Wrapper
                             className={`chat ${
-                                !isBackUser ? "chat-left" : "chat-right" // Check for the right author
+                                !message.isBackUser ? "chat-left" : "chat-right" // Check for the right author
                             }`}
                         >
-                            {renderAvatar(activeUser, isBackUser)}
+                            {!message.isBackUser && renderAvatar(activeUser)}
                             <div className="chat-body">
                                 <CardWrapper>
-                                    <CardBody className={`p-0 ${gotImage ? 'c-image-wrapper' : ''}`}>
-                                        {/*TODO: Fix*/}
-                                        {gotImage && (
-                                            <DisplayImage
-                                                className=""
-                                                src={message.imageSrc()}
-                                            />
+                                    <CardBody className={`p-0 ${message.media ? 'c-image-wrapper' : ''}`}>
+                                        {message.media && (
+                                            <DisplayImage className="" src={message.imageSrc} />
                                         )}
-                                        {/*{gotImage && (*/}
-                                        {/*    <DisplayImage*/}
-                                        {/*        className=""*/}
-                                        {/*        src={message.getImageUrl()}*/}
-                                        {/*    />*/}
-                                        {/*)}*/}
-                                        <div className={`chat-content ${gotImage ? 'got-image' : ''}`}>
+                                        <div className={`chat-content ${message.media ? 'got-image' : ''}`}>
                                             <p className="c-text-content">{message.content}</p>
                                             <p className="c-hour text-muted">
                                                 <span className="timer">{message.createdAt.format('HH:mm')}</span>
