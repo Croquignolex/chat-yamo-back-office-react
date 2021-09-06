@@ -1,13 +1,13 @@
 import React from "react"
 import ReactDOM from "react-dom"
+import Error500 from "../Error500";
 import {Button, Spinner} from "reactstrap";
 import Message from "../../models/Message";
 import ChatLogContent from "./ChatLogContent";
-import Error500 from "../Error500";
 import ChatInput from "./messages-inputs/ChatInput";
-import {MessageSquare, Menu, Loader} from "react-feather";
 import PerfectScrollbar from "react-perfect-scrollbar";
-import {getCaseMessages} from "../../redux/actions/IndependentActions";
+import {MessageSquare, Menu, Loader} from "react-feather";
+import {getCaseMessages, getMessageImage} from "../../redux/actions/IndependentActions";
 
 class ChatLog extends React.Component {
     constructor(props) {
@@ -39,11 +39,37 @@ class ChatLog extends React.Component {
                         .sort((a, b) => a.createdAt - b.createdAt)
                         .map(m => new Message(m));
 
-                    this.setState({ messages });
+                    this.setState({ messages }, () => {
+                        messages.forEach((message) => {
+                            if(message.mediaId) {
+                                this.loadMessageImage(message);
+                            }
+                        });
+                    });
                 })
                 .catch(() => this.setState({messages: null}))
                 .finally(() => this.setState({loading: false}));
         }
+    };
+
+    loadMessageImage = (responseMessageData) => {
+        getMessageImage(responseMessageData.mediaId, responseMessageData.caseId)
+            .then(data => {
+                const base64ImageString = Buffer.from(data, 'binary').toString('base64');
+                responseMessageData.setMedia = "data:image/jpg;base64," + base64ImageString;
+                this.setState((prevState) => {
+                    const tempMessages = prevState.messages;
+                    tempMessages.map((m) => {
+                        if(m.messageId === responseMessageData.messageId) {
+                            m = responseMessageData;
+                        }
+                        return m;
+                    })
+                    return {
+                        messages: tempMessages
+                    };
+                });
+            });
     };
 
     scrollToBottom = () => {

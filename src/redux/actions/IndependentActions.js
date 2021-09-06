@@ -36,3 +36,9 @@ export const getUserProfileImage = async (userId) => {
     const url = joinBaseUrlWithParams(MEDIA.USERS.GET_ONE, [{param: 'userId', value: userId}]);
     return makeRequest('get', url, null, {responseType: 'arraybuffer'});
 };
+
+export const getMessageImage = async (mediaId, caseId) => {
+    const url = joinBaseUrlWithParams(MEDIA.CHATROOMS.GET_ONE, [{param: 'mediaId', value: mediaId}, {param: 'chatroomId', value: caseId}]);
+    return makeRequest('get', url, null, {responseType: 'arraybuffer'});
+};
+
