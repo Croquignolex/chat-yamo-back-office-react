@@ -1,29 +1,24 @@
-import {joinBaseUrlWithParams, MEDIA} from "../utility/urls/backend";
-// TODO: Fix
-import {getUserProfileImage} from "../redux/actions/IndependentActions";
-
 export default class User {
     constructor(user) {
         Object.assign(this, user);
         this.id = this.userId;
+        console.log(user)
+    }
+
+    set profileImage(avatar) {
+        this.avatar = avatar
     }
 
     get username() {
         return this.name;
     }
 
-    get imageUrl() {
-        // TODO: Fix
-        // this does not work. it seems that the JWT token is missing for the call!
-        return joinBaseUrlWithParams(MEDIA.USERS.GET_ONE, [{param: 'userId', value: this.id}], true);
-    }
+    get imageSrc() {
+        if(this.isDeleted) return require("../assets/img/user-remove.png");
 
-    // TODO: Fix
-    async imageSrc() {
-        // how to make this work??? The JWT is not sent
-        const image = await getUserProfileImage(this.id);
-        const base64ImageString = Buffer.from(image, 'binary').toString('base64');
-        return "data:image/jpg;base64," + base64ImageString;
+        if(!this.avatar) return require('../assets/img/unknown-user.png');
+
+        return this.avatar;
     }
 
     getStatus() {

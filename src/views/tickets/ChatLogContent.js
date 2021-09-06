@@ -92,14 +92,7 @@ const ChatLogContent = ({ activeUser, messages }) => {
         return (
             <div className="chat-avatar">
                 <div className="avatar m-0">
-                    {/*TODO: Fix*/}
-                    <img
-                        width="40"
-                        height="40"
-                        //alt="chat avatar"
-                        // imageUrl does not work. The image binary is behind the service and accessible with the JWT.
-                        src={isBackUser ? '' : user.imageUrl}
-                    />
+                    <img width="40" height="40" src={user.imageSrc} alt="..." />
                 </div>
             </div>
         )

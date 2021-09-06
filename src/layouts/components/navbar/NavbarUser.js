@@ -134,14 +134,7 @@ class NavbarUser extends React.PureComponent {
               <span className="user-status">Available</span>
             </div>
             <span data-tour="user">
-              <img
-                src={this.props.userImg}
-                className="round"
-                height="40"
-                width="40"
-                  // TODO: Fix
-                //alt="avatar"
-              />
+              <img src={this.props.userImg} className="round" height="40" width="40" alt="..." />
             </span>
           </DropdownToggle>
           <UserDropdown {...this.props} />

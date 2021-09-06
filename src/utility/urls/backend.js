@@ -23,9 +23,7 @@ export const TICKETS = {
     GET_ALL: '/feedbacks/cases/messages',
     MESSAGES: {
         GET_ALL: '/feedbacks/cases/messages',
-        // TODO: Fix
         SEND: '/feedbacks/{userId}/{backOfficeUserId}/newmessage',
-        // SEND: '/{backOfficeUserId}/{userId}/newmessage',
     }
 };
 

@@ -14,9 +14,8 @@ export const getUserProfile = async (userId) => {
     return makeRequest('get', joinBaseUrlWithParams(USERS.GET_ONE, [{param: 'userId', value: userId}]));
 };
 
-// TODO: Fix
 export const createMedia = async (userId, backOfficeUserId, data) => {
-    const url = joinBaseUrlWithParams(MEDIA.CHATROOMS.CREATE, [{param: 'chatroomId', value: "${userId}:${backOfficeUserId}"}]);
+    const url = joinBaseUrlWithParams(MEDIA.CHATROOMS.CREATE, [{param: 'chatroomId', value: `${userId}:${backOfficeUserId}`}]);
 
     return makeRequest('put', url, data, {shouldParseFormData: true, fileData: ['picture']});
 };
@@ -33,11 +32,7 @@ export const sendMessage = async (backOfficeUserId, userId, data) => {
     return makeRequest('post', url, data);
 };
 
-// TODO: Fix
 export const getUserProfileImage = async (userId) => {
-    const url = joinBaseUrlWithParams(
-        MEDIA.USERS.GET_ONE, [{param: 'userId', value: userId}],
-        true
-    );
+    const url = joinBaseUrlWithParams(MEDIA.USERS.GET_ONE, [{param: 'userId', value: userId}]);
     return makeRequest('get', url);
 };

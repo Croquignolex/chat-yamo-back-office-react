@@ -58,8 +58,6 @@ const ChatSidebar = ({ activeChatId, tickets, getTickets, mainSidebar, handleUse
                                 <Spinner color="primary" />
                             </div>
                         )}
-                        {/*<h3 className="primary p-1 mb-0">Tickets en cours</h3>*/}
-                        {/*TODO: Fix*/}
                         <ul className="chat-users-list-wrapper media-list">
                             {data && data.messages && data.messages.map(item => (
                                 <TicketUserItem
@@ -69,14 +67,6 @@ const ChatSidebar = ({ activeChatId, tickets, getTickets, mainSidebar, handleUse
                                     onClickItem={user => onClickItem(item.caseId, user)}
                                 />
                             ))}
-                            {/*{data && data.map(item => (
-                                <TicketUserItem
-                                    key={item.caseId}
-                                    userId={item.userId}
-                                    isActive={activeChatId === item.caseId}
-                                    onClickItem={user => onClickItem(item.caseId, user)}
-                                />
-                            ))}*/}
                         </ul>
                     </PerfectScrollbar>
                 </>
