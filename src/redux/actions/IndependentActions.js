@@ -34,5 +34,5 @@ export const sendMessage = async (backOfficeUserId, userId, data) => {
 
 export const getUserProfileImage = async (userId) => {
     const url = joinBaseUrlWithParams(MEDIA.USERS.GET_ONE, [{param: 'userId', value: userId}]);
-    return makeRequest('get', url);
+    return makeRequest('get', url, null, {responseType: 'arraybuffer'});
 };

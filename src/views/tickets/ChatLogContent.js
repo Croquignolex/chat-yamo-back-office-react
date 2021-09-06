@@ -1,5 +1,5 @@
 import React from 'react';
-import {Card, CardBody} from "reactstrap";
+import {Card, CardBody, Spinner} from "reactstrap";
 import DisplayImage from "./DisplayImage";
 import styled from "styled-components";
 import {BACK_OFFICE_USER_ID} from "../../configs/AppConfig";
@@ -92,7 +92,7 @@ const ChatLogContent = ({ activeUser, messages }) => {
         return (
             <div className="chat-avatar">
                 <div className="avatar m-0">
-                    <img width="40" height="40" src={user.imageSrc} alt="..." />
+                    <img src={user.imageSrc} alt="..." height="40" width="40" />
                 </div>
             </div>
         )

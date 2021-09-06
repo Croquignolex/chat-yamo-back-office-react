@@ -7,7 +7,7 @@ import {Button, Card, Spinner} from "reactstrap";
 import PerfectScrollbar from "react-perfect-scrollbar";
 import {getTickets} from "../../redux/actions/GeneralActions";
 
-const ChatSidebar = ({ activeChatId, tickets, getTickets, mainSidebar, handleUserSidebar, handleActiveChat }) => {
+const ChatSidebar = ({ activeChatId, tickets, getTickets, mainSidebar, handleActiveChat, updateActiveUser }) => {
 
     const loadData = () => {
         getTickets();
@@ -63,6 +63,7 @@ const ChatSidebar = ({ activeChatId, tickets, getTickets, mainSidebar, handleUse
                                 <TicketUserItem
                                     key={item.caseId}
                                     userId={item.userId}
+                                    updateActiveUser={updateActiveUser}
                                     isActive={activeChatId === item.caseId}
                                     onClickItem={user => onClickItem(item.caseId, user)}
                                 />

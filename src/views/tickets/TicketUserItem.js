@@ -33,7 +33,7 @@ const TicketUserItem = ({ userId, isActive, onClickItem }) => {
                     error: null,
                     loading: false,
                 });
-               loadUserAvatar(responseUserData);
+                !responseUserData.isDeleted && loadUserAvatar(responseUserData);
             })
             .catch(error => {
                 setUserData({
@@ -48,7 +48,7 @@ const TicketUserItem = ({ userId, isActive, onClickItem }) => {
         getUserProfileImage(userId)
             .then(data => {
                 const base64ImageString = Buffer.from(data, 'binary').toString('base64');
-                responseUserData.profileImage = "data:image/jpg;base64," + base64ImageString;
+                responseUserData.setAvatar = "data:image/jpg;base64," + base64ImageString;
                 setUserData({
                     data: responseUserData,
                     error: null,

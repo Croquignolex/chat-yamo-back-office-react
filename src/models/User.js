@@ -1,11 +1,15 @@
+import React from "react";
+
 export default class User {
     constructor(user) {
         Object.assign(this, user);
         this.id = this.userId;
-        console.log(user)
+
+        if(this.isDeleted) this.avatar = require("../assets/img/user-remove.png");
+        else this.avatar = require("../assets/img/unknown-user.png");
     }
 
-    set profileImage(avatar) {
+    set setAvatar(avatar) {
         this.avatar = avatar
     }
 
@@ -14,11 +18,15 @@ export default class User {
     }
 
     get imageSrc() {
-        if(this.isDeleted) return require("../assets/img/user-remove.png");
-
-        if(!this.avatar) return require('../assets/img/unknown-user.png');
-
         return this.avatar;
+    }
+
+    get isDeleted() {
+        return this.name === "chat_yamo_deleted_account";
+    }
+
+    get localisation() {
+        return `${this.city}, ${this.country}`;
     }
 
     getStatus() {
@@ -32,13 +40,5 @@ export default class User {
             default:
                 return "avatar-status-online";
         }
-    }
-
-    get isDeleted() {
-        return this.name === "chat_yamo_deleted_account";
-    }
-
-    get localisation() {
-        return `${this.city}, ${this.country}`;
     }
 }

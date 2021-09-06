@@ -66,8 +66,9 @@ customAxios.interceptors.request.use(
 
 customAxios.interceptors.response.use(
     response => {
-        if (response && response.data) {
+        /*if (response && response.data) {
             if (Array.isArray(response.data)) {
+                console.log('here in 1')
                 response.data = response.data.map(item => toCamelCase(item));
             } else if (response.data.hasOwnProperty('data')) {
                 if (Array.isArray(response.data.data)) {
@@ -75,7 +76,7 @@ customAxios.interceptors.response.use(
                     response.data.data = response.data.data.map(item => toCamelCase(item));
                 } else response.data.data = toCamelCase(response.data.data);
             } else response.data = toCamelCase(response.data);
-        }
+        }*/
 
         return response;
     },
