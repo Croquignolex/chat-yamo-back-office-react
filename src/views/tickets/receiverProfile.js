@@ -38,15 +38,10 @@ class ReceiverProfile extends React.Component {
           </span>
           <div className="header-profile-sidebar">
             <div className="avatar">
-              <img
-                src={activeUser !== null ? activeUser.imageUrl : null}
-                alt={activeUser !== null ? activeUser.name : null}
-                height="66"
-                width="66"
-              />
+              <img src={activeUser.imageSrc} alt="..." height="66" width="66"/>
             </div>
             <h4 className="chat-user-name">
-              {activeUser !== null ? activeUser.name : null}
+              {activeUser.isDeleted ? "Deleted user" : activeUser.name}
             </h4>
           </div>
         </header>
