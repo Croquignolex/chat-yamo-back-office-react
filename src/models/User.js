@@ -1,5 +1,3 @@
-import React from "react";
-
 export default class User {
     constructor(user) {
         Object.assign(this, user);

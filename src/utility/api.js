@@ -3,8 +3,8 @@ import {getAuthToken} from "../helpers/tokens";
 import {errorManager} from "../helpers/request";
 import {backendConfig} from "../configs/AppConfig";
 import {NotificationManager} from "react-notifications";
+import {objectToFormData, toSnakeCase, formatMessage} from "../helpers/helpers";
 import {ERROR_401, ERROR_403, ERROR_404, ERROR_500, ERROR_UNKNOWN} from "../data/errors";
-import {objectToFormData, toCamelCase, toSnakeCase, formatMessage} from "../helpers/helpers";
 
 const customAxios =
     axios.create({

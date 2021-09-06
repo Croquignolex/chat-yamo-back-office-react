@@ -22,6 +22,7 @@ const TicketUserItem = ({ userId, isActive, onClickItem }) => {
 
     useEffect(() => {
         loadData();
+        // eslint-disable-next-line
     }, []);
 
     const loadData = () => {

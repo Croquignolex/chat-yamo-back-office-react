@@ -15,6 +15,7 @@ const ChatSidebar = ({ activeChatId, tickets, getTickets, mainSidebar, handleAct
 
     useEffect(() => {
         loadData();
+        // eslint-disable-next-line
     }, []);
 
     const onClickItem = (caseId, user) => {

@@ -6,8 +6,8 @@ import {
     ModalHeader,
 } from "reactstrap";
 import {Send} from "react-feather";
+import React, {useState} from 'react';
 import {useDropzone} from "react-dropzone";
-import React, {useEffect, useState} from 'react';
 import "../../../assets/scss/plugins/extensions/dropzone.scss";
 
 const MediaInput = ({ message, onMsgChange, show, onClose, onSubmit }) => {

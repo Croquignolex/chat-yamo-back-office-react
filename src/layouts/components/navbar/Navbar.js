@@ -1,15 +1,14 @@
 import React from "react"
+import classnames from "classnames"
 import { Navbar } from "reactstrap"
 import { connect } from "react-redux"
-import classnames from "classnames"
-import { useAuth0 } from "../../../authServices/auth0/auth0Service"
-import { logoutWithJWT} from "../../../redux/actions/auth"
-import NavbarBookmarks from "./NavbarBookmarks"
 import NavbarUser from "./NavbarUser"
+import { logoutWithJWT} from "../../../redux/actions/auth"
+import { useAuth0 } from "../../../authServices/auth0/auth0Service"
 import userImg from "../../../assets/img/portrait/small/avatar-s-11.jpg"
 
-const UserName = props => {
-  let username = ""
+/*const UserName = props => {
+  let username;
   if (props.userdata !== undefined) {
     username = props.userdata.name
   } else if (props.user.login.values !== undefined) {
@@ -25,7 +24,7 @@ const UserName = props => {
   }
 
   return username
-}
+}*/
 const ThemeNavbar = props => {
   const { user } = useAuth0()
   const colorsArr = [ "primary", "danger", "success", "info", "warning", "dark"]

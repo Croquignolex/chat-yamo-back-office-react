@@ -27,7 +27,7 @@ class AppRouter extends React.Component {
 
     render() {
         const _isUserIntoStoreValid = isUserIntoStoreValid(this.props.authUser.data);
-        const { location, match, authUser, appLoading } = this.props;
+        const { appLoading } = this.props;
 
         return (
             <>
