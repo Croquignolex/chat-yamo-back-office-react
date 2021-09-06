@@ -28,8 +28,7 @@ class LoginJWT extends React.Component {
           <Form action="/" onSubmit={this.handleLogin}>
             <FormGroup className="form-label-group position-relative has-icon-left">
               <Input
-                // type="email"
-                placeholder="Email"
+                placeholder="Login"
                 value={this.state.email}
                 onChange={e => this.setState({ email: e.target.value })}
                 required
@@ -52,28 +51,7 @@ class LoginJWT extends React.Component {
               </div>
               <Label>Password</Label>
             </FormGroup>
-            {/*<FormGroup className="d-flex justify-content-between align-items-center">
-              <Checkbox
-                color="primary"
-                icon={<Check className="vx-icon" size={16} />}
-                label="Remember me"
-                defaultChecked={false}
-                onChange={this.handleRemember}
-              />
-              <div className="float-right">
-                <Link to="/pages/forgot-password">Forgot Password?</Link>
-              </div>
-            </FormGroup>*/}
             <div className="d-flex justify-content-between">
-              {/*<Button.Ripple
-                color="primary"
-                outline
-                onClick={() => {
-                  history.push("/pages/register")
-                }}
-              >
-                Register
-              </Button.Ripple>*/}
               <Button.Ripple color="primary" type="submit">
                 Login
               </Button.Ripple>

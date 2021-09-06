@@ -7,9 +7,6 @@ export const saveAuthToken = (
     expiresIn,
     refreshToken,
 ) => {
-    /* Tried to perform encryption */
-    // localStorage.setItem('accessToken', encrypt(accessToken).toString());
-
     localStorage.setItem('tokenType', tokenType);
     localStorage.setItem('accessToken', accessToken);
     localStorage.setItem('userAccessToken', userAccessToken);
@@ -31,11 +28,6 @@ export const getAuthToken = () => {
     const userAccessToken = localStorage.getItem('userAccessToken') || null;
     const refreshToken = localStorage.getItem('refreshToken') || null;
     const expiresIn = Number(localStorage.getItem('expiresIn')) || null;
-
-    /* Tried to perform encryption */
-    /* return [null, '', 'undefined', undefined].includes(accessToken)
-        ? null
-        : decrypt(accessToken).toString(); */
 
     return {
         tokenType,

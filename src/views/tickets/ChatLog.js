@@ -33,6 +33,7 @@ class ChatLog extends React.Component {
     loadData = () => {
         if (this.props.caseId) {
             this.setState({ loading: true });
+            // TODO: Fix
             //getCaseMessages(this.props.caseId)
             getCaseMessages(this.props.activeUser.id)
                 .then(data => {
@@ -107,6 +108,7 @@ class ChatLog extends React.Component {
                                             className="avatar user-profile-toggle m-0 m-0 mr-1"
                                             onClick={() => this.props.handleReceiverSidebar("open")}>
                                             <img
+                                                // TODO: Fix
                                                 // imageUrl does not work. The image binary is behind the service and accessible with the JWT.
                                                 src={activeUser.imageUrl}
                                                 alt={activeUser.userName}

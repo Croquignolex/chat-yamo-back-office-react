@@ -139,6 +139,7 @@ class NavbarUser extends React.PureComponent {
                 className="round"
                 height="40"
                 width="40"
+                  // TODO: Fix
                 //alt="avatar"
               />
             </span>

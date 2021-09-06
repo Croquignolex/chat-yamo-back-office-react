@@ -39,7 +39,9 @@ class ChatInput extends Component {
             mediaId: null,
             content: message,
             messageId: getUniqueId(),
+            // TODO: Fix
             authorId: authorId,
+            // authorId: BACK_OFFICE_USER_ID,
             createdAt: Date.now(),
             request: {
                 file,
@@ -55,7 +57,9 @@ class ChatInput extends Component {
 
         if (file) {
             try {
+                // TODO: Fix
                 const res = await createMedia(userId, authorId, {picture: file});
+                // const res = await createMedia(caseId, {picture: file});
                 if (res && res.mediaId) {
                     mediaId = res.mediaId;
                 }

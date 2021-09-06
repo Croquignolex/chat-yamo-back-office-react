@@ -14,6 +14,7 @@ export default class Message {
             : this.mediaId
                 ? joinBaseUrlWithParams(MEDIA.CHATROOMS.GET_ONE, [
                     {param: 'mediaId', value: this.mediaId},
+                    // TODO: Fix
                     // chatroomId = ${userId}:${backOfficeUserId}!!! should be fixed!!
                     {param: 'chatroomId', value: this.caseId},
                 ], true)

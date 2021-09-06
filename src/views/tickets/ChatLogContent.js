@@ -2,10 +2,8 @@ import React from 'react';
 import {Card, CardBody} from "reactstrap";
 import DisplayImage from "./DisplayImage";
 import styled from "styled-components";
-import img1 from "../../assets/img/pages/content-img-1.jpg";
 import {BACK_OFFICE_USER_ID} from "../../configs/AppConfig";
 import {Clock, CheckCircle, XCircle} from "react-feather";
-import {getUserProfileImage} from "../../redux/actions/IndependentActions";
 
 const Wrapper = styled.div`
     .c-image-wrapper {
@@ -94,6 +92,7 @@ const ChatLogContent = ({ activeUser, messages }) => {
         return (
             <div className="chat-avatar">
                 <div className="avatar m-0">
+                    {/*TODO: Fix*/}
                     <img
                         width="40"
                         height="40"
@@ -125,12 +124,19 @@ const ChatLogContent = ({ activeUser, messages }) => {
                             <div className="chat-body">
                                 <CardWrapper>
                                     <CardBody className={`p-0 ${gotImage ? 'c-image-wrapper' : ''}`}>
+                                        {/*TODO: Fix*/}
                                         {gotImage && (
                                             <DisplayImage
                                                 className=""
                                                 src={message.imageSrc()}
                                             />
                                         )}
+                                        {/*{gotImage && (*/}
+                                        {/*    <DisplayImage*/}
+                                        {/*        className=""*/}
+                                        {/*        src={message.getImageUrl()}*/}
+                                        {/*    />*/}
+                                        {/*)}*/}
                                         <div className={`chat-content ${gotImage ? 'got-image' : ''}`}>
                                             <p className="c-text-content">{message.content}</p>
                                             <p className="c-hour text-muted">
