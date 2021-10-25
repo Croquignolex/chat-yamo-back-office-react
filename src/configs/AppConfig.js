@@ -20,3 +20,5 @@ export const urlConfig = {
         caseId: "ci"
     }
 };
+
+export const BACK_OFFICE_USER_ID = process.env.REACT_APP_BACK_OFFICE_USER_ID;
