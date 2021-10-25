@@ -7,7 +7,6 @@ import {
 import api from '../../../utility/api';
 import * as loginAction from "./loginActions";
 import {AUTH} from "../../../utility/urls/backend";
-import {APP_SERVICE_JWT, BACK_OFFICE_USER_ID} from "../../../configs/AppConfig";
 import {removeAuthToken, saveAuthToken, getAuthToken} from "../../../helpers/tokens";
 
 /**
@@ -20,7 +19,7 @@ export const setAuthUser = () => (dispatch) => {
     return new Promise((resolve, reject) => {
         const tokens = getAuthToken();
         if (tokens.accessToken) {
-            dispatch({ type: SET_AUTH_USER_SUCCESS, payload: {id: BACK_OFFICE_USER_ID, name: "Back office"} });
+            dispatch({ type: SET_AUTH_USER_SUCCESS, payload: {id: tokens.entityId, name: "Back office"} });
             resolve();
         } else {
             dispatch({ type: SET_AUTH_USER_FAILURE });
@@ -38,20 +37,23 @@ export const loginWithJWT = user => dispatch => {
     return api.post(AUTH.LOGIN, data)
         .then(response => {
             const data = {
-                accessToken: APP_SERVICE_JWT, // the global token used for accessing all endpoint!!!
-                userAccessToken: response.data.userToken, // the user specific token, this should be saved also!!!
-                tokenType: response.data.tokenType,
-                expiresIn: response.data.expiresIn,
-                refreshToken: response.data.refreshToken,
+                // accessToken: APP_SERVICE_JWT,
+                status:  response.data.status,
+                entityId:  response.data.entityId,
+                accessToken:  response.data.userToken,
+                // userAccessToken: response.data.userToken,
+                // tokenType: response.data.tokenType,
+                // expiresIn: response.data.expiresIn,
+                // refreshToken: response.data.refreshToken,
             };
 
             // Persist data into localstorage
             saveAuthToken(
-                data.accessToken,
-                data.userAccessToken,
+                data.accessToken || 'Fake access Token',
                 data.tokenType || 'Bearer',
                 data.expiresIn || 2000,
-                data.refreshToken || 'Fake refresh Token'
+                data.refreshToken || 'Fake refresh Token',
+                data.entityId || 0,
             );
 
             // Fetch user data

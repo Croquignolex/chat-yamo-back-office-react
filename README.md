@@ -22,9 +22,6 @@ API url in production e.g: `https://chat-yamo.moyo-industry.com`
 #### - REACT_APP_BACKEND_MODE
 App mode, the value could be `LOCAL` or `PROD`
 
-#### - REACT_APP_BACK_OFFICE_USER_ID
-Backoffice user id
-
 ## Available Scripts
 
 In the project directory, you can run:

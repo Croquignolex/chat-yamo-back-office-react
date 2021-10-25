@@ -1,5 +1,4 @@
 import dayjs from "dayjs";
-import {BACK_OFFICE_USER_ID} from "../configs/AppConfig";
 
 export default class Message {
     constructor(message) {
@@ -17,7 +16,7 @@ export default class Message {
     }
 
     get isBackUser() {
-        return this.authorId === BACK_OFFICE_USER_ID;
+        return this.authorId === "BACK_OFFICE_USER_ID";
     }
 
     get imageSrc() {
