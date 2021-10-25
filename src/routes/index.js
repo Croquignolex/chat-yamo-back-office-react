@@ -1,12 +1,13 @@
 import React from "react"
-import { history } from "./../history";
 import { connect } from "react-redux";
-import AuthRoutes from "./AuthRoutes";
 import { Router } from "react-router-dom"
-import UnauthRoutes from "./UnauthRoutes";
-import {setAuthUser} from "../redux/actions/auth";
-import {isUserIntoStoreValid} from "../helpers/helpers";
 import {NotificationContainer} from "react-notifications";
+
+import { history } from "../history";
+import AuthRoutes from "./AuthRoutes";
+import UnauthRoutes from "./UnauthRoutes";
+import {getAuthToken} from "../helpers/tokens";
+import {setAuthUser} from "../redux/actions/auth";
 import Spinner from "../components/@vuexy/spinner/Loading-spinner";
 import {disableAppLoading} from "../redux/actions/AppLoadingAction";
 import RequestGlobalLoader from "../components/RequestGlobalLoader";
@@ -26,23 +27,17 @@ class AppRouter extends React.Component {
     };
 
     render() {
-        const _isUserIntoStoreValid = isUserIntoStoreValid(this.props.authUser.data);
+        const _isUserIntoStoreValid = getAuthToken().entityId;
         const { appLoading } = this.props;
 
         return (
             <>
-                {appLoading ? (
-                    <Spinner />
-                ) : (
+                {appLoading ? <Spinner /> : (
                   <>
                       <NotificationContainer />
                       <RequestGlobalLoader />
                       <Router history={history}>
-                          {_isUserIntoStoreValid ? (
-                              <AuthRoutes />
-                          ) : (
-                              <UnauthRoutes />
-                          )}
+                          {_isUserIntoStoreValid ? <AuthRoutes /> : <UnauthRoutes />}
                       </Router>
                   </>
                 )}
@@ -52,8 +47,8 @@ class AppRouter extends React.Component {
 }
 
 // map state to props
-const mapStateToProps = ({ authUser, tokens, appLoading }) => {
-    return { tokens, authUser, appLoading };
+const mapStateToProps = ({ authUser, appLoading }) => {
+    return { authUser, appLoading };
 };
 
 export default connect(mapStateToProps, {setAuthUser, disableAppLoading})(AppRouter);

@@ -17,9 +17,10 @@ export const setAuthUser = () => (dispatch) => {
 
     // Fake the api request since the profile route does not exists
     return new Promise((resolve, reject) => {
-        const tokens = getAuthToken();
-        if (tokens.accessToken) {
-            dispatch({ type: SET_AUTH_USER_SUCCESS, payload: {id: tokens.entityId, name: "Back office"} });
+        const data = getAuthToken();
+        if (data.accessToken && data.entityId) {
+            const payload = {entityId: data.entityId, name: "Back office", accessToken: data.accessToken};
+            dispatch({ type: SET_AUTH_USER_SUCCESS, payload });
             resolve();
         } else {
             dispatch({ type: SET_AUTH_USER_FAILURE });
@@ -68,7 +69,7 @@ export const loginWithJWT = user => dispatch => {
 
 export const logoutWithJWT = () => dispatch => {
     removeAuthToken();
-    dispatch({ type: CLEAR_AUTH_USER, payload: null });
+    dispatch({ type: CLEAR_AUTH_USER });
 };
 
 export default loginAction;

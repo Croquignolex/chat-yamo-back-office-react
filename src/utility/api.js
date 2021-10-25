@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {getAuthToken} from "../helpers/tokens";
+import {getAuthToken, removeAuthToken} from "../helpers/tokens";
 import {errorManager} from "../helpers/request";
 import {backendConfig} from "../configs/AppConfig";
 import {NotificationManager} from "react-notifications";
@@ -66,18 +66,6 @@ customAxios.interceptors.request.use(
 
 customAxios.interceptors.response.use(
     response => {
-        /*if (response && response.data) {
-            if (Array.isArray(response.data)) {
-                console.log('here in 1')
-                response.data = response.data.map(item => toCamelCase(item));
-            } else if (response.data.hasOwnProperty('data')) {
-                if (Array.isArray(response.data.data)) {
-                    // @ts-ignore
-                    response.data.data = response.data.data.map(item => toCamelCase(item));
-                } else response.data.data = toCamelCase(response.data.data);
-            } else response.data = toCamelCase(response.data);
-        }*/
-
         return response;
     },
     error => {
@@ -91,6 +79,8 @@ customAxios.interceptors.response.use(
                             return Promise.reject(error);
                         case 401:
                             NotificationManager.error(formatMessage(ERROR_401));
+                            // With redirect to login page (consider rooter)
+                            removeAuthToken();
                             return Promise.reject(error);
                         case 403:
                             NotificationManager.error(formatMessage(ERROR_403));

@@ -7,7 +7,6 @@ import {
   SET_AUTH_USER_SUCCESS,
   SET_AUTH_USER_FAILURE,
 } from '../../types';
-// import User from "Models/User";
 
 /**
  * initial state
@@ -25,10 +24,10 @@ export default (state = INIT_STATE, action) => {
       return { ...state, loading: true };
 
     case SET_AUTH_USER_SUCCESS:
-      return { ...state, loading: false, data: action.payload };
+      return { ...state, loading: false, data: action.payload, error: INIT_STATE.error };
 
     case SET_AUTH_USER_FAILURE:
-      return { ...state, loading: false, error: action.payload };
+      return { ...state, loading: false, error: action.payload, data: INIT_STATE.data };
 
     case CLEAR_AUTH_USER:
       return { ...INIT_STATE };

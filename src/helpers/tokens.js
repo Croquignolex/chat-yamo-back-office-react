@@ -1,5 +1,3 @@
-// import { encrypt, decrypt } from './crypto';
-
 export const saveAuthToken = (
     accessToken,
     tokenType,

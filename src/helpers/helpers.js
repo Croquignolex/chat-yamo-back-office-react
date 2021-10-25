@@ -146,22 +146,6 @@ export const objectToFormData = (obj) => {
 };
 
 /**
- * Check if the user's value into store is valid
- *
- * @param authUser
- */
-export const isUserIntoStoreValid = (
-    authUser,
-) => {
-    return ((authUser !== null &&
-            authUser !== undefined)
-        // ||
-        // (tokens.token !== null &&
-        //     tokens.token !== undefined)
-    );
-};
-
-/**
  * Get query of url
  * @param useLocation
  * @returns {URLSearchParams}
@@ -281,6 +265,7 @@ export const makeRequest = (verb, url, data = null, config = {}) => {
             Object.entries(data).map(item => {
                 const encoded = encodeURIComponent(item[1]);
                 const character = _url.includes('?') ? '&' : '?';
+                // TODO: auto add entityId to request
                 _url = `${_url}${character}${toSnakeCase(item[0])}=${encoded}`
             });
         }
