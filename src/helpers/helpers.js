@@ -6,11 +6,11 @@ import moment from 'moment';
 import api from "../utility/api";
 import {NotificationManager} from 'react-notifications';
 
-const TABLE_OF_256_HEXADECIMAL = (function () {
+/*const TABLE_OF_256_HEXADECIMAL = (function () {
     const arr = [];
     for (let i = 0; i < 256; i++) { arr[i] = (i < 16 ? '0': '') + (i).toString(16); }
     return arr;
-})();
+})();*/
 
 /**
  * Function to convert hex to rgba
@@ -199,17 +199,19 @@ export const canArray = (permissions, some = true) => {
  *
  * From StackOverFlow https://stackoverflow.com/questions/105034/create-guid-uuid-in-javascript
  *
- * @returns {string}
+ * @returns {number}
  */
 export const getUniqueId = () => {
-    const d0 = Math.random()*0xffffffff|0;
+    /*const d0 = Math.random()*0xffffffff|0;
     const d1 = Math.random()*0xffffffff|0;
     const d2 = Math.random()*0xffffffff|0;
     const d3 = Math.random()*0xffffffff|0;
     return TABLE_OF_256_HEXADECIMAL[d0&0xff]+TABLE_OF_256_HEXADECIMAL[d0>>8&0xff]+TABLE_OF_256_HEXADECIMAL[d0>>16&0xff]+TABLE_OF_256_HEXADECIMAL[d0>>24&0xff]+'-'+
         TABLE_OF_256_HEXADECIMAL[d1&0xff]+TABLE_OF_256_HEXADECIMAL[d1>>8&0xff]+'-'+TABLE_OF_256_HEXADECIMAL[d1>>16&0x0f|0x40]+TABLE_OF_256_HEXADECIMAL[d1>>24&0xff]+'-'+
         TABLE_OF_256_HEXADECIMAL[d2&0x3f|0x80]+TABLE_OF_256_HEXADECIMAL[d2>>8&0xff]+'-'+TABLE_OF_256_HEXADECIMAL[d2>>16&0xff]+TABLE_OF_256_HEXADECIMAL[d2>>24&0xff]+
-        TABLE_OF_256_HEXADECIMAL[d3&0xff]+TABLE_OF_256_HEXADECIMAL[d3>>8&0xff]+TABLE_OF_256_HEXADECIMAL[d3>>16&0xff]+TABLE_OF_256_HEXADECIMAL[d3>>24&0xff];
+        TABLE_OF_256_HEXADECIMAL[d3&0xff]+TABLE_OF_256_HEXADECIMAL[d3>>8&0xff]+TABLE_OF_256_HEXADECIMAL[d3>>16&0xff]+TABLE_OF_256_HEXADECIMAL[d3>>24&0xff];*/
+
+    return new Date().getTime();
 };
 
 /**
@@ -262,7 +264,7 @@ export const makeRequest = (verb, url, data = null, config = {}) => {
     return new Promise((resolve, reject) => {
         let _url = url;
         if ((verb === 'get' || verb === 'delete') && data) {
-            Object.entries(data).map(item => {
+            Object.entries(data).forEach(item => {
                 const encoded = encodeURIComponent(item[1]);
                 const character = _url.includes('?') ? '&' : '?';
                 // TODO: auto add entityId to request

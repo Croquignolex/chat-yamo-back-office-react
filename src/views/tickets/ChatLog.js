@@ -136,8 +136,8 @@ class ChatLog extends React.Component {
                                                 className={activeUser.getStatus()}
                                             />
                                         </div>
-                                        <a
-                                            href="#"
+                                        <a 
+                                            href="/"
                                             className="mb-0"
                                             onClick={(e) => {
                                                 e.preventDefault();
