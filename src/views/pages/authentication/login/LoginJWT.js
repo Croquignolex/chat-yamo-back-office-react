@@ -2,13 +2,13 @@ import React from "react"
 import { connect } from "react-redux"
 import { Mail, Lock } from "react-feather"
 import { loginWithJWT } from "../../../../redux/actions/auth"
-import { CardBody, FormGroup, Form, Input, Button, Label } from "reactstrap"
+import { CardBody, FormGroup, Form, Input, Label } from "reactstrap"
 import {setRequestGlobalAction} from "../../../../redux/actions/RequestGlobalAction";
 
 class LoginJWT extends React.Component {
   state = {
-    email: "croquignolex",
-    password: "croquignolex",
+    email: "",
+    password: "",
     remember: false
   };
 
@@ -52,9 +52,7 @@ class LoginJWT extends React.Component {
               <Label>Password</Label>
             </FormGroup>
             <div className="d-flex justify-content-between">
-              <Button.Ripple color="primary" type="submit">
-                Login
-              </Button.Ripple>
+              <button className="btn btn-primary btn-block">Login</button>
             </div>
           </Form>
         </CardBody>
