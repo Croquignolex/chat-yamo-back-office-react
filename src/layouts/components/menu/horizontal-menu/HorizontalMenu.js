@@ -9,7 +9,6 @@ import classnames from "classnames"
 import { ChevronDown, ChevronRight } from "react-feather"
 import { Link } from "react-router-dom"
 import { connect } from "react-redux"
-import { FormattedMessage } from "react-intl"
 import { history } from "../../../../history"
 import navigationConfig from "../../../../configs/horizontalMenuConfig"
 class HorizontalSidebar extends React.Component {
@@ -184,10 +183,9 @@ class HorizontalSidebar extends React.Component {
                           <span className="menu-icon align-bottom mr-1">
                             {child.icon}
                           </span>
-                          <FormattedMessage
-                            className="menu-title align-middle"
-                            id={child.title}
-                          />
+                          <span className="menu-title align-middle">
+                            {child.title}
+                          </span>
                         </div>
                         <ChevronRight
                           className="has-sub-arrow align-middle ml-50"
@@ -204,7 +202,7 @@ class HorizontalSidebar extends React.Component {
                         {child.icon}
                       </span>
                       <span className="menu-title align-middle">
-                        <FormattedMessage id={child.title} />
+                        {child.title}
                       </span>
                     </div>
                   )}
@@ -277,10 +275,7 @@ class HorizontalSidebar extends React.Component {
                       {item.icon}
                     </span>
                     <span className="menu-title align-middle">
-                      <FormattedMessage
-                        className="menu-title align-middle"
-                        id={item.title}
-                      />
+                      {item.title}
                     </span>
                   </div>
                   <ChevronDown className="ml-50 align-bottom" size={15} />
@@ -310,10 +305,7 @@ class HorizontalSidebar extends React.Component {
                   {item.icon}
                 </span>
                 <span className="menu-title align-middle">
-                  <FormattedMessage
-                    className="menu-title align-middle"
-                    id={item.title}
-                  />
+                  {item.title}
                 </span>
               </CustomAnchorTag>
             )}

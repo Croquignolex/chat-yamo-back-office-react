@@ -14,8 +14,6 @@ const RouteConfig = ({ component: Component, fullLayout, ...rest }) => (
                         let LayoutTag =
                             fullLayout === true
                                 ? context.fullLayout
-                                : context.state.activeLayout === "horizontal"
-                                ? context.horizontalLayout
                                 : context.VerticalLayout
                         return (
                             <LayoutTag {...props} permission={props.user}>

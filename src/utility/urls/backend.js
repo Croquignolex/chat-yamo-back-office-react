@@ -8,7 +8,7 @@ import {backendConfig} from "../../configs/AppConfig";
 
 export const AUTH = {
     LOGIN: '/feedbacks/backoffice/login',
-    REGISTER: '/feedbacks/backoffice/1/registerwithout',
+    REGISTER: '/feedbacks/backoffice/register',
     PROFILE: {
         INFORMATION: 'auth/profile'
     },
@@ -33,7 +33,7 @@ export const USERS = {
 
 export const MEDIA = {
     CHATROOMS: {
-        GET_ONE: '/media/chatrooms/{chatroomId}/media/{mediaId}?original=true',
+        GET_ONE: '/media/chatrooms/{chatroomId}/medias/{mediaId}?original=true',
         CREATE: '/media/chatrooms/{chatroomId}/medias'
     },
     USERS: {

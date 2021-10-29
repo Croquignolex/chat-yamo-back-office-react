@@ -7,7 +7,6 @@ import {
   Col,
 } from "reactstrap"
 import LoginJWT from "./LoginJWT"
-// import loginImg from "../../../../assets/img/pages/login.png"
 import loginImg from "../../../../assets/img/logo.png"
 import "../../../../assets/scss/pages/authentication.scss"
 

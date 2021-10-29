@@ -1,7 +1,8 @@
+import classnames from "classnames"
 import React, { Component } from "react"
 import { NavLink } from "react-router-dom"
 import { Disc, X, Circle } from "react-feather"
-import classnames from "classnames"
+
 class SidebarHeader extends Component {
   render() {
     let {
@@ -18,7 +19,9 @@ class SidebarHeader extends Component {
           <li className="nav-item mr-auto">
             <NavLink to="/" className="navbar-brand">
               <div className="brand-logo" />
-              <h2 className="brand-text mb-0">Chat&Yamo</h2>
+              <h2 className="brand-text mb-0">
+                  Chat&Yamo
+              </h2>
             </NavLink>
           </li>
           <li className="nav-item nav-toggle">

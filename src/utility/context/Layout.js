@@ -1,12 +1,10 @@
 import React from "react"
 import VerticalLayout from "../../layouts/VerticalLayout"
 import FullLayout from "../../layouts/FullpageLayout"
-import HorizontalLayout from "../../layouts/HorizontalLayout"
 import themeConfig from "../../configs/themeConfig"
 const layouts = {
   vertical: VerticalLayout,
-  full: FullLayout,
-  horizontal: HorizontalLayout
+  full: FullLayout
 }
 
 const ContextLayout = React.createContext()
@@ -86,7 +84,6 @@ class Layout extends React.Component {
           state: this.state,
           fullLayout: layouts["full"],
           VerticalLayout: layouts["vertical"],
-          horizontalLayout: layouts["horizontal"],
           switchLayout: layout => {
             this.setState({ activeLayout: layout })
           },

@@ -14,17 +14,10 @@ import RequestGlobalLoader from "../components/RequestGlobalLoader";
 
 class AppRouter extends React.Component {
     componentDidMount() {
-        this.isNewUser();
-    }
-
-    /**
-     * Check whether the current user is a new or not
-     */
-    isNewUser = () => {
         this.props
             .setAuthUser()
             .finally(() => this.props.disableAppLoading());
-    };
+    }
 
     render() {
         const _isUserIntoStoreValid = getAuthToken().entityId;

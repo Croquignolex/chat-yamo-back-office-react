@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import {connect} from "react-redux";
 import {setRequestGlobalAction} from "../redux/actions/RequestGlobalAction";
 import LinearProgress from "./loaders/LinearProgress";
-// import LinearProgress from "@material-ui/core/LinearProgress/LinearProgress";
 
 class RequestGlobalLoader extends Component {
     state = {
