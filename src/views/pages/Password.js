@@ -31,8 +31,10 @@ class Password extends React.Component {
         changePassword(oldpass, newpass, this.props.backOfficeUserId)
             .then(() => {
                 resetForm({values: ''});
-                this.setState({loading: false});
                 NotificationManager.success("Password successfully changed");
+            })
+            .finally(() => {
+                this.setState({loading: false});
             });
     };
 
