@@ -1,8 +1,8 @@
 import axios from 'axios';
-import {getAuthToken, removeAuthToken} from "../helpers/tokens";
 import {errorManager} from "../helpers/request";
 import {backendConfig} from "../configs/AppConfig";
 import {NotificationManager} from "react-notifications";
+import {getAuthToken, removeAuthToken} from "../helpers/tokens";
 import {objectToFormData, toSnakeCase, formatMessage} from "../helpers/helpers";
 import {ERROR_401, ERROR_403, ERROR_404, ERROR_500, ERROR_UNKNOWN} from "../data/errors";
 

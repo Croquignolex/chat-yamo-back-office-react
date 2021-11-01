@@ -10,7 +10,7 @@ import {
     Media,
     Button,
     CardBody,
-    FormGroup
+    FormGroup, Spinner
 } from "reactstrap"
 
 import userImg from "../../assets/img/user-default.png"
@@ -18,11 +18,20 @@ import {changePassword} from "../../redux/actions/IndependentActions";
 import Breadcrumbs from "../../components/@vuexy/breadCrumbs/BreadCrumb"
 
 class Password extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            loading: false
+        }
+    }
 
-    handleSubmit = (data) => {
+    handleSubmit = (data, {resetForm}) => {
+        this.setState({loading: true});
         const {oldpass, newpass} = data;
         changePassword(oldpass, newpass, this.props.backOfficeUserId)
             .then(() => {
+                resetForm({values: ''});
+                this.setState({loading: false});
                 NotificationManager.success("Password successfully changed");
             });
     };
@@ -79,21 +88,25 @@ class Password extends React.Component {
                                             </FormGroup>
                                             <FormGroup>
                                                 <Field
+                                                    type="password"
                                                     id="confirmpass"
                                                     name="confirmpass"
-                                                    type="password"
                                                     placeholder="Confirm Password"
                                                     className={`form-control ${errors.confirmpass && touched.confirmpass && "is-invalid"}`}
                                                 />
                                                 {errors.confirmpass && touched.confirmpass && <div className="text-danger">{errors.confirmpass}</div>}
                                             </FormGroup>
                                             <div className="d-flex justify-content-start flex-wrap">
-                                                <Button.Ripple className="mr-1 mb-1" color="primary" type="submit">
-                                                    Save Changes
-                                                </Button.Ripple>
-                                                <Button.Ripple className="mb-1" color="danger" type="reset" outline>
-                                                    Cancel
-                                                </Button.Ripple>
+                                                {this.state.loading ? <Spinner color="primary" /> : (
+                                                    <>
+                                                        <Button.Ripple className="mr-1 mb-1" color="primary" type="submit">
+                                                            Save Changes
+                                                        </Button.Ripple>
+                                                        <Button.Ripple className="mb-1" color="danger" type="reset" outline>
+                                                            Cancel
+                                                        </Button.Ripple>
+                                                    </>
+                                                )}
                                             </div>
                                         </Form>
                                     )}
