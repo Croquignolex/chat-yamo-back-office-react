@@ -15,8 +15,7 @@ const Footer = props => {
     >
       <p className="mb-0 clearfix">
         <span className="float-md-left d-block d-md-inline-block mt-25">
-          COPYRIGHT © {new Date().getFullYear()}
-          All rights reserved
+          COPYRIGHT © {new Date().getFullYear()} All rights reserved
         </span>
       </p>
       {props.hideScrollToTop === false ? (
