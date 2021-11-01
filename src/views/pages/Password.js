@@ -1,0 +1,131 @@
+import React from "react"
+import * as Yup from "yup"
+import {connect} from "react-redux";
+import { Formik, Field, Form } from "formik"
+import {NotificationManager} from "react-notifications";
+import {
+    Col,
+    Row,
+    Card,
+    Media,
+    Button,
+    CardBody,
+    FormGroup
+} from "reactstrap"
+
+import userImg from "../../assets/img/user-default.png"
+import {changePassword} from "../../redux/actions/IndependentActions";
+import Breadcrumbs from "../../components/@vuexy/breadCrumbs/BreadCrumb"
+
+class Password extends React.Component {
+
+    handleSubmit = (data) => {
+        const {oldpass, newpass} = data;
+        changePassword(oldpass, newpass, this.props.backOfficeUserId)
+            .then(() => {
+                NotificationManager.success("Password successfully changed");
+            });
+    };
+
+    render() {
+        return (
+            <>
+                <Breadcrumbs
+                    breadCrumbTitle="Change password"
+                    breadCrumbActive="Change password"
+                />
+                <Card>
+                    <CardBody>
+                        <Media>
+                            <Media className="mr-1" left href="#">
+                                <Media
+                                    object
+                                    alt="User"
+                                    width="64"
+                                    height="64"
+                                    src={userImg}
+                                    className="rounded-circle"
+                                />
+                            </Media>
+                        </Media>
+                        <Row className="pt-1">
+                            <Col sm="12">
+                                <Formik
+                                    onSubmit={this.handleSubmit}
+                                    validationSchema={formSchema}
+                                    initialValues={{oldpass: "", newpass: "", confirmpass: ""}}
+                                >
+                                    {({ errors, touched }) => (
+                                        <Form>
+                                            <FormGroup>
+                                                <Field
+                                                    id="oldpass"
+                                                    name="oldpass"
+                                                    type="password"
+                                                    placeholder="Old Password"
+                                                    className={`form-control ${errors.oldpass && touched.oldpass && "is-invalid"}`}
+                                                />
+                                                {errors.oldpass && touched.oldpass && <div className="text-danger">{errors.oldpass}</div>}
+                                            </FormGroup>
+                                            <FormGroup>
+                                                <Field
+                                                    id="newpass"
+                                                    name="newpass"
+                                                    type="password"
+                                                    placeholder="New Password"
+                                                    className={`form-control ${errors.newpass && touched.newpass && "is-invalid"}`}
+                                                />
+                                                {errors.newpass && touched.newpass && <div className="text-danger">{errors.newpass}</div>}
+                                            </FormGroup>
+                                            <FormGroup>
+                                                <Field
+                                                    id="confirmpass"
+                                                    name="confirmpass"
+                                                    type="password"
+                                                    placeholder="Confirm Password"
+                                                    className={`form-control ${errors.confirmpass && touched.confirmpass && "is-invalid"}`}
+                                                />
+                                                {errors.confirmpass && touched.confirmpass && <div className="text-danger">{errors.confirmpass}</div>}
+                                            </FormGroup>
+                                            <div className="d-flex justify-content-start flex-wrap">
+                                                <Button.Ripple className="mr-1 mb-1" color="primary" type="submit">
+                                                    Save Changes
+                                                </Button.Ripple>
+                                                <Button.Ripple className="mb-1" color="danger" type="reset" outline>
+                                                    Cancel
+                                                </Button.Ripple>
+                                            </div>
+                                        </Form>
+                                    )}
+                                </Formik>
+                            </Col>
+                        </Row>
+                    </CardBody>
+                </Card>
+            </>
+        )
+    }
+}
+
+const formSchema = Yup.object().shape({
+    oldpass: Yup.string().required("Required"),
+    newpass: Yup.string().test(
+        "passwords-match",
+        "Password must be different than old password",
+        function (value) {
+            return this.parent.oldpass !== value;
+        }
+    ),
+    confirmpass: Yup.string()
+        .oneOf([Yup.ref("newpass"), null], "Passwords must match")
+        .required("Required")
+})
+
+const mapStateToProps = state => {
+    return {
+        backOfficeUserId: state.authUser?.data?.entityId,
+    }
+};
+
+export default connect(mapStateToProps)(Password)
+

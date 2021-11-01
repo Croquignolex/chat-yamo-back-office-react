@@ -11,8 +11,8 @@ class AuthRoutes extends React.Component {
         return (
             <Switch>
                 <RouteWrapper exact path="/" component={DynamicImports.Welcome} />
-                <RouteWrapper path={TICKETS.LIST} component={DynamicImports.tickets} />
-                <RouteWrapper path={AUTH.PASSWORD} component={DynamicImports.tickets} />
+                <RouteWrapper path={TICKETS.LIST} component={DynamicImports.Feedbacks} />
+                <RouteWrapper path={AUTH.PASSWORD} component={DynamicImports.Password} />
 
                 <Redirect to={{ pathname: '/' }} />
             </Switch>

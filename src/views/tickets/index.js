@@ -1,7 +1,6 @@
 import React from "react"
 import ChatLog from "./ChatLog"
 import Sidebar from "react-sidebar"
-import {connect} from "react-redux";
 import ChatSidebar from "./ChatSidebar"
 import {withRouter} from "react-router-dom";
 import "../../assets/scss/pages/app-chat.scss"
@@ -11,7 +10,7 @@ import {ContextLayout} from "../../utility/context/Layout"
 
 const mql = window.matchMedia(`(min-width: 992px)`);
 
-class Ticket extends React.Component {
+class Feedbacks extends React.Component {
     constructor(props) {
         super(props);
 
@@ -131,8 +130,4 @@ class Ticket extends React.Component {
   }
 }
 
-const mapStateToProps = ({ tickets }) => ({
-    // tickets
-});
-
-export default connect(mapStateToProps, {})(withRouter(Ticket));
+export default withRouter(Feedbacks);

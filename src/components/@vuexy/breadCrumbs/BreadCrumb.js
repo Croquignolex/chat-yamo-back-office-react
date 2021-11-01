@@ -30,9 +30,13 @@ class BreadCrumbs extends React.Component {
                       <Home className="align-top" size={15} />
                     </NavLink>
                   </BreadcrumbItem>
-                  <BreadcrumbItem tag="li" className="text-primary">
-                    {this.props.breadCrumbParent}
-                  </BreadcrumbItem>
+                  {this.props.breadCrumbParent ? (
+                      <BreadcrumbItem tag="li" className="text-primary">
+                        {this.props.breadCrumbParent}
+                      </BreadcrumbItem>
+                  ) : (
+                      ""
+                  )}
                   {this.props.breadCrumbParent2 ? (
                     <BreadcrumbItem tag="li" className="text-primary">
                       {this.props.breadCrumbParent2}

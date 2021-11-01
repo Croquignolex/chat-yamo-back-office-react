@@ -9,13 +9,7 @@ import {backendConfig} from "../../configs/AppConfig";
 export const AUTH = {
     LOGIN: '/feedbacks/backoffice/login',
     REGISTER: '/feedbacks/backoffice/register',
-    PROFILE: {
-        INFORMATION: 'auth/profile'
-    },
-    RESET_PASSWORD: {
-        MAIN: 'auth/reset-password',
-        LINK: 'auth/send-reset-password-link',
-    },
+    PASSWORD: '/feedbacks/backoffice/{backofficeUserId}/changepasswd',
 };
 
 export const TICKETS = {
