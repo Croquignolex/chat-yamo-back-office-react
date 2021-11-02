@@ -34,7 +34,7 @@ class Login extends React.Component {
           <Card className="login-card rounded-10 w-100">
             <Row className="m-0">
               <Col lg="6" className="d-lg-block d-none text-center align-self-center px-1 py-0">
-                <img src={loginImg} alt="loginImg" className="img-fluid px-2" />
+                <img src={loginImg} alt="loginImg" className="img-fluid p-2" />
               </Col>
               <Col lg="6" md="12" className="p-0">
                 <Card className="pt-5 px-2 login-tabs-container">
