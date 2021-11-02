@@ -5,7 +5,6 @@ import ChatSidebar from "./ChatSidebar"
 import {withRouter} from "react-router-dom";
 import "../../assets/scss/pages/app-chat.scss"
 import ReceiverSidebar from "./receiverProfile"
-import {urlConfig} from "../../configs/AppConfig";
 import {ContextLayout} from "../../utility/context/Layout"
 
 const mql = window.matchMedia(`(min-width: 992px)`);
@@ -13,8 +12,6 @@ const mql = window.matchMedia(`(min-width: 992px)`);
 class Feedbacks extends React.Component {
     constructor(props) {
         super(props);
-
-        // const caseId = searchUrlParams(urlConfig.params.caseId);
 
         this.state = {
             userProfile: false,
@@ -27,14 +24,6 @@ class Feedbacks extends React.Component {
             userSidebar: false
         };
     }
-
-    updateUrlParams = (caseId) => {
-        if (caseId) {
-            const url = new URL(window.location);
-            url.searchParams.set(urlConfig.params.caseId, `${caseId}`);
-            window.history.pushState({}, '', url);
-        }
-    };
 
     // mounted = false
     handleUserSidebar = status => {
@@ -52,7 +41,6 @@ class Feedbacks extends React.Component {
             activeChatID: caseId,
             activeUser: user
         });
-        // this.updateUrlParams(caseId);
     };
 
   UNSAFE_componentWillMount() {

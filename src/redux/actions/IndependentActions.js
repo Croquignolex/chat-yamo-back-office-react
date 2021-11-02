@@ -1,5 +1,5 @@
 import {makeRequest} from "../../helpers/helpers";
-import {BACK_OFFICE_USER_ID} from "../../configs/AppConfig";
+import {REACT_APP_CHAT_BACKOFFICE_USER_ID} from "../../configs/AppConfig";
 import {USERS, MEDIA, TICKETS, AUTH, joinBaseUrlWithParams} from "../../utility/urls/backend";
 
 export const getCaseMessages = async (userId) => {
@@ -10,8 +10,13 @@ export const getUserProfile = async (userId) => {
     return makeRequest('get', joinBaseUrlWithParams(USERS.GET_ONE, [{param: 'userId', value: userId}]));
 };
 
-export const createMedia = async (userId, backOfficeUserId, data) => {
-    const url = joinBaseUrlWithParams(MEDIA.CHATROOMS.CREATE, [{param: 'chatroomId', value: `${userId}:${backOfficeUserId}`}]);
+export const createMedia = async (userId, data) => {
+    const url = joinBaseUrlWithParams(
+        MEDIA.CHATROOMS.CREATE,
+        [
+            {param: 'chatroomId', value: `${userId}:${REACT_APP_CHAT_BACKOFFICE_USER_ID}`}
+        ]
+    );
     return makeRequest('put', url, data, {shouldParseFormData: true, fileData: ['picture']});
 };
 
@@ -19,7 +24,7 @@ export const sendMessage = async (userId, data) => {
     const url = joinBaseUrlWithParams(
         TICKETS.MESSAGES.SEND,
         [
-            {param: 'backOfficeUserId', value: BACK_OFFICE_USER_ID},
+            {param: 'backOfficeUserId', value: REACT_APP_CHAT_BACKOFFICE_USER_ID},
             {param: 'userId', value: userId},
         ]
     );
@@ -31,8 +36,14 @@ export const getUserProfileImage = async (userId) => {
     return makeRequest('get', url, null, {responseType: 'arraybuffer'});
 };
 
-export const getMessageImage = async (mediaId, caseId) => {
-    const url = joinBaseUrlWithParams(MEDIA.CHATROOMS.GET_ONE, [{param: 'mediaId', value: mediaId}, {param: 'chatroomId', value: caseId}]);
+export const getMessageImage = async (userId, mediaId) => {
+    const url = joinBaseUrlWithParams(
+        MEDIA.CHATROOMS.GET_ONE,
+        [
+            {param: 'mediaId', value: mediaId},
+            {param: 'chatroomId', value: `${userId}:${REACT_APP_CHAT_BACKOFFICE_USER_ID}`}
+        ]
+    );
     return makeRequest('get', url, null, {responseType: 'arraybuffer'});
 };
 

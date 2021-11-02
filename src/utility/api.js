@@ -6,11 +6,10 @@ import {getAuthToken, removeAuthToken} from "../helpers/tokens";
 import {objectToFormData, toSnakeCase, formatMessage} from "../helpers/helpers";
 import {ERROR_401, ERROR_403, ERROR_404, ERROR_500, ERROR_UNKNOWN} from "../data/errors";
 
-const customAxios =
-    axios.create({
-        baseURL: backendConfig.baseUrlWithService,
-        timeout: 15000,
-    });
+const customAxios = axios.create({
+    baseURL: backendConfig.baseUrlWithService,
+    timeout: backendConfig.timeout,
+});
 
 customAxios.interceptors.request.use(
     async (config) => {

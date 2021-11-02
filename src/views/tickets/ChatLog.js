@@ -53,7 +53,7 @@ class ChatLog extends React.Component {
     };
 
     loadMessageImage = (responseMessageData) => {
-        getMessageImage(responseMessageData.mediaId, responseMessageData.caseId)
+        getMessageImage(responseMessageData.userId, responseMessageData.mediaId)
             .then(data => {
                 const base64ImageString = Buffer.from(data, 'binary').toString('base64');
                 responseMessageData.setMedia = "data:image/jpg;base64," + base64ImageString;
@@ -136,7 +136,7 @@ class ChatLog extends React.Component {
                                                 className={activeUser.getStatus()}
                                             />
                                         </div>
-                                        <a 
+                                        <a
                                             href="/"
                                             className="mb-0"
                                             onClick={(e) => {

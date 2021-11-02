@@ -5,7 +5,7 @@ import Message from "../../../models/Message";
 import {Button, FormGroup, Input} from "reactstrap";
 import {getUniqueId} from "../../../helpers/helpers";
 import {NotificationManager} from "react-notifications";
-import {BACK_OFFICE_USER_ID} from "../../../configs/AppConfig";
+import {REACT_APP_CHAT_BACKOFFICE_USER_ID} from "../../../configs/AppConfig";
 import {createMedia, sendMessage} from "../../../redux/actions/IndependentActions";
 
 class ChatInput extends Component {
@@ -22,7 +22,7 @@ class ChatInput extends Component {
     handleMsgSubmit = async (file = null) => {
         const {caseId, userId, notifyChanges} = this.props;
         const message = this.state.msg;
-        const authorId = BACK_OFFICE_USER_ID;
+        const authorId = REACT_APP_CHAT_BACKOFFICE_USER_ID;
 
         if (!file && message.length === 0) {
             NotificationManager.warning("Vous devez remplir le champ message");
@@ -54,7 +54,7 @@ class ChatInput extends Component {
 
         if (file) {
             try {
-                const res = await createMedia(userId, authorId, {picture: file});
+                const res = await createMedia(userId, {picture: file});
                 if (res && res.mediaId) {
                     mediaId = res.mediaId;
                 }
@@ -78,7 +78,7 @@ class ChatInput extends Component {
         }
 
         try {
-            await sendMessage(BACK_OFFICE_USER_ID, this.props.userId, data);
+            await sendMessage(this.props.userId, data);
             const responseMessage = new Message({
                 ..._msg,
                 mediaId,

@@ -1,11 +1,5 @@
 import {backendConfig} from "../../configs/AppConfig";
 
-/**
- * This file expose backend's routes
- *
- */
-
-
 export const AUTH = {
     LOGIN: '/feedbacks/backoffice/login',
     REGISTER: '/feedbacks/backoffice/register',
