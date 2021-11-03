@@ -13,9 +13,12 @@ import {
     FormGroup, Spinner
 } from "reactstrap"
 
-import userImg from "../../assets/img/user-default.png"
+import { history } from "../../history";
+import {AUTH} from "../../utility/urls/frontend";
+import {logoutWithJWT} from "../../redux/actions/auth";
+import userImg from "../../assets/img/user-default.png";
 import {changePassword} from "../../redux/actions/IndependentActions";
-import Breadcrumbs from "../../components/@vuexy/breadCrumbs/BreadCrumb"
+import Breadcrumbs from "../../components/@vuexy/breadCrumbs/BreadCrumb";
 
 class Password extends React.Component {
     constructor(props) {
@@ -31,7 +34,12 @@ class Password extends React.Component {
         changePassword(oldpass, newpass, this.props.backOfficeUserId)
             .then(() => {
                 resetForm({values: ''});
-                NotificationManager.success("Password successfully changed");
+                NotificationManager.success("Password successfully changed, you need to connect back");
+                setTimeout(() => {
+                    // Redirect to login page after 2 seconds
+                    this.props.logoutWithJWT()
+                    history.push(AUTH.LOGIN);
+                }, 2000);
             })
             .finally(() => {
                 this.setState({loading: false});
@@ -142,5 +150,5 @@ const mapStateToProps = state => {
     }
 };
 
-export default connect(mapStateToProps)(Password)
+export default connect(mapStateToProps, {logoutWithJWT})(Password)
 

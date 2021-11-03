@@ -78,11 +78,11 @@ customAxios.interceptors.response.use(
                             return Promise.reject(error);
                         case 401:
                             NotificationManager.error(formatMessage(ERROR_401));
-                            // With redirect to login page (consider rooter)
-                            removeAuthToken();
                             return Promise.reject(error);
                         case 403:
                             NotificationManager.error(formatMessage(ERROR_403));
+                            // With redirect to login page (consider rooter)
+                            removeAuthToken();
                             return Promise.reject(error);
                         case 404:
                             NotificationManager.error(formatMessage(ERROR_404));
