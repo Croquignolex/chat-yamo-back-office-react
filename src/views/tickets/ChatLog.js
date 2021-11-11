@@ -36,15 +36,19 @@ class ChatLog extends React.Component {
             getCaseMessages(this.props.activeUser.id)
                 .then(data => {
                     const messages = data.messages
-                        .sort((a, b) => a.createdAt - b.createdAt)
+                        .sort((a, b) => {
+                            const newA = parseInt(a.createdAt, 10);
+                            const newB = parseInt(b.createdAt, 10);
+                            return newB - newA;
+                        })
                         .map(m => new Message(m));
 
-                    this.setState({ messages }, () => {
-                        messages.forEach((message) => {
+                    this.setState({ messages }, async () => {
+                        for(const message of messages) {
                             if(message.mediaId) {
-                                this.loadMessageImage(message);
+                                await this.loadMessageImage(message);
                             }
-                        });
+                        }
                     });
                 })
                 .catch(() => this.setState({messages: null}))
