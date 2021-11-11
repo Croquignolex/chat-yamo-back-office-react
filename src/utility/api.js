@@ -77,26 +77,26 @@ customAxios.interceptors.response.use(
                             errorManager(error.response.data);
                             return Promise.reject(error);
                         case 401:
-                            NotificationManager.error(formatMessage(ERROR_401));
+                            NotificationManager.error(formatMessage(ERROR_401), null, null, true);
                             return Promise.reject(error);
                         case 403:
-                            NotificationManager.error(formatMessage(ERROR_403));
+                            NotificationManager.error(formatMessage(ERROR_403), null, null, true);
                             // With redirect to login page (consider rooter)
                             removeAuthToken();
                             return Promise.reject(error);
                         case 404:
-                            NotificationManager.error(formatMessage(ERROR_404));
+                            NotificationManager.error(formatMessage(ERROR_404), null, null, true);
                             return Promise.reject(error);
                         case 500:
-                            NotificationManager.error(formatMessage(ERROR_500));
+                            NotificationManager.error(formatMessage(ERROR_500), null, null, true);
                             return Promise.reject(error);
                         default:
-                            NotificationManager.error(formatMessage(ERROR_500));
+                            NotificationManager.error(formatMessage(ERROR_500), null, null, true);
                             return Promise.reject(error);
                     }
                 }
-            } else if (!originalRequest.skipError) NotificationManager.error(formatMessage(ERROR_UNKNOWN));
-        } else if (!originalRequest.skipError) NotificationManager.error(formatMessage(ERROR_UNKNOWN));
+            } else if (!originalRequest.skipError) NotificationManager.error(formatMessage(ERROR_UNKNOWN), null, null, true);
+        } else if (!originalRequest.skipError) NotificationManager.error(formatMessage(ERROR_UNKNOWN), null, null, true);
 
         return Promise.reject(error);
     });
