@@ -22,7 +22,7 @@ export const errorManager = (errors, customOptions = null) => {
             errors.forEach(error => {
                 const errorItem = errorItems.find(e => e.CODE === error.message);
                 if (errorItem) {
-                    NotificationManager.error(formatMessage(errorItem.MESSAGE), null, null, true);
+                    NotificationManager.error(formatMessage(errorItem.MESSAGE));
                     found = true;
                 }
             });
@@ -30,7 +30,7 @@ export const errorManager = (errors, customOptions = null) => {
             const errorItem = errorItems.find(e => e.CODE === errors.message);
             console.log("errorItem => ", {errorItem, errors});
             if (errorItem) {
-                NotificationManager.error(formatMessage(errorItem.MESSAGE), null, null, true);
+                NotificationManager.error(formatMessage(errorItem.MESSAGE));
                 found = true;
             }
         }
@@ -38,6 +38,6 @@ export const errorManager = (errors, customOptions = null) => {
 
     // Display Error 500 in case of no match
     if (!found) {
-        NotificationManager.error(formatMessage(ERROR_500), null, null, true);
+        NotificationManager.error(formatMessage(ERROR_500));
     }
 };

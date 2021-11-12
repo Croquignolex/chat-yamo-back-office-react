@@ -1,26 +1,16 @@
-import React, { PureComponent } from "react";
 import classnames from "classnames";
-import Customizer from "../components/@vuexy/customizer/Customizer";
-import Sidebar from "./components/menu/vertical-menu/Sidebar";
+import React, { PureComponent } from "react";
+
 import Navbar from "./components/navbar/Navbar";
 import Footer from "./components/footer/Footer";
-import { connect } from "react-redux";
-import {
-  changeMode,
-  collapseSidebar,
-  changeNavbarColor,
-  changeNavbarType,
-  changeFooterType,
-  changeMenuColor,
-  hideScrollToTop
-} from "../redux/actions/customizer/index";
+import Sidebar from "./components/menu/vertical-menu/Sidebar";
 
 class VerticalLayout extends PureComponent {
   state = {
     width: window.innerWidth,
-    sidebarState: this.props.app.customizer.sidebarCollapsed,
-    layout: this.props.app.customizer.theme,
-    collapsedContent: this.props.app.customizer.sidebarCollapsed,
+    sidebarState: false,
+    layout: "light",
+    collapsedContent: false,
     sidebarHidden: false,
     currentLang: "en",
     appOverlay: false,
@@ -61,8 +51,7 @@ class VerticalLayout extends PureComponent {
       }
 
       let layout = theme;
-      let dir = direction;
-      if (dir === "rtl")
+      if (direction === "rtl")
         document.getElementsByTagName("html")[0].setAttribute("dir", "rtl");
       else document.getElementsByTagName("html")[0].setAttribute("dir", "ltr");
       return layout === "dark"
@@ -190,7 +179,6 @@ class VerticalLayout extends PureComponent {
   };
 
   render() {
-    let appProps = this.props.app.customizer;
     let menuThemeArr = [
       "primary",
       "success",
@@ -209,7 +197,7 @@ class VerticalLayout extends PureComponent {
       activePath: this.props.match.path,
       collapsedMenuPaths: this.handleCollapsedMenuPaths,
       currentLang: this.state.currentLang,
-      activeTheme: appProps.menuTheme,
+      activeTheme: "primary",
       collapsed: this.state.collapsedContent,
       permission: this.props.permission,
       deviceWidth: this.state.width
@@ -222,46 +210,26 @@ class VerticalLayout extends PureComponent {
       changeCurrentLang: this.handleCurrentLanguage,
       handleAppOverlay: this.handleAppOverlay,
       appOverlayState: this.state.appOverlay,
-      navbarColor: appProps.navbarColor,
-      navbarType: appProps.navbarType
+      navbarColor: "default",
+      navbarType: "floating"
     };
 
     let footerProps = {
-      footerType: appProps.footerType,
-      hideScrollToTop: appProps.hideScrollToTop
+      footerType: "static",
+      hideScrollToTop: false
     };
 
-    let customizerProps = {
-      customizerState: this.state.customizer,
-      handleCustomizer: this.handleCustomizer,
-      changeMode: this.props.changeMode,
-      changeNavbar: this.props.changeNavbarColor,
-      changeNavbarType: this.props.changeNavbarType,
-      changeFooterType: this.props.changeFooterType,
-      changeMenuTheme: this.props.changeMenuColor,
-      collapseSidebar: this.props.collapseSidebar,
-      hideScrollToTop: this.props.hideScrollToTop,
-      activeMode: appProps.theme,
-      activeNavbar: appProps.navbarColor,
-      navbarType: appProps.navbarType,
-      footerType: appProps.footerType,
-      menuTheme: appProps.menuTheme,
-      scrollToTop: appProps.hideScrollToTop,
-      sidebarState: appProps.sidebarCollapsed
-    };
     return (
       <div
         className={classnames(
-          `wrapper vertical-layout theme-${appProps.menuTheme}`,
+          `wrapper vertical-layout theme-primary`,
           {
-            "menu-collapsed":
-              this.state.collapsedContent === true && this.state.width >= 1200,
-            "fixed-footer": appProps.footerType === "sticky",
-            "navbar-static": appProps.navbarType === "static",
-            "navbar-sticky": appProps.navbarType === "sticky",
-            "navbar-floating": appProps.navbarType === "floating",
-            "navbar-hidden": appProps.navbarType === "hidden",
-            "theme-primary": !menuThemeArr.includes(appProps.menuTheme)
+            "menu-collapsed": this.state.collapsedContent === true && this.state.width >= 1200,
+            "fixed-footer": false,
+            "navbar-static": false,
+            "navbar-sticky": false,
+            "navbar-floating": true,
+            "navbar-hidden": false,
           }
         )}
       >
@@ -277,28 +245,10 @@ class VerticalLayout extends PureComponent {
         </div>
 
         <Footer {...footerProps} />
-        {appProps.disableCustomizer !== true ? (
-          <Customizer {...customizerProps} />
-        ) : null}
-        <div
-          className="sidenav-overlay"
-          onClick={this.handleSidebarVisibility}
-        />
+        <div className="sidenav-overlay" onClick={this.handleSidebarVisibility} />
       </div>
     );
   }
 }
-const mapStateToProps = state => {
-  return {
-    app: state.customizer
-  };
-};
-export default connect(mapStateToProps, {
-  changeMode,
-  collapseSidebar,
-  changeNavbarColor,
-  changeNavbarType,
-  changeFooterType,
-  changeMenuColor,
-  hideScrollToTop
-})(VerticalLayout);
+
+export default VerticalLayout;

@@ -1,78 +1,16 @@
+import React from 'react';
 import {Spinner} from "reactstrap";
-import User from "../../models/User";
-import Error500 from "../Error500";
 import {CheckCircle, Star} from "react-feather";
-import React, {useState, useEffect} from 'react';
-import {getUserProfile, getUserProfileImage} from "../../redux/actions/IndependentActions";
 
-/**
- * Display a ticket item
- * @param isActive
- * @param user
- * @param onClickItem
- * @returns {*}
- * @constructor
- */
-const TicketUserItem = ({ userId, isActive, onClickItem }) => {
-    const [userData, setUserData] = useState({
-        loading: true,
-        data: null,
-        error: null
-    });
+const TicketUserItem = ({ feedback, isActive, onClickItem }) => {
 
-    useEffect(() => {
-        loadData();
-        // eslint-disable-next-line
-    }, []);
+    const user = feedback.user;
 
-    const loadData = () => {
-        getUserProfile(userId)
-            .then(data => {
-                const responseUserData = new User(data);
-                setUserData({
-                    data: responseUserData,
-                    error: null,
-                    loading: false,
-                });
-                !responseUserData.isDeleted && loadUserAvatar(responseUserData);
-            })
-            .catch(error => {
-                setUserData({
-                    error,
-                    data: null,
-                    loading: false,
-                });
-            });
-    };
-
-    const loadUserAvatar = (responseUserData) => {
-        getUserProfileImage(userId)
-            .then(data => {
-                const base64ImageString = Buffer.from(data, 'binary').toString('base64');
-                responseUserData.setAvatar = "data:image/jpg;base64," + base64ImageString;
-                setUserData({
-                    data: responseUserData,
-                    error: null,
-                    loading: false,
-                });
-            });
-    }
-
-    if (userData.loading) {
+    if (!user) {
         return (
             <Spinner color="primary" />
         );
     }
-
-    if (userData.error) {
-        return (
-            <li>
-                <Error500 onLinkClick={loadData} />
-            </li>
-        )
-    }
-
-    const user = userData.data;
 
     return (
         <li

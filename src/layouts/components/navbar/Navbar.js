@@ -1,11 +1,10 @@
-import React from "react"
-import { Navbar } from "reactstrap"
-import { connect } from "react-redux"
+import React from "react";
+import { Navbar } from "reactstrap";
+import { connect } from "react-redux";
 
-import NavbarUser from "./NavbarUser"
-import userImg from "../../../assets/img/user-default.png"
-import { logoutWithJWT} from "../../../redux/actions/auth"
-import { useAuth0 } from "../../../authServices/auth0/auth0Service"
+import NavbarUser from "./NavbarUser";
+import userImg from "../../../assets/img/user-default.png";
+import { logoutWithJWT} from "../../../redux/actions/auth";
 
 const ThemeNavbar = props => {
   return (
@@ -37,4 +36,4 @@ const mapStateToProps = state => {
   }
 };
 
-export default connect(mapStateToProps, {logoutWithJWT, useAuth0})(ThemeNavbar)
+export default connect(mapStateToProps, {logoutWithJWT})(ThemeNavbar)

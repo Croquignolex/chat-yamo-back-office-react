@@ -1,16 +1,7 @@
-/**
- * Helpers Functions
- */
 import _ from 'lodash';
 import moment from 'moment';
 import api from "../utility/api";
 import {NotificationManager} from 'react-notifications';
-
-/*const TABLE_OF_256_HEXADECIMAL = (function () {
-    const arr = [];
-    for (let i = 0; i < 256; i++) { arr[i] = (i < 16 ? '0': '') + (i).toString(16); }
-    return arr;
-})();*/
 
 /**
  * Function to convert hex to rgba

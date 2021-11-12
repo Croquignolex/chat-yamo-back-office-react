@@ -1,11 +1,9 @@
-export const ROOT = '/';
-export const HOME = '/home';
-
 export const AUTH = {
-    LOGIN: '/login',
+    LOGIN: '/',
     PASSWORD: '/password',
 };
 
-export const TICKETS = {
-    LIST: '/feedbacks',
+export const APP = {
+    HOME: '/home',
+    FEEDBACKS: '/feedbacks',
 };

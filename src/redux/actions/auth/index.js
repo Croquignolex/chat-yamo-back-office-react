@@ -1,17 +1,8 @@
-import {
-    SET_AUTH_USER,
-    CLEAR_AUTH_USER,
-    SET_AUTH_USER_SUCCESS,
-    SET_AUTH_USER_FAILURE,
-} from '../../types';
 import api from '../../../utility/api';
-import * as loginAction from "./loginActions";
 import {AUTH} from "../../../utility/urls/backend";
 import {removeAuthToken, saveAuthToken, getAuthToken} from "../../../helpers/tokens";
+import {SET_AUTH_USER, CLEAR_AUTH_USER, SET_AUTH_USER_SUCCESS, SET_AUTH_USER_FAILURE} from '../../types';
 
-/**
- * Redux Action get auth information
- */
 export const setAuthUser = () => (dispatch) => {
     dispatch({ type: SET_AUTH_USER });
 
@@ -21,7 +12,7 @@ export const setAuthUser = () => (dispatch) => {
         if (data.accessToken && data.entityId) {
             const payload = {entityId: data.entityId, name: "Back office", accessToken: data.accessToken};
             dispatch({ type: SET_AUTH_USER_SUCCESS, payload });
-            resolve();
+            return resolve();
         } else {
             dispatch({ type: SET_AUTH_USER_FAILURE });
             return reject();
@@ -71,5 +62,3 @@ export const logoutWithJWT = () => dispatch => {
     removeAuthToken();
     dispatch({ type: CLEAR_AUTH_USER });
 };
-
-export default loginAction;

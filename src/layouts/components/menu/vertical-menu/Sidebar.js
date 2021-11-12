@@ -1,11 +1,12 @@
-import React, { Component } from "react"
-import classnames from "classnames"
-import { ContextLayout } from "../../../../utility/context/Layout"
-import { connect } from "react-redux"
-import SidebarHeader from "./SidebarHeader"
-import Hammer from "react-hammerjs"
-import SideMenuContent from "./sidemenu/SideMenuContent"
-import PerfectScrollbar from "react-perfect-scrollbar"
+import classnames from "classnames";
+import Hammer from "react-hammerjs";
+import React, { Component } from "react";
+import PerfectScrollbar from "react-perfect-scrollbar";
+
+import SidebarHeader from "./SidebarHeader";
+import SideMenuContent from "./sidemenu/SideMenuContent";
+import { ContextLayout } from "../../../../utility/context/Layout";
+
 class Sidebar extends Component {
   static getDerivedStateFromProps(props, state) {
     if (props.activePath !== state.activeItem) {
@@ -219,10 +220,4 @@ class Sidebar extends Component {
   }
 }
 
-const mapStateToProps = state => {
-  return {
-    currentUser: state.auth.login.userRole
-  }
-}
-
-export default connect(mapStateToProps)(Sidebar)
+export default Sidebar

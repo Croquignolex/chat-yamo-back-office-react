@@ -1,7 +1,8 @@
-import React, {Component} from 'react';
 import {connect} from "react-redux";
-import {setRequestGlobalAction} from "../redux/actions/RequestGlobalAction";
+import React, {Component} from 'react';
+
 import LinearProgress from "./loaders/LinearProgress";
+import {setRequestGlobalAction} from "../redux/actions/GeneralAction";
 
 class RequestGlobalLoader extends Component {
     state = {

@@ -1,4 +1,5 @@
 import dayjs from "dayjs";
+
 import {REACT_APP_CHAT_BACKOFFICE_USER_ID} from "../configs/AppConfig";
 
 export default class Message {

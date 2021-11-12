@@ -1,6 +1,6 @@
-import React from "react"
+import React from "react";
 import { connect } from "react-redux";
-import { Router } from "react-router-dom"
+import { Router } from "react-router-dom";
 import {NotificationContainer} from "react-notifications";
 
 import { history } from "../history";
@@ -8,8 +8,8 @@ import AuthRoutes from "./AuthRoutes";
 import UnauthRoutes from "./UnauthRoutes";
 import {getAuthToken} from "../helpers/tokens";
 import {setAuthUser} from "../redux/actions/auth";
+import {disableAppLoading} from "../redux/actions/GeneralAction";
 import Spinner from "../components/@vuexy/spinner/Loading-spinner";
-import {disableAppLoading} from "../redux/actions/AppLoadingAction";
 import RequestGlobalLoader from "../components/RequestGlobalLoader";
 
 class AppRouter extends React.Component {

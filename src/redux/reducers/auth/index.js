@@ -1,16 +1,5 @@
-/**
- * Auth User Reducers
- */
-import {
-  SET_AUTH_USER,
-  CLEAR_AUTH_USER,
-  SET_AUTH_USER_SUCCESS,
-  SET_AUTH_USER_FAILURE,
-} from '../../types';
+import {SET_AUTH_USER, CLEAR_AUTH_USER, SET_AUTH_USER_SUCCESS, SET_AUTH_USER_FAILURE} from '../../types';
 
-/**
- * initial state
- */
 const INIT_STATE = {
   data: null,
   error: null,

@@ -1,4 +1,3 @@
-import { connect } from "react-redux"
 import React, { Suspense } from "react"
 import { Route } from "react-router-dom"
 import { ContextLayout } from "../utility/context/Layout"
@@ -29,11 +28,4 @@ const RouteConfig = ({ component: Component, fullLayout, ...rest }) => (
     />
 );
 
-const mapStateToProps = state => {
-    return {
-        user: ''
-    }
-};
-
-const RouteWrapper = connect(mapStateToProps)(RouteConfig);
-export default RouteWrapper;
+export default RouteConfig;

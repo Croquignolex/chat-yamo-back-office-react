@@ -3,14 +3,17 @@ import { connect } from "react-redux"
 import { Mail, Lock } from "react-feather"
 import { loginWithJWT } from "../../../../redux/actions/auth"
 import { CardBody, FormGroup, Form, Input, Label } from "reactstrap"
-import {setRequestGlobalAction} from "../../../../redux/actions/RequestGlobalAction";
+import {setRequestGlobalAction} from "../../../../redux/actions/GeneralAction";
 
 class LoginJWT extends React.Component {
-  state = {
-    email: "",
-    password: "",
-    remember: false
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      email: "",
+      password: "",
+      remember: false
+    };
+  }
 
   handleLogin = e => {
     e.preventDefault();
@@ -22,6 +25,7 @@ class LoginJWT extends React.Component {
   };
 
   render() {
+    const { email, password } = this.state;
     return (
       <React.Fragment>
         <CardBody className="pt-1">
@@ -29,7 +33,7 @@ class LoginJWT extends React.Component {
             <FormGroup className="form-label-group position-relative has-icon-left">
               <Input
                 placeholder="Login"
-                value={this.state.email}
+                value={email}
                 onChange={e => this.setState({ email: e.target.value })}
                 required
               />
@@ -42,7 +46,7 @@ class LoginJWT extends React.Component {
               <Input
                 type="password"
                 placeholder="Password"
-                value={this.state.password}
+                value={password}
                 onChange={e => this.setState({ password: e.target.value })}
                 required
               />

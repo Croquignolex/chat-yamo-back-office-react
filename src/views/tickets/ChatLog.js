@@ -37,9 +37,10 @@ class ChatLog extends React.Component {
                 .then(data => {
                     const messages = data.messages
                         .sort((a, b) => {
+                            // Chat messages filter
                             const newA = parseInt(a.createdAt, 10);
                             const newB = parseInt(b.createdAt, 10);
-                            return newB - newA;
+                            return newA - newB;
                         })
                         .map(m => new Message(m));
 

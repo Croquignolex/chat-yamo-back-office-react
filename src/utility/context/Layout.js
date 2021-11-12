@@ -1,7 +1,6 @@
 import React from "react"
 import VerticalLayout from "../../layouts/VerticalLayout"
 import FullLayout from "../../layouts/FullpageLayout"
-import themeConfig from "../../configs/themeConfig"
 const layouts = {
   vertical: VerticalLayout,
   full: FullLayout
@@ -11,10 +10,10 @@ const ContextLayout = React.createContext()
 
 class Layout extends React.Component {
   state = {
-    activeLayout: themeConfig.layout,
+    activeLayout: "vertical",
     width: window.innerWidth,
     lastLayout: null,
-    direction: themeConfig.direction
+    direction: "ltr"
   }
 
   updateWidth = () => {
@@ -48,13 +47,6 @@ class Layout extends React.Component {
     if (this.state.activeLayout === "horizontal" && this.state.width <= 1199) {
       this.setState({
         activeLayout: "vertical"
-      })
-    } else if (
-      themeConfig.layout === "horizontal" &&
-      this.state.width >= 1200
-    ) {
-      this.setState({
-        activeLayout: "horizontal"
       })
     } else {
       this.setState({

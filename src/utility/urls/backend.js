@@ -31,7 +31,7 @@ export const MEDIA = {
 
 const BASE = '';
 
-export const joinBaseUrlWithParams = (to, params, trueBase) => {
+export const joinBaseUrlWithParams = (to, params = [], trueBase = false) => {
     let url = (trueBase ? backendConfig.baseUrlWithService : '') + to;
 
     params.forEach(param => {
