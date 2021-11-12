@@ -9,9 +9,10 @@ import User from "../../models/User";
 import Feedback from "../../models/Feedback";
 import TicketUserItem from "./TicketUserItem";
 import {getCases, getUserProfile, getUserProfileImage} from "../../redux/actions/IndependentActions";
+import {Loader} from "react-feather";
 
 class ChatSidebar extends React.Component {
-// props { activeChatId, mainSidebar, handleActiveChat, handleUserSidebar }
+    // props { activeChatId, mainSidebar, handleActiveChat, handleUserSidebar }
     constructor(props) {
         super(props);
         this.state = {
@@ -58,13 +59,12 @@ class ChatSidebar extends React.Component {
                     } catch (e) {}
                     feedback.setUser = user;
                     this.updateFeedback(feedback);
-                    resolve();
                 })
                 .catch(() => {
                     feedback.setUser = new User({notFound: true});
                     this.updateFeedback(feedback);
-                    resolve();
-                });
+                })
+                .finally(() => resolve());
         })
     };
 
@@ -119,7 +119,8 @@ class ChatSidebar extends React.Component {
                 <div className="chat-fixed-search h-100">
                     <div className="d-flex align-items-center">
                         <Button color="primary" className="mr-2 rounded" onClick={this.loadData}>
-                            <Icon.RotateCcw size={15} /> Refresh
+                            <Loader className="d-lg-none" size={15} />
+                            <span className="d-lg-block d-none">Refresh</span>
                         </Button>
                         <Button size="sm" color="primary" className="mr-1 rounded" onClick={this.handlePrevDate} title="Previous day">
                             <Icon.ArrowLeft size={20} />

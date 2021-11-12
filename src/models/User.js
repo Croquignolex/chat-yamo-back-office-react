@@ -1,10 +1,7 @@
-import {getUserProfileImage} from "../redux/actions/IndependentActions";
-
 export default class User {
     constructor(user) {
         Object.assign(this, user);
         this.id = this.userId;
-        this.notFound = this.notFound;
 
         if(this.isDeleted) this.avatar = require("../assets/img/user-remove.png");
         else this.avatar = require("../assets/img/unknown-user.png");
@@ -35,7 +32,7 @@ export default class User {
         return `${this.city}, ${this.country}`;
     }
 
-    getStatus() {
+    get getStatus() {
         switch (this.status) {
             case "do not disturb":
                 return "avatar-status-busy";

@@ -90,19 +90,15 @@ class Feedbacks extends React.Component {
               sidebarClassName="chat-sidebar"
               contentClassName="sidebar-children d-none"
               pullRight={context.state.direction === "rtl"}>
-                {null}
+                <></>
             </Sidebar>
           )}
         </ContextLayout.Consumer>
-        {/*<UserSidebar
-          userProfile={this.state.userSidebar}
-          handleUserSidebar={this.handleUserSidebar}
-        />*/}
         <ChatLog
             mql={mql}
-            caseId={this.state.activeChatID}
             activeUser={this.state.activeUser}
             mainSidebar={this.onSetSidebarOpen}
+            activeChatID={this.state.activeChatID}
             handleReceiverSidebar={this.handleReceiverSidebar}
         />
         <ReceiverSidebar

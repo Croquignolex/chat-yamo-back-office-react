@@ -1,8 +1,9 @@
 import React from 'react';
 import styled from "styled-components";
 import {Card, CardBody} from "reactstrap";
-import DisplayImage from "./DisplayImage";
 import {Clock, CheckCircle, XCircle} from "react-feather";
+
+import DisplayImage from "./DisplayImage";
 
 const Wrapper = styled.div`
     .c-image-wrapper {
@@ -64,16 +65,20 @@ const areSameDay = (day1, day2) => {
         && day1.day() === day2.day();
 };
 
-/**
- * Properly display the chat messages-inputs, avatar and media
- * @param activeUser
- * @param messages
- * @returns {*}
- * @constructor
- */
 const ChatLogContent = ({ activeUser, messages }) => {
-    const renderSentTime = (loopIndex, prevMsgDate, currMsgDate) => {
-        if (loopIndex > 0 && !areSameDay(prevMsgDate, currMsgDate)) {
+
+    const renderSentTime = (prevMsgDate, currMsgDate) => {
+        if(prevMsgDate) {
+            if (!areSameDay(prevMsgDate, currMsgDate)) {
+                return (
+                    <div className="divider">
+                        <div className="divider-text">
+                            {currMsgDate.format('LL')}
+                        </div>
+                    </div>
+                )
+            }
+        } else  {
             return (
                 <div className="divider">
                     <div className="divider-text">
@@ -84,28 +89,22 @@ const ChatLogContent = ({ activeUser, messages }) => {
         }
     };
 
-    const renderAvatar = (user) => {
-        return (
-            <div className="chat-avatar">
-                <div className="avatar m-0">
-                    <img src={user.imageSrc} alt="..." height="40" width="40" />
-                </div>
-            </div>
-        )
-    };
-
     return (
         <>
             {messages.map((message, index, arr) => {
                 return (
                     <React.Fragment key={message.id}>
-                        {renderSentTime(index, index > 0 ? arr[index - 1].createdAt : null, message.createdAt)}
+                        {renderSentTime((index > 0) && arr[index - 1].createdDate, message.createdDate)}
                         <Wrapper
-                            className={`chat ${
-                                !message.isBackUser ? "chat-left" : "chat-right" // Check for the right author
-                            }`}
+                            className={`chat ${!message.isBackUser ? "chat-left" : "chat-right"}`}
                         >
-                            {!message.isBackUser && renderAvatar(activeUser)}
+                            {!message.isBackUser && (
+                                <div className="chat-avatar">
+                                    <div className="avatar m-0">
+                                        <img src={activeUser.imageSrc} alt="..." height="40" width="40" />
+                                    </div>
+                                </div>
+                            )}
                             <div className="chat-body">
                                 <CardWrapper>
                                     <CardBody className={`p-0 ${message.media ? 'c-image-wrapper' : ''}`}>
@@ -114,19 +113,15 @@ const ChatLogContent = ({ activeUser, messages }) => {
                                         )}
                                         <div className={`chat-content ${message.media ? 'got-image' : ''}`}>
                                             <p className="c-text-content">{message.content}</p>
-                                            <p className="c-hour text-muted">
-                                                <span className="timer">{message.createdAt.format('HH:mm')}</span>
+                                            <p className="c-hour text-muted float-right">
+                                                <span className="timer text-italic">{message.createdTime}</span>
                                                 <span className="request">
-                                                    {message.request && (
-                                                        <>
-                                                            {message.request.loading ? (
-                                                                <Clock size={17} className="text-dark" />
-                                                            ) : message.request.data ? (
+                                                    {(message.isBackUser) && (
+                                                        (message.request) ? (
+                                                            (message.request.loading) ? <Clock size={17} className="text-dark" /> :
+                                                            (message.request.error) ? <XCircle size={17} className="text-danger" /> :
                                                                 <CheckCircle size={17} className="text-success" />
-                                                            ) : (
-                                                                <XCircle size={17} className="text-danger" />
-                                                            )}
-                                                        </>
+                                                        ) : <CheckCircle size={17} className="text-success" />
                                                     )}
                                                 </span>
                                             </p>
