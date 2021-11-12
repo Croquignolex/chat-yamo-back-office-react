@@ -1,9 +1,16 @@
 import {makeRequest} from "../../helpers/helpers";
 import {REACT_APP_CHAT_BACKOFFICE_USER_ID} from "../../configs/AppConfig";
-import {USERS, MEDIA, TICKETS, AUTH, joinBaseUrlWithParams} from "../../utility/urls/backend";
+import {
+    USERS,
+    MEDIA,
+    TICKETS,
+    AUTH,
+    joinBaseUrlWithParams,
+    joinBaseUrlWithRequestParams
+} from "../../utility/urls/backend";
 
-export const getCases = async () => {
-    return makeRequest('get', joinBaseUrlWithParams(TICKETS.GET_ALL));
+export const getCases = async (date) => {
+    return makeRequest('get', joinBaseUrlWithRequestParams(TICKETS.GET_ALL, [{param: 'date', value: date}]));
 };
 
 export const getCaseMessages = async (userId) => {

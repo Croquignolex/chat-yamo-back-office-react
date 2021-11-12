@@ -1,4 +1,6 @@
 import React from "react";
+import dayjs from "dayjs";
+import * as Icon from "react-feather"
 import {Button, Card, Spinner} from "reactstrap";
 import PerfectScrollbar from "react-perfect-scrollbar";
 
@@ -9,13 +11,14 @@ import TicketUserItem from "./TicketUserItem";
 import {getCases, getUserProfile, getUserProfileImage} from "../../redux/actions/IndependentActions";
 
 class ChatSidebar extends React.Component {
-// props { activeChatId, mainSidebar, handleActiveChat, updateActiveUser }
+// props { activeChatId, mainSidebar, handleActiveChat, handleUserSidebar }
     constructor(props) {
         super(props);
         this.state = {
             error: null,
             feedbacks: [],
             loading: false,
+            date: dayjs()
         }
     }
 
@@ -26,7 +29,7 @@ class ChatSidebar extends React.Component {
     loadData = () => {
         // Init request
         this.setState({ loading: true, error: null, feedbacks: [] });
-        getCases()
+        getCases(this.state.date.format('YYYY/MM/DD'))
             .then(data => {
                 const feedbacks = data?.messages.map(f => new Feedback(f));
                 // Set feedbacks
@@ -66,11 +69,11 @@ class ChatSidebar extends React.Component {
     };
 
     onClickItem = (feedback) => {
-        const { handleActiveChat, mainSidebar, updateActiveUser } = this.props;
+        const { handleActiveChat, mainSidebar, handleUserSidebar } = this.props;
         const {id, user} = feedback;
-        handleActiveChat(id, user);
-        updateActiveUser(user)
         mainSidebar(false);
+        handleUserSidebar("open");
+        handleActiveChat(id, user);
     };
 
     updateFeedback = (feedback) => {
@@ -86,6 +89,20 @@ class ChatSidebar extends React.Component {
         });
     };
 
+    handlePrevDate = () => {
+        this.setState((prevState) => {
+            const tempDate = prevState.date;
+            return {date: tempDate.subtract(1, 'day')};
+        }, () => this.loadData());
+    }
+
+    handleNextDate = () => {
+        this.setState((prevState) => {
+            const tempDate = prevState.date;
+            return {date: tempDate.add(1, 'day')};
+        }, () => this.loadData());
+    }
+
     render() {
         const { feedbacks, error, loading } = this.state;
 
@@ -99,12 +116,17 @@ class ChatSidebar extends React.Component {
 
         return (
             <Card className="sidebar-content h-100">
-                <div className="chat-fixed-search">
+                <div className="chat-fixed-search h-100">
                     <div className="d-flex align-items-center">
-                        <Button
-                            onClick={this.loadData}
-                            color="primary">
-                            Refresh
+                        <Button color="primary" className="mr-2 rounded" onClick={this.loadData}>
+                            <Icon.RotateCcw size={15} /> Refresh
+                        </Button>
+                        <Button size="sm" color="primary" className="mr-1 rounded" onClick={this.handlePrevDate} title="Previous day">
+                            <Icon.ArrowLeft size={20} />
+                        </Button>
+                        <strong>{this.state.date.format('DD-MM-YYYY')}</strong>
+                        <Button size="sm" color="primary" className="ml-1 rounded" onClick={this.handleNextDate} title="Next day">
+                            <Icon.ArrowRight size={20} />
                         </Button>
                     </div>
                 </div>
