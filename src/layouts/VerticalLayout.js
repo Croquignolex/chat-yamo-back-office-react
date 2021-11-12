@@ -35,12 +35,7 @@ class VerticalLayout extends PureComponent {
 
   componentDidMount() {
     this.mounted = true;
-    let {
-      location: { pathname },
-      app: {
-        customizer: { theme, direction }
-      }
-    } = this.props;
+    let {location: { pathname }} = this.props;
 
     if (this.mounted) {
       if (window !== "undefined") {
@@ -49,11 +44,11 @@ class VerticalLayout extends PureComponent {
       if (this.collapsedPaths.includes(pathname)) {
         this.props.collapseSidebar(true);
       }
-
-      let layout = theme;
-      if (direction === "rtl")
+      let layout = "light";
+     /* if (direction === "rtl")
         document.getElementsByTagName("html")[0].setAttribute("dir", "rtl");
-      else document.getElementsByTagName("html")[0].setAttribute("dir", "ltr");
+      else document.getElementsByTagName("html")[0].setAttribute("dir", "ltr");*/
+      document.getElementsByTagName("html")[0].setAttribute("dir", "ltr");
       return layout === "dark"
         ? document.body.classList.add("dark-layout")
         : layout === "semi-dark"
@@ -63,14 +58,9 @@ class VerticalLayout extends PureComponent {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    let {
-      location: { pathname },
-      app: {
-        customizer: { theme, sidebarCollapsed }
-      }
-    } = this.props;
+    let {location: { pathname }} = this.props;
 
-    let layout = theme;
+    let layout = "light";
     if (this.mounted) {
       if (layout === "dark") {
         document.body.classList.remove("semi-dark-layout");
@@ -84,7 +74,7 @@ class VerticalLayout extends PureComponent {
         document.body.classList.remove("dark-layout", "semi-dark-layout");
       }
 
-      if (
+      /*if (
         prevProps.app.customizer.sidebarCollapsed !==
         this.props.app.customizer.sidebarCollapsed
       ) {
@@ -92,23 +82,19 @@ class VerticalLayout extends PureComponent {
           collapsedContent: sidebarCollapsed,
           sidebarState: sidebarCollapsed
         });
-      }
-      if (
-        prevProps.app.customizer.sidebarCollapsed ===
-          this.props.app.customizer.sidebarCollapsed &&
+      }*/
+      /*if (
         pathname !== prevProps.location.pathname &&
         this.collapsedPaths.includes(pathname)
       ) {
         this.props.collapseSidebar(true);
       }
       if (
-        prevProps.app.customizer.sidebarCollapsed ===
-          this.props.app.customizer.sidebarCollapsed &&
         pathname !== prevProps.location.pathname &&
         !this.collapsedPaths.includes(pathname)
       ) {
         this.props.collapseSidebar(false);
-      }
+      }*/
     }
   }
 

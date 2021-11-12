@@ -1,9 +1,10 @@
 import React from "react";
 import PropTypes from 'prop-types';
-import errorImg from "../assets/img/pages/500.png";
 import { Card, CardBody, Button, Row, Col } from "reactstrap";
 
-const Error500 = ({ title, content, linkText, onLinkClick }) => {
+import errorImg from "../assets/img/pages/500.png"
+
+const Error500 = ({ title, content, linkText, refresh, onLinkClick }) => {
     const _onLinkClick = e => {
         e.preventDefault();
         onLinkClick();
@@ -23,16 +24,11 @@ const Error500 = ({ title, content, linkText, onLinkClick }) => {
                         <p className="pt-2 mb-0">
                             {content}
                         </p>
-                        <Button.Ripple
-                            tag="a"
-                            // href="/"
-                            size="lg"
-                            color="primary"
-                            className="mt-2"
-                            onClick={_onLinkClick}
-                        >
-                            {linkText}
-                        </Button.Ripple>
+                        {refresh && (
+                            <Button.Ripple tag="a" size="lg" color="primary" className="mt-2" onClick={_onLinkClick}>
+                                {linkText}
+                            </Button.Ripple>
+                        )}
                     </CardBody>
                 </Card>
             </Col>
@@ -40,17 +36,19 @@ const Error500 = ({ title, content, linkText, onLinkClick }) => {
     );
 };
 Error500.propTypes = {
+    refresh: PropTypes.bool,
     title: PropTypes.string,
     content: PropTypes.string,
-    onLinkClick: PropTypes.func,
     linkText: PropTypes.string,
+    onLinkClick: PropTypes.func,
 };
 
 Error500.defaultProps = {
+    content: "We are sorry, unable to gat a response for this request.",
     title: "Something went wrong",
-    content: "We are sorry, the request is not available.",
     onLinkClick: () => null,
-    linkText: 'Try again'
+    linkText: 'Try again',
+    refresh: true
 };
 
 export default Error500;

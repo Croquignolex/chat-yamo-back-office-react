@@ -1,15 +1,15 @@
 import React from "react";
-import { X } from "react-feather";
+import {Button, Card, Spinner} from "reactstrap";
+import PerfectScrollbar from "react-perfect-scrollbar";
+
 import Error500 from "../Error500";
 import User from "../../models/User";
 import Feedback from "../../models/Feedback";
 import TicketUserItem from "./TicketUserItem";
-import {Button, Card, Spinner} from "reactstrap";
-import PerfectScrollbar from "react-perfect-scrollbar";
 import {getCases, getUserProfile, getUserProfileImage} from "../../redux/actions/IndependentActions";
 
 class ChatSidebar extends React.Component {
-// { activeChatId, mainSidebar, handleActiveChat, updateActiveUser }
+// props { activeChatId, mainSidebar, handleActiveChat, updateActiveUser }
     constructor(props) {
         super(props);
         this.state = {
@@ -24,92 +24,87 @@ class ChatSidebar extends React.Component {
     }
 
     loadData = () => {
+        // Init request
         this.setState({ loading: true, error: null, feedbacks: [] });
         getCases()
             .then(data => {
-                const feedbacks = data.messages
-                    .sort((a, b) => {
-                        // Feedbacks filter
-                        const newA = parseInt(a.createdAt, 10);
-                        const newB = parseInt(b.createdAt, 10);
-                        return newB - newA;
-                    })
-                    .map(f => new Feedback(f));
-
+                const feedbacks = data?.messages.map(f => new Feedback(f));
+                // Set feedbacks
                 this.setState({ feedbacks }, async () => {
                     for(const feedback of feedbacks) {
+                        // Async user data
                         await this.loadUserInfo(feedback);
                     }
                 });
             })
-            .catch((error) => this.setState({ error }))
+            .catch(error => this.setState({ error }))
             .finally(() => this.setState({ loading: false }));
     };
 
-    loadUserInfo = (responseFeedbackData) => {
+    loadUserInfo = (feedback) => {
         return new Promise((resolve) => {
-            getUserProfile(responseFeedbackData.userId)
-                .then(async (data) => {
-                    const responseUserData = new User(data);
-                    if(!responseUserData.isDeleted) {
-                        // User profile image
-                        const image = await getUserProfileImage(responseFeedbackData.userId);
-                        const base64ImageString = Buffer.from(image, 'binary').toString('base64');
-                        responseUserData.setAvatar = "data:image/jpg;base64," + base64ImageString;
-                    }
-                    responseFeedbackData.setUser = responseUserData;
-                    this.setState((prevState) => {
-                        const tempFeedbacks = prevState.feedbacks;
-                        tempFeedbacks.map((f) => {
-                            if(f.caseId === responseFeedbackData.caseId) {
-                                f = responseFeedbackData;
-                            }
-                            return f;
-                        })
-                        return {
-                            feedbacks: tempFeedbacks
-                        };
-                    });
-                    resolve()
+            const userId = feedback.userId;
+            getUserProfile(userId)
+                .then(async data => {
+                    const user = new User(data);
+                    try {
+                        if(!user.isDeleted) {
+                            // User profile image
+                            user.setAvatar = await getUserProfileImage(userId);
+                        }
+                    } catch (e) {}
+                    feedback.setUser = user;
+                    this.updateFeedback(feedback);
+                    resolve();
                 })
+                .catch(() => {
+                    feedback.setUser = new User({notFound: true});
+                    this.updateFeedback(feedback);
+                    resolve();
+                });
         })
     };
 
-    onClickItem = (caseId, user) => {
-        const { handleActiveChat, mainSidebar } = this.props;
-        // Update the chat log
-        handleActiveChat(caseId, user);
-        // Hide sidebar if opened
+    onClickItem = (feedback) => {
+        const { handleActiveChat, mainSidebar, updateActiveUser } = this.props;
+        const {id, user} = feedback;
+        handleActiveChat(id, user);
+        updateActiveUser(user)
         mainSidebar(false);
     };
 
-    render() {
+    updateFeedback = (feedback) => {
+        this.setState((prevState) => {
+            const tempFeedbacks = prevState.feedbacks;
+            tempFeedbacks.map((f) => {
+                if(f.id === feedback.id) {
+                    f = feedback;
+                }
+                return f;
+            })
+            return {feedbacks: tempFeedbacks};
+        });
+    };
 
+    render() {
         const { feedbacks, error, loading } = this.state;
-        const { updateActiveUser, activeChatId } = this.props;
 
         if(error) {
             return (
                 <Card className="sidebar-content h-100">
-                    <Error500 onLinkClick={this.loadData}/>
+                    <Error500 onLinkClick={this.loadData} />
                 </Card>
             )
         }
 
         return (
             <Card className="sidebar-content h-100">
-                <span
-                    className="sidebar-close-icon"
-                    onClick={() => this.props.mainSidebar(false)}
-                >
-                  <X size={15}/>
-                </span>
                 <div className="chat-fixed-search">
                     <div className="d-flex align-items-center">
                         <Button
                             onClick={this.loadData}
                             color="primary">
-                            Actualiser
+                            Refresh
                         </Button>
                     </div>
                 </div>
@@ -121,14 +116,14 @@ class ChatSidebar extends React.Component {
                             </div>
                         ) : (
                             <ul className="chat-users-list-wrapper media-list">
-                                {feedbacks.map(item => (
-                                    <TicketUserItem
-                                        feedback={item}
-                                        key={item.caseId}
-                                        updateActiveUser={updateActiveUser}
-                                        isActive={activeChatId === item.caseId}
-                                        onClickItem={user => this.onClickItem(item.caseId, user)}
-                                    />
+                                {feedbacks.map(feedback => (
+                                    <React.Fragment key={feedback.id}>
+                                        <TicketUserItem
+                                            feedback={feedback}
+                                            onClickItem={this.onClickItem}
+                                            activeChatId={this.props.activeChatId}
+                                        />
+                                    </React.Fragment>
                                 ))}
                             </ul>
                         )

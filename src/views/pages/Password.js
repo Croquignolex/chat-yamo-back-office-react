@@ -9,8 +9,9 @@ import {
     Card,
     Media,
     Button,
+    Spinner,
     CardBody,
-    FormGroup, Spinner
+    FormGroup
 } from "reactstrap"
 
 import { history } from "../../history";

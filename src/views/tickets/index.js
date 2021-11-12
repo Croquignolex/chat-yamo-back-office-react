@@ -1,11 +1,13 @@
 import React from "react"
-import ChatLog from "./ChatLog"
 import Sidebar from "react-sidebar"
-import ChatSidebar from "./ChatSidebar"
 import {withRouter} from "react-router-dom";
-import "../../assets/scss/pages/app-chat.scss"
+
+import ChatLog from "./ChatLog"
+import ChatSidebar from "./ChatSidebar"
 import ReceiverSidebar from "./receiverProfile"
 import {ContextLayout} from "../../utility/context/Layout"
+
+import "../../assets/scss/pages/app-chat.scss"
 
 const mql = window.matchMedia(`(min-width: 992px)`);
 
@@ -14,14 +16,14 @@ class Feedbacks extends React.Component {
         super(props);
 
         this.state = {
-            userProfile: false,
-            sidebarDocked: mql.matches,
+            activeUser: null,
+            activeChat: null,
             sidebarOpen: false,
             activeChatID: null,
-            activeChat: null,
-            activeUser: null,
+            userProfile: false,
+            userSidebar: false,
             receiverProfile: false,
-            userSidebar: false
+            sidebarDocked: mql.matches
         };
     }
 
@@ -31,33 +33,28 @@ class Feedbacks extends React.Component {
     };
 
     handleReceiverSidebar = status => {
-        this.setState({
-            receiverProfile: status === "open"
-        });
+        this.setState({receiverProfile: status === "open"});
     };
 
     handleActiveChat = (caseId, user) => {
-        this.setState({
-            activeChatID: caseId,
-            activeUser: user
-        });
+        this.setState({activeChatID: caseId, activeUser: user});
     };
 
-  UNSAFE_componentWillMount() {
-    mql.addListener(this.mediaQueryChanged)
-  }
+    onSetSidebarOpen = open => {
+        this.setState({ sidebarOpen: open })
+    }
 
-  componentWillUnmount() {
-    mql.removeListener(this.mediaQueryChanged)
-  }
+    mediaQueryChanged = () => {
+        this.setState({ sidebarDocked: mql.matches, sidebarOpen: false })
+    }
 
-  onSetSidebarOpen = open => {
-    this.setState({ sidebarOpen: open })
-  }
+    UNSAFE_componentWillMount() {
+        mql.addListener(this.mediaQueryChanged)
+    }
 
-  mediaQueryChanged = () => {
-    this.setState({ sidebarDocked: mql.matches, sidebarOpen: false })
-  }
+    componentWillUnmount() {
+        mql.removeListener(this.mediaQueryChanged)
+    }
 
   render() {
     return (
@@ -81,10 +78,10 @@ class Feedbacks extends React.Component {
             <Sidebar
               sidebar={
                 <ChatSidebar
+                    mainSidebar={this.onSetSidebarOpen}
                     activeChatId={this.state.activeChatID}
                     handleActiveChat={this.handleActiveChat}
                     handleUserSidebar={this.handleUserSidebar}
-                    mainSidebar={this.onSetSidebarOpen}
                 />
               }
               docked={this.state.sidebarDocked}

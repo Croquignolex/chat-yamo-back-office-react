@@ -64,9 +64,5 @@ class LoginJWT extends React.Component {
     )
   }
 }
-const mapStateToProps = state => {
-  return {
-    values: state.auth.login
-  }
-}
-export default connect(mapStateToProps, { setRequestGlobalAction, loginWithJWT })(LoginJWT)
+
+export default connect(null, { setRequestGlobalAction, loginWithJWT })(LoginJWT)

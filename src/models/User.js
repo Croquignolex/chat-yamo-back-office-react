@@ -1,14 +1,18 @@
+import {getUserProfileImage} from "../redux/actions/IndependentActions";
+
 export default class User {
     constructor(user) {
         Object.assign(this, user);
         this.id = this.userId;
+        this.notFound = this.notFound;
 
         if(this.isDeleted) this.avatar = require("../assets/img/user-remove.png");
         else this.avatar = require("../assets/img/unknown-user.png");
     }
 
-    set setAvatar(avatar) {
-        this.avatar = avatar
+    set setAvatar(image) {
+        const base64ImageString = Buffer.from(image, 'binary').toString('base64');
+        this.avatar = "data:image/jpg;base64," + base64ImageString;
     }
 
     get username() {
@@ -21,6 +25,10 @@ export default class User {
 
     get isDeleted() {
         return this.name === "chat_yamo_deleted_account";
+    }
+
+    get isNotFound() {
+        return this.notFound;
     }
 
     get localisation() {
