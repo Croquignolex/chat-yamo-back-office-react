@@ -23,7 +23,7 @@ class ChatInput extends Component {
 
     handleMsgSubmit = async (e) => {
         e.preventDefault();
-        const {activeChatID, activeUser, notifyChanges} = this.props;
+        const {activeChatID, activeUser} = this.props;
         const message = this.state.msg;
 
         if (message.length === 0) {
