@@ -72,7 +72,7 @@ const ChatLogContent = ({ activeUser, messages }) => {
             if (!areSameDay(prevMsgDate, currMsgDate)) {
                 return (
                     <div className="divider">
-                        <div className="divider-text">
+                        <div className="divider-text text-white bg-black rounded">
                             {currMsgDate.format('LL')}
                         </div>
                     </div>
@@ -81,14 +81,14 @@ const ChatLogContent = ({ activeUser, messages }) => {
         } else  {
             return (
                 <div className="divider">
-                    <div className="divider-text">
+                    <div className="divider-text text-white bg-black rounded">
                         {currMsgDate.format('LL')}
                     </div>
                 </div>
             )
         }
     };
-
+console.log({messages})
     return (
         <>
             {messages.map((message, index, arr) => {

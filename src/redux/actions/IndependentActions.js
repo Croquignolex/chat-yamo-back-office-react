@@ -21,17 +21,17 @@ export const getUserProfile = async (userId) => {
     return makeRequest('get', joinBaseUrlWithParams(USERS.GET_ONE, [{param: 'userId', value: userId}]));
 };
 
-export const createMedia = async (userId, data) => {
+export const createMedia = async (userId, file) => {
     const url = joinBaseUrlWithParams(
         MEDIA.CHATROOMS.CREATE,
         [
             {param: 'chatroomId', value: `${userId}:${REACT_APP_CHAT_BACKOFFICE_USER_ID}`}
         ]
     );
-    return makeRequest('put', url, data, {shouldParseFormData: true, fileData: ['picture']});
+    return makeRequest('put', url, {picture: file}, {shouldParseFormData: true, fileData: ['picture']});
 };
 
-export const sendMessage = async (userId, data) => {
+export const sendMessage = async (userId, feedbackText, mediaId = null) => {
     const url = joinBaseUrlWithParams(
         TICKETS.MESSAGES.SEND,
         [
@@ -39,7 +39,7 @@ export const sendMessage = async (userId, data) => {
             {param: 'userId', value: userId},
         ]
     );
-    return makeRequest('post', url, data);
+    return makeRequest('post', url, {feedbackText, mediaId});
 };
 
 export const getUserProfileImage = async (userId) => {

@@ -86,9 +86,13 @@ class ChatLog extends React.Component {
     };
 
     notifyChanges = (message) => {
-        console.log({message})
         const messages = [...this.state.messages];
-        messages.push(message);
+        const messageIndex = messages.findIndex(m => m.id === message.id);
+        // Update
+        if (messageIndex === -1) messages.push(message);
+        else {
+            messages[messageIndex] = message;
+        }
         this.setState(({ messages }));
     };
 
@@ -171,8 +175,8 @@ class ChatLog extends React.Component {
                                         </PerfectScrollbar>
                                         <div className="chat-app-form">
                                             <ChatInput
-                                                caseId={activeChatID}
-                                                userId={activeUser.id}
+                                                activeUser={activeUser}
+                                                activeChatID={activeChatID}
                                                 notifyChanges={this.notifyChanges}
                                             />
                                         </div>

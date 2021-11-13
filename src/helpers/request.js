@@ -28,7 +28,6 @@ export const errorManager = (errors, customOptions = null) => {
             });
         } else {
             const errorItem = errorItems.find(e => e.CODE === errors.message);
-            console.log("errorItem => ", {errorItem, errors});
             if (errorItem) {
                 NotificationManager.error(formatMessage(errorItem.MESSAGE));
                 found = true;

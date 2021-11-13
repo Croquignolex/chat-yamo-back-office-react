@@ -1,14 +1,16 @@
-import MediaInput from "./MediaInput";
 import React, {Component} from 'react';
 import {Paperclip, Send} from "react-feather";
-import Message from "../../../models/Message";
 import {Button, FormGroup, Input} from "reactstrap";
-import {getUniqueId} from "../../../helpers/helpers";
 import {NotificationManager} from "react-notifications";
+
+import MediaInput from "./MediaInput";
+import Message from "../../../models/Message";
+import {getUniqueId} from "../../../helpers/helpers";
 import {REACT_APP_CHAT_BACKOFFICE_USER_ID} from "../../../configs/AppConfig";
 import {createMedia, sendMessage} from "../../../redux/actions/IndependentActions";
 
 class ChatInput extends Component {
+    // props { activeChatID, activeUser, notifyChanges }
     state = {
         msg: '',
         show: false
@@ -19,94 +21,89 @@ class ChatInput extends Component {
         this.setState({msg: e.target.value});
     };
 
-    handleMsgSubmit = async (file = null) => {
-        const {caseId, userId, notifyChanges} = this.props;
+    handleMsgSubmit = async (e) => {
+        e.preventDefault();
+        const {activeChatID, activeUser, notifyChanges} = this.props;
         const message = this.state.msg;
-        const authorId = REACT_APP_CHAT_BACKOFFICE_USER_ID;
 
-        if (!file && message.length === 0) {
-            NotificationManager.warning("Vous devez remplir le champ message");
+        if (message.length === 0) {
+            NotificationManager.warning("Message body can not be empty");
             return;
         }
 
-        // Reset input and hide modal to show outgoing message
-        this.toggleMediaInput();
         this.resetMessage();
 
         const _msg = {
-            userId,
-            caseId,
-            mediaId: file ? "ok" : null,
+            userId: activeUser.id,
+            caseId: activeChatID,
+            mediaId: null,
             content: message,
             messageId: getUniqueId(),
-            authorId: authorId,
+            authorId: REACT_APP_CHAT_BACKOFFICE_USER_ID,
             createdAt: Date.now(),
             request: {
                 loading: true,
                 error: null,
-                data: null
+                data: message
             }
         };
 
-        notifyChanges(new Message(_msg));
-
-        let mediaId;
-
-        if (file) {
-            try {
-                const res = await createMedia(userId, {picture: file});
-                if (res && res.mediaId) {
-                    mediaId = res.mediaId;
-                }
-            } catch (e) {
-                const responseMessage = new Message({
-                    ..._msg,
-                    request: {
-                        ..._msg.request,
-                        loading: false,
-                        data: null,
-                        error: e.message || "An error occurred"
-                    }
-                });
-                notifyChanges(responseMessage);
-                return;
-            }
-        }
-        const data = {feedbackText: message};
-        if (mediaId) {
-            data.mediaId = mediaId;
-        }
-
-        try {
-            await sendMessage(this.props.userId, data);
-            const responseMessage = new Message({
-                ..._msg,
-                mediaId,
-                request: {
-                    ..._msg.request,
-                    loading: false,
-                    data: "ok",
-                    error: null
-                }
-            });
-            if (mediaId) {
-                responseMessage.setMedia = file.preview;
-            }
-            notifyChanges(responseMessage);
-        } catch (e) {
-            const responseMessage = new Message({
-                ..._msg,
-                mediaId,
-                request: {
-                    ..._msg.request,
-                    loading: false,
-                    data: null,
-                    error: e.message || "An error occurred"
-                }
-            });
-            notifyChanges(responseMessage);
-        }
+        this.sendPlainMessage(_msg)
     };
+
+    handleMsgWithFileSubmit = (file = null) => {
+        const {activeChatID, activeUser, notifyChanges} = this.props;
+        const message = this.state.msg;
+
+        if (!file && message.length === 0) {
+            NotificationManager.warning("Message body can not be empty");
+            return;
+        }
+
+        this.toggleMediaInput();
+        this.resetMessage();
+
+        const _msg = {
+            userId: activeUser.id,
+            caseId: activeChatID,
+            mediaId: null,
+            content: message,
+            messageId: getUniqueId(),
+            authorId: REACT_APP_CHAT_BACKOFFICE_USER_ID,
+            createdAt: Date.now(),
+            request: {
+                loading: true,
+                error: null,
+                data: message
+            }
+        };
+
+        if(!file) this.sendPlainMessage(_msg);
+        else {
+            // Update
+            const withMedia = new Message(_msg);
+            withMedia.setPlainMedia = file.preview;
+            notifyChanges(withMedia);
+            // Create media
+            createMedia(activeUser.id, file)
+                .then((data) => {
+                    sendMessage(activeUser.id, message, data.mediaId)
+                        .then(() => notifyChanges(new Message({ ..._msg, request: {..._msg.request, loading: false} })))
+                        .catch(error => notifyChanges(new Message({ ..._msg, request: {..._msg.request, error, loading: false} })))
+                })
+                .catch(error => notifyChanges(new Message({ ..._msg, request: {..._msg.request, error, loading: false }})))
+        }
+
+    };
+
+    sendPlainMessage = (_msg) => {
+        const {activeUser, notifyChanges} = this.props;
+        notifyChanges(new Message(_msg));
+        // Send request
+        sendMessage(activeUser.id, _msg.content)
+            .then(() => notifyChanges(new Message({ ..._msg, request: {..._msg.request, loading: false} })))
+            .catch(error => notifyChanges(new Message({ ..._msg, request: {..._msg.request, error, loading: false} })))
+    }
 
     toggleMediaInput = (show) => {
         this.setState({show});
@@ -121,12 +118,7 @@ class ChatInput extends Component {
 
         return (
             <>
-                <form
-                    className="chat-app-input d-flex align-items-center"
-                    onSubmit={e => {
-                        e.preventDefault();
-                        this.handleMsgSubmit();
-                    }}>
+                <form className="chat-app-input d-flex align-items-center" onSubmit={this.handleMsgSubmit}>
                     <FormGroup className="position-relative has-icon-left mr-1 ml-50 w-100 mb-0">
                         <Input
                             type="text"
@@ -143,14 +135,14 @@ class ChatInput extends Component {
                     </FormGroup>
                     <Button color="primary">
                         <Send className="d-lg-none" size={15} />
-                        <span className="d-lg-block d-none">Envoyer</span>
+                        <span className="d-lg-block d-none">Send</span>
                     </Button>
                 </form>
                 <MediaInput
                     show={show}
                     message={msg}
                     onMsgChange={this.onChangeMsg}
-                    onSubmit={this.handleMsgSubmit}
+                    onSubmit={this.handleMsgWithFileSubmit}
                     onClose={() => this.toggleMediaInput(false)}
                 />
             </>

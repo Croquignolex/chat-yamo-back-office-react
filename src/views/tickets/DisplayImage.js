@@ -8,7 +8,7 @@ const Wrapper = styled.div`
 const DisplayImage = ({src, className = ''}) => {
     return (
         <div className={`c-image ${className}`}>
-            <Wrapper src={src} className="c-image-content"/>
+            <Wrapper src={src} className="c-image-content rounded"/>
         </div>
     );
 };
