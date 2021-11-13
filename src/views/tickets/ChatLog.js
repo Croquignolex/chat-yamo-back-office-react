@@ -11,7 +11,7 @@ import ChatInput from "./messages-inputs/ChatInput";
 import {getCaseMessages, getMessageImage} from "../../redux/actions/IndependentActions";
 
 class ChatLog extends React.Component {
-    // props { mql, activeChatID, activeUser, mainSidebar, handleReceiverSidebar }
+    // props { activeChatID, activeUser, mainSidebar, handleReceiverSidebar }
     constructor(props) {
         super(props);
         this.state = {

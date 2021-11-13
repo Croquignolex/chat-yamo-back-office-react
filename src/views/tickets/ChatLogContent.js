@@ -88,7 +88,7 @@ const ChatLogContent = ({ activeUser, messages }) => {
             )
         }
     };
-console.log({messages})
+
     return (
         <>
             {messages.map((message, index, arr) => {

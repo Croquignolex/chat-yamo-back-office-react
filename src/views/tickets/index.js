@@ -95,7 +95,6 @@ class Feedbacks extends React.Component {
           )}
         </ContextLayout.Consumer>
         <ChatLog
-            mql={mql}
             activeUser={this.state.activeUser}
             mainSidebar={this.onSetSidebarOpen}
             activeChatID={this.state.activeChatID}

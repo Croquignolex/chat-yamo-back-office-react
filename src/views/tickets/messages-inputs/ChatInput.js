@@ -81,28 +81,44 @@ class ChatInput extends Component {
         if(!file) this.sendPlainMessage(_msg);
         else {
             // Update
-            const withMedia = new Message(_msg);
-            withMedia.setPlainMedia = file.preview;
-            notifyChanges(withMedia);
+            const messageWithMedia = new Message(_msg);
+            messageWithMedia.setPlainMedia = file.preview;
+            notifyChanges(messageWithMedia);
             // Create media
             createMedia(activeUser.id, file)
                 .then((data) => {
                     sendMessage(activeUser.id, message, data.mediaId)
-                        .then(() => notifyChanges(new Message({ ..._msg, request: {..._msg.request, loading: false} })))
-                        .catch(error => notifyChanges(new Message({ ..._msg, request: {..._msg.request, error, loading: false} })))
+                        .then(() => {
+                            messageWithMedia.seRequest = {..._msg.request, loading: false};
+                            notifyChanges(messageWithMedia);
+                        })
+                        .catch(error => {
+                            messageWithMedia.seRequest = {..._msg.request, error, loading: false};
+                            notifyChanges(messageWithMedia);
+                        });
                 })
-                .catch(error => notifyChanges(new Message({ ..._msg, request: {..._msg.request, error, loading: false }})))
+                .catch(error => {
+                    messageWithMedia.seRequest = {..._msg.request, error, loading: false};
+                    notifyChanges(messageWithMedia);
+                });
         }
 
     };
 
     sendPlainMessage = (_msg) => {
         const {activeUser, notifyChanges} = this.props;
-        notifyChanges(new Message(_msg));
+        const plainMessage = new Message(_msg);
+        notifyChanges(plainMessage);
         // Send request
         sendMessage(activeUser.id, _msg.content)
-            .then(() => notifyChanges(new Message({ ..._msg, request: {..._msg.request, loading: false} })))
-            .catch(error => notifyChanges(new Message({ ..._msg, request: {..._msg.request, error, loading: false} })))
+            .then(() => {
+                plainMessage.seRequest = {..._msg.request, loading: false};
+                notifyChanges(plainMessage);
+            })
+            .catch(error => {
+                plainMessage.seRequest = {..._msg.request, error, loading: false};
+                notifyChanges(plainMessage);
+            });
     }
 
     toggleMediaInput = (show) => {
