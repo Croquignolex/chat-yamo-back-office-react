@@ -5,7 +5,6 @@ import {REACT_APP_CHAT_BACKOFFICE_USER_ID} from "../configs/AppConfig";
 export default class Message {
     constructor(message) {
         Object.assign(this, message);
-        this.createdDate = dayjs(message.createdAt);
         this.id = message.messageId;
 
         if(this.mediaId) {
@@ -40,5 +39,9 @@ export default class Message {
 
     get createdTime() {
         return this.createdDate.format("HH:mm");
+    }
+
+    get createdDate() {
+        return this.createdAt ? dayjs(this.createdAt) : dayjs();
     }
 }

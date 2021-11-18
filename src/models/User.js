@@ -1,6 +1,9 @@
+import dayjs from "dayjs";
+
 export default class User {
     constructor(user) {
         Object.assign(this, user);
+
         this.id = this.userId;
 
         if(this.isDeleted) this.avatar = require("../assets/img/user-remove.png");
@@ -10,6 +13,10 @@ export default class User {
     set setAvatar(image) {
         const base64ImageString = Buffer.from(image, 'binary').toString('base64');
         this.avatar = "data:image/jpg;base64," + base64ImageString;
+    }
+
+    set setLastMessageTime(time) {
+        this.lastMessageTime = time;
     }
 
     get username() {
@@ -30,6 +37,14 @@ export default class User {
 
     get localisation() {
         return `${this.city}, ${this.country}`;
+    }
+
+    get subscriptionEndDate() {
+        return this.subscriptionEnd && dayjs(this.subscriptionEnd).format('LL');
+    }
+
+    get isSubscriptionAvailable() {
+        return this.subscriptionEnd && dayjs().isAfter(dayjs(this.subscriptionEnd));
     }
 
     get getStatus() {

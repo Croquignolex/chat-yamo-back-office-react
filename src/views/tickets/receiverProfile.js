@@ -43,13 +43,19 @@ class ReceiverProfile extends React.Component {
               <div className="user-info-title font-weight-bold">
                 Premium
               </div>
-              <div>{activeUser.isPremium ? 'Yes' : 'No'}</div>
+              {(activeUser.isPremium)
+                  ? <div className="font-weight-bold text-success">Yes</div>
+                  : <div className="font-weight-bold text-danger">No</div>
+              }
             </div>
             <div className="d-flex user-info">
               <div className="user-info-title font-weight-bold">
                 Verified
               </div>
-              <div>{activeUser.verified ? 'Yes' : 'No'}</div>
+              {(activeUser.verified)
+                  ? <div className="font-weight-bold text-success">Yes</div>
+                  : <div className="font-weight-bold text-danger">No</div>
+              }
             </div>
             <div className="d-flex user-info">
               <div className="user-info-title font-weight-bold">
@@ -92,6 +98,21 @@ class ReceiverProfile extends React.Component {
                 Greeting text
               </div>
               <div>{activeUser.greetingText}</div>
+            </div>
+            <div className="d-flex user-info">
+              <div className="user-info-title font-weight-bold">
+                End subcription
+              </div>
+              {(activeUser.verified)
+                  ? <div className="font-weight-bold text-success">{activeUser.subscriptionEndDate}</div>
+                  : <div className="font-weight-bold text-danger">{activeUser.subscriptionEndDate}</div>
+              }
+            </div>
+            <div className="d-flex user-info">
+              <div className="user-info-title font-weight-bold">
+                User ID
+              </div>
+              <div className="font-weight-bold text-primary">{activeUser.id}</div>
             </div>
           </div>
         </PerfectScrollbar>
