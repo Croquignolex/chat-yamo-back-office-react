@@ -22,14 +22,14 @@ export const errorManager = (errors, customOptions = null) => {
             errors.forEach(error => {
                 const errorItem = errorItems.find(e => e.CODE === error.message);
                 if (errorItem) {
-                    NotificationManager.error(formatMessage(errorItem.MESSAGE));
+                    NotificationManager.error(formatMessage(errorItem.MESSAGE), null, 300);
                     found = true;
                 }
             });
         } else {
             const errorItem = errorItems.find(e => e.CODE === errors.message);
             if (errorItem) {
-                NotificationManager.error(formatMessage(errorItem.MESSAGE));
+                NotificationManager.error(formatMessage(errorItem.MESSAGE), null, 300);
                 found = true;
             }
         }
@@ -37,6 +37,6 @@ export const errorManager = (errors, customOptions = null) => {
 
     // Display Error 500 in case of no match
     if (!found) {
-        NotificationManager.error(formatMessage(ERROR_500));
+        NotificationManager.error(formatMessage(ERROR_500), null, 300);
     }
 };

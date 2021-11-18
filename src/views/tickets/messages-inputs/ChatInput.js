@@ -27,7 +27,7 @@ class ChatInput extends Component {
         const message = this.state.msg;
 
         if (message.length === 0) {
-            NotificationManager.warning("Message body can not be empty");
+            NotificationManager.warning("Message body can not be empty", null, 5000);
             return;
         }
 
@@ -56,7 +56,7 @@ class ChatInput extends Component {
         const message = this.state.msg;
 
         if (!file && message.length === 0) {
-            NotificationManager.warning("Message body can not be empty");
+            NotificationManager.warning("Message body can not be empty", null, 5000);
             return;
         }
 

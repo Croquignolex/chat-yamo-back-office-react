@@ -35,7 +35,7 @@ class Password extends React.Component {
         changePassword(oldpass, newpass, this.props.backOfficeUserId)
             .then(() => {
                 resetForm({values: ''});
-                NotificationManager.success("Password successfully changed, you need to connect back");
+                NotificationManager.success("Password successfully changed, you need to connect back", null, 5000);
                 setTimeout(() => {
                     // Redirect to login page after 2 seconds
                     this.props.logoutWithJWT()

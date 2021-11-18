@@ -234,10 +234,10 @@ export const copyToClipboard = (text) => {
                 textField.remove();
             }
 
-            NotificationManager.success("Lien copié");
+            NotificationManager.success("Lien copié", null, 5000);
             resolve();
         } catch (e) {
-            NotificationManager.error("Impossible de copier le lien");
+            NotificationManager.error("Impossible de copier le lien", null, 5000, null, true);
             reject();
         }
     })

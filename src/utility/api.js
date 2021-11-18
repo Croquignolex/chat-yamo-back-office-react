@@ -69,6 +69,7 @@ customAxios.interceptors.response.use(
     },
     error => {
         const originalRequest = error.config;
+        console.log({error})
         if (error) {
             if (error.response) {
                 if (!originalRequest.skipError) {
@@ -77,26 +78,26 @@ customAxios.interceptors.response.use(
                             errorManager(error.response.data);
                             return Promise.reject(error);
                         case 401:
-                            NotificationManager.error(formatMessage(ERROR_401));
+                            NotificationManager.error(formatMessage(ERROR_401), null, 300);
                             return Promise.reject(error);
                         case 403:
-                            NotificationManager.error(formatMessage(ERROR_403));
+                            NotificationManager.error(formatMessage(ERROR_403), null, 300);
                             // With redirect to login page (consider rooter)
                             removeAuthToken();
                             return Promise.reject(error);
                         case 404:
-                            NotificationManager.error(formatMessage(ERROR_404));
+                            NotificationManager.error(formatMessage(ERROR_404), null, 300);
                             return Promise.reject(error);
                         case 500:
-                            NotificationManager.error(formatMessage(ERROR_500));
+                            NotificationManager.error(formatMessage(ERROR_500), null, 300);
                             return Promise.reject(error);
                         default:
-                            NotificationManager.error(formatMessage(ERROR_500));
+                            NotificationManager.error(formatMessage(ERROR_500), null, 300);
                             return Promise.reject(error);
                     }
                 }
-            } else if (!originalRequest.skipError) NotificationManager.error(formatMessage(ERROR_UNKNOWN));
-        } else if (!originalRequest.skipError) NotificationManager.error(formatMessage(ERROR_UNKNOWN));
+            } else if (!originalRequest.skipError) NotificationManager.error(formatMessage(ERROR_UNKNOWN), null, 300);
+        } else if (!originalRequest.skipError) NotificationManager.error(formatMessage(ERROR_UNKNOWN), null, 300);
 
         return Promise.reject(error);
     });
