@@ -137,8 +137,8 @@ class ChatInput extends Component {
                 <form className="chat-app-input d-flex align-items-center" onSubmit={this.handleMsgSubmit}>
                     <FormGroup className="position-relative has-icon-left mr-1 ml-50 w-100 mb-0">
                         <Input
-                            type="text"
                             value={msg}
+                            type="textarea"
                             className="message"
                             placeholder="Type your message"
                             onChange={this.onChangeMsg}
