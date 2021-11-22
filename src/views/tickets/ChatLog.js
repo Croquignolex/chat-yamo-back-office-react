@@ -44,7 +44,7 @@ class ChatLog extends React.Component {
                     const messages = data?.messages
                         .sort((a, b) => a.createdAt - b.createdAt)
                         .map(m => new Message(m));
- ;
+
                     // Set messages
                     this.setState({ messages }, async () => {
                         for(const message of messages) {
@@ -170,12 +170,13 @@ class ChatLog extends React.Component {
                                     <>
                                         <PerfectScrollbar
                                             className="user-chats"
+                                            ref={el => {this.chatArea = el}}
                                             options={{ wheelPropagation: false }}
-                                            ref={el => {this.chatArea = el}}>
+                                        >
                                             <div className="chats">
                                                 <ChatLogContent messages={messages} activeUser={activeUser} />
                                             </div>
-                                        </PerfectScrollbar>
+                                        </PerfectScrollbar >
                                         <div className="chat-app-form">
                                             <ChatInput
                                                 activeUser={activeUser}
