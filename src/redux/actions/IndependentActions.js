@@ -6,7 +6,8 @@ import {
     TICKETS,
     AUTH,
     joinBaseUrlWithParams,
-    joinBaseUrlWithRequestParams
+    joinBaseUrlWithRequestParams,
+    IMAGE_VALIDATIONS
 } from "../../utility/urls/backend";
 
 export const getCases = async (date) => {
@@ -15,6 +16,10 @@ export const getCases = async (date) => {
 
 export const getCaseMessages = async (userId) => {
     return makeRequest('get', joinBaseUrlWithParams(TICKETS.GET_ONE, [{param: 'userId', value: userId}]));
+};
+
+export const getUserImages = async (userId) => {
+    return makeRequest('get', joinBaseUrlWithParams(IMAGE_VALIDATIONS.GET_ALL, [{param: 'userId', value: userId}]));
 };
 
 export const getUserProfile = async (userId) => {

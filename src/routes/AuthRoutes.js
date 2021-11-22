@@ -12,6 +12,7 @@ const AuthRoutes = () => {
             <RouteWrapper exact path={APP.HOME} component={DynamicImports.Welcome} />
             <RouteWrapper path={AUTH.PASSWORD} component={DynamicImports.Password} />
             <RouteWrapper path={APP.FEEDBACKS} component={DynamicImports.Feedbacks} />
+            <RouteWrapper path={APP.IMAGE_VERIFICATION} component={DynamicImports.ImageVerification} />
             <Redirect to={{ pathname: APP.HOME }} />
         </Switch>
     );
