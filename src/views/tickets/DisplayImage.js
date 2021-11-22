@@ -1,4 +1,5 @@
-import React from 'react';
+import {Modal} from "reactstrap"
+import React, {useState} from 'react';
 import styled from "styled-components";
 
 const Wrapper = styled.div`
@@ -6,10 +7,23 @@ const Wrapper = styled.div`
 `;
 
 const DisplayImage = ({src, className = ''}) => {
+    const [modal, setModal] = useState(false);
+
+    const toggleModal = () => {
+        setModal(!modal);
+    };
+
     return (
-        <div className={`c-image ${className}`}>
-            <Wrapper src={src} className="c-image-content rounded"/>
-        </div>
+        <>
+            <div className={`c-image ${className}`}>
+                <Wrapper src={src} className="c-image-content rounded-top"  onClick={toggleModal} />
+            </div>
+
+            {/* Modal */}
+            <Modal isOpen={modal} toggle={toggleModal} className="modal-dialog-centered">
+                <img src={src} alt="..."/>
+            </Modal>
+        </>
     );
 };
 
