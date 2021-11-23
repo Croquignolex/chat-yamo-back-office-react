@@ -29,7 +29,7 @@ class SidebarHeader extends Component {
               {collapsed === false ? (
                 <Disc
                   onClick={() => {
-                    toggleSidebarMenu(true)
+                    // toggleSidebarMenu(true)
                     toggle()
                   }}
                   className={classnames(
@@ -49,7 +49,7 @@ class SidebarHeader extends Component {
               ) : (
                 <Circle
                   onClick={() => {
-                    toggleSidebarMenu(false)
+                    // toggleSidebarMenu(false)
                     toggle()
                   }}
                   className={classnames(

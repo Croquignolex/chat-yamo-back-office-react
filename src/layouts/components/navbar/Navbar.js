@@ -18,7 +18,7 @@ const ThemeNavbar = props => {
               <div className="bookmark-wrapper" />
               <NavbarUser
                   userImg={userImg}
-                  userName={props.authUser?.name}
+                  authUser={props.authUser}
                   logoutWithJWT={props.logoutWithJWT}
               />
             </div>

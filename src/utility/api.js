@@ -84,7 +84,7 @@ customAxios.interceptors.response.use(
                             NotificationManager.error(formatMessage(ERROR_403), null, 300);
                             // With redirect to login page (consider rooter)
                             removeAuthToken();
-                            return Promise.reject(error);
+                            return window.location.reload();
                         case 404:
                             NotificationManager.error(formatMessage(ERROR_404), null, 300);
                             return Promise.reject(error);
