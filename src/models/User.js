@@ -40,7 +40,7 @@ export default class User {
     }
 
     get localisation() {
-        return `${this.city}, ${this.country}`;
+        return this.isDeleted ? "" : `${this.city}, ${this.country}`;
     }
 
     get subscriptionEndDate() {
