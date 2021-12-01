@@ -50,7 +50,8 @@ class ChatSidebar extends React.Component {
             getUserProfile(userId)
                 .then(async data => {
                     const user = new User(data);
-                    user.setLastMessageTime = feedback.createdDate.format("HH:mm")
+                    user.setLastMessageTime = feedback.createdDate.format("HH:mm");
+                    user.setId = userId;
                     try {
                         if(!user.isDeleted) {
                             // User profile image

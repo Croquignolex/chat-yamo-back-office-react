@@ -19,6 +19,10 @@ export default class User {
         this.lastMessageTime = time;
     }
 
+    set setId(id) {
+        this.id = id;
+    }
+
     get username() {
         return this.name;
     }
