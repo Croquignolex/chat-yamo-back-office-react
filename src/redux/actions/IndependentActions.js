@@ -18,8 +18,8 @@ export const getCaseMessages = async (userId) => {
     return makeRequest('get', joinBaseUrlWithParams(TICKETS.GET_ONE, [{param: 'userId', value: userId}]));
 };
 
-export const getUserImages = async (userId) => {
-    return makeRequest('get', joinBaseUrlWithParams(IMAGE_VALIDATIONS.GET_ALL, [{param: 'userId', value: userId}]));
+export const getUserImages = async (userId = null) => {
+    return makeRequest('get', joinBaseUrlWithParams(IMAGE_VALIDATIONS.GET_ALL, [{param: 'CHAT-ET-YAMO-MEDIA-SERVICE-ALL-USER-IMAGES', value: true}, {param: 'CHAT-ET-YAMO-MEDIA-SERVICE-PRE-SIGNED-URL', value: true}]));
 };
 
 export const getUserProfile = async (userId) => {

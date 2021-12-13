@@ -4,7 +4,6 @@ import {withRouter} from "react-router-dom";
 
 import ImageLog from "./ImageLog"
 import ChatSidebar from "./ChatSidebar"
-import ReceiverSidebar from "./receiverProfile"
 import {ContextLayout} from "../../utility/context/Layout"
 
 import "../../assets/scss/pages/app-chat.scss"
@@ -59,7 +58,6 @@ class ImageVerification extends React.Component {
 
 
   render() {
-    console.log("state ", this.state);
     return (
       <div className="chat-application position-relative">
         <div

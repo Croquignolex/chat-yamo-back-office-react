@@ -19,7 +19,7 @@ export const IMAGE_VALIDATIONS = {
     VALIDATE_ONE: '/feedbacks/{userId}/case',
     UNVALIDATE_ONE: '/feedbacks/{userId}/case',
     CANCEL_ONE: '/feedbacks/{userId}/case',
-    GET_ALL: '/service/media/users/toBeVerifiedMedia',
+    GET_ALL: '/media/users/toBeVerifiedMedia',
 };
 
 export const USERS = {
