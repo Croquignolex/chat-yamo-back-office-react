@@ -22,7 +22,8 @@ class ImageVerification extends React.Component {
             userProfile: false,
             userSidebar: false,
             receiverProfile: false,
-            sidebarDocked: mql.matches
+            sidebarDocked: mql.matches,
+            deletedImages: []
         };
     }
 
@@ -36,7 +37,29 @@ class ImageVerification extends React.Component {
     };
 
     handleActiveChat = (caseId, user) => {
-        this.setState({activeChatID: caseId, activeUser: user});
+        let nextUser = null;
+
+        if(user !== null && user.images) {
+            // Remove deleted images in list
+            let tempImages = user.images.filter((i) => {
+                let flag = true;
+                this.state.deletedImages.forEach((_i) => {
+                    if(_i.mediaId === i.mediaId) flag = false;
+                })
+                return flag;
+            });
+            nextUser = {...user, images: tempImages};
+        }
+
+        this.setState({activeChatID: caseId, activeUser: nextUser});
+    };
+
+    handleRemoveImage = (image) => {
+        this.setState((prevState) => {
+            const tempImages = prevState.deletedImages;
+            tempImages.push(image);
+            return {deletedImages: tempImages};
+        });
     };
 
     onSetSidebarOpen = open => {
@@ -54,7 +77,7 @@ class ImageVerification extends React.Component {
     componentWillUnmount() {
         mql.removeListener(this.mediaQueryChanged)
     }
-    
+
 
 
   render() {
@@ -99,6 +122,7 @@ class ImageVerification extends React.Component {
             activeUser={this.state.activeUser}
             mainSidebar={this.onSetSidebarOpen}
             activeChatID={this.state.activeChatID}
+            handleRemoveImage={this.handleRemoveImage}
             handleReceiverSidebar={this.handleReceiverSidebar}
         />
       </div>

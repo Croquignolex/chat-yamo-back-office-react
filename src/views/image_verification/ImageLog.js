@@ -1,16 +1,10 @@
 import React from "react"
 import ReactDOM from "react-dom"
-import {
-    Carousel,
-    CarouselItem,
-    CarouselControl,
-    CarouselIndicators, Spinner
-} from "reactstrap";
-import { Image, CheckCircle, XCircle, Trash2} from "react-feather";
-import {deleteUserImage, verifyUserImage} from "../../redux/actions/IndependentActions";
 import {NotificationManager} from "react-notifications";
-import {formatMessage} from "../../helpers/helpers";
-import {ERROR_404} from "../../data/errors";
+import { Image, CheckCircle, XCircle, Trash2} from "react-feather";
+import {Carousel, CarouselItem, CarouselControl, CarouselIndicators, Spinner} from "reactstrap";
+
+import {deleteUserImage, verifyUserImage} from "../../redux/actions/IndependentActions";
 
 class ImageLog extends React.Component {
     // props { activeChatID, activeUser, mainSidebar, handleReceiverSidebar }
@@ -72,7 +66,7 @@ class ImageLog extends React.Component {
     }
 
     loadData = () => {
-        const {activeChatID, activeUser} = this.props;
+        const {activeUser} = this.props;
 
         if(activeUser != null){
             this.setState({images: activeUser.images});
@@ -94,6 +88,7 @@ class ImageLog extends React.Component {
         verifyUserImage(image.userId, image.mediaId, image.mediaPath, 'true')
             .then(() => {
                 // Remove image from array
+                this.removeImageFormState(image)
                 NotificationManager.success("Image has been successfully validated", null);
             })
             .catch((error) => console.log("error ", error))
@@ -106,6 +101,7 @@ class ImageLog extends React.Component {
         verifyUserImage(image.userId, image.mediaId, image.mediaPath, 'false')
             .then(() => {
                 // Remove image from array
+                this.removeImageFormState(image)
                 NotificationManager.success("Image has been successfully unvalidated", null);
             })
             .catch((error) => console.log("error ", error))
@@ -118,10 +114,19 @@ class ImageLog extends React.Component {
         deleteUserImage(image.userId, image.mediaId)
             .then(() => {
                 // Remove image from array
+                this.removeImageFormState(image)
                 NotificationManager.success("Image has been successfully deleted", null);
             })
             .catch((error) => console.log("error ", error))
             .finally(() => this.setState({ loading: false }));
+    };
+
+    removeImageFormState = (image) => {
+        this.setState((prevState) => {
+            const tempImages = prevState.images.filter((i) => i.mediaId !== image.mediaId);
+            return {images: tempImages};
+        });
+        this.props.handleRemoveImage(image);
     };
 
     render() {
