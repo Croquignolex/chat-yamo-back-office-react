@@ -9,7 +9,7 @@ const TicketUserItem = ({ user, activeChatId, onClickItem }) => {
 
     if (Array.isArray(user)) return <li><Spinner color="primary" /></li>;
 
-    if (Array.isArray(user)) return <li><Error500 refresh={false} /></li>;
+    if (user.isNotFound) return <li><Error500 refresh={false} /></li>;
 
     return (
         <li

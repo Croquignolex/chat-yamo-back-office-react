@@ -46,11 +46,9 @@ class ChatSidebar extends React.Component {
                     }
                 }
             });
-        }).catch(error => {
-            console.log("error ", error);
+        }).catch(error => {console.log("error ", error);
         }).catch(error => this.setState({ error }))
         .finally(() => this.setState({ loading: false }));
-
     };
 
     loadUserInfo = (feedback) => {
@@ -77,6 +75,7 @@ class ChatSidebar extends React.Component {
                 .finally(() => resolve());
         })
     };
+
     onClickItem = (user) => {
         const { handleActiveChat, mainSidebar, handleUserSidebar } = this.props;
         mainSidebar(false);
@@ -86,7 +85,7 @@ class ChatSidebar extends React.Component {
 
     updateUsers = (user) => {
         this.setState((prevState) => {
-            const tempusers = prevState.users.map((f) => { 
+            const tempusers = prevState.users.map((f) => {
                 if(f!= undefined){
                     if(f[0]?.userId === user.id) {
                         f = user;

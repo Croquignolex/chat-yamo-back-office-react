@@ -16,9 +16,8 @@ export const TICKETS = {
 };
 
 export const IMAGE_VALIDATIONS = {
-    VALIDATE_ONE: '/feedbacks/{userId}/case',
-    UNVALIDATE_ONE: '/feedbacks/{userId}/case',
-    CANCEL_ONE: '/feedbacks/{userId}/case',
+    VALIDATE_ONE: '/media/users/{userId}/medias/{mediaId}/paths/{mediaPath}/verify/{verified}',
+    DELETE_ONE: '/media/users/{userId}/medias/{mediaId}',
     GET_ALL: '/media/users/toBeVerifiedMedia',
 };
 

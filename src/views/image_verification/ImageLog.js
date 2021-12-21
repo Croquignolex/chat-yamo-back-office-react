@@ -1,13 +1,16 @@
 import React from "react"
 import ReactDOM from "react-dom"
-import { Carousel,
+import {
+    Carousel,
     CarouselItem,
     CarouselControl,
-    CarouselIndicators } from "reactstrap";
+    CarouselIndicators, Spinner
+} from "reactstrap";
 import { Image, CheckCircle, XCircle, Trash2} from "react-feather";
-
-import { getUserImages} from "../../redux/actions/IndependentActions";
-
+import {deleteUserImage, verifyUserImage} from "../../redux/actions/IndependentActions";
+import {NotificationManager} from "react-notifications";
+import {formatMessage} from "../../helpers/helpers";
+import {ERROR_404} from "../../data/errors";
 
 class ImageLog extends React.Component {
     // props { activeChatID, activeUser, mainSidebar, handleReceiverSidebar }
@@ -67,7 +70,7 @@ class ImageLog extends React.Component {
             this.scrollToBottom();
         }
     }
-    
+
     loadData = () => {
         const {activeChatID, activeUser} = this.props;
 
@@ -87,17 +90,38 @@ class ImageLog extends React.Component {
 
     validateImage = () => {
         const image = this.state.images[this.state.activeIndex];
-        console.log("image ", image);
+        this.setState({ loading: true });
+        verifyUserImage(image.userId, image.mediaId, image.mediaPath, 'true')
+            .then(() => {
+                // Remove image from array
+                NotificationManager.success("Image has been successfully validated", null);
+            })
+            .catch((error) => console.log("error ", error))
+            .finally(() => this.setState({ loading: false }));
     };
 
     invalidateImage = () => {
         const image = this.state.images[this.state.activeIndex];
-        console.log("image ", image);
+        this.setState({ loading: true });
+        verifyUserImage(image.userId, image.mediaId, image.mediaPath, 'false')
+            .then(() => {
+                // Remove image from array
+                NotificationManager.success("Image has been successfully unvalidated", null);
+            })
+            .catch((error) => console.log("error ", error))
+            .finally(() => this.setState({ loading: false }));
     };
 
     deleteImage = () => {
         const image = this.state.images[this.state.activeIndex];
-        console.log("image ", image);
+        this.setState({ loading: true });
+        deleteUserImage(image.userId, image.mediaId)
+            .then(() => {
+                // Remove image from array
+                NotificationManager.success("Image has been successfully deleted", null);
+            })
+            .catch((error) => console.log("error ", error))
+            .finally(() => this.setState({ loading: false }));
     };
 
     render() {
@@ -146,6 +170,7 @@ class ImageLog extends React.Component {
                         <div className="row">
                             <div className="col-md-6 mx-auto">
                                 <Carousel
+                                    interval={false}
                                     activeIndex={activeIndex}
                                     next={this.next}
                                     previous={this.previous}>
@@ -157,9 +182,13 @@ class ImageLog extends React.Component {
                             </div>
                         </div>
                         <div className="d-flex justify-content-center mt-2 mb-5">
-                            <button className="btn btn-success mr-1" onClick={this.validateImage}><CheckCircle size={20} /></button>
-                            <button className="btn btn-danger mr-1" onClick={this.invalidateImage}><XCircle size={20} /></button>
-                            <button className="btn btn-dark" onClick={this.deleteImage}><Trash2 size={20} /></button>
+                            {this.state.loading ? <Spinner color="primary"/> : (
+                                <>
+                                    <button className="btn btn-success mr-1" onClick={this.validateImage}><CheckCircle size={20} /></button>
+                                    <button className="btn btn-danger mr-1" onClick={this.invalidateImage}><XCircle size={20} /></button>
+                                    <button className="btn btn-dark" onClick={this.deleteImage}><Trash2 size={20} /></button>
+                                </>
+                            )}
                         </div>
                     </div>
                 </div>

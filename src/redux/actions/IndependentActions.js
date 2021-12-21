@@ -18,8 +18,47 @@ export const getCaseMessages = async (userId) => {
     return makeRequest('get', joinBaseUrlWithParams(TICKETS.GET_ONE, [{param: 'userId', value: userId}]));
 };
 
-export const getUserImages = async (userId = null) => {
-    return makeRequest('get', joinBaseUrlWithParams(IMAGE_VALIDATIONS.GET_ALL, [{param: 'CHAT-ET-YAMO-MEDIA-SERVICE-ALL-USER-IMAGES', value: true}, {param: 'CHAT-ET-YAMO-MEDIA-SERVICE-PRE-SIGNED-URL', value: true}]));
+export const getUserImages = async () => {
+    const config = {headers: {
+            "CHAT-ET-YAMO-MEDIA-SERVICE-ALL-USER-IMAGES": "true",
+            "CHAT-ET-YAMO-MEDIA-SERVICE-PRE-SIGNED-URL": "true"
+        }
+    };
+    return makeRequest('get', joinBaseUrlWithParams(IMAGE_VALIDATIONS.GET_ALL), null, config);
+};
+
+export const deleteUserImage = async (userId, mediaId) => {
+    const config = {headers: {
+            "CHAT-ET-YAMO-MEDIA-SERVICE-ALL-USER-IMAGES": "true",
+            "CHAT-ET-YAMO-MEDIA-SERVICE-PRE-SIGNED-URL": "true"
+        }
+    };
+    const url = joinBaseUrlWithParams(
+        IMAGE_VALIDATIONS.DELETE_ONE,
+        [
+            {param: 'userId', value: userId},
+            {param: 'mediaId', value: mediaId},
+        ]
+    );
+    return makeRequest('delete', url, null, config);
+};
+
+export const verifyUserImage = async (userId, mediaId, mediaPath, verified) => {
+    const config = {headers: {
+            "CHAT-ET-YAMO-MEDIA-SERVICE-ALL-USER-IMAGES": "true",
+            "CHAT-ET-YAMO-MEDIA-SERVICE-PRE-SIGNED-URL": "true"
+        }
+    };
+    const url = joinBaseUrlWithParams(
+        IMAGE_VALIDATIONS.VALIDATE_ONE,
+        [
+            {param: 'userId', value: userId},
+            {param: 'mediaId', value: mediaId},
+            {param: 'mediaPath', value: mediaPath},
+            {param: 'verified', value: verified},
+        ]
+    );
+    return makeRequest('put', url, null, config);
 };
 
 export const getUserProfile = async (userId) => {
