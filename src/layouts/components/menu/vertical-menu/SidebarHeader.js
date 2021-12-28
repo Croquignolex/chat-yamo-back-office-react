@@ -5,14 +5,7 @@ import { Disc, X, Circle } from "react-feather"
 
 class SidebarHeader extends Component {
   render() {
-    let {
-      toggleSidebarMenu,
-      activeTheme,
-      collapsed,
-      toggle,
-      sidebarVisibility,
-      menuShadow
-    } = this.props
+    let {activeTheme, collapsed, toggle, sidebarVisibility, menuShadow} = this.props
     return (
       <div className="navbar-header">
         <ul className="nav navbar-nav flex-row">

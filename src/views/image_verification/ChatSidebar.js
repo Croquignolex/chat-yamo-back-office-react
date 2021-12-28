@@ -31,24 +31,26 @@ class ChatSidebar extends React.Component {
         this.setState({ loading: true, error: null, users: [], all_images: [] });
         this.props.handleActiveChat(null, null);
 
-        getUserImages().then(res => {
-            this.setState({all_images: res});
-            let users = res.reduce(function(results, org) {
-                (results[org.userId] = results[org.userId] || []).push(org);
-                return results;
-            }, [])
+        getUserImages(this.state.date.format('YYYY-MM-DD'))
+            .then(res => {
+                this.setState({all_images: res});
+                let users = res.reduce(function(results, org) {
+                    (results[org.userId] = results[org.userId] || []).push(org);
+                    return results;
+                }, [])
 
-            this.setState({ users }, async () => {
-                for(const userImage of users) {
-                    // Async user data
-                    if(userImage != null){
-                        await this.loadUserInfo(userImage[0]);
+                this.setState({ users }, async () => {
+                    for(const userImage of users) {
+                        // Async user data
+                        if(userImage != null){
+                            await this.loadUserInfo(userImage[0]);
+                        }
                     }
-                }
-            });
-        }).catch(error => {console.log("error ", error);
-        }).catch(error => this.setState({ error }))
-        .finally(() => this.setState({ loading: false }));
+                });
+            })
+            .catch(error => console.log("error ", error))
+            .catch(error => this.setState({ error }))
+            .finally(() => this.setState({ loading: false }));
     };
 
     loadUserInfo = (feedback) => {
@@ -65,7 +67,7 @@ class ChatSidebar extends React.Component {
                         }
                     } catch (e) {}
                     feedback = {...feedback, ...user};
-                    feedback.images = this.state.all_images.filter(item => item.userId == userId);
+                    feedback.images = this.state.all_images.filter(item => item.userId === userId);
                     this.updateUsers(feedback);
                 })
                 .catch(() => {
@@ -86,16 +88,30 @@ class ChatSidebar extends React.Component {
     updateUsers = (user) => {
         this.setState((prevState) => {
             const tempusers = prevState.users.map((f) => {
-                if(f!= undefined){
+                if(f !== undefined) {
                     if(f[0]?.userId === user.id) {
                         f = user;
                     }
-                    return f;
                 }
+                return f;
             })
             return {users: tempusers};
         });
     };
+
+    handlePrevDate = () => {
+        this.setState((prevState) => {
+            const tempDate = prevState.date;
+            return {date: tempDate.subtract(1, 'day')};
+        }, () => this.loadData());
+    }
+
+    handleNextDate = () => {
+        this.setState((prevState) => {
+            const tempDate = prevState.date;
+            return {date: tempDate.add(1, 'day')};
+        }, () => this.loadData());
+    }
 
     render() {
         const { error, loading, users } = this.state;
@@ -115,6 +131,13 @@ class ChatSidebar extends React.Component {
                             <Icon.Loader className="d-lg-none" size={15} />
                             <span className="d-lg-block d-none">Refresh</span>
                         </Button>
+                        <Button size="sm" color="primary" className="mr-1 rounded" onClick={this.handlePrevDate} title="Previous day">
+                            <Icon.ArrowLeft size={20} />
+                        </Button>
+                        <strong>{this.state.date.format('DD-MM-YYYY')}</strong>
+                        <Button size="sm" color="primary" className="ml-1 rounded" onClick={this.handleNextDate} title="Next day">
+                            <Icon.ArrowRight size={20} />
+                        </Button>
                     </div>
                 </div>
                 <PerfectScrollbar className="chat-user-list list-group" options={{wheelPropagation: false}}>
@@ -125,8 +148,8 @@ class ChatSidebar extends React.Component {
                             </div>
                         ) : (
                             <ul className="chat-users-list-wrapper media-list">
-                                {users.map(user => (
-                                    <React.Fragment key={user?.id}>
+                                {users.map((user, index) => (
+                                    <React.Fragment key={index}>
                                         <TicketUserItem
                                             user={user}
                                             onClickItem={this.onClickItem}

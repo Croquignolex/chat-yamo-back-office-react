@@ -1,14 +1,6 @@
 import {makeRequest} from "../../helpers/helpers";
 import {REACT_APP_CHAT_BACKOFFICE_USER_ID} from "../../configs/AppConfig";
-import {
-    USERS,
-    MEDIA,
-    TICKETS,
-    AUTH,
-    joinBaseUrlWithParams,
-    joinBaseUrlWithRequestParams,
-    IMAGE_VALIDATIONS
-} from "../../utility/urls/backend";
+import {USERS, MEDIA, TICKETS, AUTH, joinBaseUrlWithParams, joinBaseUrlWithRequestParams, IMAGE_VALIDATIONS} from "../../utility/urls/backend";
 
 export const getCases = async (date) => {
     return makeRequest('get', joinBaseUrlWithRequestParams(TICKETS.GET_ALL, [{param: 'date', value: date}]));
@@ -18,13 +10,13 @@ export const getCaseMessages = async (userId) => {
     return makeRequest('get', joinBaseUrlWithParams(TICKETS.GET_ONE, [{param: 'userId', value: userId}]));
 };
 
-export const getUserImages = async () => {
+export const getUserImages = async (date) => {
     const config = {headers: {
             "CHAT-ET-YAMO-MEDIA-SERVICE-ALL-USER-IMAGES": "true",
             "CHAT-ET-YAMO-MEDIA-SERVICE-PRE-SIGNED-URL": "true"
         }
     };
-    return makeRequest('get', joinBaseUrlWithParams(IMAGE_VALIDATIONS.GET_ALL), null, config);
+    return makeRequest('get', joinBaseUrlWithRequestParams(IMAGE_VALIDATIONS.GET_ALL, [{param: 'date', value: date}]), null, config);
 };
 
 export const deleteUserImage = async (userId, mediaId) => {
