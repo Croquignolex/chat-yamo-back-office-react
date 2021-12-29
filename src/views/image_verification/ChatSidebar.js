@@ -34,13 +34,20 @@ class ChatSidebar extends React.Component {
         getUserImages(this.state.date.format('YYYY-MM-DD'))
             .then(res => {
                 this.setState({all_images: res});
-                let users = res.reduce(function(results, org) {
-                    (results[org.userId] = results[org.userId] || []).push(org);
-                    return results;
-                }, [])
 
-                this.setState({ users }, async () => {
-                    for(const userImage of users) {
+                let users = res.reduce(function(results, org) {
+                    results[org.userId] = [...results[org.userId] || [], org];
+                    return results;
+                }, {})
+
+                const buildUsers = [];
+
+                for(const user of Object.values(users)) {
+                    buildUsers.push(user);
+                }
+
+                this.setState({ users: buildUsers }, async () => {
+                    for(const userImage of buildUsers) {
                         // Async user data
                         if(userImage != null){
                             await this.loadUserInfo(userImage[0]);
@@ -58,7 +65,11 @@ class ChatSidebar extends React.Component {
             const userId = feedback.userId;
             getUserProfile(userId)
                 .then(async data => {
-                    const user = new User(data);
+                    const userObject = {...feedback, ...data};
+                    userObject.images = this.state.all_images.filter(item => item.userId === userId);
+                    // make user as an object
+                    const user = new User(userObject);
+                    user.setId = userId;
                     //user.setLastMessageTime = feedback.createdDate.format("HH:mm")
                     try {
                         if(!user.isDeleted) {
@@ -66,13 +77,12 @@ class ChatSidebar extends React.Component {
                             user.setAvatar = await getUserProfileImage(userId);
                         }
                     } catch (e) {}
-                    feedback = {...feedback, ...user};
-                    feedback.images = this.state.all_images.filter(item => item.userId === userId);
-                    this.updateUsers(feedback);
+                    this.updateUsers(user);
                 })
                 .catch(() => {
-                    feedback = {...feedback, ...new User({notFound: true})};;
-                    this.updateUsers(feedback);
+                    const userObject = {...feedback, notFound: true};
+                    const user = new User(userObject);
+                    this.updateUsers(user);
                 })
                 .finally(() => resolve());
         })
@@ -88,7 +98,8 @@ class ChatSidebar extends React.Component {
     updateUsers = (user) => {
         this.setState((prevState) => {
             const tempusers = prevState.users.map((f) => {
-                if(f !== undefined) {
+                if(Array.isArray(f)) {
+                    // f !== undefined
                     if(f[0]?.userId === user.id) {
                         f = user;
                     }

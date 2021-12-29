@@ -8,7 +8,7 @@ import {ERROR_401, ERROR_403, ERROR_404, ERROR_500, ERROR_UNKNOWN} from "../data
 
 const customAxios = axios.create({
     baseURL: backendConfig.baseUrlWithService,
-    timeout: backendConfig.timeout,
+    // timeout: backendConfig.timeout,
 });
 
 customAxios.interceptors.request.use(
@@ -69,7 +69,6 @@ customAxios.interceptors.response.use(
     },
     error => {
         const originalRequest = error.config;
-        console.log({error})
         if (error) {
             if (error.response) {
                 if (!originalRequest.skipError) {

@@ -17,7 +17,7 @@ const TicketUserItem = ({ user, activeChatId, onClickItem }) => {
             className={`${(activeChatId === user.id) ? "active" : ""}`}>
             <div className="pr-1">
                   <span className="avatar avatar-md m-0">
-                      <img src={user.originalUrl} alt="..." height="38" width="38" />
+                      <img src={user.imageSrc} alt="..." height="38" width="38" />
                   </span>
             </div>
             <div className="user-chat-info">
@@ -29,7 +29,7 @@ const TicketUserItem = ({ user, activeChatId, onClickItem }) => {
                         <span className="text-secondary float-right">{user.lastMessageTime}</span>
                     </h5>
                     <h6 className={`text-bold-600 mb-0 ${user.isDeleted ? 'text-danger' : ''}`}>
-                        {user.city+', '+user.country}
+                        {user.localisation}
                     </h6>
                 </div>
             </div>
