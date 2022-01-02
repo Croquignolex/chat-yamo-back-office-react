@@ -18,7 +18,8 @@ class ChatSidebar extends React.Component {
             all_images: [],
             users: [],
             loading: false,
-            date: dayjs()
+            date: dayjs().startOf('day'),
+            hour: 0
         }
     }
 
@@ -31,7 +32,7 @@ class ChatSidebar extends React.Component {
         this.setState({ loading: true, error: null, users: [], all_images: [] });
         this.props.handleActiveChat(null, null);
 
-        getUserImages(this.state.date.format('YYYY-MM-DD'))
+        getUserImages(this.state.date.format('YYYY-MM-DDTHH:mm:ss'))
             .then(res => {
                 this.setState({all_images: res});
 
@@ -113,15 +114,29 @@ class ChatSidebar extends React.Component {
     handlePrevDate = () => {
         this.setState((prevState) => {
             const tempDate = prevState.date;
-            return {date: tempDate.subtract(1, 'day')};
+            const tempHour = prevState.hour;
+            const nextHour = (tempHour - 6);
+            return {
+                hour: nextHour < 0 ? 18 : nextHour,
+                date: tempDate.subtract(6, 'hour')
+            };
         }, () => this.loadData());
     }
 
     handleNextDate = () => {
         this.setState((prevState) => {
             const tempDate = prevState.date;
-            return {date: tempDate.add(1, 'day')};
+            const tempHour = prevState.hour;
+            const nextHour = (tempHour + 6);
+            return {
+                hour: nextHour > 18 ? 0 : nextHour,
+                date: tempDate.add(6, 'hour')
+            };
         }, () => this.loadData());
+    }
+
+    twoDigitDisplay = (number) => {
+        return (number > 9) ? number : "0" + number;
     }
 
     render() {
@@ -138,15 +153,18 @@ class ChatSidebar extends React.Component {
             <Card className="sidebar-content h-100">
                 <div className="chat-fixed-search h-100">
                     <div className="d-flex align-items-center">
-                        <Button color="primary" className="mr-2 rounded" onClick={this.loadData}>
+                        <Button color="primary" className="mr-50 rounded" onClick={this.loadData}>
                             <Icon.Loader className="d-lg-none" size={15} />
                             <span className="d-lg-block d-none">Refresh</span>
                         </Button>
-                        <Button size="sm" color="primary" className="mr-1 rounded" onClick={this.handlePrevDate} title="Previous day">
+                        <Button size="sm" color="primary" className="mr-50 rounded" onClick={this.handlePrevDate} title="Previous day">
                             <Icon.ArrowLeft size={20} />
                         </Button>
-                        <strong>{this.state.date.format('DD-MM-YYYY')}</strong>
-                        <Button size="sm" color="primary" className="ml-1 rounded" onClick={this.handleNextDate} title="Next day">
+                        <strong>
+                            {this.state.date.format('DD-MM-YYYY')} {this.twoDigitDisplay(this.state.hour)}-
+                            {this.twoDigitDisplay(this.state.hour + 6)}
+                        </strong>
+                        <Button size="sm" color="primary" className="ml-50 rounded" onClick={this.handleNextDate} title="Next day">
                             <Icon.ArrowRight size={20} />
                         </Button>
                     </div>
