@@ -112,9 +112,9 @@ const ChatLogContent = ({ activeUser, messages }) => {
                                             <DisplayImage className="" src={message.imageSrc} />
                                         )}
                                         <div className={`chat-content ${message.media ? 'got-image' : ''}`}>
-                                            <p className="c-text-content">
-                                                <pre className={!message.isBackUser ? 'text-white' : ''}>{message.content}</pre>
-                                            </p>
+                                            <div className="c-text-content">
+                                                <p className="preformatted">{message.content}</p>
+                                            </div>
                                             <p className="c-hour text-muted float-right">
                                                 <span className="timer text-italic">{message.createdTime}</span>
                                                 <span className="request">

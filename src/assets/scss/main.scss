@@ -84,3 +84,8 @@
   left: calc(50% - 160px);
   overflow-y: hidden !important;
 }
+
+ // Custom styles
+.preformatted {
+  white-space: pre-wrap;
+}
