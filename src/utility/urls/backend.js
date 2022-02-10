@@ -31,7 +31,8 @@ export const MEDIA = {
         CREATE: '/media/chatrooms/{chatroomId}/medias'
     },
     USERS: {
-        GET_ONE: '/media/users/{userId}/medias/main?original=true'
+        // GET_ONE: '/media/users/{userId}/medias/main?original=true'
+        GET_ONE: '/media/users/{userId}/medias/main/info'
     }
 };
 

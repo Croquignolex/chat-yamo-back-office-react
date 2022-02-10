@@ -11,8 +11,9 @@ export default class User {
     }
 
     set setAvatar(image) {
-        const base64ImageString = Buffer.from(image, 'binary').toString('base64');
-        this.avatar = "data:image/jpg;base64," + base64ImageString;
+        // const base64ImageString = Buffer.from(image, 'binary').toString('base64');
+        // this.avatar = "data:image/jpg;base64," + base64ImageString;
+        this.avatar = image?.compressedUrl || image?.originalUrl;
     }
 
     set setLastMessageTime(time) {

@@ -138,7 +138,7 @@ class ImageLog extends React.Component {
             onExiting={this.onExiting}
             onExited={this.onExited}
             key={item.mediaId}>
-            <img src={item.originalUrl} alt={item.mediaId} style={{ width: "100%"}} />
+            <img src={item.compressedUrl || item.originalUrl} alt={item.mediaId} style={{ width: "100%"}} />
             </CarouselItem>
             );
         });

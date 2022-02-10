@@ -79,8 +79,12 @@ export const sendMessage = async (userId, feedbackText, mediaId = null) => {
 };
 
 export const getUserProfileImage = async (userId) => {
+    const config = {headers: {
+            "CHAT-ET-YAMO-MEDIA-SERVICE-ALL-USER-IMAGES": "true"
+        }
+    };
     const url = joinBaseUrlWithParams(MEDIA.USERS.GET_ONE, [{param: 'userId', value: userId}]);
-    return makeRequest('get', url, null, {responseType: 'arraybuffer'});
+    return makeRequest('get', url, null, config);
 };
 
 export const getMessageImage = async (userId, mediaId) => {
