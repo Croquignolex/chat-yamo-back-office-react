@@ -88,6 +88,10 @@ export const getUserProfileImage = async (userId) => {
 };
 
 export const getMessageImage = async (userId, mediaId) => {
+    const config = {headers: {
+            "CHAT-ET-YAMO-MEDIA-SERVICE-ALL-USER-IMAGES": "true"
+        }
+    };
     const url = joinBaseUrlWithParams(
         MEDIA.CHATROOMS.GET_ONE,
         [
@@ -95,7 +99,7 @@ export const getMessageImage = async (userId, mediaId) => {
             {param: 'chatroomId', value: `${userId}:${REACT_APP_CHAT_BACKOFFICE_USER_ID}`}
         ]
     );
-    return makeRequest('get', url, null, {responseType: 'arraybuffer'});
+    return makeRequest('get', url, null, config);
 };
 
 export const changePassword = async (oldPassword, newPassword, backOfficeUserId) => {
