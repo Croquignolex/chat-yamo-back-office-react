@@ -3,7 +3,7 @@ import Sidebar from "react-sidebar"
 import {withRouter} from "react-router-dom";
 
 import ImageLog from "./ImageLog"
-import ChatSidebar from "./ChatSidebar"
+import ImageSidebar from "./ImageSidebar"
 import {ContextLayout} from "../../utility/context/Layout"
 
 import "../../assets/scss/pages/app-chat.scss"
@@ -101,7 +101,7 @@ class ImageVerification extends React.Component {
           {context => (
             <Sidebar
               sidebar={
-                <ChatSidebar
+                <ImageSidebar
                     mainSidebar={this.onSetSidebarOpen}
                     activeChatId={this.state.activeChatID}
                     handleActiveChat={this.handleActiveChat}

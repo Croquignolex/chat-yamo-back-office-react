@@ -6,10 +6,10 @@ import PerfectScrollbar from "react-perfect-scrollbar";
 
 import Error500 from "../Error500";
 import User from "../../models/User";
-import ChatSidebarItem from "./ChatSidebarItem";
+import ImageSidebarItem from "./ImageSidebarItem";
 import {getUserImages, getUserProfile, getUserProfileImage} from "../../redux/actions/IndependentActions";
 
-class ChatSidebar extends React.Component {
+class ImageSidebar extends React.Component {
     // props { activeChatId, mainSidebar, handleActiveChat, handleUserSidebar }
     constructor(props) {
         super(props);
@@ -179,7 +179,7 @@ class ChatSidebar extends React.Component {
                             <ul className="chat-users-list-wrapper media-list">
                                 {users.map((user, index) => (
                                     <React.Fragment key={index}>
-                                        <ChatSidebarItem
+                                        <ImageSidebarItem
                                             user={user}
                                             onClickItem={this.onClickItem}
                                             activeChatId={this.props.activeChatId}
@@ -195,4 +195,4 @@ class ChatSidebar extends React.Component {
     }
 }
 
-export default ChatSidebar;
+export default ImageSidebar;

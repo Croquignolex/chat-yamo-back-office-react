@@ -5,7 +5,7 @@ import {CheckCircle, Star} from "react-feather";
 import Error500 from "../Error500";
 import DisplayImage from "../../components/DisplayImage";
 
-const ChatSidebarItem = ({ user, activeChatId, onClickItem }) => {
+const ImageSidebarItem = ({ user, activeChatId, onClickItem }) => {
     // Data
 
     if (Array.isArray(user)) return <li><Spinner color="primary" /></li>;
@@ -38,4 +38,4 @@ const ChatSidebarItem = ({ user, activeChatId, onClickItem }) => {
     );
 };
 
-export default ChatSidebarItem;
+export default ImageSidebarItem;
