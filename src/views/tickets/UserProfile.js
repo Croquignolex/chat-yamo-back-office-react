@@ -3,6 +3,7 @@ import { X } from "react-feather";
 import PerfectScrollbar from "react-perfect-scrollbar"
 
 import "../../assets/scss/pages/users.scss";
+import DisplayImage from "../../components/DisplayImage";
 
 class UserProfile extends React.Component {
   // props { receiverProfile, activeUser, handleReceiverSidebar }
@@ -32,7 +33,7 @@ class UserProfile extends React.Component {
           </span>
           <div className="header-profile-sidebar">
             <div className="avatar">
-              <img src={activeUser.imageSrc} alt="..." height="66" width="66" />
+              <DisplayImage src={activeUser.imageSrc} height="70" width="70" />
             </div>
             <h4 className="chat-user-name">{activeUser.isDeleted ? "Deleted user" : activeUser.name}</h4>
           </div>

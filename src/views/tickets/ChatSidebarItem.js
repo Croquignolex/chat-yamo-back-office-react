@@ -3,6 +3,7 @@ import {Spinner} from "reactstrap";
 import {CheckCircle, Star} from "react-feather";
 
 import Error500 from "../Error500";
+import DisplayImage from "../../components/DisplayImage";
 
 const ChatSidebarItem = ({ feedback, activeChatId, onClickItem }) => {
     // Data
@@ -19,7 +20,7 @@ const ChatSidebarItem = ({ feedback, activeChatId, onClickItem }) => {
         >
             <div className="pr-1">
                   <span className="avatar avatar-md m-0">
-                      <img src={user.imageSrc} alt="..." height="38" width="38" />
+                      <DisplayImage src={user.imageSrc} withModal={false} />
                   </span>
             </div>
             <div className="user-chat-info">

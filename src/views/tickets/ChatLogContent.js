@@ -98,13 +98,6 @@ const ChatLogContent = ({ activeUser, messages }) => {
                         <Wrapper
                             className={`chat ${!message.isBackUser ? "chat-left" : "chat-right"}`}
                         >
-                            {!message.isBackUser && (
-                                <div className="chat-avatar">
-                                    <div className="avatar m-0">
-                                        <img src={activeUser.imageSrc} alt="..." height="40" width="40" />
-                                    </div>
-                                </div>
-                            )}
                             <div className="chat-body">
                                 <CardWrapper>
                                     <CardBody className={`p-0 ${message.media ? 'c-image-wrapper' : ''}`}>

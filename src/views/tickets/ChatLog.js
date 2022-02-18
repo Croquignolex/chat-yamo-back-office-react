@@ -9,6 +9,7 @@ import Message from "../../models/Message";
 import ChatInput from "./inputs/ChatInput";
 import ChatLogContent from "./ChatLogContent";
 import {getCaseMessages, getMessageImage} from "../../redux/actions/IndependentActions";
+import DisplayImage from "../../components/DisplayImage";
 
 class ChatLog extends React.Component {
     // props { activeChatID, activeUser, mainSidebar, handleReceiverSidebar }
@@ -135,10 +136,7 @@ class ChatLog extends React.Component {
                                     <div
                                         className="avatar user-profile-toggle m-0 m-0 mr-1"
                                         onClick={() => handleReceiverSidebar("open")}>
-                                        <img src={activeUser.imageSrc} alt="..." height="40" width="40" />
-                                        <span
-                                            className={activeUser.getStatus}
-                                        />
+                                        <DisplayImage src={activeUser.imageSrc} withModal={false} />
                                     </div>
                                     <a
                                         href="/"
