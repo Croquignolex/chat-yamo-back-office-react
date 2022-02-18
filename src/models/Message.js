@@ -23,7 +23,7 @@ export default class Message {
     set setMedia(image) {
         // const base64ImageString = Buffer.from(image, 'binary').toString('base64');
         // this.media = "data:image/jpg;base64," + base64ImageString;
-        this.media = image?.compressedUrl || image?.originalUrl;
+        this.media = image?.compressedPreSignedUrl || image?.originalPreSignedUrl;
     }
 
     get isBackUser() {
