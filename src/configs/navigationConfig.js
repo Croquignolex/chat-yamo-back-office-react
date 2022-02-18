@@ -13,8 +13,8 @@ const navigationConfig = [
   {
     type: "item",
     id: "image_verification",
+    navLink: APP.VERIFICATION,
     title: "Images Verifications",
-    navLink: APP.IMAGE_VERIFICATION,
     icon: <Icon.Image size={20} />,
   },
 ]
