@@ -1,13 +1,13 @@
 import {makeRequest} from "../../helpers/helpers";
 import {REACT_APP_CHAT_BACKOFFICE_USER_ID} from "../../configs/AppConfig";
-import {USERS, MEDIA, TICKETS, AUTH, joinBaseUrlWithParams, joinBaseUrlWithRequestParams, IMAGE_VALIDATIONS} from "../../utility/urls/backend";
+import {USERS, MEDIA, FEEDBACKS, AUTH, joinBaseUrlWithParams, joinBaseUrlWithRequestParams, VALIDATIONS} from "../../utility/urls/backend";
 
 export const getCases = async (date) => {
-    return makeRequest('get', joinBaseUrlWithRequestParams(TICKETS.GET_ALL, [{param: 'date', value: date}]));
+    return makeRequest('get', joinBaseUrlWithRequestParams(FEEDBACKS.GET_ALL, [{param: 'date', value: date}]));
 };
 
 export const getCaseMessages = async (userId) => {
-    return makeRequest('get', joinBaseUrlWithParams(TICKETS.GET_ONE, [{param: 'userId', value: userId}]));
+    return makeRequest('get', joinBaseUrlWithParams(FEEDBACKS.GET_ONE, [{param: 'userId', value: userId}]));
 };
 
 export const getUserImages = async (date) => {
@@ -16,7 +16,7 @@ export const getUserImages = async (date) => {
             "CHAT-ET-YAMO-MEDIA-SERVICE-PRE-SIGNED-URL": "true"
         }
     };
-    return makeRequest('get', joinBaseUrlWithRequestParams(IMAGE_VALIDATIONS.GET_ALL, [{param: 'date', value: date}]), null, config);
+    return makeRequest('get', joinBaseUrlWithRequestParams(VALIDATIONS.GET_ALL, [{param: 'date', value: date}]), null, config);
 };
 
 export const deleteUserImage = async (userId, mediaId) => {
@@ -26,7 +26,7 @@ export const deleteUserImage = async (userId, mediaId) => {
         }
     };
     const url = joinBaseUrlWithParams(
-        IMAGE_VALIDATIONS.DELETE_ONE,
+        VALIDATIONS.DELETE_ONE,
         [
             {param: 'userId', value: userId},
             {param: 'mediaId', value: mediaId},
@@ -42,7 +42,7 @@ export const verifyUserImage = async (userId, mediaId, mediaPath, verified) => {
         }
     };
     const url = joinBaseUrlWithParams(
-        IMAGE_VALIDATIONS.VALIDATE_ONE,
+        VALIDATIONS.VALIDATE_ONE,
         [
             {param: 'userId', value: userId},
             {param: 'mediaId', value: mediaId},
@@ -69,7 +69,7 @@ export const createMedia = async (userId, file) => {
 
 export const sendMessage = async (userId, feedbackText, mediaId = null) => {
     const url = joinBaseUrlWithParams(
-        TICKETS.MESSAGES.SEND,
+        FEEDBACKS.MESSAGES.SEND,
         [
             {param: 'backOfficeUserId', value: REACT_APP_CHAT_BACKOFFICE_USER_ID},
             {param: 'userId', value: userId},

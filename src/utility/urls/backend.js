@@ -6,7 +6,7 @@ export const AUTH = {
     PASSWORD: '/feedbacks/backoffice/{backOfficeUserId}/changepasswd',
 };
 
-export const TICKETS = {
+export const FEEDBACKS = {
     GET_ONE: '/feedbacks/{userId}/case',
     GET_ALL: '/feedbacks/cases/messages',
     MESSAGES: {
@@ -15,7 +15,7 @@ export const TICKETS = {
     }
 };
 
-export const IMAGE_VALIDATIONS = {
+export const VALIDATIONS = {
     VALIDATE_ONE: '/media/users/{userId}/medias/{mediaId}/paths/{mediaPath}/verify/{verified}',
     DELETE_ONE: '/media/users/{userId}/medias/{mediaId}',
     GET_ALL: '/media/users/toBeVerifiedMedia',
