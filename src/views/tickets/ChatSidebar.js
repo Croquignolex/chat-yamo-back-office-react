@@ -1,7 +1,7 @@
 import React from "react";
 import dayjs from "dayjs";
 import * as Icon from "react-feather"
-import {Button, Card, Spinner} from "reactstrap";
+import {Button, Card, Spinner, FormGroup, Input, Form} from "reactstrap";
 import PerfectScrollbar from "react-perfect-scrollbar";
 
 import Error500 from "../Error500";
@@ -18,7 +18,8 @@ class ChatSidebar extends React.Component {
             error: null,
             feedbacks: [],
             loading: false,
-            date: dayjs()
+            date: dayjs(),
+            search: ""
         }
     }
 
@@ -28,7 +29,7 @@ class ChatSidebar extends React.Component {
 
     loadData = () => {
         // Init request
-        this.setState({ loading: true, error: null, feedbacks: [] });
+        this.setState({ loading: true, error: null, feedbacks: [], search: "" });
         getCases(this.state.date.format('YYYY-MM-DD'))
             .then(data => {
                 const feedbacks = data?.messages.map(f => new Feedback(f));
@@ -90,6 +91,11 @@ class ChatSidebar extends React.Component {
         });
     };
 
+    updateSearchInput = (e) => {
+        const search = e?.target?.value;
+        this.setState({search})
+    };
+
     handlePrevDate = () => {
         this.setState((prevState) => {
             const tempDate = prevState.date;
@@ -102,6 +108,18 @@ class ChatSidebar extends React.Component {
             const tempDate = prevState.date;
             return {date: tempDate.add(1, 'day')};
         }, () => this.loadData());
+    }
+
+    handleSearchConversation = (e) => {
+        e.preventDefault();
+        // Mock to feedback type
+        const feedbacks = [new Feedback({userId: this.state.search})];
+        this.setState({ feedbacks }, async () => {
+            for(const feedback of feedbacks) {
+                // Async user data
+                await this.loadUserInfo(feedback);
+            }
+        });
     }
 
     render() {
@@ -117,6 +135,7 @@ class ChatSidebar extends React.Component {
 
         return (
             <Card className="sidebar-content h-100">
+                {/* Top control buttons */}
                 <div className="chat-fixed-search h-100">
                     <div className="d-flex align-items-center">
                         <Button color="primary" className="mr-2 rounded" onClick={this.loadData}>
@@ -140,6 +159,21 @@ class ChatSidebar extends React.Component {
                             </div>
                         ) : (
                             <ul className="chat-users-list-wrapper media-list">
+                                {/* First element: search bar */}
+                                <li>
+                                    <Form className="d-flex mx-auto w-100" onSubmit={this.handleSearchConversation}>
+                                        <Input
+                                            type="text"
+                                            placeholder="Search conversation by user id..."
+                                            onChange={(this.updateSearchInput)}
+                                            value={this.state.search}
+                                        />
+                                        <Button size="sm" color="primary" className="ml-1 rounded" type="submit" title="Search">
+                                            <Icon.Search size={20} />
+                                        </Button>
+                                    </Form>
+                                </li>
+                                {/* Search result or users list */}
                                 {feedbacks.map(feedback => (
                                     <React.Fragment key={feedback.id}>
                                         <TicketUserItem

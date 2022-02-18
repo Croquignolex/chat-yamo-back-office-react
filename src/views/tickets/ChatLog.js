@@ -27,16 +27,16 @@ class ChatLog extends React.Component {
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
-        if (prevProps.activeChatID !== this.props.activeChatID) {
+        if (prevProps.activeUser !== this.props.activeUser) {
             this.loadData();
             this.scrollToBottom();
         }
     }
 
     loadData = () => {
-        const {activeChatID, activeUser} = this.props;
+        const {activeUser} = this.props;
 
-        if (activeChatID) {
+        if (activeUser) {
             // Init request
             this.setState({ loading: true, error: null, messages: [] });
             getCaseMessages(activeUser.id)
