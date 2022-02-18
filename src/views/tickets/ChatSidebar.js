@@ -7,7 +7,7 @@ import PerfectScrollbar from "react-perfect-scrollbar";
 import Error500 from "../Error500";
 import User from "../../models/User";
 import Feedback from "../../models/Feedback";
-import TicketUserItem from "./TicketUserItem";
+import ChatSidebarItem from "./ChatSidebarItem";
 import {getCases, getUserProfile, getUserProfileImage} from "../../redux/actions/IndependentActions";
 
 class ChatSidebar extends React.Component {
@@ -176,7 +176,7 @@ class ChatSidebar extends React.Component {
                                 {/* Search result or users list */}
                                 {feedbacks.map(feedback => (
                                     <React.Fragment key={feedback.id}>
-                                        <TicketUserItem
+                                        <ChatSidebarItem
                                             feedback={feedback}
                                             onClickItem={this.onClickItem}
                                             activeChatId={this.props.activeChatId}

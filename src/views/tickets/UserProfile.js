@@ -4,7 +4,7 @@ import PerfectScrollbar from "react-perfect-scrollbar"
 
 import "../../assets/scss/pages/users.scss";
 
-class ReceiverProfile extends React.Component {
+class UserProfile extends React.Component {
   // props { receiverProfile, activeUser, handleReceiverSidebar }
   constructor(props) {
     super(props);
@@ -120,4 +120,4 @@ class ReceiverProfile extends React.Component {
     )
   }
 }
-export default ReceiverProfile
+export default UserProfile

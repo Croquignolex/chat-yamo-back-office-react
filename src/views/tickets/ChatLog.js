@@ -6,8 +6,8 @@ import {MessageSquare, Menu, Loader} from "react-feather";
 
 import Error500 from "../Error500";
 import Message from "../../models/Message";
+import ChatInput from "./inputs/ChatInput";
 import ChatLogContent from "./ChatLogContent";
-import ChatInput from "./messages-inputs/ChatInput";
 import {getCaseMessages, getMessageImage} from "../../redux/actions/IndependentActions";
 
 class ChatLog extends React.Component {

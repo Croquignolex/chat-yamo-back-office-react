@@ -1,13 +1,13 @@
-import React from "react"
-import Sidebar from "react-sidebar"
+import React from "react";
+import Sidebar from "react-sidebar";
 import {withRouter} from "react-router-dom";
 
-import ChatLog from "./ChatLog"
-import ChatSidebar from "./ChatSidebar"
-import ReceiverSidebar from "./receiverProfile"
-import {ContextLayout} from "../../utility/context/Layout"
+import ChatLog from "./ChatLog";
+import ChatSidebar from "./ChatSidebar";
+import UserProfile from "./UserProfile";
+import {ContextLayout} from "../../utility/context/Layout";
 
-import "../../assets/scss/pages/app-chat.scss"
+import "../../assets/scss/pages/app-chat.scss";
 
 const mql = window.matchMedia(`(min-width: 992px)`);
 
@@ -100,7 +100,7 @@ class Feedbacks extends React.Component {
             activeChatID={this.state.activeChatID}
             handleReceiverSidebar={this.handleReceiverSidebar}
         />
-        <ReceiverSidebar
+        <UserProfile
           activeUser={this.state.activeUser}
           receiverProfile={this.state.receiverProfile}
           handleReceiverSidebar={this.handleReceiverSidebar}

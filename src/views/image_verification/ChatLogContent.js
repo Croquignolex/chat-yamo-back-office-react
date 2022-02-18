@@ -3,7 +3,7 @@ import styled from "styled-components";
 import {Card, CardBody} from "reactstrap";
 import {Clock, CheckCircle, XCircle} from "react-feather";
 
-import DisplayImage from "./DisplayImage";
+import DisplayImage from "../../components/DisplayImage";
 
 const Wrapper = styled.div`
     .c-image-wrapper {
@@ -109,7 +109,7 @@ const ChatLogContent = ({ activeUser, messages }) => {
                                 <CardWrapper>
                                     <CardBody className={`p-0 ${message.media ? 'c-image-wrapper' : ''}`}>
                                         {message.media && (
-                                            <DisplayImage className="" src={message.imageSrc} />
+                                            <DisplayImage src={message.imageSrc} withWrapper />
                                         )}
                                         <div className={`chat-content ${message.media ? 'got-image' : ''}`}>
                                             <p className="c-text-content">{message.content}</p>

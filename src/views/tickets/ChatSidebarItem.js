@@ -4,7 +4,7 @@ import {CheckCircle, Star} from "react-feather";
 
 import Error500 from "../Error500";
 
-const TicketUserItem = ({ feedback, activeChatId, onClickItem }) => {
+const ChatSidebarItem = ({ feedback, activeChatId, onClickItem }) => {
     // Data
     const user = feedback.user;
 
@@ -39,4 +39,4 @@ const TicketUserItem = ({ feedback, activeChatId, onClickItem }) => {
     );
 };
 
-export default TicketUserItem;
+export default ChatSidebarItem;
