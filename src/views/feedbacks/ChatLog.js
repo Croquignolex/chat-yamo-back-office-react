@@ -156,8 +156,6 @@ class ChatLog extends React.Component {
                             </header>
                         </div>
 
-                        {}
-
                         {loading ?
                             (
                                 <div className="w-100 d-flex align-items-center justify-content-center my-2">
@@ -167,7 +165,7 @@ class ChatLog extends React.Component {
                                 error ? <div className="border-top-secondary"><Error500 onLinkClick={this.loadData} /> </div>: (
                                     <>
                                         <PerfectScrollbar
-                                            className="user-chats"
+                                            className="user-chats trim-user-chat"
                                             ref={el => {this.chatArea = el}}
                                             options={{ wheelPropagation: false }}
                                         >

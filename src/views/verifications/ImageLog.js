@@ -133,18 +133,15 @@ class ImageLog extends React.Component {
         const { activeIndex } = this.state;
         const { activeUser,  } = this.props;
         const slides = this.state.images.map((item) => {
-        return (
-            <CarouselItem
-            onExiting={this.onExiting}
-            onExited={this.onExited}
-            key={item.mediaId}>
-            <img src={item.compressedUrl || item.originalUrl} alt={item.mediaId} style={{ width: "100%"}} />
-            </CarouselItem>
+            return (
+                <CarouselItem onExiting={this.onExiting} onExited={this.onExited} key={item.mediaId}>
+                    {/*<DisplayImage src={item.compressedUrl || item.originalUrl} width={1000} height={1000} />*/}
+                    <img src={item.compressedUrl || item.originalUrl} alt={item.mediaId} style={{ width: "100%"}} />
+                </CarouselItem>
             );
         });
 
-
-        if(!activeUser) {
+        if(!activeUser || (this.state.images.length) === 0) {
             return (
                 <div className="content-right">
                     <div className="chat-app-window">
@@ -153,7 +150,10 @@ class ImageLog extends React.Component {
                                 <Image size={50} />
                             </span>
                             <h4 className="py-50 px-1 sidebar-toggle start-chat-text">
-                                Select a user to start image verification
+                                {(this.state.images.length) === 0
+                                    ? "No image to verify for this user"
+                                    : "Select a user to start image verification"
+                                }
                             </h4>
                         </div>
                     </div>
@@ -165,14 +165,7 @@ class ImageLog extends React.Component {
             <div className="content-right">
                 <div className="chat-app-window">
                     <div className="active-chat d-block">
-                        <div className="chat_navbar">
-                            <header className="chat_header d-flex justify-content-between align-items-center p-1">
-                                <div className="mx-auto">
-                                <h3>{ activeUser.name } : IMG {activeIndex+1}</h3>
-                                </div>
-                            </header>
-                        </div>
-                        <div className="row">
+                        <div className="row user-chats">
                             <div className="col-md-6 mx-auto">
                                 <Carousel
                                     interval={false}
@@ -185,15 +178,15 @@ class ImageLog extends React.Component {
                                     <CarouselControl direction="next" directionText="Next" onClickHandler={this.next} />
                                 </Carousel>
                             </div>
-                        </div>
-                        <div className="d-flex justify-content-center mt-2 mb-5">
-                            {this.state.loading ? <Spinner color="primary"/> : (
-                                <>
-                                    <button className="btn btn-success mr-1" onClick={this.validateImage}><CheckCircle size={20} /></button>
-                                    <button className="btn btn-danger mr-1" onClick={this.invalidateImage}><XCircle size={20} /></button>
-                                    <button className="btn btn-dark" onClick={this.deleteImage}><Trash2 size={20} /></button>
-                                </>
-                            )}
+                            <div className="col-md-12 mt-3 mb-5">
+                                {this.state.loading ? <Spinner color="primary"/> : (
+                                    <>
+                                        <button className="btn btn-success mr-1" onClick={this.validateImage}><CheckCircle size={20} /></button>
+                                        <button className="btn btn-danger mr-1" onClick={this.invalidateImage}><XCircle size={20} /></button>
+                                        <button className="btn btn-dark" onClick={this.deleteImage}><Trash2 size={20} /></button>
+                                    </>
+                                )}
+                            </div>
                         </div>
                     </div>
                 </div>

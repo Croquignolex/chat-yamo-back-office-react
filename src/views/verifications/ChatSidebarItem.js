@@ -3,8 +3,9 @@ import {Spinner} from "reactstrap";
 import {CheckCircle, Star} from "react-feather";
 
 import Error500 from "../Error500";
+import DisplayImage from "../../components/DisplayImage";
 
-const TicketUserItem = ({ user, activeChatId, onClickItem }) => {
+const ChatSidebarItem = ({ user, activeChatId, onClickItem }) => {
     // Data
 
     if (Array.isArray(user)) return <li><Spinner color="primary" /></li>;
@@ -17,7 +18,7 @@ const TicketUserItem = ({ user, activeChatId, onClickItem }) => {
             className={`${(activeChatId === user.id) ? "active" : ""}`}>
             <div className="pr-1">
                   <span className="avatar avatar-md m-0">
-                      <img src={user.imageSrc} alt="..." height="38" width="38" />
+                      <DisplayImage src={user.imageSrc} withModal={false} />
                   </span>
             </div>
             <div className="user-chat-info">
@@ -37,4 +38,4 @@ const TicketUserItem = ({ user, activeChatId, onClickItem }) => {
     );
 };
 
-export default TicketUserItem;
+export default ChatSidebarItem;

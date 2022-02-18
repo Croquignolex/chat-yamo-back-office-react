@@ -225,11 +225,13 @@ $chat-image-back-color: #dfdbe5;
       cursor: pointer;
       z-index: 1;
     }
+    .trim-user-chat {
+      height: calc(100vh - 22.5rem);
+    }
     .user-chats {
       padding: 20px 30px;
       position: relative;
       text-align: center;
-      height: calc(100vh - 22.5rem);
     }
     .start-chat-area,
     .user-chats {
