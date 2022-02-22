@@ -1,13 +1,14 @@
 import React from "react";
 import dayjs from "dayjs";
 import * as Icon from "react-feather"
-import {Button, Card, Spinner, FormGroup, Input, Form} from "reactstrap";
 import PerfectScrollbar from "react-perfect-scrollbar";
+import {Button, Card, Spinner, Input, Form} from "reactstrap";
 
 import Error500 from "../Error500";
 import User from "../../models/User";
 import Feedback from "../../models/Feedback";
 import ChatSidebarItem from "./ChatSidebarItem";
+import {twoDigitDisplay} from "../../helpers/helpers";
 import {getCases, getUserProfile, getUserProfileImage} from "../../redux/actions/IndependentActions";
 
 class ChatSidebar extends React.Component {
@@ -18,8 +19,9 @@ class ChatSidebar extends React.Component {
             error: null,
             feedbacks: [],
             loading: false,
-            date: dayjs(),
-            search: ""
+            date: dayjs().startOf('day'),
+            search: "",
+            hour: 0
         }
     }
 
@@ -30,7 +32,7 @@ class ChatSidebar extends React.Component {
     loadData = () => {
         // Init request
         this.setState({ loading: true, error: null, feedbacks: [], search: "" });
-        getCases(this.state.date.format('YYYY-MM-DD'))
+        getCases(this.state.date.format('YYYY-MM-DDTHH:mm:ss'))
             .then(data => {
                 const feedbacks = data?.messages.map(f => new Feedback(f));
                 // Set feedbacks
@@ -96,22 +98,27 @@ class ChatSidebar extends React.Component {
         this.setState({search})
     };
 
-    cleanSearchInput = () => {
-        this.setState({search: ""});
-        this.loadData();
-    };
-
     handlePrevDate = () => {
         this.setState((prevState) => {
             const tempDate = prevState.date;
-            return {date: tempDate.subtract(1, 'day')};
+            const tempHour = prevState.hour;
+            const nextHour = (tempHour - 6);
+            return {
+                hour: nextHour < 0 ? 18 : nextHour,
+                date: tempDate.subtract(6, 'hour')
+            };
         }, () => this.loadData());
     }
 
     handleNextDate = () => {
         this.setState((prevState) => {
             const tempDate = prevState.date;
-            return {date: tempDate.add(1, 'day')};
+            const tempHour = prevState.hour;
+            const nextHour = (tempHour + 6);
+            return {
+                hour: nextHour > 18 ? 0 : nextHour,
+                date: tempDate.add(6, 'hour')
+            };
         }, () => this.loadData());
     }
 
@@ -143,15 +150,18 @@ class ChatSidebar extends React.Component {
                 {/* Top control buttons */}
                 <div className="chat-fixed-search h-100">
                     <div className="d-flex align-items-center">
-                        <Button color="primary" className="mr-2 rounded" onClick={this.loadData}>
+                        <Button color="primary" className="mr-50 rounded" onClick={this.loadData}>
                             <Icon.Loader className="d-lg-none" size={15} />
                             <span className="d-lg-block d-none">Refresh</span>
                         </Button>
-                        <Button size="sm" color="primary" className="mr-1 rounded" onClick={this.handlePrevDate} title="Previous day">
+                        <Button size="sm" color="primary" className="mr-50 rounded" onClick={this.handlePrevDate} title="Previous day">
                             <Icon.ArrowLeft size={20} />
                         </Button>
-                        <strong>{this.state.date.format('DD-MM-YYYY')}</strong>
-                        <Button size="sm" color="primary" className="ml-1 rounded" onClick={this.handleNextDate} title="Next day">
+                        <strong>
+                            {this.state.date.format('DD-MM-YYYY')} {twoDigitDisplay(this.state.hour)}-
+                            {twoDigitDisplay(this.state.hour + 6)}
+                        </strong>
+                        <Button size="sm" color="primary" className="ml-50 rounded" onClick={this.handleNextDate} title="Next day">
                             <Icon.ArrowRight size={20} />
                         </Button>
                     </div>
@@ -176,7 +186,7 @@ class ChatSidebar extends React.Component {
                                                 value={this.state.search}
                                             />
                                             <div className="form-control-position">
-                                                <Icon.X size={15} onClick={(this.cleanSearchInput)} />
+                                                <Icon.X size={15} onClick={(this.loadData)} />
                                             </div>
                                         </div>
                                         <div className="ml-1">

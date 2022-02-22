@@ -7,6 +7,7 @@ import PerfectScrollbar from "react-perfect-scrollbar";
 import Error500 from "../Error500";
 import User from "../../models/User";
 import ImageSidebarItem from "./ImageSidebarItem";
+import {twoDigitDisplay} from "../../helpers/helpers";
 import {getUserImages, getUserProfile, getUserProfileImage} from "../../redux/actions/IndependentActions";
 
 class ImageSidebar extends React.Component {
@@ -135,10 +136,6 @@ class ImageSidebar extends React.Component {
         }, () => this.loadData());
     }
 
-    twoDigitDisplay = (number) => {
-        return (number > 9) ? number : "0" + number;
-    }
-
     render() {
         const { error, loading, users } = this.state;
         if(error) {
@@ -161,8 +158,8 @@ class ImageSidebar extends React.Component {
                             <Icon.ArrowLeft size={20} />
                         </Button>
                         <strong>
-                            {this.state.date.format('DD-MM-YYYY')} {this.twoDigitDisplay(this.state.hour)}-
-                            {this.twoDigitDisplay(this.state.hour + 6)}
+                            {this.state.date.format('DD-MM-YYYY')} {twoDigitDisplay(this.state.hour)}-
+                            {twoDigitDisplay(this.state.hour + 6)}
                         </strong>
                         <Button size="sm" color="primary" className="ml-50 rounded" onClick={this.handleNextDate} title="Next day">
                             <Icon.ArrowRight size={20} />

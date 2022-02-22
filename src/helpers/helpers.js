@@ -362,3 +362,12 @@ export const searchUrlParams = (param) => {
     const url = new URL(window.location);
     return url.searchParams.get(param);
 };
+
+/**
+ *
+ * @param number
+ * @returns {*|string}
+ */
+export const twoDigitDisplay = (number) => {
+    return (number > 9) ? number : "0" + number;
+}
