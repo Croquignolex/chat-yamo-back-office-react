@@ -96,6 +96,11 @@ class ChatSidebar extends React.Component {
         this.setState({search})
     };
 
+    cleanSearchInput = () => {
+        this.setState({search: ""});
+        this.loadData();
+    };
+
     handlePrevDate = () => {
         this.setState((prevState) => {
             const tempDate = prevState.date;
@@ -161,16 +166,24 @@ class ChatSidebar extends React.Component {
                             <ul className="chat-users-list-wrapper media-list">
                                 {/* First element: search bar */}
                                 <li>
-                                    <Form className="d-flex mx-auto w-100" onSubmit={this.handleSearchConversation}>
-                                        <Input
-                                            type="text"
-                                            placeholder="Search conversation by user id..."
-                                            onChange={(this.updateSearchInput)}
-                                            value={this.state.search}
-                                        />
-                                        <Button size="sm" color="primary" className="ml-1 rounded" type="submit" title="Search">
-                                            <Icon.Search size={20} />
-                                        </Button>
+                                    <Form className="d-flex mx-auto " onSubmit={this.handleSearchConversation}>
+                                        <div className="position-relative">
+                                            <Input
+                                                type="text"
+                                                className="search-width"
+                                                placeholder="Search conversation by user id..."
+                                                onChange={(this.updateSearchInput)}
+                                                value={this.state.search}
+                                            />
+                                            <div className="form-control-position">
+                                                <Icon.X size={15} onClick={(this.cleanSearchInput)} />
+                                            </div>
+                                        </div>
+                                        <div className="ml-1">
+                                            <Button size="sm" color="primary" className="rounded" type="submit" title="Search">
+                                                <Icon.Search size={20} />
+                                            </Button>
+                                        </div>
                                     </Form>
                                 </li>
                                 {/* Search result or users list */}
