@@ -4,6 +4,13 @@ import {APP} from "../utility/urls/frontend";
 
 const navigationConfig = [
   {
+    id: "users",
+    type: "item",
+    title: "Users",
+    navLink: APP.USERS,
+    icon: <Icon.Users size={20} />,
+  },
+  {
     type: "item",
     id: "feedbacks",
     title: "Feedbacks",
@@ -12,9 +19,9 @@ const navigationConfig = [
   },
   {
     type: "item",
-    id: "image_verification",
-    navLink: APP.VERIFICATION,
-    title: "Images Verifications",
+    id: "verification",
+    title: "Verifications",
+    navLink: APP.VERIFICATIONS,
     icon: <Icon.Image size={20} />,
   },
 ]

@@ -5,6 +5,7 @@ export const AUTH = {
 
 export const APP = {
     HOME: '/home',
+    USERS: '/users',
     FEEDBACKS: '/feedbacks',
-    VERIFICATION: '/verifications'
+    VERIFICATIONS: '/verifications'
 };

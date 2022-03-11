@@ -9,10 +9,11 @@ import * as DynamicImports from "../views/lazy-imports";
 const AuthRoutes = () => {
     return (
         <Switch>
+            <RouteWrapper path={APP.USERS} component={DynamicImports.Users} />
             <RouteWrapper exact path={APP.HOME} component={DynamicImports.Welcome} />
             <RouteWrapper path={AUTH.PASSWORD} component={DynamicImports.Password} />
             <RouteWrapper path={APP.FEEDBACKS} component={DynamicImports.Feedbacks} />
-            <RouteWrapper path={APP.VERIFICATION} component={DynamicImports.Verifications} />
+            <RouteWrapper path={APP.VERIFICATIONS} component={DynamicImports.Verifications} />
             <Redirect to={{ pathname: APP.HOME }} />
         </Switch>
     );
