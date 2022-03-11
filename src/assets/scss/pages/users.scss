@@ -17,20 +17,23 @@
 }
 
 // User view Table
+/*
 .permissions-table {
   td,
   th {
     padding: 0.5rem;
   }
 }
+*/
 
 // User view info
 .users-page-view-table .user-info {
   div {
-    padding: 0.5rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
   }
   .user-info-title {
-    min-width: 140px;
+    min-width: 150px;
   }
 }
 

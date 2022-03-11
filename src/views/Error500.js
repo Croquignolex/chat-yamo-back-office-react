@@ -44,7 +44,7 @@ Error500.propTypes = {
 };
 
 Error500.defaultProps = {
-    content: "We are sorry, unable to gat a response for this request.",
+    content: "We are sorry, unable to get a response for this request.",
     title: "Something went wrong",
     onLinkClick: () => null,
     linkText: 'Try again',

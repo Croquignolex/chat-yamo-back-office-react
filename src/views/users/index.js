@@ -1,17 +1,10 @@
 import React from "react";
 import * as Icon from "react-feather";
 
-import {
-    Col,
-    Row,
-    Card,
-    Form,
-    Input,
-    Media,
-    Button,
-    CardBody
-} from "reactstrap";
-import Breadcrumbs from "../components/@vuexy/breadCrumbs/BreadCrumb";
+import User from "./User";
+import Error500 from "../Error500";
+import {Col, Row, Form, Input, Button, Spinner} from "reactstrap";
+import Breadcrumbs from "../../components/@vuexy/breadCrumbs/BreadCrumb";
 
 class Users extends React.Component {
     constructor(props) {
@@ -20,7 +13,7 @@ class Users extends React.Component {
             loading: false,
             search: "",
             error: null,
-            user: null
+            user: "null"
         }
     }
 
@@ -44,6 +37,19 @@ class Users extends React.Component {
     };
 
     render() {
+        const activeUser = {
+            isPremium: true,
+            verified: true,
+            age: 50,
+            gender: "Female",
+            city: "Douala",
+            province: "Douala",
+            country: "Douala",
+            homeCountry: "Douala",
+            name: "Douala",
+            id: "7",
+        }
+
         return (
             <>
                 <Breadcrumbs
@@ -52,7 +58,7 @@ class Users extends React.Component {
                 />
                 <Row>
                     <Col lg={8} sm={12}>
-                        <Form className="form-inline" onSubmit={this.handleSearchConversation}>
+                        <Form className="form-inline mb-2" onSubmit={this.handleSearchConversation}>
                             <Input
                                 type="text"
                                 className="w-75"
@@ -64,34 +70,10 @@ class Users extends React.Component {
                                 <Icon.Search size={20} />
                             </Button>
                         </Form>
+                        {(this.state.loading) && <Spinner color="primary" />}
+                        {(this.state.error !== null) && <Error500 refresh={false} />}
+                        {(this.state.user !== null) && <User user={activeUser} />}
                     </Col>
-                    {(this.state.user !== null) && (
-                        <Col>
-                            <Card>
-                                <CardBody>
-                                    user data
-                                </CardBody>
-                            </Card>
-                        </Col>
-                    )}
-                    {(this.state.loading) && (
-                        <Col>
-                            <Card>
-                                <CardBody>
-                                    user data
-                                </CardBody>
-                            </Card>
-                        </Col>
-                    )}
-                    {(this.state.error !== null) && (
-                        <Col>
-                            <Card>
-                                <CardBody>
-                                    error data
-                                </CardBody>
-                            </Card>
-                        </Col>
-                    )}
                 </Row>
             </>
         )
