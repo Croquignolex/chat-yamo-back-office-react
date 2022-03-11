@@ -4,7 +4,7 @@ import "../../assets/scss/pages/users.scss";
 import {Row, Col, CardBody, Card} from "reactstrap";
 import DisplayImage from "../../components/DisplayImage";
 
-class User extends React.Component {
+class UserDetails extends React.Component {
     render() {
 
         const { user } = this.props;
@@ -112,4 +112,4 @@ class User extends React.Component {
     }
 }
 
-export default User
+export default UserDetails

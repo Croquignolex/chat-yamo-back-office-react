@@ -110,3 +110,9 @@ export const changePassword = async (oldPassword, newPassword, backOfficeUserId)
     return makeRequest('post', url, {oldPassword, newPassword});
 };
 
+export const searchUser = async (attribute) => {
+    const url = joinBaseUrlWithParams(USERS.SEARCH);
+    return makeRequest('post', url, {attribute});
+};
+
+
