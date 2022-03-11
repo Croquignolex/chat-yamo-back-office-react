@@ -19,7 +19,12 @@ class Users extends React.Component {
         }
     }
 
-    handleSubmit = (e) => {
+    updateSearchInput = (e) => {
+        const search = e?.target?.value;
+        this.setState({search})
+    };
+
+    handleSearchConversation = (e) => {
         e.preventDefault();
         if(!this.state.search) return;
 
