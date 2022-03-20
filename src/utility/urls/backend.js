@@ -8,9 +8,9 @@ export const AUTH = {
 
 export const FEEDBACKS = {
     GET_ONE: '/feedbacks/{userId}/case',
-    GET_ALL: '/feedbacks/cases/messages',
+    GET_ALL: '/feedbacks/cases/messages/from',
     MESSAGES: {
-        GET_ALL: '/feedbacks/cases/messages/from',
+        GET_ALL: '/feedbacks/cases/messages',
         SEND: '/feedbacks/{userId}/{backOfficeUserId}/newmessage',
     }
 };
