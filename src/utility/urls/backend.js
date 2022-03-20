@@ -10,7 +10,7 @@ export const FEEDBACKS = {
     GET_ONE: '/feedbacks/{userId}/case',
     GET_ALL: '/feedbacks/cases/messages',
     MESSAGES: {
-        GET_ALL: '/feedbacks/cases/messages',
+        GET_ALL: '/feedbacks/cases/messages/from',
         SEND: '/feedbacks/{userId}/{backOfficeUserId}/newmessage',
     }
 };
