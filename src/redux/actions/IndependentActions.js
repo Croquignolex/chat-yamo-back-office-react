@@ -35,7 +35,7 @@ export const deleteUserImage = async (userId, mediaId) => {
     return makeRequest('delete', url, null, config);
 };
 
-export const verifyUserImage = async (userId, mediaId, mediaPath, verified) => {
+export const verifyUserImage = async (userId, mediaId, mediaPath, verified, score) => {
     const config = {headers: {
             "CHAT-ET-YAMO-MEDIA-SERVICE-ALL-USER-IMAGES": "true",
             "CHAT-ET-YAMO-MEDIA-SERVICE-PRE-SIGNED-URL": "true"
@@ -50,7 +50,7 @@ export const verifyUserImage = async (userId, mediaId, mediaPath, verified) => {
             {param: 'verified', value: verified},
         ]
     );
-    return makeRequest('put', url, null, config);
+    return makeRequest('put', `${url}?${score}`, null, config);
 };
 
 export const getUserProfile = async (userId) => {

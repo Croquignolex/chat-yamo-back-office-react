@@ -82,10 +82,10 @@ class ImageLog extends React.Component {
     };
 
 
-    validateImage = () => {
+    validateImage = (score) => {
         const image = this.state.images[this.state.activeIndex];
         this.setState({ loading: true });
-        verifyUserImage(image.userId, image.mediaId, image.mediaPath, 'true')
+        verifyUserImage(image.userId, image.mediaId, image.mediaPath, 'true', score)
             .then(() => {
                 // Remove image from array
                 this.removeImageFormState(image)
@@ -98,7 +98,7 @@ class ImageLog extends React.Component {
     invalidateImage = () => {
         const image = this.state.images[this.state.activeIndex];
         this.setState({ loading: true });
-        verifyUserImage(image.userId, image.mediaId, image.mediaPath, 'false')
+        verifyUserImage(image.userId, image.mediaId, image.mediaPath, 'false', 0)
             .then(() => {
                 // Remove image from array
                 this.removeImageFormState(image)
@@ -181,7 +181,11 @@ class ImageLog extends React.Component {
                             <div className="col-md-12 mt-3 mb-5">
                                 {this.state.loading ? <Spinner color="primary"/> : (
                                     <>
-                                        <button className="btn btn-success mr-1" onClick={this.validateImage}><CheckCircle size={20} /></button>
+                                        <button className="btn btn-success mr-1 score-size-1" onClick={() => this.validateImage(1)}>1 <CheckCircle size={20} /></button>
+                                        <button className="btn btn-success mr-1 score-size-2" onClick={() => this.validateImage(2)}>2 <CheckCircle size={20} /></button>
+                                        <button className="btn btn-success mr-1 score-size-3" onClick={() => this.validateImage(3)}>3 <CheckCircle size={20} /></button>
+                                        <button className="btn btn-success mr-1 score-size-4" onClick={() => this.validateImage(4)}>4 <CheckCircle size={20} /></button>
+                                        <button className="btn btn-success mr-1" onClick={() => this.validateImage(5)}>5 <CheckCircle size={20} /></button>
                                         <button className="btn btn-danger mr-1" onClick={this.invalidateImage}><XCircle size={20} /></button>
                                         <button className="btn btn-dark" onClick={this.deleteImage}><Trash2 size={20} /></button>
                                     </>
