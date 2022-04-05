@@ -59,47 +59,10 @@ class UserProfile extends React.Component {
               <DisplayImage src={activeUser.imageSrc} height="70" width="70" />
             </div>
             <h4 className="chat-user-name">{activeUser.isDeleted ? "Deleted user" : activeUser.name}</h4>
-            {(this.state.loading) ? <Spinner color="primary" /> : (
-                (!this.state.show) && (
-                    <Button color="primary" onClick={this.handleShowMetaData}>
-                      Show private data
-                    </Button>
-                )
-            )}
           </div>
         </header>
         <PerfectScrollbar className="user-profile-sidebar-area p-2" options={{wheelPropagation: false}}>
           <div className="users-page-view-table">
-            {(this.state.error) && <Error500 refresh={false} />}
-            {(this.state.show) && (
-                <div className="mb-2">
-                  <div className="d-flex user-info">
-                    <div className="user-info-title font-weight-bold">
-                      Identifier
-                    </div>
-                    <div className="text-primary font-weight-bold">
-                      {metaData?.id}
-                    </div>
-                  </div>
-                  <div className="d-flex user-info">
-                    <div className="user-info-title font-weight-bold">
-                      Old Phone
-                    </div>
-                    <div className="text-primary font-weight-bold">
-                      {metaData?.oldPhone}
-                    </div>
-                  </div>
-                  <div className="d-flex user-info">
-                    <div className="user-info-title font-weight-bold">
-                      Created at
-                    </div>
-                    <div className="text-primary font-weight-bold">
-                      {metaData.createdDate?.format('LL')}
-                    </div>
-                  </div>
-                  <hr />
-                </div>
-            )}
             <div className="d-flex user-info">
               <div className="user-info-title font-weight-bold">
                 Premium
@@ -174,6 +137,45 @@ class UserProfile extends React.Component {
                 User ID
               </div>
               <div className="font-weight-bold text-primary">{activeUser.id}</div>
+            </div>
+            <hr />
+            {(this.state.error) && <Error500 refresh={false} />}
+            {(this.state.show) && (
+                <div className="mb-2">
+                  <div className="d-flex user-info">
+                    <div className="user-info-title font-weight-bold">
+                      Identifier
+                    </div>
+                    <div className="text-primary font-weight-bold">
+                      {metaData?.id}
+                    </div>
+                  </div>
+                  <div className="d-flex user-info">
+                    <div className="user-info-title font-weight-bold">
+                      Old Phone
+                    </div>
+                    <div className="text-primary font-weight-bold">
+                      {metaData?.oldPhone}
+                    </div>
+                  </div>
+                  <div className="d-flex user-info">
+                    <div className="user-info-title font-weight-bold">
+                      Created at
+                    </div>
+                    <div className="text-primary font-weight-bold">
+                      {metaData.createdDate?.format('LL')}
+                    </div>
+                  </div>
+                </div>
+            )}
+            <div className="text-center">
+              {(this.state.loading) ? <Spinner color="primary" /> : (
+                  (!this.state.show) && (
+                      <Button color="primary" onClick={this.handleShowMetaData}>
+                        Show private data
+                      </Button>
+                  )
+              )}
             </div>
           </div>
         </PerfectScrollbar>
