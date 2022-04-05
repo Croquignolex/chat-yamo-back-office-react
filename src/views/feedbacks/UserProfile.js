@@ -24,7 +24,10 @@ class UserProfile extends React.Component {
   }
 
   static getDerivedStateFromProps(props, state) {
-    if (props.activeUser !== state.activeUser) return {activeUser: props.activeUser}
+    if (props.activeUser !== state.activeUser) return {
+      activeUser: props.activeUser,
+      loading: false, error: null, metaData: null, show: false
+    }
     return null
   }
 
@@ -69,26 +72,33 @@ class UserProfile extends React.Component {
           <div className="users-page-view-table">
             {(this.state.error) && <Error500 refresh={false} />}
             {(this.state.show) && (
-                <>
+                <div className="mb-2">
                   <div className="d-flex user-info">
                     <div className="user-info-title font-weight-bold">
                       Identifier
                     </div>
-                    <div>{metaData?.id}</div>
+                    <div className="text-primary font-weight-bold">
+                      {metaData?.id}
+                    </div>
                   </div>
                   <div className="d-flex user-info">
                     <div className="user-info-title font-weight-bold">
                       Old Phone
                     </div>
-                    <div>{metaData?.oldPhone}</div>
+                    <div className="text-primary font-weight-bold">
+                      {metaData?.oldPhone}
+                    </div>
                   </div>
                   <div className="d-flex user-info">
                     <div className="user-info-title font-weight-bold">
                       Created at
                     </div>
-                    <div>{metaData.createdAt?.format('LL')}</div>
+                    <div className="text-primary font-weight-bold">
+                      {metaData.createdDate?.format('LL')}
+                    </div>
                   </div>
-                </>
+                  <hr />
+                </div>
             )}
             <div className="d-flex user-info">
               <div className="user-info-title font-weight-bold">
