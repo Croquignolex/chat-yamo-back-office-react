@@ -1,7 +1,7 @@
 import React from "react"
 import ReactDOM from "react-dom"
 import {NotificationManager} from "react-notifications";
-import { Image, CheckCircle, XCircle, Trash2, AlertTriangle} from "react-feather";
+import { Image, CheckCircle, XCircle, Trash2} from "react-feather";
 import {Carousel, CarouselItem, CarouselControl, CarouselIndicators, Spinner} from "reactstrap";
 
 import {deleteUserImage, reportUser, verifyUserImage} from "../../redux/actions/IndependentActions";
