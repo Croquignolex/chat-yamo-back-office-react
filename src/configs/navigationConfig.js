@@ -4,11 +4,18 @@ import {APP} from "../utility/urls/frontend";
 
 const navigationConfig = [
   {
+    id: "backoffice-users",
+    type: "item",
+    title: "Backoffice Users",
+    navLink: APP.BACKOFFICE_USERS,
+    icon: <Icon.Users size={20} />,
+  },
+  {
     id: "users",
     type: "item",
     title: "Users",
     navLink: APP.USERS,
-    icon: <Icon.Users size={20} />,
+    icon: <Icon.UserCheck size={20} />,
   },
   {
     type: "item",

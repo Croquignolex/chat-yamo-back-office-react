@@ -7,5 +7,6 @@ export const APP = {
     HOME: '/home',
     USERS: '/users',
     FEEDBACKS: '/feedbacks',
-    VERIFICATIONS: '/verifications'
+    VERIFICATIONS: '/verifications',
+    BACKOFFICE_USERS: '/backoffice-users'
 };
