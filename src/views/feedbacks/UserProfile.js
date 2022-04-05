@@ -1,7 +1,8 @@
 import React from "react";
-import { X } from "react-feather";
-import PerfectScrollbar from "react-perfect-scrollbar"
+import {X} from "react-feather";
+import PerfectScrollbar from "react-perfect-scrollbar";
 
+import {Button, Spinner} from "reactstrap";
 import "../../assets/scss/pages/users.scss";
 import DisplayImage from "../../components/DisplayImage";
 
@@ -10,7 +11,11 @@ class UserProfile extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      activeUser: null
+      activeUser: null,
+      // Metadata state
+      show: false,
+      loading: false,
+      metaData: null,
     }
   }
 
@@ -19,8 +24,13 @@ class UserProfile extends React.Component {
     return null
   }
 
+  handleShowMetaData = () => {
+     this.setState({loading: true});
+     this.setState({loading: false});
+  }
+
   render() {
-    const { activeUser } = this.state;
+    const { activeUser, metaData } = this.state;
     const { receiverProfile, handleReceiverSidebar } = this.props;
 
     if (!activeUser) return null;
@@ -36,10 +46,39 @@ class UserProfile extends React.Component {
               <DisplayImage src={activeUser.imageSrc} height="70" width="70" />
             </div>
             <h4 className="chat-user-name">{activeUser.isDeleted ? "Deleted user" : activeUser.name}</h4>
+            {(this.state.loading) ? <Spinner color="primary" /> : (
+                (!this.state.show) && (
+                    <Button color="primary" onClick={this.handleShowMetaData}>
+                      Show private data
+                    </Button>
+                )
+            )}
           </div>
         </header>
         <PerfectScrollbar className="user-profile-sidebar-area p-2" options={{wheelPropagation: false}}>
           <div className="users-page-view-table">
+            {(this.state.show) && (
+                <>
+                  <div className="d-flex user-info">
+                    <div className="user-info-title font-weight-bold">
+                      Identifier
+                    </div>
+                    <div>{metaData?.id}</div>
+                  </div>
+                  <div className="d-flex user-info">
+                    <div className="user-info-title font-weight-bold">
+                      Old Phone
+                    </div>
+                    <div>{metaData?.oldPhone}</div>
+                  </div>
+                  <div className="d-flex user-info">
+                    <div className="user-info-title font-weight-bold">
+                      Created at
+                    </div>
+                    <div>{metaData.createdAt?.format('LL')}</div>
+                  </div>
+                </>
+            )}
             <div className="d-flex user-info">
               <div className="user-info-title font-weight-bold">
                 Premium
