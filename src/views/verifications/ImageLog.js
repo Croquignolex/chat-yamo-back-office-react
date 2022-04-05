@@ -1,10 +1,10 @@
 import React from "react"
 import ReactDOM from "react-dom"
 import {NotificationManager} from "react-notifications";
-import { Image, CheckCircle, XCircle, Trash2} from "react-feather";
+import { Image, CheckCircle, XCircle, Trash2, AlertTriangle} from "react-feather";
 import {Carousel, CarouselItem, CarouselControl, CarouselIndicators, Spinner} from "reactstrap";
 
-import {deleteUserImage, verifyUserImage} from "../../redux/actions/IndependentActions";
+import {deleteUserImage, reportUser, verifyUserImage} from "../../redux/actions/IndependentActions";
 
 class ImageLog extends React.Component {
     // props { activeChatID, activeUser, mainSidebar, handleReceiverSidebar }
@@ -15,7 +15,8 @@ class ImageLog extends React.Component {
             loading: false,
             activeIndex: 0,
             images: [],
-            all_images: []
+            all_images: [],
+            reportLoading: false
         };
         this.next = this.next.bind(this);
         this.previous = this.previous.bind(this);
@@ -129,9 +130,20 @@ class ImageLog extends React.Component {
         this.props.handleRemoveImage(image);
     };
 
+    reportUser = (userId) => {
+        this.setState({reportLoading: true});
+        reportUser(userId)
+            .then(() => {
+                // No action
+                NotificationManager.success("User profile has been successfully reported", null);
+            })
+            .catch((error) => console.log("error ", error))
+            .finally(() => this.setState({ reportLoading: false }));
+    };
+
     render() {
         const { activeIndex } = this.state;
-        const { activeUser,  } = this.props;
+        const { activeUser } = this.props;
         const slides = this.state.images.map((item) => {
             return (
                 <CarouselItem onExiting={this.onExiting} onExited={this.onExited} key={item.mediaId}>
@@ -167,6 +179,13 @@ class ImageLog extends React.Component {
                     <div className="active-chat d-block">
                         <div className="row user-chats">
                             <div className="col-md-6 mx-auto">
+                                <div className="mb-2">
+                                    {(this.state.reportLoading) ? <Spinner color="danger" /> : (
+                                        <button className="btn btn-lg btn-danger" onClick={() => this.reportUser(activeUser.id)}>
+                                            Repport User
+                                        </button>
+                                    )}
+                                </div>
                                 <Carousel
                                     interval={false}
                                     activeIndex={activeIndex}

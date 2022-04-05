@@ -27,6 +27,12 @@ export const searchUser = async (attribute) => {
     return makeRequest('post', url, {attribute});
 };
 
+export const reportUser = async (userId) => {
+    const url = joinBaseUrlWithParams(FEEDBACKS.REPORT);
+    const feedbackText = `Feedback from image check: ${userId} should be deleted`;
+    return makeRequest('post', url, {feedbackText});
+};
+
 export const getUserImages = async (date) => {
     const config = {headers: {
             "CHAT-ET-YAMO-MEDIA-SERVICE-ALL-USER-IMAGES": "true",
