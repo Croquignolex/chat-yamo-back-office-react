@@ -130,7 +130,7 @@ class ImageLog extends React.Component {
         this.props.handleRemoveImage(image);
     };
 
-    reportUser = (userId) => {
+    reportProfile = (userId) => {
         this.setState({reportLoading: true});
         reportUser(userId)
             .then(() => {
@@ -181,7 +181,7 @@ class ImageLog extends React.Component {
                             <div className="col-md-6 mx-auto">
                                 <div className="mb-2">
                                     {(this.state.reportLoading) ? <Spinner color="danger" /> : (
-                                        <button className="btn btn-lg btn-danger" onClick={() => this.reportUser(activeUser.id)}>
+                                        <button className="btn btn-lg btn-danger" onClick={() => this.reportProfile(activeUser.id)}>
                                             Repport User
                                         </button>
                                     )}
@@ -204,7 +204,7 @@ class ImageLog extends React.Component {
                                         <button className="btn btn-success mr-1 score-size-2" onClick={() => this.validateImage(2)}>2 <CheckCircle size={20} /></button>
                                         <button className="btn btn-success mr-1 score-size-3" onClick={() => this.validateImage(3)}>3 <CheckCircle size={20} /></button>
                                         <button className="btn btn-success mr-1 score-size-4" onClick={() => this.validateImage(4)}>4 <CheckCircle size={20} /></button>
-                                        <button className="btn btn-success mr-1" onClick={() => this.validateImage(5)}>5 <CheckCircle size={20} /></button>
+                                        <button className="btn btn-success mr-1 score-size-5" onClick={() => this.validateImage(5)}>5 <CheckCircle size={20} /></button>
                                         <button className="btn btn-danger mr-1" onClick={this.invalidateImage}><XCircle size={20} /></button>
                                         <button className="btn btn-dark" onClick={this.deleteImage}><Trash2 size={20} /></button>
                                     </>
