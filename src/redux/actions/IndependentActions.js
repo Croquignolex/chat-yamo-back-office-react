@@ -3,11 +3,28 @@ import {REACT_APP_CHAT_BACKOFFICE_USER_ID} from "../../configs/AppConfig";
 import {USERS, MEDIA, FEEDBACKS, AUTH, joinBaseUrlWithParams, joinBaseUrlWithRequestParams, VALIDATIONS} from "../../utility/urls/backend";
 
 export const getCases = async (date) => {
-    return makeRequest('get', joinBaseUrlWithRequestParams(FEEDBACKS.GET_ALL, [{param: 'date', value: date}]));
+    const url = joinBaseUrlWithRequestParams(FEEDBACKS.GET_ALL, [{param: 'date', value: date}])
+    return makeRequest('get', url);
+};
+
+export const getUserMetaData = async (userId) => {
+    const url = joinBaseUrlWithParams(USERS.METADATA, [{param: 'userId', value: userId}]);
+    return makeRequest('get', url);
 };
 
 export const getCaseMessages = async (userId) => {
-    return makeRequest('get', joinBaseUrlWithParams(FEEDBACKS.GET_ONE, [{param: 'userId', value: userId}]));
+    const url = joinBaseUrlWithParams(FEEDBACKS.GET_ONE, [{param: 'userId', value: userId}]);
+    return makeRequest('get', url);
+};
+
+export const getUserProfile = async (userId) => {
+    const url = joinBaseUrlWithParams(USERS.GET_ONE, [{param: 'userId', value: userId}]);
+    return makeRequest('get', url);
+};
+
+export const searchUser = async (attribute) => {
+    const url = joinBaseUrlWithParams(USERS.SEARCH);
+    return makeRequest('post', url, {attribute});
 };
 
 export const getUserImages = async (date) => {
@@ -51,10 +68,6 @@ export const verifyUserImage = async (userId, mediaId, mediaPath, verified, scor
         ]
     );
     return makeRequest('put', `${url}?${score}`, null, config);
-};
-
-export const getUserProfile = async (userId) => {
-    return makeRequest('get', joinBaseUrlWithParams(USERS.GET_ONE, [{param: 'userId', value: userId}]));
 };
 
 export const createMedia = async (userId, file) => {
@@ -109,10 +122,4 @@ export const changePassword = async (oldPassword, newPassword, backOfficeUserId)
     );
     return makeRequest('post', url, {oldPassword, newPassword});
 };
-
-export const searchUser = async (attribute) => {
-    const url = joinBaseUrlWithParams(USERS.SEARCH);
-    return makeRequest('post', url, {attribute});
-};
-
 

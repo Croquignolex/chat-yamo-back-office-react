@@ -5,6 +5,9 @@ import PerfectScrollbar from "react-perfect-scrollbar";
 import {Button, Spinner} from "reactstrap";
 import "../../assets/scss/pages/users.scss";
 import DisplayImage from "../../components/DisplayImage";
+import {getUserMetaData} from "../../redux/actions/IndependentActions";
+import MetaData from "../../models/MetaData";
+import Error500 from "../Error500";
 
 class UserProfile extends React.Component {
   // props { receiverProfile, activeUser, handleReceiverSidebar }
@@ -14,6 +17,7 @@ class UserProfile extends React.Component {
       activeUser: null,
       // Metadata state
       show: false,
+      error: null,
       loading: false,
       metaData: null,
     }
@@ -25,8 +29,14 @@ class UserProfile extends React.Component {
   }
 
   handleShowMetaData = () => {
-     this.setState({loading: true});
-     this.setState({loading: false});
+     this.setState({loading: true, error: null, metaData: null, show: false});
+     getUserMetaData(this.state.activeUser?.id)
+         .then(data => {
+           const metaData = new MetaData(data);
+           this.setState({ metaData, show: true })
+         })
+         .catch(error => this.setState({ error }))
+         .finally(() => this.setState({ loading: false }));
   }
 
   render() {
@@ -57,6 +67,7 @@ class UserProfile extends React.Component {
         </header>
         <PerfectScrollbar className="user-profile-sidebar-area p-2" options={{wheelPropagation: false}}>
           <div className="users-page-view-table">
+            {(this.state.error) && <Error500 refresh={false} />}
             {(this.state.show) && (
                 <>
                   <div className="d-flex user-info">

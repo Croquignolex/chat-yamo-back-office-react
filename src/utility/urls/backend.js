@@ -24,6 +24,7 @@ export const VALIDATIONS = {
 export const USERS = {
     GET_ONE: '/profile/{userId}',
     SEARCH: '/profile/backoffice/checkuser',
+    METADATA: '/profile/backoffice/checkuser',
 };
 
 export const MEDIA = {
