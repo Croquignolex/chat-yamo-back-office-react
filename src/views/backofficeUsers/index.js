@@ -4,7 +4,7 @@ import Error500 from "../Error500";
 import {connect} from "react-redux";
 import * as Icon from "react-feather";
 import BackofficeUser from "../../models/BackofficeUser";
-import {Button, Card, CardBody, Col, Row, Table} from "reactstrap";
+import {Badge, Button, Card, CardBody, Col, Row, Spinner, Table} from "reactstrap";
 import Breadcrumbs from "../../components/@vuexy/breadCrumbs/BreadCrumb";
 import {getBackofficeUsers} from "../../redux/actions/IndependentActions";
 
@@ -13,8 +13,12 @@ class BackofficeUsers extends React.Component {
         super(props);
         this.state = {
             error: null,
-            loading: false,
-            backofficeUsers: []
+            itemAction: "",
+            loading: true,
+            backofficeUsers: [],
+            deleteModal: {show: false, title: "", body: "", data: ""},
+            newModal: {},
+            editModal: {},
         }
     }
 
@@ -35,9 +39,24 @@ class BackofficeUsers extends React.Component {
             .finally(() => this.setState({ loading: false }));
     };
 
+    // Toggle delete modal
+    toggleDeleteModal = (item) => {
+        const {deleteModal} = this.state;
+        if(deleteModal.show) this.setState({deleteModal: {...deleteModal, show: false}});
+        else {
+            this.setState({deleteModal: {
+                ...deleteModal,
+                    show: true,
+                    data: item,
+                    title: `Suppression`,
+                    body: `Confirmer la suppression du compte de ${item?.firstName}?`
+            }});
+        }
+    };
+
     render() {
 
-        const { backofficeUsers, error, loading } = this.state;
+        const { backofficeUsers, error, loading, itemAction } = this.state;
 
         if(error) {
             return (
@@ -72,23 +91,38 @@ class BackofficeUsers extends React.Component {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                    {backofficeUsers.map((backofficeUser, index) => (
-                                        <tr>
-                                            <th scope="row">{index + 1}</th>
-                                            <td className="font-weight-bold">{backofficeUser.username}</td>
-                                            <td>{backofficeUser.firstName}</td>
-                                            <td>{backofficeUser.lastName}</td>
-                                            <td>{backofficeUser.username}</td>
-                                            <td className="text-center">
-                                                <Button color="warning" className="rounded mr-50" size="sm">
-                                                    <Icon.Edit size={15} />
-                                                </Button>
-                                                <Button color="danger" className="rounded" size="sm">
-                                                    <Icon.Trash size={15} />
-                                                </Button>
-                                            </td>
-                                        </tr>
-                                    ))}
+                                    {loading ? <td className="text-center mt-2" colSpan={6}><Spinner color="primary" /></td> : (
+                                        backofficeUsers.map((backofficeUser, index) => (
+                                            <tr>
+                                                <th scope="row">{index + 1}</th>
+                                                <td className="font-weight-bold">{backofficeUser.username}</td>
+                                                <td>{backofficeUser.firstName}</td>
+                                                <td>{backofficeUser.lastName}</td>
+                                                <td>
+                                                    {backofficeUser.getRoles.map((role) => (
+                                                        <Badge color={role.color} pill>
+                                                            {role.text}
+                                                        </Badge>
+                                                    ))}
+                                                </td>
+                                                <td className="text-center">
+                                                    {(itemAction === backofficeUser.id)
+                                                        ? <Spinner color="primary" />
+                                                        : (
+                                                            <>
+                                                                <Button color="warning" className="rounded mr-50" size="sm">
+                                                                    <Icon.Edit size={15} />
+                                                                </Button>
+                                                                <Button color="danger" className="rounded" size="sm">
+                                                                    <Icon.Trash size={15} />
+                                                                </Button>
+                                                            </>
+                                                        )
+                                                    }
+                                                </td>
+                                            </tr>
+                                        ))
+                                    )}
                                     </tbody>
                                 </Table>
                             </Col>
