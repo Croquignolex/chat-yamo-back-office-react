@@ -68,6 +68,12 @@ class BackofficeUsers extends React.Component {
             .finally(() => this.setState({itemAction: ""}));
     };
 
+    canHandleActionButtons = (currentUser) => {
+        const {backOfficeUserId, backOfficeUserRoles} = this.props;
+        console.log({currentUser, backOfficeUserId, backOfficeUserRoles})
+        return (backOfficeUserRoles.includes('admin')) && (currentUser.id !== backOfficeUserId);
+    };
+
     render() {
 
         const { backofficeUsers, error, loading, itemAction, deleteModal } = this.state;
@@ -105,16 +111,16 @@ class BackofficeUsers extends React.Component {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                    {loading ? <td className="text-center mt-2" colSpan={6}><Spinner color="primary" /></td> : (
+                                    {loading ? <tr><td className="text-center mt-2" colSpan={6}><Spinner color="primary" /></td></tr> : (
                                         backofficeUsers.map((backofficeUser, index) => (
-                                            <tr>
+                                            <tr key={index}>
                                                 <th scope="row">{index + 1}</th>
                                                 <td className="font-weight-bold">{backofficeUser.username}</td>
                                                 <td>{backofficeUser.firstName}</td>
                                                 <td>{backofficeUser.lastName}</td>
                                                 <td>
                                                     {backofficeUser.getRoles.map((role) => (
-                                                        <Badge color={role.color} pill>
+                                                        <Badge color={role.color} pill key={role.text}>
                                                             {role.text}
                                                         </Badge>
                                                     ))}
@@ -122,7 +128,7 @@ class BackofficeUsers extends React.Component {
                                                 <td className="text-center">
                                                     {(itemAction === backofficeUser.id)
                                                         ? <Spinner color="primary" />
-                                                        : (
+                                                        : (this.canHandleActionButtons(backofficeUser)) && (
                                                             <>
                                                                 <Button color="warning" className="rounded mr-50" size="sm">
                                                                     <Icon.Edit size={15} />
@@ -162,6 +168,7 @@ class BackofficeUsers extends React.Component {
 const mapStateToProps = state => {
     return {
         backOfficeUserId: state.authUser?.data?.entityId,
+        backOfficeUserRoles: state.authUser?.data?.roles,
     }
 };
 
