@@ -2,7 +2,7 @@ export default class BackofficeUser {
     constructor(backofficeUser) {
         Object.assign(this, backofficeUser);
 
-        this.id = this.username;
+        this.id = this.entityId;
     }
 
     get getRoles() {

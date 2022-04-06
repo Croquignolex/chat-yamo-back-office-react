@@ -8,6 +8,7 @@ export const AUTH = {
 
 export const BACKOFFICE_USERS = {
     GET_ALL: '/feedbacks/backoffice/{backofficeUserId}/allusers',
+    DELETE_ONE: '/feedbacks/backoffice/{backofficeUserId}/{userId}/delete',
 };
 
 export const FEEDBACKS = {

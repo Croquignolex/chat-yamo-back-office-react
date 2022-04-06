@@ -47,6 +47,17 @@ export const getBackofficeUsers = async (backofficeUserId) => {
     return makeRequest('get', url);
 };
 
+export const deleteBackofficeUser = async (backofficeUserId, userId) => {
+    const url = joinBaseUrlWithParams(
+        BACKOFFICE_USERS.DELETE_ONE,
+        [
+            {param: 'backofficeUserId', value: backofficeUserId},
+            {param: 'userId', value: userId},
+        ]
+    );
+    return makeRequest('delete', url);
+};
+
 export const getUserImages = async (date) => {
     const config = {headers: {
             "CHAT-ET-YAMO-MEDIA-SERVICE-ALL-USER-IMAGES": "true",

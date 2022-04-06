@@ -6,7 +6,8 @@ import * as Icon from "react-feather";
 import BackofficeUser from "../../models/BackofficeUser";
 import {Badge, Button, Card, CardBody, Col, Row, Spinner, Table} from "reactstrap";
 import Breadcrumbs from "../../components/@vuexy/breadCrumbs/BreadCrumb";
-import {getBackofficeUsers} from "../../redux/actions/IndependentActions";
+import {deleteBackofficeUser, getBackofficeUsers} from "../../redux/actions/IndependentActions";
+import ConfirmModal from "../../components/ConfirmModal";
 
 class BackofficeUsers extends React.Component {
     constructor(props) {
@@ -39,7 +40,6 @@ class BackofficeUsers extends React.Component {
             .finally(() => this.setState({ loading: false }));
     };
 
-    // Toggle delete modal
     toggleDeleteModal = (item) => {
         const {deleteModal} = this.state;
         if(deleteModal.show) this.setState({deleteModal: {...deleteModal, show: false}});
@@ -54,9 +54,23 @@ class BackofficeUsers extends React.Component {
         }
     };
 
+    handleDelete = (item) => {
+        this.toggleDeleteModal();
+        this.setState({itemAction: item.id});
+        deleteBackofficeUser(this.props?.backOfficeUserId, item.id)
+            .then(() => {
+                this.setState((prevState) => {
+                    const backofficeUsers = prevState.backofficeUsers.filter((user) => user.id !== item.id);
+                    return {backofficeUsers};
+                });
+            })
+            .catch(error => this.setState({ error }))
+            .finally(() => this.setState({itemAction: ""}));
+    };
+
     render() {
 
-        const { backofficeUsers, error, loading, itemAction } = this.state;
+        const { backofficeUsers, error, loading, itemAction, deleteModal } = this.state;
 
         if(error) {
             return (
@@ -113,7 +127,11 @@ class BackofficeUsers extends React.Component {
                                                                 <Button color="warning" className="rounded mr-50" size="sm">
                                                                     <Icon.Edit size={15} />
                                                                 </Button>
-                                                                <Button color="danger" className="rounded" size="sm">
+                                                                <Button color="danger"
+                                                                        className="rounded"
+                                                                        size="sm"
+                                                                        onClick={() => this.toggleDeleteModal(backofficeUser)}
+                                                                >
                                                                     <Icon.Trash size={15} />
                                                                 </Button>
                                                             </>
@@ -129,6 +147,13 @@ class BackofficeUsers extends React.Component {
                         </Row>
                     </CardBody>
                 </Card>
+                <ConfirmModal
+                    small
+                    danger
+                    modal={deleteModal}
+                    handleModal={this.handleDelete}
+                    toggleModal={this.toggleDeleteModal}
+                />
             </>
         )
     }
