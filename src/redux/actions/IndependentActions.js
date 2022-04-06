@@ -1,6 +1,15 @@
 import {makeRequest} from "../../helpers/helpers";
 import {REACT_APP_CHAT_BACKOFFICE_USER_ID} from "../../configs/AppConfig";
-import {USERS, MEDIA, FEEDBACKS, AUTH, joinBaseUrlWithParams, joinBaseUrlWithRequestParams, VALIDATIONS} from "../../utility/urls/backend";
+import {
+    USERS,
+    MEDIA,
+    FEEDBACKS,
+    AUTH,
+    joinBaseUrlWithParams,
+    joinBaseUrlWithRequestParams,
+    VALIDATIONS,
+    BACKOFFICE_USERS
+} from "../../utility/urls/backend";
 
 export const getCases = async (date) => {
     const url = joinBaseUrlWithRequestParams(FEEDBACKS.GET_ALL, [{param: 'date', value: date}])
@@ -31,6 +40,11 @@ export const reportUser = async (userId) => {
     const url = joinBaseUrlWithParams(FEEDBACKS.REPORT);
     const feedbackText = `Feedback from image check: ${userId} should be deleted`;
     return makeRequest('post', url, {feedbackText});
+};
+
+export const getBackofficeUsers = async (backofficeUserId) => {
+    const url = joinBaseUrlWithParams(BACKOFFICE_USERS.GET_ALL, [{param: 'backofficeUserId', value: backofficeUserId}])
+    return makeRequest('get', url);
 };
 
 export const getUserImages = async (date) => {

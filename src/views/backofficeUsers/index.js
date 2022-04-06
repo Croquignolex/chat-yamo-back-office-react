@@ -1,80 +1,109 @@
 import React from "react";
-import * as Icon from "react-feather";
 
 import Error500 from "../Error500";
-import User from "../../models/User";
-import UserDetails from "./UserDetails";
-import {Col, Row, Form, Input, Button, Spinner} from "reactstrap";
+import {connect} from "react-redux";
+import * as Icon from "react-feather";
+import BackofficeUser from "../../models/BackofficeUser";
+import {Button, Card, CardBody, Col, Row, Table} from "reactstrap";
 import Breadcrumbs from "../../components/@vuexy/breadCrumbs/BreadCrumb";
-import {getUserProfileImage, searchUser} from "../../redux/actions/IndependentActions";
+import {getBackofficeUsers} from "../../redux/actions/IndependentActions";
 
-class Users extends React.Component {
+class BackofficeUsers extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            loading: false,
-            search: "",
             error: null,
-            user: null
+            loading: false,
+            backofficeUsers: []
         }
     }
 
-    updateSearchInput = (e) => {
-        const search = e?.target?.value;
-        this.setState({search})
-    };
+    componentDidMount() {
+        this.loadBackofficeUsers();
+    }
 
-    handleSearchConversation = (e) => {
-        e.preventDefault();
-        if(!this.state.search) return;
-
-        this.setState({loading: true, error: null, user: null});
-        searchUser(this.state.search)
-            .then(async data => {
-                const user = new User(data);
-                try {
-                    if(!user.isDeleted) {
-                        // User profile image
-                        user.setAvatar = await getUserProfileImage(user.id);
-                    }
-                } catch (e) {}
-                this.setState({ user });
+    loadBackofficeUsers = () => {
+        // Init request
+        this.setState({ loading: true, error: null, users: [] });
+        getBackofficeUsers(this.props?.backOfficeUserId)
+            .then(data => {
+                const backofficeUsers = data?.map(u => new BackofficeUser(u));
+                // Set backofficeUsers
+                this.setState({ backofficeUsers });
             })
             .catch(error => this.setState({ error }))
-            .finally(() => {
-                this.setState({loading: false});
-            });
+            .finally(() => this.setState({ loading: false }));
     };
 
     render() {
+
+        const { backofficeUsers, error, loading } = this.state;
+
+        if(error) {
+            return (
+                <Card className="sidebar-content h-100">
+                    <Error500 onLinkClick={this.loadData} />
+                </Card>
+            )
+        }
+
         return (
             <>
                 <Breadcrumbs
-                    breadCrumbTitle="Users"
-                    breadCrumbActive="Search a user"
+                    breadCrumbTitle="Backoffice Users"
+                    breadCrumbActive="Backoffice Users"
                 />
-                <Row>
-                    <Col lg={8} sm={12}>
-                        <Form className="form-inline mb-2" onSubmit={this.handleSearchConversation}>
-                            <Input
-                                type="text"
-                                className="w-75"
-                                placeholder="Search user by phone or email..."
-                                onChange={(this.updateSearchInput)}
-                                value={this.state.search}
-                            />
-                            <Button size="sm" color="primary" className="rounded ml-1" type="submit" title="Search">
-                                <Icon.Search size={20} />
-                            </Button>
-                        </Form>
-                        {(this.state.loading) && <Spinner color="primary" />}
-                        {(this.state.error !== null) && <Error500 refresh={false} />}
-                        {(this.state.user !== null) && <UserDetails user={this.state.user} />}
-                    </Col>
-                </Row>
+                <Card>
+                    <CardBody>
+                        <Row className="pt-1">
+                            <Col sm="12">
+                                <Button color="primary" className="mb-2">
+                                    Add backoffice user
+                                </Button>
+                                <Table hover bordered responsive>
+                                    <thead className="bg-primary text-white">
+                                        <tr>
+                                            <th>#</th>
+                                            <th>USERNAME</th>
+                                            <th>FIRST NAME</th>
+                                            <th>LAST NAME</th>
+                                            <th>ROLES</th>
+                                            <th>ACTIONS</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    {backofficeUsers.map((backofficeUser, index) => (
+                                        <tr>
+                                            <th scope="row">{index + 1}</th>
+                                            <td className="font-weight-bold">{backofficeUser.username}</td>
+                                            <td>{backofficeUser.firstName}</td>
+                                            <td>{backofficeUser.lastName}</td>
+                                            <td>{backofficeUser.username}</td>
+                                            <td className="text-center">
+                                                <Button color="warning" className="rounded mr-50" size="sm">
+                                                    <Icon.Edit size={15} />
+                                                </Button>
+                                                <Button color="danger" className="rounded" size="sm">
+                                                    <Icon.Trash size={15} />
+                                                </Button>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                    </tbody>
+                                </Table>
+                            </Col>
+                        </Row>
+                    </CardBody>
+                </Card>
             </>
         )
     }
 }
 
-export default Users;
+const mapStateToProps = state => {
+    return {
+        backOfficeUserId: state.authUser?.data?.entityId,
+    }
+};
+
+export default connect(mapStateToProps)(BackofficeUsers)

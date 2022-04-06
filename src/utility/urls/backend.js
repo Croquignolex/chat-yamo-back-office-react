@@ -6,6 +6,10 @@ export const AUTH = {
     PASSWORD: '/feedbacks/backoffice/{backOfficeUserId}/changepasswd',
 };
 
+export const BACKOFFICE_USERS = {
+    GET_ALL: '/feedbacks/backoffice/{backofficeUserId}/allusers',
+};
+
 export const FEEDBACKS = {
     REPORT: '/feedbacks/submit',
     GET_ONE: '/feedbacks/{userId}/case',
