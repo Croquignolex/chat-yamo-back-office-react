@@ -150,14 +150,14 @@ class UserDetails extends React.Component {
                                                 {metaData?.oldPhone}
                                             </div>
                                         </div>
-                                        <div className="d-flex user-info">
+                                        {/*<div className="d-flex user-info">
                                             <div className="user-info-title font-weight-bold">
                                                 Created at
                                             </div>
                                             <div className="text-primary font-weight-bold">
                                                 {metaData.createdDate?.format('LL')}
                                             </div>
-                                        </div>
+                                        </div>*/}
                                     </div>
                                 )}
                                 <div className="text-center">
