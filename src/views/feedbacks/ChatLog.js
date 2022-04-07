@@ -1,5 +1,4 @@
-import React from "react"
-import ReactDOM from "react-dom"
+import React from "react" ;
 import {Button, Spinner} from "reactstrap";
 import PerfectScrollbar from "react-perfect-scrollbar";
 import {MessageSquare, Menu, Loader} from "react-feather";
@@ -18,19 +17,21 @@ class ChatLog extends React.Component {
         this.state = {
             error: null,
             messages: [],
-            loading: false,
+            loading: false
         }
     }
 
     componentDidMount() {
         this.loadData();
-        this.scrollToBottom();
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
         if (prevProps.activeUser !== this.props.activeUser) {
             this.loadData();
-            this.scrollToBottom();
+        }
+
+        if(this.scroll) {
+            this.scroll.scrollTop = this.scroll?.scrollHeight;
         }
     }
 
@@ -80,13 +81,6 @@ class ChatLog extends React.Component {
                 })
                 .finally(() => resolve());
         })
-    };
-
-    scrollToBottom = () => {
-        if (this.chatArea) {
-            const chatContainer = ReactDOM.findDOMNode(this.chatArea);
-            chatContainer.scrollTop = chatContainer.scrollHeight;
-        }
     };
 
     notifyChanges = (message) => {
@@ -166,8 +160,8 @@ class ChatLog extends React.Component {
                                     <>
                                         <PerfectScrollbar
                                             className="user-chats trim-user-chat"
-                                            ref={el => {this.chatArea = el}}
                                             options={{ wheelPropagation: false }}
+                                            containerRef={el => {this.scroll = el}}
                                         >
                                             <div className="chats">
                                                 <ChatLogContent messages={messages} activeUser={activeUser} />
