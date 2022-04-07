@@ -85,7 +85,7 @@ class BackofficeUsers extends React.Component {
 
     render() {
 
-        const { backofficeUsers, error, listLoading, addLoading, itemAction, deleteModal } = this.state;
+        const { backofficeUsers, error, listLoading, addLoading, itemAction, newModal, deleteModal } = this.state;
 
         if(error) {
             return (
@@ -171,7 +171,7 @@ class BackofficeUsers extends React.Component {
                     handleModal={this.handleDelete}
                     toggleModal={this.toggleDeleteModal}
                 />
-                <FormModal small modal={addLoading} toggleModal={this.toggleNewModal}>
+                <FormModal small modal={newModal} toggleModal={this.toggleNewModal}>
                     <NewBackofficeUser handleCompleted={this.toggleNewModal} />
                 </FormModal>
                 {/*<FormModal small modal={tenantNewModal} toggleModal={toggleTenantNewModal}>

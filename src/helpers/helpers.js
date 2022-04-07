@@ -371,3 +371,9 @@ export const searchUrlParams = (param) => {
 export const twoDigitDisplay = (number) => {
     return (number > 9) ? number : "0" + number;
 }
+
+export const requiredChecker = (input) => {
+    return (input.data?.toString().length > 0)
+        ? {...input, isValid: true}
+        : {...input, isValid: false, errorMessage: "Valeur du champ réquis"};
+};

@@ -1,14 +1,11 @@
 import React from "react";
 
 import Error500 from "../Error500";
-import {connect} from "react-redux";
-import * as Icon from "react-feather";
-import BackofficeUser from "../../models/BackofficeUser";
-import {Badge, Button, Card, CardBody, Col, Row, Spinner, Table} from "reactstrap";
-import Breadcrumbs from "../../components/@vuexy/breadCrumbs/BreadCrumb";
-import {deleteBackofficeUser, getBackofficeUsers} from "../../redux/actions/IndependentActions";
-import ConfirmModal from "../../components/ConfirmModal";
-import FormModal from "../../components/FormModal";
+import FormInput from "../../components/FormInput";
+import {requiredChecker} from "../../helpers/helpers";
+import {NotificationManager} from "react-notifications";
+import {Button, Card, FormGroup, Label, Spinner, Form} from "reactstrap";
+import {addBackofficeUser} from "../../redux/actions/IndependentActions";
 
 class NewBackofficeUser extends React.Component {
     constructor(props) {
@@ -16,26 +13,57 @@ class NewBackofficeUser extends React.Component {
         this.state = {
             error: null,
             loading: false,
+            roles: {data: [], errorMessage: '', isValid: true},
+            lastName: {data: '', errorMessage: '', isValid: true},
+            password: {data: '', errorMessage: '', isValid: true},
+            username: {data: '', errorMessage: '', isValid: true},
+            firstName: {data: '', errorMessage: '', isValid: true}
         }
     }
 
-    handleDelete = (item) => {
-        this.toggleDeleteModal();
-        this.setState({itemAction: item.id});
-        deleteBackofficeUser(this.props?.backOfficeUserId, item.id)
-            .then(() => {
-                this.setState((prevState) => {
-                    const backofficeUsers = prevState.backofficeUsers.filter((user) => user.id !== item.id);
-                    return {backofficeUsers};
-                });
-            })
-            .catch(error => this.setState({ error }))
-            .finally(() => this.setState({itemAction: ""}));
+    handleNew = (e) => {
+        e.preventDefault();
+        // Reset error data
+        this.setState({loading: true});
+        const { roles, firstName, lastName, password, username } = this.state;
+        const { handleCompleted, backOfficeUserId } = this.props;
+        const _roles = requiredChecker(roles);
+        const _username = requiredChecker(username);
+        const _lastName = requiredChecker(lastName);
+        const _password = requiredChecker(password);
+        const _firstName = requiredChecker(firstName);
+        // Set value
+        this.setState({
+            roles: _roles,
+            username: _username,
+            lastName: _lastName,
+            password: _password,
+            firstName: _firstName,
+        });
+        // Check validation
+        const validationOK = (_username.isValid && _lastName.isValid && _password.isValid && _firstName.isValid && _roles.isValid);
+        // Check & send request
+        if(validationOK) {
+            addBackofficeUser(
+                _username.data,
+                _firstName.data,
+                _lastName.data,
+                _password.data,
+                _roles.data,
+                backOfficeUserId
+            )
+                .then(() => {
+                    NotificationManager.success("Utilisateur ajouté avec succèss", null);
+                    handleCompleted();
+                })
+                .catch(error => this.setState({ error }))
+                .finally(() => this.setState({loading: false}));
+        } else this.setState({loading: false});
     };
 
     render() {
 
-        const { backofficeUsers, error, listLoading, addLoading, itemAction, deleteModal } = this.state;
+        const { error, loading, firstName, lastName, password, username } = this.state;
 
         if(error) {
             return (
@@ -46,75 +74,47 @@ class NewBackofficeUser extends React.Component {
         }
 
         return (
-            <>
-                <Breadcrumbs
-                    breadCrumbTitle="Backoffice Users"
-                    breadCrumbActive="Backoffice Users"
-                />
-                <Card>
-                    <CardBody>
-                        <Row className="pt-1">
-                            <Col sm="12">
-                                {(addLoading) ? <Spinner color="primary" /> : (
-                                    <Button color="primary" onClick={this.toggleNewModal}>
-                                        Add backoffice user
-                                    </Button>
-                                )}
-                                <Table hover bordered responsive className="mt-2">
-                                    <thead className="bg-primary text-white">
-                                        <tr>
-                                            <th>#</th>
-                                            <th>USERNAME</th>
-                                            <th>FIRST NAME</th>
-                                            <th>LAST NAME</th>
-                                            <th>ROLES</th>
-                                            <th>ACTIONS</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                    {listLoading ? <tr><td className="text-center mt-2" colSpan={6}><Spinner color="primary" /></td></tr> : (
-                                        backofficeUsers.map((backofficeUser, index) => (
-                                            <tr key={index}>
-                                                <th scope="row">{index + 1}</th>
-                                                <td className="font-weight-bold">{backofficeUser.username}</td>
-                                                <td>{backofficeUser.firstName}</td>
-                                                <td>{backofficeUser.lastName}</td>
-                                                <td>
-                                                    {backofficeUser.getRoles.map((role) => (
-                                                        <Badge color={role.color} pill key={role.text}>
-                                                            {role.text}
-                                                        </Badge>
-                                                    ))}
-                                                </td>
-                                                <td className="text-center">
-                                                    {(itemAction === backofficeUser.id)
-                                                        ? <Spinner color="primary" />
-                                                        : (this.canHandleActionButtons(backofficeUser)) && (
-                                                            <>
-                                                                <Button color="warning" className="rounded mr-50" size="sm">
-                                                                    <Icon.Edit size={15} />
-                                                                </Button>
-                                                                <Button color="danger"
-                                                                        className="rounded"
-                                                                        size="sm"
-                                                                        onClick={() => this.toggleDeleteModal(backofficeUser)}
-                                                                >
-                                                                    <Icon.Trash size={15} />
-                                                                </Button>
-                                                            </>
-                                                        )
-                                                    }
-                                                </td>
-                                            </tr>
-                                        ))
-                                    )}
-                                    </tbody>
-                                </Table>
-                            </Col>
-                        </Row>
-                    </CardBody>
-                </Card>
-            </>
+            <Form role="form" className="mt-2" onSubmit={this.handleNew}>
+                <FormGroup>
+                    <Label>Username</Label>
+                    <FormInput
+                        input={username}
+                        label="Ex: user@chat-yamo.com"
+                        handleInput={(data) => this.setState({ username: {...username, data}, error: null })}
+                    />
+                </FormGroup>
+                <FormGroup>
+                    <Label>Fist name</Label>
+                    <FormInput
+                        input={firstName}
+                        label="Ex: Alex"
+                        handleInput={(data) => this.setState({ firstName: {...firstName, data}, error: null })}
+                    />
+                </FormGroup>
+                <FormGroup>
+                    <Label>Last name</Label>
+                    <FormInput
+                        input={lastName}
+                        label="Ex: Croquignolex"
+                        handleInput={(data) => this.setState({ lastName: {...lastName, data}, error: null })}
+                    />
+                </FormGroup>
+                <FormGroup>
+                    <Label>Password</Label>
+                    <FormInput
+                        type="password"
+                        input={password}
+                        handleInput={(data) => this.setState({ password: {...password, data}, error: null })}
+                    />
+                </FormGroup>
+                <div className="d-flex justify-content-between">
+                    {(loading) ? <Spinner color="primary" /> : (
+                        <Button color="primary" className="rounded" type="submit">
+                            Save
+                        </Button>
+                    )}
+                </div>
+            </Form>
         )
     }
 }
