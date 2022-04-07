@@ -150,11 +150,11 @@ class BackofficeUsers extends React.Component {
                                                         ? <Spinner color="primary" />
                                                         : (this.canHandleActionButtons(backofficeUser)) && (
                                                             <>
-                                                                <Button color="warning" className="rounded mr-50" size="sm">
+                                                                {/*<Button color="warning" className="rounded mr-50 mt-50" size="sm">
                                                                     <Icon.Edit size={15} />
-                                                                </Button>
+                                                                </Button>*/}
                                                                 <Button color="danger"
-                                                                        className="rounded"
+                                                                        className="rounded mr-50 mt-50"
                                                                         size="sm"
                                                                         onClick={() => this.toggleDeleteModal(backofficeUser)}
                                                                 >
@@ -181,11 +181,8 @@ class BackofficeUsers extends React.Component {
                     toggleModal={this.toggleDeleteModal}
                 />
                 <FormModal small modal={newModal} toggleModal={this.toggleNewModal}>
-                    <NewBackofficeUser handleCompleted={this.handleCompleted} />
+                    <NewBackofficeUser handleCompleted={this.handleCompleted} backOfficeUserId={this.props?.backOfficeUserId} />
                 </FormModal>
-                {/*<FormModal small modal={tenantNewModal} toggleModal={toggleTenantNewModal}>
-                    <NewUser handleCompleted={toggleTenantNewModal} creationUrl={urlConstants.TENANTS.CREATE} />
-                </FormModal>*/}
             </>
         )
     }
