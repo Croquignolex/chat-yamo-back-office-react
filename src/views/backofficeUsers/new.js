@@ -2,8 +2,10 @@ import React from "react";
 
 import Error500 from "../Error500";
 import FormInput from "../../components/FormInput";
+import FormSelect from "../../components/FormSelect";
 import {requiredChecker} from "../../helpers/helpers";
 import {NotificationManager} from "react-notifications";
+import {BACKOFFICE_USERS_ROLES} from "../../configs/AppConfig";
 import {Button, Card, FormGroup, Label, Spinner, Form} from "reactstrap";
 import {addBackofficeUser} from "../../redux/actions/IndependentActions";
 
@@ -63,7 +65,7 @@ class NewBackofficeUser extends React.Component {
 
     render() {
 
-        const { error, loading, firstName, lastName, password, username } = this.state;
+        const { error, loading, firstName, lastName, password, username, roles } = this.state;
 
         if(error) {
             return (
@@ -105,6 +107,17 @@ class NewBackofficeUser extends React.Component {
                         type="password"
                         input={password}
                         handleInput={(data) => this.setState({ password: {...password, data}, error: null })}
+                    />
+                </FormGroup>
+                <FormGroup>
+                    <Label>Roles</Label>
+                    <FormSelect
+                        multi
+                        colored
+                        input={roles}
+                        label='Choisir les roles'
+                        options={BACKOFFICE_USERS_ROLES}
+                        handleInput={(data) => this.setState({ roles: {...roles, data}, error: null })}
                     />
                 </FormGroup>
                 <div className="d-flex justify-content-between">

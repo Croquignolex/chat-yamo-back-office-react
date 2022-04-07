@@ -13,3 +13,9 @@ export const backendConfig = {
 };
 
 export const REACT_APP_CHAT_BACKOFFICE_USER_ID = process.env.REACT_APP_CHAT_BACKOFFICE_USER_ID;
+
+export const BACKOFFICE_USERS_ROLES = [
+    {label: "Admin", value: "admin", color: "#ea5455"},
+    {label: "Writer", value: "writer", color: "#ff9f43"},
+    {label: "Reader", value: "reader", color: "#7367f0"},
+];

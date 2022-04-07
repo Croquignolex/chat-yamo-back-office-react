@@ -131,7 +131,7 @@ class BackofficeUsers extends React.Component {
                                                 <td>{backofficeUser.lastName}</td>
                                                 <td>
                                                     {backofficeUser.getRoles.map((role) => (
-                                                        <Badge color={role.color} pill key={role.text}>
+                                                        <Badge color={role.color} key={role.text} className="mr-50">
                                                             {role.text}
                                                         </Badge>
                                                     ))}
