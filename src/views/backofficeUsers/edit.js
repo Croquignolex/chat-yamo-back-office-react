@@ -3,13 +3,12 @@ import React from "react";
 import Error500 from "../Error500";
 import {connect} from "react-redux";
 import * as Icon from "react-feather";
-import NewBackofficeUser from "./new";
-import FormModal from "../../components/FormModal";
-import ConfirmModal from "../../components/ConfirmModal";
 import BackofficeUser from "../../models/BackofficeUser";
-import Breadcrumbs from "../../components/@vuexy/breadCrumbs/BreadCrumb";
 import {Badge, Button, Card, CardBody, Col, Row, Spinner, Table} from "reactstrap";
+import Breadcrumbs from "../../components/@vuexy/breadCrumbs/BreadCrumb";
 import {deleteBackofficeUser, getBackofficeUsers} from "../../redux/actions/IndependentActions";
+import ConfirmModal from "../../components/ConfirmModal";
+import FormModal from "../../components/FormModal";
 
 class BackofficeUsers extends React.Component {
     constructor(props) {
@@ -171,12 +170,12 @@ class BackofficeUsers extends React.Component {
                     handleModal={this.handleDelete}
                     toggleModal={this.toggleDeleteModal}
                 />
-                <FormModal small modal={addLoading} toggleModal={this.toggleNewModal}>
-                    <NewBackofficeUser handleCompleted={this.toggleNewModal} />
-                </FormModal>
-                {/*<FormModal small modal={tenantNewModal} toggleModal={toggleTenantNewModal}>
+                <FormModal small modal={tenantNewModal} toggleModal={toggleTenantNewModal}>
                     <NewUser handleCompleted={toggleTenantNewModal} creationUrl={urlConstants.TENANTS.CREATE} />
-                </FormModal>*/}
+                </FormModal>
+                <FormModal small modal={tenantNewModal} toggleModal={toggleTenantNewModal}>
+                    <NewUser handleCompleted={toggleTenantNewModal} creationUrl={urlConstants.TENANTS.CREATE} />
+                </FormModal>
             </>
         )
     }

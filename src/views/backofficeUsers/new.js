@@ -3,66 +3,21 @@ import React from "react";
 import Error500 from "../Error500";
 import {connect} from "react-redux";
 import * as Icon from "react-feather";
-import NewBackofficeUser from "./new";
-import FormModal from "../../components/FormModal";
-import ConfirmModal from "../../components/ConfirmModal";
 import BackofficeUser from "../../models/BackofficeUser";
-import Breadcrumbs from "../../components/@vuexy/breadCrumbs/BreadCrumb";
 import {Badge, Button, Card, CardBody, Col, Row, Spinner, Table} from "reactstrap";
+import Breadcrumbs from "../../components/@vuexy/breadCrumbs/BreadCrumb";
 import {deleteBackofficeUser, getBackofficeUsers} from "../../redux/actions/IndependentActions";
+import ConfirmModal from "../../components/ConfirmModal";
+import FormModal from "../../components/FormModal";
 
-class BackofficeUsers extends React.Component {
+class NewBackofficeUser extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             error: null,
-            itemAction: "",
-            addLoading: false,
-            listLoading: true,
-            backofficeUsers: [],
-            newModal: {show: false, title: ""},
-            deleteModal: {show: false, title: "", body: "", data: ""},
-            editModal: {},
+            loading: false,
         }
     }
-
-    componentDidMount() {
-        this.loadBackofficeUsers();
-    }
-
-    loadBackofficeUsers = () => {
-        // Init request
-        this.setState({ listLoading: true, error: null, users: [] });
-        getBackofficeUsers(this.props?.backOfficeUserId)
-            .then(data => {
-                const backofficeUsers = data?.map(u => new BackofficeUser(u));
-                // Set backofficeUsers
-                this.setState({ backofficeUsers });
-            })
-            .catch(error => this.setState({ error }))
-            .finally(() => this.setState({ listLoading: false }));
-    };
-
-    // Toggle tenant new modal
-    toggleNewModal = () => {
-        const {newModal} = this.state;
-        if(newModal.show) this.setState({newModal: {...newModal, show: false}});
-        else this.setState({newModal: {show: true, title: "New backoffice user"}});
-    };
-
-    toggleDeleteModal = (item) => {
-        const {deleteModal} = this.state;
-        if(deleteModal.show) this.setState({deleteModal: {...deleteModal, show: false}});
-        else {
-            this.setState({deleteModal: {
-                ...deleteModal,
-                    show: true,
-                    data: item,
-                    title: `Suppression`,
-                    body: `Confirmer la suppression du compte de ${item?.firstName}?`
-            }});
-        }
-    };
 
     handleDelete = (item) => {
         this.toggleDeleteModal();
@@ -76,11 +31,6 @@ class BackofficeUsers extends React.Component {
             })
             .catch(error => this.setState({ error }))
             .finally(() => this.setState({itemAction: ""}));
-    };
-
-    canHandleActionButtons = (currentUser) => {
-        const {backOfficeUserId, backOfficeUserRoles} = this.props;
-        return (backOfficeUserRoles.includes('admin')) && (currentUser.id !== backOfficeUserId);
     };
 
     render() {
@@ -164,29 +114,9 @@ class BackofficeUsers extends React.Component {
                         </Row>
                     </CardBody>
                 </Card>
-                <ConfirmModal
-                    small
-                    danger
-                    modal={deleteModal}
-                    handleModal={this.handleDelete}
-                    toggleModal={this.toggleDeleteModal}
-                />
-                <FormModal small modal={addLoading} toggleModal={this.toggleNewModal}>
-                    <NewBackofficeUser handleCompleted={this.toggleNewModal} />
-                </FormModal>
-                {/*<FormModal small modal={tenantNewModal} toggleModal={toggleTenantNewModal}>
-                    <NewUser handleCompleted={toggleTenantNewModal} creationUrl={urlConstants.TENANTS.CREATE} />
-                </FormModal>*/}
             </>
         )
     }
 }
 
-const mapStateToProps = state => {
-    return {
-        backOfficeUserId: state.authUser?.data?.entityId,
-        backOfficeUserRoles: state.authUser?.data?.roles,
-    }
-};
-
-export default connect(mapStateToProps)(BackofficeUsers)
+export default NewBackofficeUser;
