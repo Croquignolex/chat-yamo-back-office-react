@@ -8,6 +8,7 @@ import {NotificationManager} from "react-notifications";
 import {BACKOFFICE_USERS_ROLES} from "../../configs/AppConfig";
 import {Button, Card, FormGroup, Label, Spinner, Form} from "reactstrap";
 import {addBackofficeUser} from "../../redux/actions/IndependentActions";
+import BackofficeUser from "../../models/BackofficeUser";
 
 class NewBackofficeUser extends React.Component {
     constructor(props) {
@@ -54,9 +55,15 @@ class NewBackofficeUser extends React.Component {
                 _roles.data,
                 backOfficeUserId
             )
-                .then(() => {
+                .then((data) => {
                     NotificationManager.success("Utilisateur ajouté avec succèss", null);
-                    handleCompleted();
+                    handleCompleted(new BackofficeUser({
+                        entityId: data.entityId,
+                        roles: _roles.data,
+                        username: _username.data,
+                        lastName: _lastName.data,
+                        firstName: _firstName.data,
+                    }));
                 })
                 .catch(error => this.setState({ error }))
                 .finally(() => this.setState({loading: false}));

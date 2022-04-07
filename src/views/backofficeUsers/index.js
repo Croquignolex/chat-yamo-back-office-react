@@ -64,6 +64,15 @@ class BackofficeUsers extends React.Component {
         }
     };
 
+    handleCompleted = (data) => {
+        this.setState((prevState) => {
+            const backofficeUsers = prevState.backofficeUsers;
+            backofficeUsers.push(data);
+            return {backofficeUsers};
+        });
+        this.toggleNewModal();
+    };
+
     handleDelete = (item) => {
         this.toggleDeleteModal();
         this.setState({itemAction: item.id});
@@ -172,7 +181,7 @@ class BackofficeUsers extends React.Component {
                     toggleModal={this.toggleDeleteModal}
                 />
                 <FormModal small modal={newModal} toggleModal={this.toggleNewModal}>
-                    <NewBackofficeUser handleCompleted={this.toggleNewModal} />
+                    <NewBackofficeUser handleCompleted={this.handleCompleted} />
                 </FormModal>
                 {/*<FormModal small modal={tenantNewModal} toggleModal={toggleTenantNewModal}>
                     <NewUser handleCompleted={toggleTenantNewModal} creationUrl={urlConstants.TENANTS.CREATE} />
