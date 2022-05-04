@@ -1,4 +1,5 @@
 import classnames from "classnames";
+import {connect} from "react-redux";
 import React, { PureComponent } from "react";
 
 import Navbar from "./components/navbar/Navbar";
@@ -151,7 +152,8 @@ class VerticalLayout extends PureComponent {
       activeTheme: "primary",
       collapsed: this.state.collapsedContent,
       permission: this.props.permission,
-      deviceWidth: this.state.width
+      deviceWidth: this.state.width,
+      currentUser: this.props.userHigherRole
     };
     let navbarProps = {
       toggleSidebarMenu: this.toggleSidebarMenu,
@@ -201,5 +203,18 @@ class VerticalLayout extends PureComponent {
     );
   }
 }
+ 
+// map state to props
+const mapStateToProps = ({ authUser }) => {
+  let userHigherRole;
+  const roles = authUser.data?.roles || [];
 
-export default VerticalLayout;
+  if(roles.includes("admin")) userHigherRole = "admin";
+  else if (roles.includes("writer")) userHigherRole = "writer";
+  else if (roles.includes("reader")) userHigherRole = "reader";
+  else userHigherRole = "";
+
+  return { userHigherRole }; 
+};
+
+export default connect(mapStateToProps)(VerticalLayout);
