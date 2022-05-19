@@ -11,7 +11,7 @@ import {twoDigitDisplay} from "../../helpers/helpers";
 import {getUserImages, getUserProfile, getUserProfileImage} from "../../redux/actions/IndependentActions";
 
 class ImageSidebar extends React.Component {
-    // props { activeChatId, mainSidebar, handleActiveChat, handleUserSidebar }
+    // props { activeChatId, toVerify, mainSidebar, handleActiveChat, handleUserSidebar, updateImagesToVerify }
     constructor(props) {
         super(props);
         this.state = {
@@ -36,6 +36,7 @@ class ImageSidebar extends React.Component {
         getUserImages(this.state.date.format('YYYY-MM-DDTHH:mm:ss'))
             .then(res => {
                 this.setState({all_images: res});
+                this.props.updateImagesToVerify(res.length)
 
                 let users = res.reduce(function(results, org) {
                     results[org.userId] = [...results[org.userId] || [], org];
@@ -165,6 +166,7 @@ class ImageSidebar extends React.Component {
                             <Icon.ArrowRight size={20} />
                         </Button>
                     </div>
+                    <strong className="text-danger">{this.props.toVerify} image(s) à vérifier</strong>
                 </div>
                 <PerfectScrollbar className="chat-user-list list-group" options={{wheelPropagation: false}}>
                     {loading ?

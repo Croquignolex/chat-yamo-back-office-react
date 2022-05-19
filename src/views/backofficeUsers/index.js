@@ -32,7 +32,7 @@ class BackofficeUsers extends React.Component {
 
     loadBackofficeUsers = () => {
         // Init request
-        this.setState({ listLoading: true, error: null, users: [] });
+        this.setState({ listLoading: true, error: null, backofficeUsers: [] });
         getBackofficeUsers(this.props?.backOfficeUserId)
             .then(data => {
                 const backofficeUsers = data?.map(u => new BackofficeUser(u));
