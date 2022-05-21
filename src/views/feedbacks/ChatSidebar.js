@@ -150,19 +150,20 @@ class ChatSidebar extends React.Component {
                 {/* Top control buttons */}
                 <div className="chat-fixed-search h-100">
                     <div className="d-flex align-items-center">
-                        <Button color="primary" className="mr-50 rounded" onClick={this.loadData}>
-                            <Icon.Loader className="d-lg-none" size={15} />
-                            <span className="d-lg-block d-none">Refresh</span>
+                        <Button color="primary" className="mr-50 rounded" onClick={this.loadData} size="sm">
+                            <Icon.RefreshCcw size={15} />
+                            {/*<span className="d-lg-block d-none">Refresh</span>*/}
                         </Button>
                         <Button size="sm" color="primary" className="mr-50 rounded" onClick={this.handlePrevDate} title="Previous day">
-                            <Icon.ArrowLeft size={20} />
+                            <Icon.ArrowLeft size={15} />
                         </Button>
                         <strong>
-                            {this.state.date.format('DD-MM-YYYY')} {twoDigitDisplay(this.state.hour)}-
-                            {twoDigitDisplay(this.state.hour + 6)}
+                            {this.state.date.format('DD-MM-YYYY')} 
+                            {/*{twoDigitDisplay(this.state.hour)}-*/}
+                            {/*{twoDigitDisplay(this.state.hour + 6)}*/}
                         </strong>
                         <Button size="sm" color="primary" className="ml-50 rounded" onClick={this.handleNextDate} title="Next day">
-                            <Icon.ArrowRight size={20} />
+                            <Icon.ArrowRight size={15} />
                         </Button>
                     </div>
                 </div>

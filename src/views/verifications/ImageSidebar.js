@@ -11,13 +11,14 @@ import {twoDigitDisplay} from "../../helpers/helpers";
 import {getUserImages, getUserProfile, getUserProfileImage} from "../../redux/actions/IndependentActions";
 
 class ImageSidebar extends React.Component {
-    // props { activeChatId, toVerify, mainSidebar, handleActiveChat, handleUserSidebar, updateImagesToVerify }
+    // props { activeChatId, verified, mainSidebar, handleActiveChat, handleUserSidebar, updateImagesToVerify }
     constructor(props) {
         super(props);
         this.state = {
             error: null,
             all_images: [],
             users: [],
+            toVerify: 0,
             loading: false,
             date: dayjs().startOf('day'),
             hour: 0
@@ -35,8 +36,7 @@ class ImageSidebar extends React.Component {
 
         getUserImages(this.state.date.format('YYYY-MM-DDTHH:mm:ss'))
             .then(res => {
-                this.setState({all_images: res});
-                this.props.updateImagesToVerify(res.length)
+                this.setState({all_images: res, toVerify: res.length});
 
                 let users = res.reduce(function(results, org) {
                     results[org.userId] = [...results[org.userId] || [], org];
@@ -138,7 +138,9 @@ class ImageSidebar extends React.Component {
     }
 
     render() {
-        const { error, loading, users } = this.state;
+        const { error, loading, users, toVerify } = this.state;
+        const { verified } = this.props;
+
         if(error) {
             return (
                 <Card className="sidebar-content h-100">
@@ -150,23 +152,24 @@ class ImageSidebar extends React.Component {
         return (
             <Card className="sidebar-content h-100">
                 <div className="chat-fixed-search h-100">
-                    <div className="d-flex align-items-center">
-                        <Button color="primary" className="mr-50 rounded" onClick={this.loadData}>
-                            <Icon.Loader className="d-lg-none" size={15} />
-                            <span className="d-lg-block d-none">Refresh</span>
+                    <div className="d-flex align-items-center mb-50">
+                        <Button color="primary" className="mr-50 rounded" onClick={this.loadData} size="sm">
+                            <Icon.RefreshCcw size={15} />
+                            {/*<span className="d-lg-block d-none">Refresh</span>*/}
                         </Button>
                         <Button size="sm" color="primary" className="mr-50 rounded" onClick={this.handlePrevDate} title="Previous day">
-                            <Icon.ArrowLeft size={20} />
+                            <Icon.ArrowLeft size={15} />
                         </Button>
                         <strong>
-                            {this.state.date.format('DD-MM-YYYY')} {twoDigitDisplay(this.state.hour)}-
-                            {twoDigitDisplay(this.state.hour + 6)}
+                            {this.state.date.format('DD-MM-YYYY')} 
+                            {/*{twoDigitDisplay(this.state.hour)}-*/}
+                            {/*{twoDigitDisplay(this.state.hour + 6)}*/}
                         </strong>
                         <Button size="sm" color="primary" className="ml-50 rounded" onClick={this.handleNextDate} title="Next day">
-                            <Icon.ArrowRight size={20} />
+                            <Icon.ArrowRight size={15} />
                         </Button>
                     </div>
-                    <strong className="text-danger">{this.props.toVerify} image(s) à vérifier</strong>
+                    <strong className="text-primary">{verified}</strong> image(s) vérifiées / <strong className="text-primary">{toVerify}</strong> image(s) à vérifier 
                 </div>
                 <PerfectScrollbar className="chat-user-list list-group" options={{wheelPropagation: false}}>
                     {loading ?

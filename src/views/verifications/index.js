@@ -15,7 +15,7 @@ class ImageVerification extends React.Component {
         super(props);
 
         this.state = {
-            toVerify: 0,
+            verified: 0,
             activeUser: null,
             activeChat: null,
             sidebarOpen: false,
@@ -60,13 +60,9 @@ class ImageVerification extends React.Component {
             const tempImages = prevState.deletedImages;
             tempImages.push(image);
             // Also decrement image to verify
-            const tempToVerify = prevState.toVerify - 1;
-            return {deletedImages: tempImages, toVerify: tempToVerify};
+            const tempVerified = prevState.verified + 1;
+            return {deletedImages: tempImages, verified: tempVerified};
         });
-    };
-
-    updateImagesToVerify = (data) => {
-      this.setState({toVerify: data})
     };
 
     onSetSidebarOpen = open => {
@@ -107,12 +103,11 @@ class ImageVerification extends React.Component {
             <Sidebar
               sidebar={
                 <ImageSidebar
-                    toVerify={this.state.toVerify}
+                    verified={this.state.verified}
                     mainSidebar={this.onSetSidebarOpen}
                     activeChatId={this.state.activeChatID}
                     handleActiveChat={this.handleActiveChat}
                     handleUserSidebar={this.handleUserSidebar}
-                    updateImagesToVerify={this.updateImagesToVerify}
                 />
               }
               docked={this.state.sidebarDocked}
