@@ -1,15 +1,17 @@
 import {makeRequest} from "../../helpers/helpers";
 import {REACT_APP_CHAT_BACKOFFICE_USER_ID} from "../../configs/AppConfig";
 import {
+    AUTH,
     USERS,
     MEDIA,
     FEEDBACKS,
-    AUTH,
+    VALIDATIONS,
+    BACKOFFICE_USERS,
     joinBaseUrlWithParams,
     joinBaseUrlWithRequestParams,
-    VALIDATIONS,
-    BACKOFFICE_USERS
 } from "../../utility/urls/backend";
+
+// ===================================== START GET
 
 export const getCases = async (date) => {
     const url = joinBaseUrlWithRequestParams(FEEDBACKS.GET_ALL, [{param: 'date', value: date}])
@@ -31,31 +33,9 @@ export const getUserProfile = async (userId) => {
     return makeRequest('get', url);
 };
 
-export const searchUser = async (attribute) => {
-    const url = joinBaseUrlWithParams(USERS.SEARCH);
-    return makeRequest('post', url, {attribute});
-};
-
-export const reportUser = async (userId) => {
-    const url = joinBaseUrlWithParams(FEEDBACKS.REPORT);
-    const feedbackText = `Feedback from image check: ${userId} should be deleted`;
-    return makeRequest('post', url, {feedbackText});
-};
-
 export const getBackofficeUsers = async (backofficeUserId) => {
     const url = joinBaseUrlWithParams(BACKOFFICE_USERS.GET_ALL, [{param: 'backofficeUserId', value: backofficeUserId}])
     return makeRequest('get', url);
-};
-
-export const deleteBackofficeUser = async (backofficeUserId, userId) => {
-    const url = joinBaseUrlWithParams(
-        BACKOFFICE_USERS.DELETE_ONE,
-        [
-            {param: 'backofficeUserId', value: backofficeUserId},
-            {param: 'userId', value: userId},
-        ]
-    );
-    return makeRequest('delete', url);
 };
 
 export const getUserImages = async (date) => {
@@ -67,21 +47,80 @@ export const getUserImages = async (date) => {
     return makeRequest('get', joinBaseUrlWithRequestParams(VALIDATIONS.GET_ALL, [{param: 'date', value: date}]), null, config);
 };
 
-export const deleteUserImage = async (userId, mediaId) => {
+export const getUserProfileImage = async (userId) => {
     const config = {headers: {
-            "CHAT-ET-YAMO-MEDIA-SERVICE-ALL-USER-IMAGES": "true",
-            "CHAT-ET-YAMO-MEDIA-SERVICE-PRE-SIGNED-URL": "true"
+            "CHAT-ET-YAMO-MEDIA-SERVICE-ALL-USER-IMAGES": "true"
+        }
+    };
+    const url = joinBaseUrlWithParams(MEDIA.USERS.GET_ONE, [{param: 'userId', value: userId}]);
+    return makeRequest('get', url, null, config);
+};
+
+export const getMessageImage = async (userId, mediaId) => {
+    const config = {headers: {
+            "CHAT-ET-YAMO-MEDIA-SERVICE-ALL-USER-IMAGES": "true"
         }
     };
     const url = joinBaseUrlWithParams(
-        VALIDATIONS.DELETE_ONE,
+        MEDIA.CHATROOMS.GET_ONE,
         [
-            {param: 'userId', value: userId},
             {param: 'mediaId', value: mediaId},
+            {param: 'chatroomId', value: `${userId}:${REACT_APP_CHAT_BACKOFFICE_USER_ID}`}
         ]
     );
-    return makeRequest('delete', url, null, config);
+    return makeRequest('get', url, null, config);
 };
+
+// ===================================== END GET
+
+// ===================================== START POST
+
+export const searchUser = async (attribute) => {
+    const url = joinBaseUrlWithParams(USERS.SEARCH);
+    return makeRequest('post', url, {attribute});
+};
+
+export const reportUser = async (userId) => {
+    const url = joinBaseUrlWithParams(FEEDBACKS.REPORT);
+    const feedbackText = `Feedback from image check: ${userId} should be deleted`;
+    return makeRequest('post', url, {feedbackText});
+};
+
+export const sendMessage = async (userId, feedbackText, mediaId = null) => {
+    // Build request data & ensure that mediaId not available into request data if null
+    let data = {feedbackText};
+    if(mediaId) {
+        data.mediaId = mediaId;
+    }
+    const url = joinBaseUrlWithParams(
+        FEEDBACKS.MESSAGES.SEND,
+        [
+            {param: 'backOfficeUserId', value: REACT_APP_CHAT_BACKOFFICE_USER_ID},
+            {param: 'userId', value: userId},
+        ]
+    );
+    return makeRequest('post', url, data);
+};
+
+export const changePassword = async (oldPassword, newPassword, backOfficeUserId) => {
+    const url = joinBaseUrlWithParams(
+        AUTH.PASSWORD,
+        [{param: 'backOfficeUserId', value: backOfficeUserId}]
+    );
+    return makeRequest('post', url, {oldPassword, newPassword});
+};
+
+export const addBackofficeUser = async (username, lastName, firstName, password, roles, backOfficeUserId) => {
+    const url = joinBaseUrlWithParams(
+        BACKOFFICE_USERS.ADD_ONE,
+        [{param: 'backOfficeUserId', value: backOfficeUserId}]
+    );
+    return makeRequest('post', url, {username, lastName, firstName, password, roles});
+};
+
+// ===================================== END POST
+
+// ===================================== START PUT
 
 export const verifyUserImage = async (userId, mediaId, mediaPath, verified, score) => {
     const config = {headers: {
@@ -111,55 +150,34 @@ export const createMedia = async (userId, file) => {
     return makeRequest('put', url, {picture: file}, {shouldParseFormData: true, fileData: ['picture']});
 };
 
-export const sendMessage = async (userId, feedbackText, mediaId = null) => {
+// ===================================== END PUT
+
+// ===================================== START DELETE
+
+export const deleteBackofficeUser = async (backofficeUserId, userId) => {
     const url = joinBaseUrlWithParams(
-        FEEDBACKS.MESSAGES.SEND,
+        BACKOFFICE_USERS.DELETE_ONE,
         [
-            {param: 'backOfficeUserId', value: REACT_APP_CHAT_BACKOFFICE_USER_ID},
+            {param: 'backofficeUserId', value: backofficeUserId},
             {param: 'userId', value: userId},
         ]
     );
-    return makeRequest('post', url, {feedbackText, mediaId});
+    return makeRequest('delete', url);
 };
 
-export const getUserProfileImage = async (userId) => {
+export const deleteUserImage = async (userId, mediaId) => {
     const config = {headers: {
-            "CHAT-ET-YAMO-MEDIA-SERVICE-ALL-USER-IMAGES": "true"
-        }
-    };
-    const url = joinBaseUrlWithParams(MEDIA.USERS.GET_ONE, [{param: 'userId', value: userId}]);
-    return makeRequest('get', url, null, config);
-};
-
-export const getMessageImage = async (userId, mediaId) => {
-    const config = {headers: {
-            "CHAT-ET-YAMO-MEDIA-SERVICE-ALL-USER-IMAGES": "true"
+            "CHAT-ET-YAMO-MEDIA-SERVICE-ALL-USER-IMAGES": "true",
+            "CHAT-ET-YAMO-MEDIA-SERVICE-PRE-SIGNED-URL": "true"
         }
     };
     const url = joinBaseUrlWithParams(
-        MEDIA.CHATROOMS.GET_ONE,
+        VALIDATIONS.DELETE_ONE,
         [
+            {param: 'userId', value: userId},
             {param: 'mediaId', value: mediaId},
-            {param: 'chatroomId', value: `${userId}:${REACT_APP_CHAT_BACKOFFICE_USER_ID}`}
         ]
     );
-    return makeRequest('get', url, null, config);
+    return makeRequest('delete', url, null, config);
 };
-
-export const changePassword = async (oldPassword, newPassword, backOfficeUserId) => {
-    const url = joinBaseUrlWithParams(
-        AUTH.PASSWORD,
-        [{param: 'backOfficeUserId', value: backOfficeUserId}]
-    );
-    return makeRequest('post', url, {oldPassword, newPassword});
-};
-
-export const addBackofficeUser = async (username, lastName, firstName, password, roles, backOfficeUserId) => {
-    const url = joinBaseUrlWithParams(
-        BACKOFFICE_USERS.ADD_ONE,
-        [{param: 'backOfficeUserId', value: backOfficeUserId}]
-    );
-    return makeRequest('post', url, {username, lastName, firstName, password, roles});
-};
-
-
+// ===================================== END DELETE
