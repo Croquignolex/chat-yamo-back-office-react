@@ -107,7 +107,10 @@ const ChatLogContent = ({ activeUser, messages }) => {
                                         <div className={`chat-content ${message.media ? 'got-image' : ''}`}>
                                             <div className="c-text-content">
                                                 <p className="preformatted">{message.content}</p>
-                                            </div>
+                                                <p className="text-right text-primary font-weight-bold">
+                                                    {(message.isBackUser) && <span>{message.backofficeUserName}</span>}
+                                                </p>
+                                            </div> 
                                             <p className="c-hour text-muted float-right">
                                                 <span className="timer text-italic">{message.createdTime}</span>
                                                 <span className="request">
@@ -118,7 +121,7 @@ const ChatLogContent = ({ activeUser, messages }) => {
                                                                 <CheckCircle size={17} className="text-success" />
                                                         ) : <CheckCircle size={17} className="text-success" />
                                                     )}
-                                                </span>
+                                                </span>  
                                             </p>
                                         </div>
                                     </CardBody>

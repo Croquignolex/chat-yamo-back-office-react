@@ -86,11 +86,14 @@ export const reportUser = async (userId) => {
     return makeRequest('post', url, {feedbackText});
 };
 
-export const sendMessage = async (userId, feedbackText, mediaId = null) => {
+export const sendMessage = async (userId, feedbackText, backofficeUserName, userName = null, mediaId = null) => {
     // Build request data & ensure that mediaId not available into request data if null
-    let data = {feedbackText};
+    let data = {feedbackText, backofficeUserName};
     if(mediaId) {
         data.mediaId = mediaId;
+    }
+    if(userName) {
+        data.userName = userName;
     }
     const url = joinBaseUrlWithParams(
         FEEDBACKS.MESSAGES.SEND,

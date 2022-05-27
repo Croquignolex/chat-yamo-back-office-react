@@ -1,3 +1,4 @@
+import {connect} from "react-redux";
 import React, {Component} from 'react';
 import {Paperclip, Send} from "react-feather";
 import {Button, FormGroup, Input} from "reactstrap";
@@ -52,7 +53,7 @@ class ChatInput extends Component {
     };
 
     handleMsgWithFileSubmit = (file = null) => {
-        const {activeChatID, activeUser, notifyChanges} = this.props;
+        const {activeChatID, activeUser, notifyChanges, backOfficeUserName} = this.props;
         const message = this.state.msg;
 
         if (!file && message.length === 0) {
@@ -87,7 +88,7 @@ class ChatInput extends Component {
             // Create media
             createMedia(activeUser.id, file)
                 .then((data) => {
-                    sendMessage(activeUser.id, message, data.mediaId)
+                    sendMessage(activeUser.id, message, backOfficeUserName, activeUser.name, data.mediaId)
                         .then(() => {
                             messageWithMedia.seRequest = {..._msg.request, loading: false};
                             notifyChanges(messageWithMedia);
@@ -106,11 +107,11 @@ class ChatInput extends Component {
     };
 
     sendPlainMessage = (_msg) => {
-        const {activeUser, notifyChanges} = this.props;
+        const {activeUser, notifyChanges, backOfficeUserName} = this.props;
         const plainMessage = new Message(_msg);
         notifyChanges(plainMessage);
         // Send request
-        sendMessage(activeUser.id, _msg.content)
+        sendMessage(activeUser.id, _msg.content, backOfficeUserName, activeUser.name)
             .then(() => {
                 plainMessage.seRequest = {..._msg.request, loading: false};
                 notifyChanges(plainMessage);
@@ -166,4 +167,10 @@ class ChatInput extends Component {
     }
 }
 
-export default ChatInput;
+const mapStateToProps = state => {
+    return {
+        backOfficeUserName: state.authUser?.data?.firstName + " " + state.authUser?.data?.lastName,
+    }
+};
+
+export default connect(mapStateToProps)(ChatInput)

@@ -10,6 +10,8 @@ export default class Message {
         if(this.mediaId) {
             this.media = require("../assets/img/unknown-user.png");
         }
+
+        // backofficeUserName
     }
 
     set setPlainMedia(media) {
