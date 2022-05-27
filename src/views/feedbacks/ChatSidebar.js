@@ -158,9 +158,9 @@ class ChatSidebar extends React.Component {
                             <Icon.ArrowLeft size={15} />
                         </Button>
                         <strong>
-                            {this.state.date.format('DD-MM-YYYY')} 
-                            {/*{twoDigitDisplay(this.state.hour)}-*/}
-                            {/*{twoDigitDisplay(this.state.hour + 6)}*/}
+                            {this.state.date.format('DD-MM-YYYY')} &nbsp;
+                            {twoDigitDisplay(this.state.hour)}-
+                            {twoDigitDisplay(this.state.hour + 6)}
                         </strong>
                         <Button size="sm" color="primary" className="ml-50 rounded" onClick={this.handleNextDate} title="Next day">
                             <Icon.ArrowRight size={15} />
