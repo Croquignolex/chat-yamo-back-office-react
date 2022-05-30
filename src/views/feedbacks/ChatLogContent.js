@@ -105,14 +105,11 @@ const ChatLogContent = ({ activeUser, messages }) => {
                                             <DisplayImage src={message.imageSrc} withWrapper />
                                         )}
                                         <div className={`chat-content ${message.media ? 'got-image' : ''}`}>
-                                            <div className="c-text-content">
+                                            <div className="c-text-content mb-50">
                                                 <p className="preformatted">{message.content}</p>
-                                                <p className="text-right text-primary font-weight-bold">
-                                                    {(message.isBackUser) && <span>{message.backofficeUserName}</span>}
-                                                </p>
                                             </div> 
-                                            <p className="c-hour text-muted float-right">
-                                                <span className="timer text-italic">{message.createdTime}</span>
+                                            <p className="text-muted text-right">
+                                                <span className="timer text-italic mr-50">{message.createdTime}</span>
                                                 <span className="request">
                                                     {(message.isBackUser) && (
                                                         (message.request) ? (
@@ -122,6 +119,9 @@ const ChatLogContent = ({ activeUser, messages }) => {
                                                         ) : <CheckCircle size={17} className="text-success" />
                                                     )}
                                                 </span>  
+                                            </p>
+                                            <p className="text-right text-primary font-weight-bold">
+                                                {(message.isBackUser) && <span title={message.backofficeUserName}>{message.backofficeUser}</span>}
                                             </p>
                                         </div>
                                     </CardBody>

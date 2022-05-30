@@ -32,6 +32,10 @@ export default class Message {
         return this.authorId === REACT_APP_CHAT_BACKOFFICE_USER_ID;
     }
 
+    get backofficeUser() {
+        return this.backofficeUserName.split(' ').map(word => word[0]).join('').toUpperCase();
+    }
+
     get imageSrc() {
         return this.media;
     }
