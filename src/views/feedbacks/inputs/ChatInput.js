@@ -24,7 +24,7 @@ class ChatInput extends Component {
 
     handleMsgSubmit = async (e) => {
         e.preventDefault();
-        const {activeChatID, activeUser} = this.props;
+        const {activeChatID, activeUser, backOfficeUserName} = this.props;
         const message = this.state.msg;
 
         if (message.length === 0) {
@@ -39,6 +39,7 @@ class ChatInput extends Component {
             caseId: activeChatID,
             mediaId: null,
             content: message,
+            backofficeUserName: backOfficeUserName,
             messageId: getUniqueId(),
             authorId: REACT_APP_CHAT_BACKOFFICE_USER_ID,
             createdAt: Date.now(),
@@ -69,6 +70,7 @@ class ChatInput extends Component {
             caseId: activeChatID,
             mediaId: null,
             content: message,
+            backofficeUserName: backOfficeUserName,
             messageId: getUniqueId(),
             authorId: REACT_APP_CHAT_BACKOFFICE_USER_ID,
             createdAt: Date.now(),
@@ -109,10 +111,12 @@ class ChatInput extends Component {
     sendPlainMessage = (_msg) => {
         const {activeUser, notifyChanges, backOfficeUserName} = this.props;
         const plainMessage = new Message(_msg);
+
         notifyChanges(plainMessage);
         // Send request
         sendMessage(activeUser.id, _msg.content, backOfficeUserName, activeUser.name)
             .then(() => {
+                //
                 plainMessage.seRequest = {..._msg.request, loading: false};
                 notifyChanges(plainMessage);
             })
