@@ -59,8 +59,8 @@ class UserSouscriptions extends React.Component {
                             <tr key={index}>
                                 <th scope="row">{index + 1}</th>
                                 <td>{souscription.type}</td>
-                                <td className="font-weight-bold text-success">{souscription.startDate?.format('LL')}</td>
-                                <td className="font-weight-bold text-danger">{souscription.endDate?.format('LL')}</td> 
+                                <td className="font-weight-bold text-success">{souscription.startDate?.format('YYYY.MM.DD HH:mm')}</td>
+                                <td className="font-weight-bold text-danger">{souscription.endDate?.format('YYYY.MM.DD HH:mm')}</td> 
                             </tr>
                         ))
                     )}
