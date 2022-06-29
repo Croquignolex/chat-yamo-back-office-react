@@ -32,6 +32,7 @@ export const USERS = {
     GET_ONE: '/profile/{userId}',
     SEARCH: '/profile/backoffice/checkuser',
     METADATA: '/authentication/backoffice/user/{userId}/metadata',
+    SOUSCRIPTIONS: '/authentication/user/{userId}/subscriptionhistory',
 };
 
 export const MEDIA = {

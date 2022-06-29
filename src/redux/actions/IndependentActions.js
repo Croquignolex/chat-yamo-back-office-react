@@ -33,6 +33,11 @@ export const getUserProfile = async (userId) => {
     return makeRequest('get', url);
 };
 
+export const getUserSouscriptions = async (userId) => {
+    const url = joinBaseUrlWithParams(USERS.SOUSCRIPTIONS, [{param: 'userId', value: userId}]);
+    return makeRequest('get', url);
+};
+
 export const getBackofficeUsers = async (backofficeUserId) => {
     const url = joinBaseUrlWithParams(BACKOFFICE_USERS.GET_ALL, [{param: 'backofficeUserId', value: backofficeUserId}])
     return makeRequest('get', url);

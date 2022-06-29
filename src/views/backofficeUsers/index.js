@@ -16,8 +16,7 @@ class BackofficeUsers extends React.Component {
         super(props);
         this.state = {
             error: null,
-            itemAction: "",
-            addLoading: false,
+            itemAction: "", 
             listLoading: true,
             backofficeUsers: [],
             newModal: {show: false, title: ""},
@@ -42,8 +41,7 @@ class BackofficeUsers extends React.Component {
             .catch(error => this.setState({ error }))
             .finally(() => this.setState({ listLoading: false }));
     };
-
-    // Toggle tenant new modal
+ 
     toggleNewModal = () => {
         const {newModal} = this.state;
         if(newModal.show) this.setState({newModal: {...newModal, show: false}});
@@ -94,7 +92,7 @@ class BackofficeUsers extends React.Component {
 
     render() {
 
-        const { backofficeUsers, error, listLoading, addLoading, itemAction, newModal, deleteModal } = this.state;
+        const { backofficeUsers, error, listLoading, itemAction, newModal, deleteModal } = this.state;
 
         if(error) {
             return (
@@ -113,12 +111,10 @@ class BackofficeUsers extends React.Component {
                 <Card>
                     <CardBody>
                         <Row className="pt-1">
-                            <Col sm="12">
-                                {(addLoading) ? <Spinner color="primary" /> : (
-                                    <Button color="primary" onClick={this.toggleNewModal}>
-                                        Add backoffice user
-                                    </Button>
-                                )}
+                            <Col sm="12"> 
+                                <Button color="primary" onClick={this.toggleNewModal}>
+                                    Add backoffice user
+                                </Button>
                                 <Table hover bordered responsive className="mt-2">
                                     <thead className="bg-primary text-white">
                                         <tr>
