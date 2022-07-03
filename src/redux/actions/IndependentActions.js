@@ -188,4 +188,10 @@ export const deleteUserImage = async (userId, mediaId) => {
     );
     return makeRequest('delete', url, null, config);
 };
+
+export const blockUser = async (userId) => {
+    const url = joinBaseUrlWithParams(USERS.BLOCK, [{param: 'userId', value: userId}]); 
+    return makeRequest('delete', url);
+};
+
 // ===================================== END DELETE

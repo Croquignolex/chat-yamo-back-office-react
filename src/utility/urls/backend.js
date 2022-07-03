@@ -13,7 +13,7 @@ export const BACKOFFICE_USERS = {
 };
 
 export const FEEDBACKS = {
-    REPORT: '/feedbacks/submit',
+    REPORT: '/feedbacks/submit', 
     GET_ONE: '/feedbacks/{userId}/case',
     GET_ALL: '/feedbacks/cases/messages/from',
     MESSAGES: {
@@ -31,6 +31,7 @@ export const VALIDATIONS = {
 export const USERS = {
     GET_ONE: '/profile/{userId}',
     SEARCH: '/profile/backoffice/checkuser',
+    BLOCK: '/authentication/user/{userId}/block',
     METADATA: '/authentication/backoffice/user/{userId}/metadata',
     SOUSCRIPTIONS: '/authentication/user/{userId}/subscriptionhistory',
 };

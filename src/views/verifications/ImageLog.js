@@ -4,7 +4,7 @@ import {NotificationManager} from "react-notifications";
 import { Image, CheckCircle, XCircle, Trash2} from "react-feather";
 import {Carousel, CarouselItem, CarouselControl, CarouselIndicators, Spinner} from "reactstrap";
 
-import {deleteUserImage, reportUser, verifyUserImage} from "../../redux/actions/IndependentActions";
+import {deleteUserImage, reportUser, blockUser, verifyUserImage} from "../../redux/actions/IndependentActions";
 
 class ImageLog extends React.Component {
     // props { activeChatID, activeUser, mainSidebar, handleReceiverSidebar }
@@ -16,6 +16,7 @@ class ImageLog extends React.Component {
             activeIndex: 0,
             images: [],
             all_images: [],
+            blockLoading: false,
             reportLoading: false
         };
         this.next = this.next.bind(this);
@@ -33,27 +34,26 @@ class ImageLog extends React.Component {
     }
 
     onExited() {
-    this.animating = false;
+        this.animating = false;
     }
 
     next() {
-    if (this.animating) return;
-    const nextIndex = this.state.activeIndex === this.state.images.length - 1 ? 0 : this.state.activeIndex + 1;
-    this.setState({ activeIndex: nextIndex });
+        if (this.animating) return;
+        const nextIndex = this.state.activeIndex === this.state.images.length - 1 ? 0 : this.state.activeIndex + 1;
+        this.setState({ activeIndex: nextIndex });
     }
 
     previous() {
-    if (this.animating) return;
-    const nextIndex = this.state.activeIndex === 0 ? this.state.images.length - 1 : this.state.activeIndex - 1;
-    this.setState({ activeIndex: nextIndex });
+        if (this.animating) return;
+        const nextIndex = this.state.activeIndex === 0 ? this.state.images.length - 1 : this.state.activeIndex - 1;
+        this.setState({ activeIndex: nextIndex });
     }
 
     goToIndex(newIndex) {
-    if (this.animating) return;
-    this.setState({ activeIndex: newIndex });
+        if (this.animating) return;
+        this.setState({ activeIndex: newIndex });
     }
-
-
+ 
     componentDidMount() {
         this.loadData();
         this.scrollToBottom();
@@ -73,16 +73,14 @@ class ImageLog extends React.Component {
             this.setState({images: activeUser.images});
         }
     };
-
-
+ 
     scrollToBottom = () => {
         if (this.chatArea) {
             const chatContainer = ReactDOM.findDOMNode(this.chatArea);
             chatContainer.scrollTop = chatContainer.scrollHeight;
         }
     };
-
-
+ 
     validateImage = (score) => {
         const image = this.state.images[this.state.activeIndex];
         this.setState({ loading: true });
@@ -141,6 +139,17 @@ class ImageLog extends React.Component {
             .finally(() => this.setState({ reportLoading: false }));
     };
 
+    blockProfile = (userId) => {
+        this.setState({blockLoading: true});
+        blockUser(userId)
+            .then(() => {
+                // No action
+                NotificationManager.success("User profile has been successfully blocked", null);
+            })
+            .catch((error) => console.log("error ", error))
+            .finally(() => this.setState({ blockLoading: false }));
+    };
+
     render() {
         const { activeIndex } = this.state;
         const { activeUser } = this.props;
@@ -180,10 +189,15 @@ class ImageLog extends React.Component {
                         <div className="row user-chats">
                             <div className="col-md-6 mx-auto">
                                 <div className="mb-2">
-                                    {(this.state.reportLoading) ? <Spinner color="danger" /> : (
-                                        <button className="btn btn-lg btn-danger" onClick={() => this.reportProfile(activeUser.id)}>
-                                            Repport User
-                                        </button>
+                                    {(this.state.reportLoading || this.state.blockLoading) ? <Spinner color="danger" /> : (
+                                        <>
+                                            <button className="btn btn-lg btn-warning mr-50" onClick={() => this.reportProfile(activeUser.id)}>
+                                                Repport
+                                            </button>
+                                            <button className="btn btn-lg btn-danger" onClick={() => this.blockProfile(activeUser.id)}>
+                                                Block
+                                            </button>
+                                        </>
                                     )}
                                 </div>
                                 <Carousel
