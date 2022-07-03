@@ -7,8 +7,8 @@ import Error500 from "../Error500";
 import "../../assets/scss/pages/users.scss";
 import MetaData from "../../models/MetaData";
 import FormModal from "../../components/FormModal";
-import UserSouscriptions from "./UserSouscriptions";
 import DisplayImage from "../../components/DisplayImage";
+import UserSouscriptions from "../users/UserSouscriptions";
 import {getUserMetaData} from "../../redux/actions/IndependentActions";
 
 class UserProfile extends React.Component {
@@ -172,14 +172,6 @@ class UserProfile extends React.Component {
                         {metaData?.oldPhone}
                       </div>
                     </div>
-                    {/*<div className="d-flex user-info">
-                      <div className="user-info-title font-weight-bold">
-                        Created at
-                      </div>
-                      <div className="text-primary font-weight-bold">
-                        {metaData.createdDate?.format('LL')}
-                      </div>
-                    </div>*/}
                   </div>
               )}
               <div className="text-center">
@@ -190,9 +182,11 @@ class UserProfile extends React.Component {
                         </Button>
                     )
                 )}
-                <Button color="primary" className="ml-50" onClick={this.toggleSouscriptionModal}>
-                    Souscriptions
-                </Button>
+                {(!this.state.loading) && (
+                    <Button color="primary" className="ml-50" onClick={this.toggleSouscriptionModal}>
+                      Souscriptions
+                    </Button>
+                )} 
               </div>
             </div>
           </PerfectScrollbar>
