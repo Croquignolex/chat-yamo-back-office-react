@@ -145,7 +145,7 @@ export const verifyUserImage = async (userId, mediaId, mediaPath, verified, scor
             {param: 'verified', value: verified},
         ]
     );
-    return makeRequest('put', `${url}?${score}`, null, config);
+    return makeRequest('put', `${url}?score=${score}`, null, config);
 };
 
 export const createMedia = async (userId, file) => {
