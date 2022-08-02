@@ -443,3 +443,7 @@ $chat-image-back-color: #dfdbe5;
     }
   }
 }
+
+.fullHeight {
+  height: calc(100vh) !important;
+}

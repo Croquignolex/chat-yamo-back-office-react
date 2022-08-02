@@ -84,7 +84,7 @@ class ImageVerification extends React.Component {
  
   render() {
     return (
-      <div className="chat-application position-relative">
+      <div className="chat-application position-relative fullHeight">
         <div
           className={`chat-overlay ${
             this.state.receiverProfile ||
