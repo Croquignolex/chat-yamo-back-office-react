@@ -1,8 +1,8 @@
 import React from "react";
 import dayjs from "dayjs";
 import * as Icon from "react-feather"
-import {Button, Card, Spinner} from "reactstrap";
 import PerfectScrollbar from "react-perfect-scrollbar";
+import {Button, Card, Spinner, Input, Form} from "reactstrap";
 
 import Error500 from "../Error500";
 import User from "../../models/User";
@@ -21,7 +21,8 @@ class ImageSidebar extends React.Component {
             toVerify: 0,
             loading: false,
             date: dayjs().startOf('day'),
-            hour: 0
+            hour: 0,
+            search: ""
         }
     }
 
@@ -31,7 +32,7 @@ class ImageSidebar extends React.Component {
 
     loadData = () => {
         // Init request
-        this.setState({ loading: true, error: null, users: [], all_images: [] });
+        this.setState({ loading: true, error: null, users: [], all_images: [], search: "" });
         this.props.handleActiveChat(null, null);
 
         getUserImages(this.state.date.format('YYYY-MM-DDTHH:mm:ss'))
@@ -69,11 +70,10 @@ class ImageSidebar extends React.Component {
             getUserProfile(userId)
                 .then(async data => {
                     const userObject = {...feedback, ...data};
-                    userObject.images = this.state.all_images.filter(item => item.userId === userId);
-                    // make user as an object
+                    userObject.images = this.state.all_images.filter(item => item.userId?.toString() === userId?.toString());
+                    // Make user as an object
                     const user = new User(userObject);
-                    user.setId = userId;
-                    //user.setLastMessageTime = feedback.createdDate.format("HH:mm")
+                    user.setId = userId; 
                     try {
                         if(!user.isDeleted) {
                             // User profile image
@@ -100,10 +100,10 @@ class ImageSidebar extends React.Component {
 
     updateUsers = (user) => {
         this.setState((prevState) => {
-            const tempusers = prevState.users.map((f) => {
+            const tempusers = prevState.users.map((f) => { 
                 if(Array.isArray(f)) {
                     // f !== undefined
-                    if(f[0]?.userId === user.id) {
+                    if(f[0]?.userId?.toString() === user.id?.toString()) {
                         f = user;
                     }
                 }
@@ -136,6 +136,20 @@ class ImageSidebar extends React.Component {
             };
         }, () => this.loadData());
     }
+
+    handleSearchVerification = (e) => {
+        e.preventDefault();
+        // Mock to users type 
+        const mockUser = new User({userId: this.state.search});
+        this.setState({ users: [[mockUser]] }, async () => {
+            await this.loadUserInfo(mockUser);
+        });
+    }
+
+    updateSearchInput = (e) => {
+        const search = e?.target?.value;
+        this.setState({search})
+    };
 
     render() {
         const { error, loading, users, toVerify } = this.state;
@@ -179,6 +193,29 @@ class ImageSidebar extends React.Component {
                             </div>
                         ) : (
                             <ul className="chat-users-list-wrapper media-list">
+                                {/* First element: search bar */}
+                                <li>
+                                    <Form className="d-flex mx-auto " onSubmit={this.handleSearchVerification}>
+                                        <div className="position-relative">
+                                            <Input
+                                                type="text"
+                                                className="search-width"
+                                                placeholder="Search verification by user id..."
+                                                onChange={(this.updateSearchInput)}
+                                                value={this.state.search}
+                                            />
+                                            <div className="form-control-position">
+                                                <Icon.X size={15} onClick={(this.loadData)} />
+                                            </div>
+                                        </div>
+                                        <div className="ml-1">
+                                            <Button size="sm" color="primary" className="rounded" type="submit" title="Search">
+                                                <Icon.Search size={20} />
+                                            </Button>
+                                        </div>
+                                    </Form>
+                                </li>
+                                {/* Search result or users list */}
                                 {users.map((user, index) => (
                                     <React.Fragment key={index}>
                                         <ImageSidebarItem
@@ -188,7 +225,7 @@ class ImageSidebar extends React.Component {
                                         />
                                     </React.Fragment>
                                 ))}
-                            </ul>
+                            </ul> 
                         )
                     }
                 </PerfectScrollbar>

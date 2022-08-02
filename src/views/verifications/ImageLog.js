@@ -70,7 +70,7 @@ class ImageLog extends React.Component {
         const {activeUser} = this.props;
 
         if(activeUser != null){
-            this.setState({images: activeUser.images});
+            this.setState({images: activeUser.images, activeIndex: 0});
         }
     };
  

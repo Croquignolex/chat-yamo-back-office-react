@@ -53,6 +53,7 @@ class ChatSidebar extends React.Component {
             getUserProfile(userId)
                 .then(async data => {
                     const user = new User(data);
+                    // Make user as an object
                     user.setLastMessageTime = feedback.createdDate.format("HH:mm");
                     user.setId = userId;
                     try {
@@ -84,7 +85,7 @@ class ChatSidebar extends React.Component {
         this.setState((prevState) => {
             const tempFeedbacks = prevState.feedbacks;
             tempFeedbacks.map((f) => {
-                if(f.id === feedback.id) {
+                if(f.id?.toString() === feedback.id?.toString()) {
                     f = feedback;
                 }
                 return f;
@@ -124,13 +125,10 @@ class ChatSidebar extends React.Component {
 
     handleSearchConversation = (e) => {
         e.preventDefault();
-        // Mock to feedback type
-        const feedbacks = [new Feedback({userId: this.state.search})];
-        this.setState({ feedbacks }, async () => {
-            for(const feedback of feedbacks) {
-                // Async user data
-                await this.loadUserInfo(feedback);
-            }
+        // Mock to feedback type 
+        const mockFeedback = new Feedback({userId: this.state.search});
+        this.setState({ feedbacks: [mockFeedback] }, async () => {
+            await this.loadUserInfo(mockFeedback);
         });
     }
 

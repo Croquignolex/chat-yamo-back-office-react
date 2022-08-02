@@ -7,7 +7,6 @@ import DisplayImage from "../../components/DisplayImage";
 
 const ImageSidebarItem = ({ user, activeChatId, onClickItem }) => {
     // Data
-
     if (Array.isArray(user)) return <li><Spinner color="primary" /></li>;
 
     if (user.isNotFound) return <li><Error500 refresh={false} /></li>;
