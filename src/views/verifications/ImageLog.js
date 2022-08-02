@@ -1,9 +1,10 @@
 import React from "react"
 import ReactDOM from "react-dom"
 import {NotificationManager} from "react-notifications";
-import { Image, CheckCircle, XCircle, Trash2} from "react-feather";
-import {Carousel, CarouselItem, CarouselControl, CarouselIndicators, Spinner} from "reactstrap";
+import { Image, CheckCircle, XCircle, Trash2, Menu, Loader} from "react-feather";
+import {Carousel, CarouselItem, CarouselControl, CarouselIndicators, Spinner, Button} from "reactstrap";
 
+import DisplayImage from "../../components/DisplayImage";
 import {deleteUserImage, reportUser, blockUser, verifyUserImage} from "../../redux/actions/IndependentActions";
 
 class ImageLog extends React.Component {
@@ -152,7 +153,7 @@ class ImageLog extends React.Component {
 
     render() {
         const { activeIndex } = this.state;
-        const { activeUser } = this.props;
+        const { activeUser, mainSidebar, handleReceiverSidebar } = this.props;
         const slides = this.state.images.map((item) => {
             return (
                 <CarouselItem onExiting={this.onExiting} onExited={this.onExited} key={item.mediaId}>
@@ -186,7 +187,37 @@ class ImageLog extends React.Component {
             <div className="content-right">
                 <div className="chat-app-window">
                     <div className="active-chat d-block">
-                        <div className="row user-chats">
+
+
+
+                        <div className="chat_navbar">
+                            <header className="chat_header d-flex justify-content-between align-items-center p-1">
+                                <div className="d-flex align-items-center">
+                                    <div
+                                        className="sidebar-toggle d-block d-lg-none mr-1"
+                                        onClick={() => mainSidebar(true)}>
+                                        <Menu size={24} />
+                                    </div>
+                                    <div
+                                        className="avatar user-profile-toggle m-0 m-0 mr-1"
+                                        onClick={() => handleReceiverSidebar("open")}>
+                                        <DisplayImage src={activeUser.avatar} withModal={false} />
+                                    </div>
+                                    <a
+                                        href="/"
+                                        className="mb-0"
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            handleReceiverSidebar("open");
+                                        }}
+                                    >
+                                        More information...
+                                    </a>
+                                </div>
+                            </header>
+                        </div> 
+                        
+                        <div className="user-chats">
                             <div className="col-md-6 mx-auto">
                                 <div className="mb-2">
                                     {(this.state.reportLoading || this.state.blockLoading) ? <Spinner color="danger" /> : (
@@ -224,7 +255,7 @@ class ImageLog extends React.Component {
                                     </>
                                 )}
                             </div>
-                        </div>
+                        </div> 
                     </div>
                 </div>
             </div>

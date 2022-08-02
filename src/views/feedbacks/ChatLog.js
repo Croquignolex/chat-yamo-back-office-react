@@ -7,8 +7,8 @@ import Error500 from "../Error500";
 import Message from "../../models/Message";
 import ChatInput from "./inputs/ChatInput";
 import ChatLogContent from "./ChatLogContent";
-import {getCaseMessages, getMessageImage} from "../../redux/actions/IndependentActions";
 import DisplayImage from "../../components/DisplayImage";
+import {getCaseMessages, getMessageImage} from "../../redux/actions/IndependentActions";
 
 class ChatLog extends React.Component {
     // props { activeChatID, activeUser, mainSidebar, handleReceiverSidebar }

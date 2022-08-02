@@ -4,7 +4,7 @@ import {withRouter} from "react-router-dom";
 
 import ChatLog from "./ChatLog";
 import ChatSidebar from "./ChatSidebar";
-import UserProfile from "./UserProfile";
+import UserProfile from "../../components/UserProfile";
 import {ContextLayout} from "../../utility/context/Layout";
 
 import "../../assets/scss/pages/app-chat.scss";

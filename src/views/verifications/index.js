@@ -1,12 +1,13 @@
-import React from "react"
-import Sidebar from "react-sidebar"
+import React from "react";
+import Sidebar from "react-sidebar";
 import {withRouter} from "react-router-dom";
 
-import ImageLog from "./ImageLog"
-import ImageSidebar from "./ImageSidebar"
-import {ContextLayout} from "../../utility/context/Layout"
+import ImageLog from "./ImageLog";
+import ImageSidebar from "./ImageSidebar";
+import UserProfile from "../../components/UserProfile";
+import {ContextLayout} from "../../utility/context/Layout";
 
-import "../../assets/scss/pages/app-chat.scss"
+import "../../assets/scss/pages/app-chat.scss";
 
 const mql = window.matchMedia(`(min-width: 992px)`);
 
@@ -126,6 +127,11 @@ class ImageVerification extends React.Component {
             activeChatID={this.state.activeChatID}
             handleRemoveImage={this.handleRemoveImage}
             handleReceiverSidebar={this.handleReceiverSidebar}
+        />
+        <UserProfile
+          activeUser={this.state.activeUser}
+          receiverProfile={this.state.receiverProfile}
+          handleReceiverSidebar={this.handleReceiverSidebar}
         />
       </div>
     )

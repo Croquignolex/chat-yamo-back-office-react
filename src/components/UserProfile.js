@@ -3,13 +3,14 @@ import {X} from "react-feather";
 import {Button, Spinner} from "reactstrap";
 import PerfectScrollbar from "react-perfect-scrollbar";
 
-import Error500 from "../Error500";
-import "../../assets/scss/pages/users.scss";
-import MetaData from "../../models/MetaData";
-import FormModal from "../../components/FormModal";
-import DisplayImage from "../../components/DisplayImage";
-import UserSouscriptions from "../users/UserSouscriptions";
-import {getUserMetaData} from "../../redux/actions/IndependentActions";
+import FormModal from "./FormModal";
+import Error500 from "../views/Error500";
+import MetaData from "../models/MetaData";
+import DisplayImage from "./DisplayImage";
+import UserSouscriptions from "../views/users/UserSouscriptions";
+import {getUserMetaData} from "../redux/actions/IndependentActions";
+
+import "../assets/scss/pages/users.scss";
 
 class UserProfile extends React.Component {
   // props { receiverProfile, activeUser, handleReceiverSidebar }
@@ -70,7 +71,7 @@ class UserProfile extends React.Component {
             </span>
             <div className="header-profile-sidebar">
               <div className="avatar">
-                <DisplayImage src={activeUser.imageSrc} height="70" width="70" />
+                <DisplayImage src={activeUser.imageSrc || activeUser.avatar} height="70" width="70" />
               </div>
               <h4 className="chat-user-name">{activeUser.isDeleted ? "Deleted user" : activeUser.name}</h4>
             </div>
