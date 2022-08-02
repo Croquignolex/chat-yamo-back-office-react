@@ -26,7 +26,7 @@ class ImageLog extends React.Component {
         this.onExiting = this.onExiting.bind(this);
         this.onExited = this.onExited.bind(this);
         this.validateImage = this.validateImage.bind(this);
-        this.invalidateImage = this.invalidateImage.bind(this);
+        // this.invalidateImage = this.invalidateImage.bind(this);
         this.deleteImage = this.deleteImage.bind(this);
     }
 
@@ -95,7 +95,7 @@ class ImageLog extends React.Component {
             .finally(() => this.setState({ loading: false }));
     };
 
-    invalidateImage = () => {
+    /*invalidateImage = () => {
         const image = this.state.images[this.state.activeIndex];
         this.setState({ loading: true });
         verifyUserImage(image.userId, image.mediaId, image.mediaPath, 'false', 0)
@@ -106,7 +106,7 @@ class ImageLog extends React.Component {
             })
             .catch((error) => console.log("error ", error))
             .finally(() => this.setState({ loading: false }));
-    };
+    };*/
 
     deleteImage = () => {
         const image = this.state.images[this.state.activeIndex];
@@ -215,19 +215,19 @@ class ImageLog extends React.Component {
                         </div> 
                         
                         <div className="user-chats">
-                            <div className="col-md-6 mx-auto">
-                                <div className="mb-2">
-                                    {(this.state.reportLoading || this.state.blockLoading) ? <Spinner color="danger" /> : (
-                                        <>
-                                            <button className="btn btn-lg btn-warning mr-50 mb-50" onClick={() => this.reportProfile(activeUser.id)}>
-                                                Repport
-                                            </button>
-                                            <button className="btn btn-lg btn-danger mb-50" onClick={() => this.blockProfile(activeUser.id)}>
-                                                Block
-                                            </button>
-                                        </>
-                                    )}
-                                </div>
+                            <div className="mx-auto mb-2"> 
+                                {(this.state.reportLoading || this.state.blockLoading) ? <Spinner color="danger" /> : (
+                                    <>
+                                        <button className="btn btn-warning mr-50 mb-50" onClick={() => this.reportProfile(activeUser.id)}>
+                                            Repport
+                                        </button>
+                                        <button className="btn btn-danger mb-50" onClick={() => this.blockProfile(activeUser.id)}>
+                                            Block
+                                        </button>
+                                    </>
+                                )} 
+                            </div>
+                            <div className="col-md-6 mx-auto"> 
                                 <Carousel
                                     interval={false}
                                     activeIndex={activeIndex}
@@ -247,7 +247,7 @@ class ImageLog extends React.Component {
                                         <button className="btn btn-success mr-1 score-size-3" onClick={() => this.validateImage(3)}>3 <CheckCircle size={20} /></button>
                                         <button className="btn btn-success mr-1 score-size-4" onClick={() => this.validateImage(4)}>4 <CheckCircle size={20} /></button>
                                         <button className="btn btn-success mr-1 score-size-5" onClick={() => this.validateImage(5)}>5 <CheckCircle size={20} /></button>
-                                        <button className="btn btn-danger mr-1" onClick={this.invalidateImage}><XCircle size={20} /></button>
+                                        {/*<button className="btn btn-danger mr-1" onClick={this.invalidateImage}><XCircle size={20} /></button>*/}
                                         <button className="btn btn-dark" onClick={this.deleteImage}><Trash2 size={20} /></button>
                                     </>
                                 )}
