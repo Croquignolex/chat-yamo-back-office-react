@@ -1,11 +1,11 @@
 import React from "react"
 import ReactDOM from "react-dom"
 import {NotificationManager} from "react-notifications";
-import { Image, CheckCircle, XCircle, Trash2, Menu} from "react-feather";
+import { Image, CheckCircle, XCircle, Menu} from "react-feather";
 import {Carousel, CarouselItem, CarouselControl, CarouselIndicators, Spinner} from "reactstrap";
 
 import DisplayImage from "../../components/DisplayImage";
-import {deleteUserImage, reportUser, blockUser, verifyUserImage} from "../../redux/actions/IndependentActions";
+import {verifyOldUserImage} from "../../redux/actions/IndependentActions";
 
 class ImageLog extends React.Component {
     // props { activeChatID, activeUser, mainSidebar, handleReceiverSidebar }
@@ -17,8 +17,6 @@ class ImageLog extends React.Component {
             activeIndex: 0,
             images: [],
             all_images: [],
-            blockLoading: false,
-            reportLoading: false
         };
         this.next = this.next.bind(this);
         this.previous = this.previous.bind(this);
@@ -27,7 +25,6 @@ class ImageLog extends React.Component {
         this.onExited = this.onExited.bind(this);
         this.validateImage = this.validateImage.bind(this);
         this.invalidateImage = this.invalidateImage.bind(this);
-        this.deleteImage = this.deleteImage.bind(this);
     }
 
     onExiting() {
@@ -85,7 +82,7 @@ class ImageLog extends React.Component {
     validateImage = (score) => {
         const image = this.state.images[this.state.activeIndex];
         this.setState({ loading: true });
-        verifyUserImage(image.userId, image.mediaId, image.mediaPath, 'true', score)
+        verifyOldUserImage(image.userId, image.mediaId, score)
             .then(() => {
                 // Remove image from array
                 this.removeImageFormState(image)
@@ -98,24 +95,11 @@ class ImageLog extends React.Component {
     invalidateImage = () => {
         const image = this.state.images[this.state.activeIndex];
         this.setState({ loading: true });
-        verifyUserImage(image.userId, image.mediaId, image.mediaPath, 'false', 0)
+        verifyOldUserImage(image.userId, image.mediaId, 0)
             .then(() => {
                 // Remove image from array
                 this.removeImageFormState(image)
                 NotificationManager.success("Image has been successfully unvalidated", null);
-            })
-            .catch((error) => console.log("error ", error))
-            .finally(() => this.setState({ loading: false }));
-    };
-
-    deleteImage = () => {
-        const image = this.state.images[this.state.activeIndex];
-        this.setState({ loading: true });
-        deleteUserImage(image.userId, image.mediaId)
-            .then(() => {
-                // Remove image from array
-                this.removeImageFormState(image)
-                NotificationManager.success("Image has been successfully deleted", null);
             })
             .catch((error) => console.log("error ", error))
             .finally(() => this.setState({ loading: false }));
@@ -129,28 +113,6 @@ class ImageLog extends React.Component {
         this.props.handleRemoveImage(image);
     };
 
-    reportProfile = (userId) => {
-        this.setState({reportLoading: true});
-        reportUser(userId)
-            .then(() => {
-                // No action
-                NotificationManager.success("User profile has been successfully reported", null);
-            })
-            .catch((error) => console.log("error ", error))
-            .finally(() => this.setState({ reportLoading: false }));
-    };
-
-    blockProfile = (userId) => {
-        this.setState({blockLoading: true});
-        blockUser(userId)
-            .then(() => {
-                // No action
-                NotificationManager.success("User profile has been successfully blocked", null);
-            })
-            .catch((error) => console.log("error ", error))
-            .finally(() => this.setState({ blockLoading: false }));
-    };
-
     render() {
         const { activeIndex } = this.state;
         const { activeUser, mainSidebar, handleReceiverSidebar } = this.props;
@@ -158,7 +120,6 @@ class ImageLog extends React.Component {
             return (
                 <CarouselItem onExiting={this.onExiting} onExited={this.onExited} key={item.mediaId}>
                     <DisplayImage src={item.compressedUrl || item.originalUrl} withPercentage />
-                    {/*<img src={item.compressedUrl || item.originalUrl} alt={item.mediaId} style={{ width: "100%"}} />*/}
                 </CarouselItem>
             );
         });
@@ -216,18 +177,6 @@ class ImageLog extends React.Component {
                         
                         <div className="user-chats">
                             <div className="col-md-6 mx-auto">
-                                <div className="mb-2">
-                                    {(this.state.reportLoading || this.state.blockLoading) ? <Spinner color="danger" /> : (
-                                        <>
-                                            <button className="btn btn-lg btn-warning mr-50 mb-50" onClick={() => this.reportProfile(activeUser.id)}>
-                                                Repport
-                                            </button>
-                                            <button className="btn btn-lg btn-danger mb-50" onClick={() => this.blockProfile(activeUser.id)}>
-                                                Block
-                                            </button>
-                                        </>
-                                    )}
-                                </div>
                                 <Carousel
                                     interval={false}
                                     activeIndex={activeIndex}
@@ -248,7 +197,6 @@ class ImageLog extends React.Component {
                                         <button className="btn btn-success mr-1 score-size-4" onClick={() => this.validateImage(4)}>4 <CheckCircle size={20} /></button>
                                         <button className="btn btn-success mr-1 score-size-5" onClick={() => this.validateImage(5)}>5 <CheckCircle size={20} /></button>
                                         <button className="btn btn-danger mr-1" onClick={this.invalidateImage}><XCircle size={20} /></button>
-                                        <button className="btn btn-dark" onClick={this.deleteImage}><Trash2 size={20} /></button>
                                     </>
                                 )}
                             </div>

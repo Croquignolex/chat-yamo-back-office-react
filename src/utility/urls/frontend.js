@@ -8,5 +8,6 @@ export const APP = {
     USERS: '/users',
     FEEDBACKS: '/feedbacks',
     VERIFICATIONS: '/verifications',
-    BACKOFFICE_USERS: '/backoffice-users'
+    BACKOFFICE_USERS: '/backoffice-users',
+    OLD_VERIFICATIONS: '/old-verifications'
 };

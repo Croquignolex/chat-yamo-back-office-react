@@ -52,6 +52,10 @@ export const getUserImages = async (date) => {
     return makeRequest('get', joinBaseUrlWithRequestParams(VALIDATIONS.GET_ALL, [{param: 'date', value: date}]), null, config);
 };
 
+export const getOldUserImages = async (date) => {
+    return makeRequest('get', joinBaseUrlWithRequestParams(VALIDATIONS.OLD_GET_ALL, [{param: 'date', value: date}]));
+};
+
 export const getUserProfileImage = async (userId) => {
     const config = {headers: {
             "CHAT-ET-YAMO-MEDIA-SERVICE-ALL-USER-IMAGES": "true"
@@ -146,6 +150,18 @@ export const verifyUserImage = async (userId, mediaId, mediaPath, verified, scor
         ]
     );
     return makeRequest('put', `${url}?score=${score}`, null, config);
+};
+
+export const verifyOldUserImage = async (userId, mediaId, score) => {
+    const url = joinBaseUrlWithParams(
+        VALIDATIONS.OLD_VALIDATE_ONE,
+        [
+            {param: 'userId', value: userId},
+            {param: 'mediaId', value: mediaId}, 
+            {param: 'score', value: score},
+        ]
+    );
+    return makeRequest('put', url);
 };
 
 export const createMedia = async (userId, file) => {

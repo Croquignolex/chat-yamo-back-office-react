@@ -32,6 +32,13 @@ const navigationConfig = [
     navLink: APP.VERIFICATIONS,
     icon: <Icon.Image size={20} />
   },
+  {
+    type: "item",
+    id: "old-verification",
+    title: "Old verifications",
+    navLink: APP.OLD_VERIFICATIONS,
+    icon: <Icon.Archive size={20} />
+  },
 ]
 
 export default navigationConfig
