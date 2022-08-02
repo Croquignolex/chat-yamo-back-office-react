@@ -157,8 +157,8 @@ class ImageLog extends React.Component {
         const slides = this.state.images.map((item) => {
             return (
                 <CarouselItem onExiting={this.onExiting} onExited={this.onExited} key={item.mediaId}>
-                    {/*<DisplayImage src={item.compressedUrl || item.originalUrl} width={1000} height={1000} />*/}
-                    <img src={item.compressedUrl || item.originalUrl} alt={item.mediaId} style={{ width: "100%"}} />
+                    <DisplayImage src={item.compressedUrl || item.originalUrl} withPercentage />
+                    {/*<img src={item.compressedUrl || item.originalUrl} alt={item.mediaId} style={{ width: "100%"}} />*/}
                 </CarouselItem>
             );
         });
@@ -186,10 +186,7 @@ class ImageLog extends React.Component {
         return (
             <div className="content-right">
                 <div className="chat-app-window">
-                    <div className="active-chat d-block">
-
-
-
+                    <div className="active-chat d-block"> 
                         <div className="chat_navbar">
                             <header className="chat_header d-flex justify-content-between align-items-center p-1">
                                 <div className="d-flex align-items-center">
@@ -222,10 +219,10 @@ class ImageLog extends React.Component {
                                 <div className="mb-2">
                                     {(this.state.reportLoading || this.state.blockLoading) ? <Spinner color="danger" /> : (
                                         <>
-                                            <button className="btn btn-lg btn-warning mr-50" onClick={() => this.reportProfile(activeUser.id)}>
+                                            <button className="btn btn-lg btn-warning mr-50 mb-50" onClick={() => this.reportProfile(activeUser.id)}>
                                                 Repport
                                             </button>
-                                            <button className="btn btn-lg btn-danger" onClick={() => this.blockProfile(activeUser.id)}>
+                                            <button className="btn btn-lg btn-danger mb-50" onClick={() => this.blockProfile(activeUser.id)}>
                                                 Block
                                             </button>
                                         </>

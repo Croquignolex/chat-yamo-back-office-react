@@ -7,7 +7,7 @@ import styled from "styled-components";
 const Wrapper = styled.div`background-image: url(${props => props.src})`;
 
 // Component
-const DisplayImage = ({src, className, withWrapper, withModal, height, width}) => {
+const DisplayImage = ({src, className, withWrapper, withModal, withPercentage, height, width}) => { 
     const [modal, setModal] = useState(false);
 
     const toggleModal = () => {
@@ -21,7 +21,11 @@ const DisplayImage = ({src, className, withWrapper, withModal, height, width}) =
                 <div className={`c-image ${className}`}>
                     <Wrapper src={src} className="c-image-content rounded-top" onClick={toggleModal} />
                 </div>
-            ) : <img src={src} alt="..." height={height} width={width} className={className} onClick={toggleModal} />}
+            ) : (
+                withPercentage 
+                    ? <img src={src} alt="..." style={{ width: "100%" }} onClick={toggleModal} className="hand-cusor" />
+                    : <img src={src} alt="..." height={height} width={width} className={className} onClick={toggleModal} />
+            )}
             {/* Large image size display into modal */}
             {withModal && (
                 <Modal isOpen={modal} toggle={toggleModal} className="modal-dialog-centered">
@@ -49,6 +53,7 @@ DisplayImage.defaultProps = {
     className: "",
     withModal: true,
     withWrapper: false,
+    withPercentage: false
 }
 
 export default DisplayImage;
