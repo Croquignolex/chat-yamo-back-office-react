@@ -1,5 +1,6 @@
 import React from "react";
 import {X} from "react-feather";
+import * as Icon from "react-feather";
 import {Button, Spinner} from "reactstrap";
 import PerfectScrollbar from "react-perfect-scrollbar";
 
@@ -71,9 +72,16 @@ class UserProfile extends React.Component {
             </span>
             <div className="header-profile-sidebar">
               <div className="avatar">
-                <DisplayImage src={activeUser.imageSrc || activeUser.avatar} height="70" width="70" />
+                <DisplayImage src={activeUser.imageSrc || activeUser.avatar} height="70" width="70" /> 
               </div>
-              <h4 className="chat-user-name">{activeUser.isDeleted ? "Deleted user" : activeUser.name}</h4>
+              <h4 className="chat-user-name"> 
+                {activeUser.isDeleted ? "Deleted user" : activeUser.name} 
+                <br/>
+                {activeUser.status
+                    ? <Icon.Unlock size={20} className="text-success" />
+                    : <Icon.Lock size={20} className="text-danger" />
+                } 
+              </h4>
             </div>
           </header>
           <PerfectScrollbar className="user-profile-sidebar-area p-2" options={{wheelPropagation: false}}>

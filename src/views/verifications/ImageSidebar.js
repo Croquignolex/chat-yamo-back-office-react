@@ -8,7 +8,7 @@ import Error500 from "../Error500";
 import User from "../../models/User";
 import ImageSidebarItem from "./ImageSidebarItem";
 // import {twoDigitDisplay} from "../../helpers/helpers";
-import {getUserImages, getUserProfile, getUserProfileImage} from "../../redux/actions/IndependentActions";
+import {getUserImages, getUserProfile, getUserProfileImage, getUserBlockStatus} from "../../redux/actions/IndependentActions";
 
 class ImageSidebar extends React.Component {
     // props { activeChatId, verified, mainSidebar, handleActiveChat, handleUserSidebar, updateImagesToVerify }
@@ -74,6 +74,8 @@ class ImageSidebar extends React.Component {
                     // Make user as an object
                     const user = new User(userObject);
                     user.setId = userId; 
+                    // User block status
+                    user.setStatus = await getUserBlockStatus(userId);
                     try {
                         if(!user.isDeleted) {
                             // User profile image
