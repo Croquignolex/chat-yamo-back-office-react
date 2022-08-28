@@ -89,7 +89,7 @@ class ImageLog extends React.Component {
             .then(() => {
                 // Remove image from array
                 this.removeImageFormState(image)
-                NotificationManager.success("Image has been successfully validated", null);
+                NotificationManager.success("Image has been successfully validated", null, 1000);
             })
             .catch((error) => console.log("error ", error))
             .finally(() => this.setState({ loading: false }));
@@ -115,7 +115,7 @@ class ImageLog extends React.Component {
             .then(() => {
                 // Remove image from array
                 this.removeImageFormState(image)
-                NotificationManager.success("Image has been successfully deleted", null);
+                NotificationManager.success("Image has been successfully deleted", null, 1000);
             })
             .catch((error) => console.log("error ", error))
             .finally(() => this.setState({ loading: false }));
@@ -134,7 +134,7 @@ class ImageLog extends React.Component {
         reportUser(userId)
             .then(() => {
                 // No action
-                NotificationManager.success("User profile has been successfully reported", null);
+                NotificationManager.success("User profile has been successfully reported", null, 1000);
             })
             .catch((error) => console.log("error ", error))
             .finally(() => this.setState({ reportLoading: false }));
@@ -145,7 +145,7 @@ class ImageLog extends React.Component {
         blockUser(userId)
             .then(() => {
                 // No action
-                NotificationManager.success("User profile has been successfully blocked", null);
+                NotificationManager.success("User profile has been successfully blocked", null, 1000);
             })
             .catch((error) => console.log("error ", error))
             .finally(() => this.setState({ blockLoading: false }));

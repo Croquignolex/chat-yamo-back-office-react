@@ -85,7 +85,7 @@ class ImageLog extends React.Component {
             .then(() => {
                 // Remove image from array
                 this.removeImageFormState(image)
-                NotificationManager.success("Image has been successfully validated", null);
+                NotificationManager.success("Image has been successfully validated", null, 1000);
             })
             .catch((error) => console.log("error ", error))
             .finally(() => this.setState({ loading: false }));

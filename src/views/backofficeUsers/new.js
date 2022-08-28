@@ -5,10 +5,10 @@ import FormInput from "../../components/FormInput";
 import FormSelect from "../../components/FormSelect";
 import {requiredChecker} from "../../helpers/helpers";
 import {NotificationManager} from "react-notifications";
+import BackofficeUser from "../../models/BackofficeUser";
 import {BACKOFFICE_USERS_ROLES} from "../../configs/AppConfig";
 import {Button, Card, FormGroup, Label, Spinner, Form} from "reactstrap";
 import {addBackofficeUser} from "../../redux/actions/IndependentActions";
-import BackofficeUser from "../../models/BackofficeUser";
 
 class NewBackofficeUser extends React.Component {
     constructor(props) {
@@ -56,7 +56,7 @@ class NewBackofficeUser extends React.Component {
                 backOfficeUserId
             )
                 .then((data) => {
-                    NotificationManager.success("Utilisateur ajouté avec succèss", null);
+                    NotificationManager.success("Utilisateur ajouté avec succèss", null, 5000);
                     handleCompleted(new BackofficeUser({
                         entityId: data.entityId,
                         roles: _roles.data,
