@@ -1,7 +1,7 @@
 import React from "react"
 import ReactDOM from "react-dom"
 import {NotificationManager} from "react-notifications";
-import { Image, CheckCircle, XCircle, Trash2, Menu} from "react-feather";
+import { Image, CheckCircle, Trash2, Menu} from "react-feather";
 import {Carousel, CarouselItem, CarouselControl, CarouselIndicators, Spinner} from "reactstrap";
 
 import DisplayImage from "../../components/DisplayImage";
