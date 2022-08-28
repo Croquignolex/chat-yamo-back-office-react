@@ -1,4 +1,5 @@
 import React from "react";
+import * as Icon from "react-feather"
 import {Row, Col, CardBody, Card, Spinner, Button} from "reactstrap";
 
 import Error500 from "../Error500";
@@ -15,11 +16,11 @@ class UserDetails extends React.Component {
         this.state = {
             // Metadata state
             show: false,
-            error: null,
+            error: null, 
             loading: false,
             metaData: null,
             // Souscription modal
-            souscriptionModal: {show: false, title: ""},
+            souscriptionModal: {show: false, title: ""}
         }
     }
 
@@ -59,11 +60,15 @@ class UserDetails extends React.Component {
                             <CardBody>
                                 <div className="header-profile-sidebar">
                                     <div className="avatar">
-                                        <DisplayImage src={user.imageSrc} height="70" width="70" />
+                                        <DisplayImage src={user.imageSrc} height="70" width="70" /> 
                                     </div>
-                                </div>
+                                    {user.status
+                                        ? <Icon.Unlock size={20} className="text-success" />
+                                        : <Icon.Lock size={20} className="text-danger" />
+                                    }  
+                                </div> 
                                 <hr />
-                                <div className="users-page-view-table">
+                                <div className="users-page-view-table"> 
                                     <div className="d-flex user-info">
                                         <div className="user-info-title font-weight-bold">
                                             Premium

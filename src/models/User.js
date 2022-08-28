@@ -16,6 +16,10 @@ export default class User {
         this.avatar = image?.compressedPreSignedUrl || image?.originalPreSignedUrl;
     }
 
+    set setStatus(status) { 
+        this.status = !status?.blocked;
+    }
+
     set setLastMessageTime(time) {
         this.lastMessageTime = time;
     }

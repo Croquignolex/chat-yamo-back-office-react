@@ -56,6 +56,10 @@ export const getOldUserImages = async (date) => {
     return makeRequest('get', joinBaseUrlWithRequestParams(VALIDATIONS.OLD_GET_ALL, [{param: 'date', value: date}]));
 };
 
+export const getUserBlockStatus = async (userId) => {
+    return makeRequest('get', joinBaseUrlWithParams(USERS.BLOCK_STATUS, [{param: 'userId', value: userId}]));
+};
+
 export const getUserProfileImage = async (userId) => {
     const config = {headers: {
             "CHAT-ET-YAMO-MEDIA-SERVICE-ALL-USER-IMAGES": "true"

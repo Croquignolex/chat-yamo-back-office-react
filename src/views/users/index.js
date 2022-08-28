@@ -6,7 +6,7 @@ import User from "../../models/User";
 import UserDetails from "./UserDetails";
 import {Col, Row, Form, Input, Button, Spinner} from "reactstrap";
 import Breadcrumbs from "../../components/@vuexy/breadCrumbs/BreadCrumb";
-import {getUserProfileImage, searchUser} from "../../redux/actions/IndependentActions";
+import {getUserProfileImage, getUserBlockStatus, searchUser} from "../../redux/actions/IndependentActions";
 
 class Users extends React.Component {
     constructor(props) {
@@ -33,6 +33,8 @@ class Users extends React.Component {
             .then(async data => {
                 const user = new User(data);
                 try {
+                    // User block status
+                    user.setStatus = await getUserBlockStatus(user.id);
                     if(!user.isDeleted) {
                         // User profile image
                         user.setAvatar = await getUserProfileImage(user.id);

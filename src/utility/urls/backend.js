@@ -37,7 +37,8 @@ export const USERS = {
     SEARCH: '/profile/backoffice/checkuser',
     BLOCK: '/authentication/user/{userId}/block',
     METADATA: '/authentication/backoffice/user/{userId}/metadata',
-    SOUSCRIPTIONS: '/authentication/user/{userId}/subscriptionhistory',
+    BLOCK_STATUS: '/authentication/user/{userId}/userblockedstate',
+    SOUSCRIPTIONS: '/authentication/user/{userId}/subscriptionhistory', 
 };
 
 export const MEDIA = {
