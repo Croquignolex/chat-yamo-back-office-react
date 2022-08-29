@@ -172,6 +172,7 @@ class ImageSidebar extends React.Component {
                         <Button color="primary" className="mr-50 rounded" onClick={this.loadData} size="sm">
                             <Icon.RefreshCcw size={15} /> 
                         </Button>
+                        {/*
                         <Button size="sm" color="primary" className="mr-50 rounded" onClick={this.handlePrevDate} title="Previous day">
                             <Icon.ArrowLeft size={15} />
                         </Button>
@@ -181,6 +182,7 @@ class ImageSidebar extends React.Component {
                         <Button size="sm" color="primary" className="ml-50 rounded" onClick={this.handleNextDate} title="Next day">
                             <Icon.ArrowRight size={15} />
                         </Button>
+                        */}
                     </div>
                     <strong className="text-primary">{verified}</strong> image(s) vérifiées / <strong className="text-primary">{toVerify}</strong> image(s) à vérifier 
                 </div>

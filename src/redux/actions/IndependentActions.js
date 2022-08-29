@@ -53,7 +53,8 @@ export const getUserImages = async (date) => {
 };
 
 export const getOldUserImages = async (date) => {
-    return makeRequest('get', joinBaseUrlWithRequestParams(VALIDATIONS.OLD_GET_ALL, [{param: 'date', value: date}]));
+    // return makeRequest('get', joinBaseUrlWithRequestParams(VALIDATIONS.OLD_GET_ALL, [{param: 'date', value: date}]));
+    return makeRequest('get', VALIDATIONS.OLD_GET_ALL);
 };
 
 export const getUserBlockStatus = async (userId) => {
