@@ -14,6 +14,10 @@ const DisplayImage = ({src, className, withWrapper, withModal, withPercentage, h
         setModal(!modal);
     };
 
+    const handleErrorImage = (e) =>{
+        e.target.src = require("../assets/img/unknown-user.png");
+    };
+
     return (
         <>
             {/* Normal image size display */}
@@ -23,13 +27,28 @@ const DisplayImage = ({src, className, withWrapper, withModal, withPercentage, h
                 </div>
             ) : (
                 withPercentage 
-                    ? <img src={src} alt="..." style={{ width: "100%" }} onClick={toggleModal} className="hand-cusor" />
-                    : <img src={src} alt="..." height={height} width={width} className={className} onClick={toggleModal} />
+                    ? <img  
+                        alt="..."  
+                        src={src} 
+                        onClick={toggleModal}
+                        className="hand-cusor" 
+                        style={{ width: "100%" }} 
+                        onError={handleErrorImage} 
+                    />
+                    : <img  
+                        alt="..." 
+                        src={src} 
+                        width={width} 
+                        height={height}  
+                        className={className} 
+                        onClick={toggleModal} 
+                        onError={handleErrorImage} 
+                    />
             )}
             {/* Large image size display into modal */}
             {withModal && (
                 <Modal isOpen={modal} toggle={toggleModal} className="modal-dialog-centered">
-                    <img src={src} alt="..."/>
+                    <img src={src} alt="..." onError={handleErrorImage} />
                 </Modal>
             )}
         </>
