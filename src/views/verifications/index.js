@@ -66,6 +66,10 @@ class ImageVerification extends React.Component {
         });
     };
 
+    handleResetImage = () => {
+        this.setState({verified: 0, deletedImages: []});
+    };
+
     onSetSidebarOpen = open => {
         this.setState({ sidebarOpen: open })
     }
@@ -104,9 +108,10 @@ class ImageVerification extends React.Component {
             <Sidebar
               sidebar={
                 <ImageSidebar
-                    verified={this.state.verified}
+                    verified={this.state.verified} 
                     mainSidebar={this.onSetSidebarOpen}
                     activeChatId={this.state.activeChatID}
+                    handleResetImage={this.handleResetImage}
                     handleActiveChat={this.handleActiveChat}
                     handleUserSidebar={this.handleUserSidebar}
                 />

@@ -11,7 +11,7 @@ import ImageSidebarItem from "./ImageSidebarItem";
 import {getUserImages, getUserProfile, getUserProfileImage, getUserBlockStatus} from "../../redux/actions/IndependentActions";
 
 class ImageSidebar extends React.Component {
-    // props { activeChatId, verified, mainSidebar, handleActiveChat, handleUserSidebar, updateImagesToVerify }
+    // props { activeChatId, verified, mainSidebar, handleActiveChat, handleUserSidebar, updateImagesToVerify, handleResetImage }
     constructor(props) {
         super(props);
         this.state = {
@@ -34,6 +34,7 @@ class ImageSidebar extends React.Component {
         // Init request
         this.setState({ loading: true, error: null, users: [], all_images: [], search: "" });
         this.props.handleActiveChat(null, null);
+        this.props.handleResetImage();
 
         getUserImages(this.state.date.format('YYYY-MM-DDTHH:mm:ss'))
             .then(res => {
