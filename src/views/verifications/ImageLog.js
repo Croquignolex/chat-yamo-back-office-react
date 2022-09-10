@@ -25,8 +25,7 @@ class ImageLog extends React.Component {
         this.goToIndex = this.goToIndex.bind(this);
         this.onExiting = this.onExiting.bind(this);
         this.onExited = this.onExited.bind(this);
-        this.validateImage = this.validateImage.bind(this);
-        // this.invalidateImage = this.invalidateImage.bind(this);
+        this.validateImage = this.validateImage.bind(this); 
         this.deleteImage = this.deleteImage.bind(this);
     }
 

@@ -27,13 +27,6 @@ const navigationConfig = [
   },
   {
     type: "item",
-    id: "notation",
-    title: "Notations",
-    navLink: APP.NOTATIONS,
-    icon: <Icon.Star size={20} />
-  },
-  {
-    type: "item",
     id: "verification",
     title: "Verifications",
     navLink: APP.VERIFICATIONS,
@@ -41,8 +34,15 @@ const navigationConfig = [
   },
   {
     type: "item",
+    id: "notation",
+    title: "Notations",
+    navLink: APP.NOTATIONS,
+    icon: <Icon.Star size={20} />
+  }, 
+  {
+    type: "item",
     id: "old-verification",
-    title: "Old verifications",
+    title: "Old notations",
     navLink: APP.OLD_VERIFICATIONS,
     icon: <Icon.Archive size={20} />
   },

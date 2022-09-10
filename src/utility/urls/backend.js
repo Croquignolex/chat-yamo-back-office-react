@@ -24,11 +24,11 @@ export const FEEDBACKS = {
 
 export const VALIDATIONS = {
     VALIDATE_ONE: '/media/users/{userId}/medias/{mediaId}/paths/{mediaPath}/verify/{verified}',
+    NOTATE_ONE: '/media/users/{userId}/medias/{mediaId}/score/{score}',
     DELETE_ONE: '/media/users/{userId}/medias/{mediaId}',
     GET_ALL: '/media/users/toBeVerifiedMedia',
 
-    // Old
-    OLD_VALIDATE_ONE: '/media/users/{userId}/medias/{mediaId}/score/{score}',
+    // Old 
     OLD_GET_ALL: '/media/users/allToBeNotedMedias',
 };
 

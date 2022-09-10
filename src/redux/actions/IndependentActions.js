@@ -139,22 +139,16 @@ export const addBackofficeUser = async (username, lastName, firstName, password,
 
 // ===================================== START PUT
 
-export const notateUserImage = async (userId, mediaId, mediaPath, score) => {
-    const config = {headers: {
-            "CHAT-ET-YAMO-MEDIA-SERVICE-ALL-USER-IMAGES": "true",
-            "CHAT-ET-YAMO-MEDIA-SERVICE-PRE-SIGNED-URL": "true"
-        }
-    };
+export const notateUserImage = async (userId, mediaId, score) => {
     const url = joinBaseUrlWithParams(
-        VALIDATIONS.VALIDATE_ONE,
+        VALIDATIONS.NOTATE_ONE,
         [
-            {param: 'userId', value: userId}, 
-            {param: 'mediaId', value: mediaId},
-            {param: 'verified', value: 'false'},
-            {param: 'mediaPath', value: mediaPath},
+            {param: 'userId', value: userId},
+            {param: 'mediaId', value: mediaId}, 
+            {param: 'score', value: score},
         ]
     );
-    return makeRequest('put', `${url}?score=${score}`, null, config);
+    return makeRequest('put', url);
 };
 
 export const verifyUserImage = async (userId, mediaId, mediaPath, verified) => {
@@ -168,23 +162,11 @@ export const verifyUserImage = async (userId, mediaId, mediaPath, verified) => {
         [
             {param: 'userId', value: userId},
             {param: 'mediaId', value: mediaId},
-            {param: 'mediaPath', value: mediaPath},
             {param: 'verified', value: verified},
+            {param: 'mediaPath', value: mediaPath}, 
         ]
     );
     return makeRequest('put', url, null, config);
-};
-
-export const verifyOldUserImage = async (userId, mediaId, score) => {
-    const url = joinBaseUrlWithParams(
-        VALIDATIONS.OLD_VALIDATE_ONE,
-        [
-            {param: 'userId', value: userId},
-            {param: 'mediaId', value: mediaId}, 
-            {param: 'score', value: score},
-        ]
-    );
-    return makeRequest('put', url);
 };
 
 export const createMedia = async (userId, file) => {

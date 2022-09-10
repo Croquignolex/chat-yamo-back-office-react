@@ -5,7 +5,7 @@ import { Image, CheckCircle, Menu} from "react-feather";
 import {Carousel, CarouselItem, CarouselControl, CarouselIndicators, Spinner} from "reactstrap";
 
 import DisplayImage from "../../components/DisplayImage";
-import {verifyOldUserImage} from "../../redux/actions/IndependentActions";
+import {notateUserImage} from "../../redux/actions/IndependentActions";
 
 class ImageLog extends React.Component {
     // props { activeChatID, activeUser, mainSidebar, handleReceiverSidebar }
@@ -23,7 +23,7 @@ class ImageLog extends React.Component {
         this.goToIndex = this.goToIndex.bind(this);
         this.onExiting = this.onExiting.bind(this);
         this.onExited = this.onExited.bind(this);
-        this.validateImage = this.validateImage.bind(this);
+        this.notateImage = this.notateImage.bind(this);
     }
 
     onExiting() {
@@ -78,14 +78,14 @@ class ImageLog extends React.Component {
         }
     };
  
-    validateImage = (score) => {
+    notateImage = (score) => {
         const image = this.state.images[this.state.activeIndex];
         this.setState({ loading: true });
-        verifyOldUserImage(image.userId, image.mediaId, score)
+        notateUserImage(image.userId, image.mediaId, score)
             .then(() => {
                 // Remove image from array
                 this.removeImageFormState(image)
-                NotificationManager.success("Image has been successfully validated", null, 1000);
+                NotificationManager.success("Image has been successfully noted", null, 1000);
             })
             .catch((error) => console.log("error ", error))
             .finally(() => this.setState({ loading: false }));
@@ -177,11 +177,11 @@ class ImageLog extends React.Component {
                             <div className="col-md-12 mt-3 mb-5">
                                 {this.state.loading ? <Spinner color="primary"/> : (
                                     <>
-                                        <button className="btn btn-success mr-1 score-size-1" onClick={() => this.validateImage(1)}>1 <CheckCircle size={20} /></button>
-                                        <button className="btn btn-success mr-1 score-size-2" onClick={() => this.validateImage(2)}>2 <CheckCircle size={20} /></button>
-                                        <button className="btn btn-success mr-1 score-size-3" onClick={() => this.validateImage(3)}>3 <CheckCircle size={20} /></button>
-                                        <button className="btn btn-success mr-1 score-size-4" onClick={() => this.validateImage(4)}>4 <CheckCircle size={20} /></button>
-                                        <button className="btn btn-success mr-1 score-size-5" onClick={() => this.validateImage(5)}>5 <CheckCircle size={20} /></button>
+                                        <button className="btn btn-success mr-1 score-size-1" onClick={() => this.notateImage(1)}>1 <CheckCircle size={20} /></button>
+                                        <button className="btn btn-success mr-1 score-size-2" onClick={() => this.notateImage(2)}>2 <CheckCircle size={20} /></button>
+                                        <button className="btn btn-success mr-1 score-size-3" onClick={() => this.notateImage(3)}>3 <CheckCircle size={20} /></button>
+                                        <button className="btn btn-success mr-1 score-size-4" onClick={() => this.notateImage(4)}>4 <CheckCircle size={20} /></button>
+                                        <button className="btn btn-success mr-1 score-size-5" onClick={() => this.notateImage(5)}>5 <CheckCircle size={20} /></button>
                                     </>
                                 )}
                             </div>
