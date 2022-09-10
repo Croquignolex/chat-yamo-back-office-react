@@ -27,6 +27,13 @@ const navigationConfig = [
   },
   {
     type: "item",
+    id: "notation",
+    title: "Notations",
+    navLink: APP.NOTATIONS,
+    icon: <Icon.Star size={20} />
+  },
+  {
+    type: "item",
     id: "verification",
     title: "Verifications",
     navLink: APP.VERIFICATIONS,

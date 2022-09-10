@@ -7,7 +7,8 @@ export const APP = {
     HOME: '/home',
     USERS: '/users',
     FEEDBACKS: '/feedbacks',
-    VERIFICATIONS: '/verifications',
+    NOTATIONS: '/notations',
+    VERIFICATIONS: '/verifications', 
     BACKOFFICE_USERS: '/backoffice-users',
     OLD_VERIFICATIONS: '/old-verifications'
 };
