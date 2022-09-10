@@ -1,7 +1,7 @@
 import React from "react"
 import ReactDOM from "react-dom"
 import {NotificationManager} from "react-notifications";
-import { Image, CheckCircle, Trash2, Menu} from "react-feather";
+import { Image, ThumbsDown, ThumbsUp,Trash2, Menu} from "react-feather";
 import {Carousel, CarouselItem, CarouselControl, CarouselIndicators, Spinner} from "reactstrap";
 
 import DisplayImage from "../../components/DisplayImage";
@@ -82,14 +82,18 @@ class ImageLog extends React.Component {
         }
     };
  
-    validateImage = (score) => {
+    validateImage = (answer) => {
         const image = this.state.images[this.state.activeIndex];
         this.setState({ loading: true });
-        verifyUserImage(image.userId, image.mediaId, image.mediaPath, 'true', score)
+        verifyUserImage(image.userId, image.mediaId, image.mediaPath, answer)
             .then(() => {
                 // Remove image from array
-                this.removeImageFormState(image)
-                NotificationManager.success("Image has been successfully validated", null, 1000);
+                this.removeImageFormState(image) 
+                NotificationManager.success(
+                    `Image has been successfully ${answer === 'true' ? 'validated' : 'unvalidated'}`, 
+                    null, 
+                    1000
+                );
             })
             .catch((error) => console.log("error ", error))
             .finally(() => this.setState({ loading: false }));
@@ -98,7 +102,7 @@ class ImageLog extends React.Component {
     /*invalidateImage = () => {
         const image = this.state.images[this.state.activeIndex];
         this.setState({ loading: true });
-        verifyUserImage(image.userId, image.mediaId, image.mediaPath, 'false', 0)
+        verifyUserImage(image.userId, image.mediaId, image.mediaPath, 'false')
             .then(() => {
                 // Remove image from array
                 this.removeImageFormState(image)
@@ -242,12 +246,8 @@ class ImageLog extends React.Component {
                             <div className="col-md-12 mt-3 mb-5">
                                 {this.state.loading ? <Spinner color="primary"/> : (
                                     <>
-                                        <button className="btn btn-success mr-1 score-size-1" onClick={() => this.validateImage(1)}>1 <CheckCircle size={20} /></button>
-                                        <button className="btn btn-success mr-1 score-size-2" onClick={() => this.validateImage(2)}>2 <CheckCircle size={20} /></button>
-                                        <button className="btn btn-success mr-1 score-size-3" onClick={() => this.validateImage(3)}>3 <CheckCircle size={20} /></button>
-                                        <button className="btn btn-success mr-1 score-size-4" onClick={() => this.validateImage(4)}>4 <CheckCircle size={20} /></button>
-                                        <button className="btn btn-success mr-1 score-size-5" onClick={() => this.validateImage(5)}>5 <CheckCircle size={20} /></button>
-                                        {/*<button className="btn btn-danger mr-1" onClick={this.invalidateImage}><XCircle size={20} /></button>*/}
+                                        <button className="btn btn-success mr-1" onClick={() => this.validateImage('true')}> <ThumbsUp size={20} /></button>
+                                        <button className="btn btn-danger mr-1" onClick={() => this.validateImage('false')}><ThumbsDown size={20} /></button>
                                         <button className="btn btn-dark" onClick={this.deleteImage}><Trash2 size={20} /></button>
                                     </>
                                 )}
