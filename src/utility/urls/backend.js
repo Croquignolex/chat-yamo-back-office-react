@@ -29,15 +29,17 @@ export const VALIDATIONS = {
     GET_ALL: '/media/users/toBeVerifiedMedia',
 
     // Old 
-    OLD_GET_ALL: '/media/users/allToBeNotedMedias',
+    OLD_GET_ALL: '/media/users/toBeNotedMedia',
 };
 
 export const USERS = {
     GET_ONE: '/profile/{userId}',
     SEARCH: '/profile/backoffice/checkuser',
+
     BLOCK: '/authentication/user/{userId}/block',
     METADATA: '/authentication/backoffice/user/{userId}/metadata',
     BLOCK_STATUS: '/authentication/user/{userId}/userblockedstate',
+    CHECK_TOWN_EVENT: '/authentication/user/{userId}/checktownevent', 
     SOUSCRIPTIONS: '/authentication/user/{userId}/subscriptionhistory', 
 };
 
