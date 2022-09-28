@@ -45,8 +45,7 @@ class UserTownEvents extends React.Component {
             </FormGroup> 
         ));
 
-        const { error, loading, answer, selectedDate } = this.state;
-        console.log({loading})
+        const { error, loading, answer, selectedDate } = this.state; 
 
         return (
             <>
@@ -60,7 +59,7 @@ class UserTownEvents extends React.Component {
                             customInput={<CustomInput />}
                             onChange={this.handleSelectedDate} 
                         /> 
-                     </div>
+                    </div>
                     <div className="ml-1">
                         {(!loading) && (
                             <Button color="primary" className="rounded" type="submit">
@@ -81,7 +80,7 @@ class UserTownEvents extends React.Component {
                     )} 
                     {(error) && (
                         <Card className="sidebar-content h-100">
-                            <Error500 />
+                            <Error500 refresh={false} />
                         </Card>
                     )}
                 </div>

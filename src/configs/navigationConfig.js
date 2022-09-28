@@ -19,6 +19,13 @@ const navigationConfig = [
     icon: <Icon.UserCheck size={20} />
   },
   {
+    id: "tonw-events",
+    type: "item",
+    title: "Town-events",
+    navLink: APP.TOWN_EVENTS,
+    icon: <Icon.Calendar size={20} />
+  },
+  {
     type: "item",
     id: "feedbacks",
     title: "Feedbacks",
