@@ -2,12 +2,13 @@ import React from "react";
 import * as Icon from "react-feather"
 import {Row, Col, CardBody, Card, Spinner, Button} from "reactstrap";
 
-import Error500 from "../Error500";
+import Error500 from "../Error500"; 
 import "../../assets/scss/pages/users.scss";
 import MetaData from "../../models/MetaData";
+import UserTownEvents from "./UserTownEvents";
 import FormModal from "../../components/FormModal";
 import UserSouscriptions from "./UserSouscriptions";
-import DisplayImage from "../../components/DisplayImage";
+import DisplayImage from "../../components/DisplayImage"; 
 import {getUserMetaData} from "../../redux/actions/IndependentActions";
 
 class UserDetails extends React.Component {
@@ -19,7 +20,8 @@ class UserDetails extends React.Component {
             error: null, 
             loading: false,
             metaData: null,
-            // Souscription modal
+            // Modals
+            townEventModal: {show: false, title: ""},
             souscriptionModal: {show: false, title: ""}
         }
     }
@@ -45,9 +47,19 @@ class UserDetails extends React.Component {
         }
     };
 
+    toggleTownEventModal = () => {
+        const {townEventModal} = this.state;
+        const { user } = this.props;
+        if(townEventModal.show) this.setState({townEventModal: {...townEventModal, show: false}});
+        else {
+          const title = user.isDeleted ? "Deleted user" : `${user.name} town-event check`;
+          this.setState({townEventModal: {show: true, title}});
+        }
+    };
+
     render() {
 
-        const { metaData, souscriptionModal } = this.state;
+        const { metaData, souscriptionModal, townEventModal } = this.state;
         const { user } = this.props;
 
         if (!user) return null;
@@ -186,6 +198,12 @@ class UserDetails extends React.Component {
                                             </Button>
                                         )} 
                                     </div>
+                                    <hr />
+                                    <div className="text-center">  
+                                        <Button color="primary" onClick={this.toggleTownEventModal}>
+                                            Town-event
+                                        </Button> 
+                                    </div>
                                 </div>
                             </CardBody>
                         </Card>
@@ -193,6 +211,9 @@ class UserDetails extends React.Component {
                 </Row> 
                 <FormModal small modal={souscriptionModal} toggleModal={this.toggleSouscriptionModal}>
                     <UserSouscriptions userId={user.id} />
+                </FormModal>
+                <FormModal small modal={townEventModal} toggleModal={this.toggleTownEventModal}>
+                    <UserTownEvents userId={user.id} />
                 </FormModal>
             </> 
         )
