@@ -8,7 +8,8 @@ import FormModal from "./FormModal";
 import Error500 from "../views/Error500";
 import MetaData from "../models/MetaData";
 import DisplayImage from "./DisplayImage";
-import UserSouscriptions from "../views/users/UserSouscriptions";
+import UserTownEvents from "../views/users/UserTownEvents";
+import UserSouscriptions from "../views/users/UserSouscriptions"; 
 import {getUserMetaData} from "../redux/actions/IndependentActions";
 
 import "../assets/scss/pages/users.scss";
@@ -24,7 +25,8 @@ class UserProfile extends React.Component {
       error: null,
       loading: false,
       metaData: null,
-      // Souscription modal
+      // Modals
+      townEventModal: {show: false, title: ""},
       souscriptionModal: {show: false, title: ""},
     }
   }
@@ -57,8 +59,17 @@ class UserProfile extends React.Component {
       }
   };
 
+  toggleTownEventModal = () => {
+      const {townEventModal, activeUser} = this.state;
+      if(townEventModal.show) this.setState({townEventModal: {...townEventModal, show: false}});
+      else {
+        const title = activeUser.isDeleted ? "Deleted user" : `${activeUser.name} town-event check`;
+        this.setState({townEventModal: {show: true, title}});
+      }
+  };
+
   render() {
-    const { activeUser, metaData, souscriptionModal } = this.state;
+    const { activeUser, metaData, souscriptionModal, townEventModal } = this.state;
     const { receiverProfile, handleReceiverSidebar } = this.props;
 
     if (!activeUser) return null;
@@ -197,11 +208,20 @@ class UserProfile extends React.Component {
                     </Button>
                 )} 
               </div>
+              <hr />
+              <div className="text-center">  
+                  <Button color="primary" onClick={this.toggleTownEventModal}>
+                    Town-event
+                  </Button> 
+              </div>
             </div>
           </PerfectScrollbar>
         </div> 
         <FormModal small modal={souscriptionModal} toggleModal={this.toggleSouscriptionModal}>
           <UserSouscriptions userId={activeUser.id} />
+        </FormModal>
+        <FormModal small modal={townEventModal} toggleModal={this.toggleTownEventModal}>
+          <UserTownEvents userId={activeUser.id} />
         </FormModal>
       </>
     )
