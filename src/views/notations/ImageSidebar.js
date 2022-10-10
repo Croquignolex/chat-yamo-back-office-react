@@ -8,7 +8,7 @@ import Error500 from "../Error500";
 import User from "../../models/User";
 import ImageSidebarItem from "./ImageSidebarItem";
 // import {twoDigitDisplay} from "../../helpers/helpers";
-import {getUserImages, getUserProfile, getUserProfileImage, getUserBlockStatus} from "../../redux/actions/IndependentActions";
+import {getUserImagesForNotation, getUserProfile, getUserProfileImage, getUserBlockStatus} from "../../redux/actions/IndependentActions";
 
 class ImageSidebar extends React.Component {
     // props { activeChatId, verified, mainSidebar, handleActiveChat, handleUserSidebar, updateImagesToVerify, handleResetImage }
@@ -21,7 +21,6 @@ class ImageSidebar extends React.Component {
             toVerify: 0,
             loading: false,
             date: dayjs().startOf('day'),
-            hour: 0,
             search: ""
         }
     }
@@ -36,7 +35,7 @@ class ImageSidebar extends React.Component {
         this.props.handleActiveChat(null, null);
         this.props.handleResetImage();
 
-        getUserImages(this.state.date.format('YYYY-MM-DDTHH:mm:ss'))
+        getUserImagesForNotation(this.state.date.format('YYYY-MM-DD'))
             .then(res => {
                 this.setState({all_images: res, toVerify: res.length});
 
@@ -119,24 +118,14 @@ class ImageSidebar extends React.Component {
     handlePrevDate = () => {
         this.setState((prevState) => {
             const tempDate = prevState.date;
-            const tempHour = prevState.hour;
-            const nextHour = (tempHour - 6);
-            return {
-                hour: nextHour < 0 ? 18 : nextHour,
-                date: tempDate.subtract(6, 'hour')
-            };
+            return {date: tempDate.subtract(1, 'day')};
         }, () => this.loadData());
     }
 
     handleNextDate = () => {
         this.setState((prevState) => {
             const tempDate = prevState.date;
-            const tempHour = prevState.hour;
-            const nextHour = (tempHour + 6);
-            return {
-                hour: nextHour > 18 ? 0 : nextHour,
-                date: tempDate.add(6, 'hour')
-            };
+            return {date: tempDate.add(1, 'day')};
         }, () => this.loadData());
     }
 
@@ -172,16 +161,11 @@ class ImageSidebar extends React.Component {
                     <div className="d-flex align-items-center mb-50">
                         <Button color="primary" className="mr-50 rounded" onClick={this.loadData} size="sm">
                             <Icon.RefreshCcw size={15} />
-                            {/*<span className="d-lg-block d-none">Refresh</span>*/}
                         </Button>
                         <Button size="sm" color="primary" className="mr-50 rounded" onClick={this.handlePrevDate} title="Previous day">
                             <Icon.ArrowLeft size={15} />
                         </Button>
-                        <strong>
-                            {this.state.date.format('DD-MM-YYYY')} 
-                            {/*{twoDigitDisplay(this.state.hour)}-*/}
-                            {/*{twoDigitDisplay(this.state.hour + 6)}*/}
-                        </strong>
+                        <strong>{this.state.date.format('DD-MM-YYYY')}</strong>
                         <Button size="sm" color="primary" className="ml-50 rounded" onClick={this.handleNextDate} title="Next day">
                             <Icon.ArrowRight size={15} />
                         </Button>

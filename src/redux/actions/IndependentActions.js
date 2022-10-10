@@ -8,7 +8,7 @@ import {
     VALIDATIONS,
     BACKOFFICE_USERS,
     joinBaseUrlWithParams,
-    joinBaseUrlWithRequestParams,
+    joinBaseUrlWithRequestParams, NOTATIONS,
 } from "../../utility/urls/backend";
 
 // ===================================== START GET
@@ -50,6 +50,16 @@ export const getUserImages = async (date) => {
         }
     };
     return makeRequest('get', joinBaseUrlWithRequestParams(VALIDATIONS.GET_ALL, [{param: 'date', value: date}]), null, config);
+};
+
+export const getUserImagesForNotation = async (date) => {
+    const config = {headers: {
+            "CHAT-ET-YAMO-MEDIA-SERVICE-ALL-USER-IMAGES": "true",
+            "CHAT-ET-YAMO-MEDIA-SERVICE-PRE-SIGNED-URL": "true"
+        }
+    };
+    const url = joinBaseUrlWithRequestParams(NOTATIONS.GET_ALL, [{param: 'date', value: date}]);
+    return makeRequest('get', url, null, config);
 };
 
 export const getOldUserImages = async (date) => {
@@ -146,7 +156,7 @@ export const addBackofficeUser = async (username, lastName, firstName, password,
 
 export const notateUserImage = async (userId, mediaId, score) => {
     const url = joinBaseUrlWithParams(
-        VALIDATIONS.NOTATE_ONE,
+        NOTATIONS.NOTATE_ONE,
         [
             {param: 'userId', value: userId},
             {param: 'mediaId', value: mediaId}, 
