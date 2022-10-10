@@ -62,8 +62,7 @@ export const getUserImagesForNotation = async (date) => {
     return makeRequest('get', url, null, config);
 };
 
-export const getOldUserImages = async (date) => {
-    // return makeRequest('get', joinBaseUrlWithRequestParams(VALIDATIONS.OLD_GET_ALL, [{param: 'date', value: date}]));
+export const getOldUserImages = async () => {
     return makeRequest('get', VALIDATIONS.OLD_GET_ALL);
 };
 

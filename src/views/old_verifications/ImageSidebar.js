@@ -19,8 +19,6 @@ class ImageSidebar extends React.Component {
             users: [],
             toVerify: 0,
             loading: false,
-            date: dayjs().startOf('day'),
-            hour: 0,
             search: ""
         }
     }
@@ -35,7 +33,7 @@ class ImageSidebar extends React.Component {
         this.props.handleActiveChat(null, null);
         this.props.handleResetImage();
 
-        getOldUserImages(this.state.date.format('YYYY-MM-DDTHH:mm:ss'))
+        getOldUserImages()
             .then(res => {
                 this.setState({all_images: res, toVerify: res.length});
 
@@ -114,30 +112,6 @@ class ImageSidebar extends React.Component {
             return {users: tempusers};
         });
     };
-
-    handlePrevDate = () => {
-        this.setState((prevState) => {
-            const tempDate = prevState.date;
-            const tempHour = prevState.hour;
-            const nextHour = (tempHour - 6);
-            return {
-                hour: nextHour < 0 ? 18 : nextHour,
-                date: tempDate.subtract(6, 'hour')
-            };
-        }, () => this.loadData());
-    }
-
-    handleNextDate = () => {
-        this.setState((prevState) => {
-            const tempDate = prevState.date;
-            const tempHour = prevState.hour;
-            const nextHour = (tempHour + 6);
-            return {
-                hour: nextHour > 18 ? 0 : nextHour,
-                date: tempDate.add(6, 'hour')
-            };
-        }, () => this.loadData());
-    }
 
     handleSearchVerification = (e) => {
         e.preventDefault();

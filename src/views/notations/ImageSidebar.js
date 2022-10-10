@@ -7,7 +7,6 @@ import {Button, Card, Spinner, Input, Form} from "reactstrap";
 import Error500 from "../Error500";
 import User from "../../models/User";
 import ImageSidebarItem from "./ImageSidebarItem";
-// import {twoDigitDisplay} from "../../helpers/helpers";
 import {getUserImagesForNotation, getUserProfile, getUserProfileImage, getUserBlockStatus} from "../../redux/actions/IndependentActions";
 
 class ImageSidebar extends React.Component {
