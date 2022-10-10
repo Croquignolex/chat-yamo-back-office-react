@@ -96,7 +96,7 @@ export const getMessageImage = async (userId, mediaId) => {
 
 export const checkTownEvent = async (userId, date) => { 
     const url = joinBaseUrlWithParams(USERS.CHECK_TOWN_EVENT,[{param: 'userId', value: userId}]);
-    return makeRequest('get', url + '?startFrom=' + date) ;
+    return makeRequest('post', url + '?startFrom=' + date) ;
 };
 
 // ===================================== END GET
