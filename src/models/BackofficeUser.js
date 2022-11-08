@@ -1,3 +1,5 @@
+import {BACKOFFICE_USERS_ROLES} from "../configs/AppConfig";
+
 export default class BackofficeUser {
     constructor(backofficeUser) {
         Object.assign(this, backofficeUser);
@@ -6,13 +8,17 @@ export default class BackofficeUser {
     }
 
     get getRoles() {
-        let roles = [];
+        let formattedRoles = [];
+
+        // Search
         this.roles.forEach((role) => {
-            if(role.toLowerCase() === "admin") roles.push({text: "Admin", color: "light-danger"});
-            else if(role.toLowerCase() === "writer") roles.push({text: "Writer", color: "light-warning"});
-            else if(role.toLowerCase() === "reader") roles.push({text: "Reader", color: "light-primary"});
-            else roles.push({text: "Unknown", color: "secondary"});
+            const needleRole = BACKOFFICE_USERS_ROLES.find((item) => item.value === role);
+            formattedRoles.push(needleRole);
         });
-        return roles;
+
+        // In case no role is found
+        if(formattedRoles.length === 0) formattedRoles.push({label: "Unknown", className: "secondary"});
+
+        return formattedRoles;
     }
 }

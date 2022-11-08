@@ -5,6 +5,7 @@ import React, { PureComponent } from "react";
 import Navbar from "./components/navbar/Navbar";
 import Footer from "./components/footer/Footer";
 import Sidebar from "./components/menu/vertical-menu/Sidebar";
+import {BACKOFFICE_USERS_ROLES} from "../configs/AppConfig";
 
 class VerticalLayout extends PureComponent {
   state = {
@@ -153,6 +154,7 @@ class VerticalLayout extends PureComponent {
       collapsed: this.state.collapsedContent,
       permission: this.props.permission,
       deviceWidth: this.state.width,
+      // Template restriction (current user is used for user role/permission)
       currentUser: this.props.userHigherRole
     };
     let navbarProps = {
@@ -206,15 +208,10 @@ class VerticalLayout extends PureComponent {
  
 // map state to props
 const mapStateToProps = ({ authUser }) => {
-  let userHigherRole;
   const roles = authUser.data?.roles || [];
-
-  if(roles.includes("admin")) userHigherRole = "admin";
-  else if (roles.includes("writer")) userHigherRole = "writer";
-  else if (roles.includes("reader")) userHigherRole = "reader";
-  else userHigherRole = "";
-
-  return { userHigherRole }; 
+  const needleRole = BACKOFFICE_USERS_ROLES.find((item) => roles.includes(item.value));
+  // Build data
+  return { userHigherRole: needleRole?.value };
 };
 
 export default connect(mapStateToProps)(VerticalLayout);
