@@ -246,7 +246,7 @@ class SideMenuContent extends React.Component {
         this.collapsedPath = item.navLink
         this.props.collapsedMenuPaths(item.navLink)
       }
-console.log(item.permissions, this.props)
+
       if (
         item.type === "collapse" ||
         item.type === "external-link" ||
