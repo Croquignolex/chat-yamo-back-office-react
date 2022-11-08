@@ -7,9 +7,9 @@ export const AUTH = {
 };
 
 export const BACKOFFICE_USERS = {
-    ADD_ONE: '/feedbacks/backoffice/{backofficeUserId}/register',
-    GET_ALL: '/feedbacks/backoffice/{backofficeUserId}/allusers',
-    DELETE_ONE: '/feedbacks/backoffice/{backofficeUserId}/{userId}/delete',
+    ADD_ONE: '/feedbacks/backoffice/{backOfficeUserId}/register',
+    GET_ALL: '/feedbacks/backoffice/{backOfficeUserId}/allusers',
+    DELETE_ONE: '/feedbacks/backoffice/{backOfficeUserId}/{userId}/delete',
 };
 
 export const FEEDBACKS = {

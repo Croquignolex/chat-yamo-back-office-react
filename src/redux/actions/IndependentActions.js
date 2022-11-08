@@ -38,8 +38,8 @@ export const getUserSouscriptions = async (userId) => {
     return makeRequest('get', url);
 };
 
-export const getBackofficeUsers = async (backofficeUserId) => {
-    const url = joinBaseUrlWithParams(BACKOFFICE_USERS.GET_ALL, [{param: 'backofficeUserId', value: backofficeUserId}])
+export const getBackofficeUsers = async (backOfficeUserId) => {
+    const url = joinBaseUrlWithParams(BACKOFFICE_USERS.GET_ALL, [{param: 'backOfficeUserId', value: backOfficeUserId}])
     return makeRequest('get', url);
 };
 
@@ -197,11 +197,11 @@ export const createMedia = async (userId, file) => {
 
 // ===================================== START DELETE
 
-export const deleteBackofficeUser = async (backofficeUserId, userId) => {
+export const deleteBackofficeUser = async (backOfficeUserId, userId) => {
     const url = joinBaseUrlWithParams(
         BACKOFFICE_USERS.DELETE_ONE,
         [
-            {param: 'backofficeUserId', value: backofficeUserId},
+            {param: 'backOfficeUserId', value: backOfficeUserId},
             {param: 'userId', value: userId},
         ]
     );
