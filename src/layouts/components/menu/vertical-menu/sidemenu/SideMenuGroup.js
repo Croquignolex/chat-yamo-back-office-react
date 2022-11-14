@@ -3,6 +3,7 @@ import { Link } from "react-router-dom"
 import { Badge } from "reactstrap"
 import classnames from "classnames"
 import { ChevronRight } from "react-feather"
+import {checkRole} from "../../../../../helpers/helpers";
 
 class SideMenuGroup extends React.Component {
   constructor(props) {
@@ -60,8 +61,7 @@ class SideMenuGroup extends React.Component {
                 this.flag = false
               }
               if (
-                (child.permissions &&
-                  child.permissions.includes(this.props.currentUser)) ||
+                (child.permissions && checkRole(child.permissions, this.props.currentUser)) ||
                 child.permissions === undefined
               ) {
                 return (
@@ -156,7 +156,7 @@ class SideMenuGroup extends React.Component {
                 )
               } else if (
                 child.navLink === this.props.activePath &&
-                !child.permissions.includes(this.props.currentUser)
+                  !checkRole(child.permissions, this.props.currentUser)
               ) {
                 return this.props.redirectUnauthorized()
               } else {

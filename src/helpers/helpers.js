@@ -2,6 +2,7 @@ import _ from 'lodash';
 import moment from 'moment';
 import api from "../utility/api";
 import {NotificationManager} from 'react-notifications';
+import {BACKOFFICE_USERS_ROLES} from "../configs/AppConfig";
 
 /**
  * Function to convert hex to rgba
@@ -351,6 +352,10 @@ export const fromEntries = (arr) => {
     return arr.reduce((acc,[k,v])=>({...acc,[k]:v}),{});
 };
 
+/**
+ *
+ * @param msg
+ */
 export const formatMessage = msg => msg;
 
 /**
@@ -372,8 +377,25 @@ export const twoDigitDisplay = (number) => {
     return (number > 9) ? number : "0" + number;
 }
 
+/**
+ *
+ * @param input
+ * @returns {*|{isValid: boolean}|{isValid: boolean, errorMessage: string}}
+ */
 export const requiredChecker = (input) => {
     return (input.data?.toString().length > 0)
         ? {...input, isValid: true}
         : {...input, isValid: false, errorMessage: "Valeur du champ réquis"};
+};
+
+/**
+ *
+ * @param allowedRoles
+ * @param userRoles
+ * @returns {boolean}
+ */
+export const checkRole = (allowedRoles, userRoles) => {
+    const needleRole = allowedRoles.find((role) => userRoles.includes(role));
+    //return needleRole.length !== 0;
+    return !!needleRole
 };

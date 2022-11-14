@@ -41,7 +41,7 @@ const navigationConfig = [
     title: "Verifications",
     navLink: APP.VERIFICATIONS,
     icon: <Icon.Image size={20} />,
-    permissions: ['imageverifier']
+    permissions: ['admin', 'imageverifier']
   },
   {
     type: "item",

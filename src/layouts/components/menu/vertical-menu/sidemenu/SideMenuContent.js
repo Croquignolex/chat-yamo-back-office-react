@@ -6,6 +6,7 @@ import SideMenuGroup from "./SideMenuGroup"
 import { Badge } from "reactstrap"
 import { ChevronRight } from "react-feather"
 import { history } from "../../../../../history"
+import {checkRole} from "../../../../../helpers/helpers";
 
 class SideMenuContent extends React.Component {
   constructor(props) {
@@ -252,14 +253,14 @@ class SideMenuContent extends React.Component {
         item.type === "external-link" ||
         (item.type === "item" &&
           item.permissions &&
-          item.permissions.includes(this.props.currentUser)) ||
+          checkRole(item.permissions, this.props.currentUser)) ||
         item.permissions === undefined
       ) {
         return renderItem
       } else if (
         item.type === "item" &&
         item.navLink === this.props.activePath &&
-        !item.permissions.includes(this.props.currentUser)
+        !checkRole(item.permissions, this.props.currentUser)
       ) {
         return this.redirectUnauthorized()
       }

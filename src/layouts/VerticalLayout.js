@@ -155,7 +155,7 @@ class VerticalLayout extends PureComponent {
       permission: this.props.permission,
       deviceWidth: this.state.width,
       // Template restriction (current user is used for user role/permission)
-      currentUser: this.props.userHigherRole
+      currentUser: this.props.userRoles
     };
     let navbarProps = {
       toggleSidebarMenu: this.toggleSidebarMenu,
@@ -209,9 +209,9 @@ class VerticalLayout extends PureComponent {
 // map state to props
 const mapStateToProps = ({ authUser }) => {
   const roles = authUser.data?.roles || [];
-  const needleRole = BACKOFFICE_USERS_ROLES.find((item) => roles.includes(item.value));
+  // const needleRole = BACKOFFICE_USERS_ROLES.find((item) => roles.includes(item.value));
   // Build data
-  return { userHigherRole: needleRole?.value };
+  return { userRoles: roles };
 };
 
 export default connect(mapStateToProps)(VerticalLayout);
