@@ -38,16 +38,15 @@ class ImageSidebar extends React.Component {
     loadData = () => {
         // Init request
         this.setState({ loading: true, error: null, users: [], all_images: [], search: "" });
-        let date = this.state.date.format('YYYY-MM-DD');
         this.props.handleActiveChat(null, null);
         this.props.handleResetImage();
 
-        getImagesForNotationCount(this.props.backOfficeUserId, date)
+        getImagesForNotationCount(this.props.backOfficeUserId)
             .then(res => {
-                this.setState({toVerify: res.count || 0});
+                this.setState({toVerify: res.totalImagesToProcess || 0});
             });
 
-        getUserImagesForNotation(date)
+        getUserImagesForNotation(this.state.date.format('YYYY-MM-DD'))
             .then(res => {
                 this.setState({all_images: res});
 

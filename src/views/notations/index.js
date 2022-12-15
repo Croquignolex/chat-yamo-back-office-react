@@ -1,11 +1,14 @@
 import React from "react";
+import dayjs from "dayjs";
 import Sidebar from "react-sidebar";
+import {connect} from "react-redux";
 import {withRouter} from "react-router-dom";
 
 import ImageLog from "./ImageLog";
 import ImageSidebar from "./ImageSidebar";
 import UserProfile from "../../components/UserProfile";
 import {ContextLayout} from "../../utility/context/Layout";
+import {getImagesForNotedCount} from "../../redux/actions/IndependentActions";
 
 import "../../assets/scss/pages/app-chat.scss";
 
@@ -25,6 +28,7 @@ class ImageVerification extends React.Component {
             userSidebar: false,
             receiverProfile: false,
             sidebarDocked: mql.matches,
+            date: dayjs().startOf('day'),
             deletedImages: []
         };
     }
@@ -57,18 +61,23 @@ class ImageVerification extends React.Component {
     };
 
     handleRemoveImage = (image) => {
+        getImagesForNotedCount(this.props.backOfficeUserId, this.state.date.format('YYYY-MM-DD'))
+            .then(res => {
+                this.setState({verified: res.count || 0});
+            });
+
         this.setState((prevState) => {
             const tempImages = prevState.deletedImages;
             tempImages.push(image);
-            // Also decrement image to verify
-            const tempVerified = prevState.verified + 1;
-            //TODO: request for noted images
-            return {deletedImages: tempImages, verified: tempVerified};
+            return {deletedImages: tempImages};
         });
     };
 
     handleResetImage = () => {
-        this.setState({verified: 0, deletedImages: []});
+        getImagesForNotedCount(this.props.backOfficeUserId, this.state.date.format('YYYY-MM-DD'))
+            .then(res => {
+                this.setState({verified: res.count || 0, deletedImages: []});
+            });
     };
 
     onSetSidebarOpen = open => {
@@ -144,4 +153,10 @@ class ImageVerification extends React.Component {
   }
 }
 
-export default withRouter(ImageVerification);
+const mapStateToProps = state => {
+    return {
+        backOfficeUserId: state.authUser?.data?.entityId,
+    }
+};
+
+export default connect(mapStateToProps)(withRouter(ImageVerification))

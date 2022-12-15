@@ -65,9 +65,14 @@ export const getOldUserImages = async () => {
     return makeRequest('get', VALIDATIONS.OLD_GET_ALL);
 };
 
-export const getImagesForNotationCount = async (backOfficeUserId, date) => {
-    const url = joinBaseUrlWithParams(NOTATIONS.GET_IMAGES_COUNT,[{param: 'backOfficeUserId', value: backOfficeUserId}]);
+export const getImagesForNotedCount = async (backOfficeUserId, date) => {
+    const url = joinBaseUrlWithParams(NOTATIONS.GET_NOTED_IMAGES_COUNT,[{param: 'backOfficeUserId', value: backOfficeUserId}]);
     return makeRequest('get', url + '?date=' + date) ;
+};
+
+export const getImagesForNotationCount = async (backOfficeUserId) => {
+    const url = joinBaseUrlWithParams(NOTATIONS.GET_IMAGES_TO_NOTATE_COUNT,[{param: 'backOfficeUserId', value: backOfficeUserId}]);
+    return makeRequest('get', url) ;
 };
 
 export const getUserBlockStatus = async (userId) => {

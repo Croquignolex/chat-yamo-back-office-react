@@ -33,8 +33,9 @@ export const VALIDATIONS = {
 
 export const NOTATIONS = {
     GET_IMAGES: '/media/alltonote',
-    GET_IMAGES_COUNT: '/media/users/{backOfficeUserId}/allnoted',
     NOTATE_ONE: '/media/users/{userId}/medias/{mediaId}/score/{score}',
+    GET_NOTED_IMAGES_COUNT: '/media/users/{backOfficeUserId}/allnoted',
+    GET_IMAGES_TO_NOTATE_COUNT: '/media/users/{backOfficeUserId}/noted',
 
     // GET_ALL: '/media/users/toBeNotedMedia',
 };
