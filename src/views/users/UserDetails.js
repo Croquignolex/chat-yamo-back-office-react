@@ -8,7 +8,8 @@ import MetaData from "../../models/MetaData";
 import UserTownEvents from "./UserTownEvents";
 import FormModal from "../../components/FormModal";
 import UserSouscriptions from "./UserSouscriptions";
-import DisplayImage from "../../components/DisplayImage"; 
+import UserStatusHistory from "./UserStatusHistory";
+import DisplayImage from "../../components/DisplayImage";
 import {getUserMetaData} from "../../redux/actions/IndependentActions";
 
 class UserDetails extends React.Component {
@@ -22,7 +23,8 @@ class UserDetails extends React.Component {
             metaData: null,
             // Modals
             townEventModal: {show: false, title: ""},
-            souscriptionModal: {show: false, title: ""}
+            souscriptionModal: {show: false, title: ""},
+            statusHistoryModal: {show: false, title: ""}
         }
     }
 
@@ -52,14 +54,24 @@ class UserDetails extends React.Component {
         const { user } = this.props;
         if(townEventModal.show) this.setState({townEventModal: {...townEventModal, show: false}});
         else {
-          const title = user.isDeleted ? "Deleted user" : `${user.name} town-event check`;
+          const title = user.isDeleted ? "Deleted user" : `${user.name} town event check`;
           this.setState({townEventModal: {show: true, title}});
+        }
+    };
+
+    toggleStatusHistoryModal = () => {
+        const {statusHistoryModal} = this.state;
+        const { user } = this.props;
+        if(statusHistoryModal.show) this.setState({statusHistoryModal: {...statusHistoryModal, show: false}});
+        else {
+            const title = user.isDeleted ? "Deleted user" : `${user.name} status history`;
+            this.setState({statusHistoryModal: {show: true, title}});
         }
     };
 
     render() {
 
-        const { metaData, souscriptionModal, townEventModal } = this.state;
+        const { metaData, souscriptionModal, townEventModal, statusHistoryModal } = this.state;
         const { user } = this.props;
 
         if (!user) return null;
@@ -199,10 +211,13 @@ class UserDetails extends React.Component {
                                         )} 
                                     </div>
                                     <hr />
-                                    <div className="text-center">  
-                                        <Button color="primary" onClick={this.toggleTownEventModal}>
-                                            Town-event
-                                        </Button> 
+                                    <div className="text-center">
+                                        <Button color="primary" onClick={this.toggleStatusHistoryModal}>
+                                            Status history
+                                        </Button>
+                                        <Button color="primary" onClick={this.toggleTownEventModal} className="ml-50">
+                                            Town event
+                                        </Button>
                                     </div>
                                 </div>
                             </CardBody>
@@ -214,6 +229,9 @@ class UserDetails extends React.Component {
                 </FormModal>
                 <FormModal small modal={townEventModal} toggleModal={this.toggleTownEventModal}>
                     <UserTownEvents userId={user.id} />
+                </FormModal>
+                <FormModal small modal={statusHistoryModal} toggleModal={this.toggleStatusHistoryModal}>
+                    <UserStatusHistory userId={user.id} />
                 </FormModal>
             </> 
         )

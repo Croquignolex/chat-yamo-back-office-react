@@ -45,6 +45,7 @@ export const USERS = {
     BLOCK_STATUS: '/authentication/user/{userId}/userblockedstate',
     CHECK_TOWN_EVENT: '/authentication/user/{userId}/checktownevent', 
     SOUSCRIPTIONS: '/authentication/user/{userId}/subscriptionhistory', 
+    STATUS_HISTORY: '/authentication/backoffice/user/{userId}/statusreason',
 };
 
 export const MEDIA = {
