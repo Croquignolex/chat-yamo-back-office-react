@@ -9,7 +9,8 @@ import Error500 from "../views/Error500";
 import MetaData from "../models/MetaData";
 import DisplayImage from "./DisplayImage";
 import UserTownEvents from "../views/users/UserTownEvents";
-import UserSouscriptions from "../views/users/UserSouscriptions"; 
+import UserStatusHistory from "../views/users/UserStatusHistory";
+import UserSouscriptions from "../views/users/UserSouscriptions";
 import {getUserMetaData} from "../redux/actions/IndependentActions";
 
 import "../assets/scss/pages/users.scss";
@@ -28,6 +29,7 @@ class UserProfile extends React.Component {
       // Modals
       townEventModal: {show: false, title: ""},
       souscriptionModal: {show: false, title: ""},
+      statusHistoryModal: {show: false, title: ""}
     }
   }
 
@@ -63,13 +65,22 @@ class UserProfile extends React.Component {
       const {townEventModal, activeUser} = this.state;
       if(townEventModal.show) this.setState({townEventModal: {...townEventModal, show: false}});
       else {
-        const title = activeUser.isDeleted ? "Deleted user" : `${activeUser.name} town-event check`;
+        const title = activeUser.isDeleted ? "Deleted user" : `${activeUser.name} town event check`;
         this.setState({townEventModal: {show: true, title}});
       }
   };
 
+  toggleStatusHistoryModal = () => {
+    const {statusHistoryModal, activeUser} = this.state;
+    if(statusHistoryModal.show) this.setState({statusHistoryModal: {...statusHistoryModal, show: false}});
+    else {
+      const title = activeUser.isDeleted ? "Deleted user" : `${activeUser.name} status history`;
+      this.setState({statusHistoryModal: {show: true, title}});
+    }
+  };
+
   render() {
-    const { activeUser, metaData, souscriptionModal, townEventModal } = this.state;
+    const { activeUser, metaData, souscriptionModal, townEventModal, statusHistoryModal } = this.state;
     const { receiverProfile, handleReceiverSidebar } = this.props;
 
     if (!activeUser) return null;
@@ -209,9 +220,12 @@ class UserProfile extends React.Component {
                 )} 
               </div>
               <hr />
-              <div className="text-center">  
-                  <Button color="primary" onClick={this.toggleTownEventModal}>
-                    Town-event
+              <div className="text-center">
+                <Button color="primary" onClick={this.toggleStatusHistoryModal}>
+                  Status history
+                </Button>
+                <Button color="primary" onClick={this.toggleTownEventModal} className="ml-50">
+                    Town event
                   </Button> 
               </div>
             </div>
@@ -222,6 +236,9 @@ class UserProfile extends React.Component {
         </FormModal>
         <FormModal small modal={townEventModal} toggleModal={this.toggleTownEventModal}>
           <UserTownEvents userId={activeUser.id} />
+        </FormModal>
+        <FormModal small modal={statusHistoryModal} toggleModal={this.toggleStatusHistoryModal}>
+          <UserStatusHistory userId={activeUser.id} />
         </FormModal>
       </>
     )
