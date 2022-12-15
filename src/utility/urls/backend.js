@@ -33,7 +33,8 @@ export const VALIDATIONS = {
 
 export const NOTATIONS = {
     NOTATE_ONE: '/media/users/{userId}/medias/{mediaId}/score/{score}',
-    GET_ALL: '/media/users/toBeNotedMedia',
+    GET_ALL: '/media/alltonote',
+    // GET_ALL: '/media/users/toBeNotedMedia',
 };
 
 export const USERS = {
