@@ -5,7 +5,7 @@ import { Image, CheckCircle, Menu} from "react-feather";
 import {Carousel, CarouselItem, CarouselControl, CarouselIndicators, Spinner} from "reactstrap";
 
 import DisplayImage from "../../components/DisplayImage";
-import {deleteUserImage, reportUser, blockUser, notateUserImage} from "../../redux/actions/IndependentActions";
+import {blockUser, notateUserImage} from "../../redux/actions/IndependentActions";
 
 class ImageLog extends React.Component {
     // props { activeChatID, activeUser, mainSidebar, handleReceiverSidebar }
@@ -92,19 +92,6 @@ class ImageLog extends React.Component {
             .catch((error) => console.log("error ", error))
             .finally(() => this.setState({ loading: false }));
     };
-  
-    deleteImage = () => {
-        const image = this.state.images[this.state.activeIndex];
-        this.setState({ loading: true });
-        deleteUserImage(image.userId, image.mediaId)
-            .then(() => {
-                // Remove image from array
-                this.removeImageFormState(image)
-                NotificationManager.success("Image has been successfully deleted", null, 1000);
-            })
-            .catch((error) => console.log("error ", error))
-            .finally(() => this.setState({ loading: false }));
-    };
 
     removeImageFormState = (image) => {
         this.setState((prevState) => {
@@ -112,17 +99,6 @@ class ImageLog extends React.Component {
             return {images: tempImages};
         });
         this.props.handleRemoveImage(image);
-    };
-
-    reportProfile = (userId) => {
-        this.setState({reportLoading: true});
-        reportUser(userId)
-            .then(() => {
-                // No action
-                NotificationManager.success("User profile has been successfully reported", null, 1000);
-            })
-            .catch((error) => console.log("error ", error))
-            .finally(() => this.setState({ reportLoading: false }));
     };
 
     blockProfile = (userId) => {

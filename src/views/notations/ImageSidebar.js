@@ -1,13 +1,20 @@
 import React from "react";
 import dayjs from "dayjs";
-import * as Icon from "react-feather"
+import {connect} from "react-redux";
+import * as Icon from "react-feather";
 import PerfectScrollbar from "react-perfect-scrollbar";
 import {Button, Card, Spinner, Input, Form} from "reactstrap";
 
 import Error500 from "../Error500";
 import User from "../../models/User";
 import ImageSidebarItem from "./ImageSidebarItem";
-import {getUserImagesForNotation, getUserProfile, getUserProfileImage, getUserBlockStatus} from "../../redux/actions/IndependentActions";
+import {
+    getUserProfile,
+    getUserBlockStatus,
+    getUserProfileImage,
+    getUserImagesForNotation,
+    getImagesForNotationCount
+} from "../../redux/actions/IndependentActions";
 
 class ImageSidebar extends React.Component {
     // props { activeChatId, verified, mainSidebar, handleActiveChat, handleUserSidebar, updateImagesToVerify, handleResetImage }
@@ -31,12 +38,18 @@ class ImageSidebar extends React.Component {
     loadData = () => {
         // Init request
         this.setState({ loading: true, error: null, users: [], all_images: [], search: "" });
+        let date = this.state.date.format('YYYY-MM-DD');
         this.props.handleActiveChat(null, null);
         this.props.handleResetImage();
 
-        getUserImagesForNotation(this.state.date.format('YYYY-MM-DD'))
+        getImagesForNotationCount(this.props.backOfficeUserId, date)
             .then(res => {
-                this.setState({all_images: res, toVerify: res.length});
+                this.setState({toVerify: res.count || 0});
+            });
+
+        getUserImagesForNotation(date)
+            .then(res => {
+                this.setState({all_images: res});
 
                 let users = res.reduce(function(results, org) {
                     results[org.userId] = [...results[org.userId] || [], org];
@@ -220,4 +233,10 @@ class ImageSidebar extends React.Component {
     }
 }
 
-export default ImageSidebar;
+const mapStateToProps = state => {
+    return {
+        backOfficeUserId: state.authUser?.data?.entityId,
+    }
+};
+
+export default connect(mapStateToProps)(ImageSidebar)

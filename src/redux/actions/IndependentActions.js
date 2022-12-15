@@ -58,17 +58,16 @@ export const getUserImages = async (date) => {
 };
 
 export const getUserImagesForNotation = async (date) => {
-    const config = {headers: {
-            "CHAT-ET-YAMO-MEDIA-SERVICE-ALL-USER-IMAGES": "true",
-            "CHAT-ET-YAMO-MEDIA-SERVICE-PRE-SIGNED-URL": "true"
-        }
-    };
-    const url = joinBaseUrlWithRequestParams(NOTATIONS.GET_ALL, [{param: 'date', value: date}]);
-    return makeRequest('get', url, null, config);
+    return makeRequest('get', NOTATIONS.GET_IMAGES + '?date=' + date);
 };
 
 export const getOldUserImages = async () => {
     return makeRequest('get', VALIDATIONS.OLD_GET_ALL);
+};
+
+export const getImagesForNotationCount = async (backOfficeUserId, date) => {
+    const url = joinBaseUrlWithParams(NOTATIONS.GET_IMAGES_COUNT,[{param: 'backOfficeUserId', value: backOfficeUserId}]);
+    return makeRequest('get', url + '?date=' + date) ;
 };
 
 export const getUserBlockStatus = async (userId) => {

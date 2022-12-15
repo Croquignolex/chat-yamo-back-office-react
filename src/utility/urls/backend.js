@@ -23,17 +23,19 @@ export const FEEDBACKS = {
 };
 
 export const VALIDATIONS = {
-    VALIDATE_ONE: '/media/users/{userId}/medias/{mediaId}/paths/{mediaPath}/verify/{verified}',
-    DELETE_ONE: '/media/users/{userId}/medias/{mediaId}',
     GET_ALL: '/media/users/toBeVerifiedMedia',
+    DELETE_ONE: '/media/users/{userId}/medias/{mediaId}',
+    VALIDATE_ONE: '/media/users/{userId}/medias/{mediaId}/paths/{mediaPath}/verify/{verified}',
 
     // Old
     OLD_GET_ALL: '/media/users/allToBeNotedMedias',
 };
 
 export const NOTATIONS = {
+    GET_IMAGES: '/media/alltonote',
+    GET_IMAGES_COUNT: '/media/users/{backOfficeUserId}/allnoted',
     NOTATE_ONE: '/media/users/{userId}/medias/{mediaId}/score/{score}',
-    GET_ALL: '/media/alltonote',
+
     // GET_ALL: '/media/users/toBeNotedMedia',
 };
 
@@ -51,13 +53,15 @@ export const USERS = {
 
 export const MEDIA = {
     CHATROOMS: {
+        CREATE: '/media/chatrooms/{chatroomId}/medias',
+        GET_ONE: '/media/chatrooms/{chatroomId}/medias/{mediaId}/info'
+
         // GET_ONE: '/media/chatrooms/{chatroomId}/medias/{mediaId}?original=true',
-        GET_ONE: '/media/chatrooms/{chatroomId}/medias/{mediaId}/info',
-        CREATE: '/media/chatrooms/{chatroomId}/medias'
     },
     USERS: {
-        // GET_ONE: '/media/users/{userId}/medias/main?original=true'
         GET_ONE: '/media/users/{userId}/medias/main/info'
+
+        // GET_ONE: '/media/users/{userId}/medias/main?original=true'
     }
 };
 

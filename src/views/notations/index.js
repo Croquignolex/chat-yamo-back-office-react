@@ -62,6 +62,7 @@ class ImageVerification extends React.Component {
             tempImages.push(image);
             // Also decrement image to verify
             const tempVerified = prevState.verified + 1;
+            //TODO: request for noted images
             return {deletedImages: tempImages, verified: tempVerified};
         });
     };
