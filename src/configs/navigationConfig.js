@@ -16,11 +16,19 @@ const navigationConfig = [
     type: "item",
     title: "Users",
     navLink: APP.USERS,
+    icon: <Icon.User size={20} />,
+    permissions: ['admin', 'writer', 'reader']
+  },
+  {
+    id: "users-images",
+    type: "item",
+    title: "Users images",
+    navLink: APP.USERS_IMAGES,
     icon: <Icon.UserCheck size={20} />,
     permissions: ['admin', 'writer', 'reader']
   },
   {
-    id: "tonw-events",
+    id: "town-events",
     type: "item",
     title: "Town-events",
     navLink: APP.TOWN_EVENTS,

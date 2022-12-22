@@ -5,8 +5,6 @@ import React, { PureComponent } from "react";
 import Navbar from "./components/navbar/Navbar";
 import Footer from "./components/footer/Footer";
 import Sidebar from "./components/menu/vertical-menu/Sidebar";
-import {BACKOFFICE_USERS_ROLES} from "../configs/AppConfig";
-
 class VerticalLayout extends PureComponent {
   state = {
     width: window.innerWidth,
@@ -23,7 +21,7 @@ class VerticalLayout extends PureComponent {
   mounted = false;
   updateWidth = () => {
     if (this.mounted) {
-      this.setState(prevState => ({
+      this.setState(() => ({
         width: window.innerWidth
       }));
     }
@@ -81,7 +79,7 @@ class VerticalLayout extends PureComponent {
     }
   };
 
-  toggleSidebarMenu = val => {
+  toggleSidebarMenu = () => {
     this.setState({
       sidebarState: !this.state.sidebarState,
       collapsedContent: !this.state.collapsedContent

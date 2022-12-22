@@ -56,7 +56,7 @@ class Users extends React.Component {
                     breadCrumbActive="Search a user"
                 />
                 <Row>
-                    <Col lg={8} sm={12}>
+                    <Col lg={10} sm={12}>
                         <Form className="form-inline mb-2" onSubmit={this.handleSearchConversation}>
                             <Input
                                 type="text"
@@ -71,7 +71,13 @@ class Users extends React.Component {
                         </Form>
                         {(this.state.loading) && <Spinner color="primary" />}
                         {(this.state.error !== null) && <Error500 refresh={false} />}
-                        {(this.state.user !== null) && <UserDetails user={this.state.user} />}
+                        {(this.state.user !== null) && (
+                            <Row>
+                                <Col lg={8} sm={12}>
+                                    <UserDetails user={this.state.user} />
+                                </Col>
+                            </Row>
+                        )}
                     </Col>
                 </Row>
             </>

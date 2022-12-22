@@ -8,8 +8,9 @@ export const APP = {
     USERS: '/users',
     FEEDBACKS: '/feedbacks',
     NOTATIONS: '/notations',
-    TOWN_EVENTS: '/town-events', 
-    VERIFICATIONS: '/verifications',  
+    TOWN_EVENTS: '/town-events',
+    USERS_IMAGES: '/users-images',
+    VERIFICATIONS: '/verifications',
     BACKOFFICE_USERS: '/backoffice-users',
     OLD_VERIFICATIONS: '/old-verifications'
 };

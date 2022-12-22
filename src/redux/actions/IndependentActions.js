@@ -103,6 +103,15 @@ export const getMessageImage = async (userId, mediaId) => {
     return makeRequest('get', url, null, config);
 };
 
+export const searchUserImages = async (userId) => {
+    const config = {headers: {
+            "CHAT-ET-YAMO-MEDIA-SERVICE-ALL-USER-IMAGES": "true"
+        }
+    };
+    const url = joinBaseUrlWithParams(MEDIA.USERS.IMAGES, [{param: 'userId', value: userId}]);
+    return makeRequest('get', url, null, config);
+};
+
 export const checkTownEvent = async (userId, date) => { 
     const url = joinBaseUrlWithParams(USERS.CHECK_TOWN_EVENT,[{param: 'userId', value: userId}]);
     return makeRequest('post', url + '?startFrom=' + date) ;

@@ -98,19 +98,6 @@ class ImageLog extends React.Component {
             .finally(() => this.setState({ loading: false }));
     };
 
-    /*invalidateImage = () => {
-        const image = this.state.images[this.state.activeIndex];
-        this.setState({ loading: true });
-        verifyUserImage(image.userId, image.mediaId, image.mediaPath, 'false')
-            .then(() => {
-                // Remove image from array
-                this.removeImageFormState(image)
-                NotificationManager.success("Image has been successfully unvalidated", null);
-            })
-            .catch((error) => console.log("error ", error))
-            .finally(() => this.setState({ loading: false }));
-    };*/
-
     deleteImage = () => {
         const image = this.state.images[this.state.activeIndex];
         this.setState({ loading: true });

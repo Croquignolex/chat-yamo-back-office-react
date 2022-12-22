@@ -60,7 +60,8 @@ export const MEDIA = {
         // GET_ONE: '/media/chatrooms/{chatroomId}/medias/{mediaId}?original=true',
     },
     USERS: {
-        GET_ONE: '/media/users/{userId}/medias/main/info'
+        GET_ONE: '/media/users/{userId}/medias/main/info',
+        IMAGES: '/media/users/{userId}/medias'
 
         // GET_ONE: '/media/users/{userId}/medias/main?original=true'
     }

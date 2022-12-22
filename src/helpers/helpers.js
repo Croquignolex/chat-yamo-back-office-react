@@ -2,7 +2,6 @@ import _ from 'lodash';
 import moment from 'moment';
 import api from "../utility/api";
 import {NotificationManager} from 'react-notifications';
-import {BACKOFFICE_USERS_ROLES} from "../configs/AppConfig";
 
 /**
  * Function to convert hex to rgba
