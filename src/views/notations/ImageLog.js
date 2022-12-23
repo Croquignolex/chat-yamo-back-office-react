@@ -5,7 +5,7 @@ import { Image, CheckCircle, Menu} from "react-feather";
 import {Carousel, CarouselItem, CarouselControl, CarouselIndicators, Spinner} from "reactstrap";
 
 import DisplayImage from "../../components/DisplayImage";
-import {blockUser, notateUserImage} from "../../redux/actions/IndependentActions";
+import {notateUserProfile} from "../../redux/actions/IndependentActions";
 
 class ImageLog extends React.Component {
     // props { activeChatID, activeUser, mainSidebar, handleReceiverSidebar }
@@ -18,14 +18,16 @@ class ImageLog extends React.Component {
             images: [],
             all_images: [],
             blockLoading: false,
-            reportLoading: false
+            reportLoading: false,
+            activeUser: null
         };
         this.next = this.next.bind(this);
         this.previous = this.previous.bind(this);
         this.goToIndex = this.goToIndex.bind(this);
         this.onExiting = this.onExiting.bind(this);
         this.onExited = this.onExited.bind(this);
-        this.notateImage = this.notateImage.bind(this);  
+        this.notateProfile = this.notateProfile.bind(this);
+        this.removeAllImageFormState = this.removeAllImageFormState.bind(this);
     }
 
     onExiting() {
@@ -69,7 +71,7 @@ class ImageLog extends React.Component {
         const {activeUser} = this.props;
 
         if(activeUser != null){
-            this.setState({images: activeUser.images, activeIndex: 0});
+            this.setState({images: activeUser.images, activeIndex: 0, activeUser});
         }
     };
  
@@ -79,8 +81,8 @@ class ImageLog extends React.Component {
             chatContainer.scrollTop = chatContainer.scrollHeight;
         }
     };
- 
-    notateImage = (score) => {
+
+    /*notateImage = (score) => {
         const image = this.state.images[this.state.activeIndex];
         this.setState({ loading: true });
         notateUserImage(image.userId, image.mediaId, score)
@@ -91,25 +93,32 @@ class ImageLog extends React.Component {
             })
             .catch((error) => console.log("error ", error))
             .finally(() => this.setState({ loading: false }));
+    };*/
+
+    notateProfile = (score) => {
+        const image = this.state.images[this.state.activeIndex];
+        this.setState({ loading: true });
+        notateUserProfile(image.userId, score)
+            .then(() => {
+                // Remove all image from array
+                this.removeAllImageFormState()
+                NotificationManager.success("Profile has been successfully noted", null, 1000);
+            })
+            .catch((error) => console.log("error ", error))
+            .finally(() => this.setState({ loading: false }));
     };
 
-    removeImageFormState = (image) => {
+    /*removeImageFormState = (image) => {
         this.setState((prevState) => {
             const tempImages = prevState.images.filter((i) => i.mediaId !== image.mediaId);
             return {images: tempImages};
         });
         this.props.handleRemoveImage(image);
-    };
+    };*/
 
-    blockProfile = (userId) => {
-        this.setState({blockLoading: true});
-        blockUser(userId)
-            .then(() => {
-                // No action
-                NotificationManager.success("User profile has been successfully blocked", null, 1000);
-            })
-            .catch((error) => console.log("error ", error))
-            .finally(() => this.setState({ blockLoading: false }));
+    removeAllImageFormState = () => {
+        this.props.handleRemoveAllImages(this.state.images);
+        this.setState({images: []});
     };
 
     render() {
@@ -119,12 +128,11 @@ class ImageLog extends React.Component {
             return (
                 <CarouselItem onExiting={this.onExiting} onExited={this.onExited} key={item.mediaId}>
                     <DisplayImage src={item.compressedUrl || item.originalUrl} withPercentage />
-                    {/*<img src={item.compressedUrl || item.originalUrl} alt={item.mediaId} style={{ width: "100%"}} />*/}
                 </CarouselItem>
             );
         });
 
-        if(!activeUser || (this.state.images.length) === 0) {
+        if(this.state.images.length === 0) {
             return (
                 <div className="content-right">
                     <div className="chat-app-window">
@@ -133,9 +141,9 @@ class ImageLog extends React.Component {
                                 <Image size={50} />
                             </span>
                             <h4 className="py-50 px-1 sidebar-toggle start-chat-text">
-                                {(this.state.images.length) === 0
-                                    ? "No image to verify for this user"
-                                    : "Select a user to start image verification"
+                                {activeUser !== null
+                                    ? "Profile already noted"
+                                    : "Select a user to start profile notation"
                                 }
                             </h4>
                         </div>
@@ -188,14 +196,15 @@ class ImageLog extends React.Component {
                                     <CarouselControl direction="next" directionText="Next" onClickHandler={this.next} />
                                 </Carousel>
                             </div>
-                            <div className="col-md-12 mt-3 mb-5">
+                            <div className="col-md-12 mb-5 mt-3">
+                                <h3>Note the profile (all images)</h3>
                                 {this.state.loading ? <Spinner color="primary"/> : (
                                     <>
-                                        <button className="btn btn-success mr-1 score-size-1" onClick={() => this.notateImage(1)}>1 <CheckCircle size={20} /></button>
-                                        <button className="btn btn-success mr-1 score-size-2" onClick={() => this.notateImage(2)}>2 <CheckCircle size={20} /></button>
-                                        <button className="btn btn-success mr-1 score-size-3" onClick={() => this.notateImage(3)}>3 <CheckCircle size={20} /></button>
-                                        <button className="btn btn-success mr-1 score-size-4" onClick={() => this.notateImage(4)}>4 <CheckCircle size={20} /></button>
-                                        <button className="btn btn-success mr-1 score-size-5" onClick={() => this.notateImage(5)}>5 <CheckCircle size={20} /></button>
+                                        <button className="btn btn-primary mr-1 score-size-1" onClick={() => this.notateProfile(1)}>1 <CheckCircle size={20} /></button>
+                                        <button className="btn btn-primary mr-1 score-size-2" onClick={() => this.notateProfile(2)}>2 <CheckCircle size={20} /></button>
+                                        <button className="btn btn-primary mr-1 score-size-3" onClick={() => this.notateProfile(3)}>3 <CheckCircle size={20} /></button>
+                                        <button className="btn btn-primary mr-1 score-size-4" onClick={() => this.notateProfile(4)}>4 <CheckCircle size={20} /></button>
+                                        <button className="btn btn-primary mr-1 score-size-5" onClick={() => this.notateProfile(5)}>5 <CheckCircle size={20} /></button>
                                     </>
                                 )}
                             </div>

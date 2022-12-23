@@ -73,6 +73,18 @@ class ImageVerification extends React.Component {
         });
     };
 
+    handleRemoveAllImages = (images) => {
+        getImagesForNotedCount(this.props.backOfficeUserId, this.state.date.format('YYYY-MM-DD'))
+            .then(res => {
+                this.setState({verified: res.count || 0});
+            });
+
+        this.setState((prevState) => {
+            const tempImages = [...prevState.deletedImages, ...images];
+            return {deletedImages: tempImages};
+        });
+    };
+
     handleResetImage = () => {
         getImagesForNotedCount(this.props.backOfficeUserId, this.state.date.format('YYYY-MM-DD'))
             .then(res => {
@@ -141,6 +153,7 @@ class ImageVerification extends React.Component {
             mainSidebar={this.onSetSidebarOpen}
             activeChatID={this.state.activeChatID}
             handleRemoveImage={this.handleRemoveImage}
+            handleRemoveAllImages={this.handleRemoveAllImages}
             handleReceiverSidebar={this.handleReceiverSidebar}
         />
         <UserProfile

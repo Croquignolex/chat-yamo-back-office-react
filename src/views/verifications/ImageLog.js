@@ -18,7 +18,8 @@ class ImageLog extends React.Component {
             images: [],
             all_images: [],
             blockLoading: false,
-            reportLoading: false
+            reportLoading: false,
+            activeUser: null
         };
         this.next = this.next.bind(this);
         this.previous = this.previous.bind(this);
@@ -70,7 +71,7 @@ class ImageLog extends React.Component {
         const {activeUser} = this.props;
 
         if(activeUser != null){
-            this.setState({images: activeUser.images, activeIndex: 0});
+            this.setState({images: activeUser.images, activeIndex: 0, activeUser});
         }
     };
  
@@ -148,12 +149,11 @@ class ImageLog extends React.Component {
             return (
                 <CarouselItem onExiting={this.onExiting} onExited={this.onExited} key={item.mediaId}>
                     <DisplayImage src={item.compressedUrl || item.originalUrl} withPercentage />
-                    {/*<img src={item.compressedUrl || item.originalUrl} alt={item.mediaId} style={{ width: "100%"}} />*/}
                 </CarouselItem>
             );
         });
 
-        if(!activeUser || (this.state.images.length) === 0) {
+        if(this.state.images.length === 0) {
             return (
                 <div className="content-right">
                     <div className="chat-app-window">
@@ -162,9 +162,9 @@ class ImageLog extends React.Component {
                                 <Image size={50} />
                             </span>
                             <h4 className="py-50 px-1 sidebar-toggle start-chat-text">
-                                {(this.state.images.length) === 0
-                                    ? "No image to verify for this user"
-                                    : "Select a user to start image verification"
+                                {activeUser !== null
+                                    ? "All images already verified"
+                                    : "Select a user to start images verification"
                                 }
                             </h4>
                         </div>

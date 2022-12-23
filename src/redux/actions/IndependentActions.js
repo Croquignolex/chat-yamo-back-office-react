@@ -167,6 +167,11 @@ export const addBackofficeUser = async (username, lastName, firstName, password,
     return makeRequest('post', url, {username, lastName, firstName, password, roles});
 };
 
+export const notateUserProfile = async (userId, score) => {
+    const url = joinBaseUrlWithParams(NOTATIONS.PROFILE, [{param: 'userId', value: userId}]);
+    return makeRequest('post', url + '?score=' + score);
+};
+
 // ===================================== END POST
 
 // ===================================== START PUT

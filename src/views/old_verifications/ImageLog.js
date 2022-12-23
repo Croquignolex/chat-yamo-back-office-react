@@ -17,6 +17,7 @@ class ImageLog extends React.Component {
             activeIndex: 0,
             images: [],
             all_images: [],
+            activeUser: null
         };
         this.next = this.next.bind(this);
         this.previous = this.previous.bind(this);
@@ -67,7 +68,7 @@ class ImageLog extends React.Component {
         const {activeUser} = this.props;
 
         if(activeUser != null){
-            this.setState({images: activeUser.images, activeIndex: 0});
+            this.setState({images: activeUser.images, activeIndex: 0, activeUser});
         }
     };
  
@@ -110,7 +111,7 @@ class ImageLog extends React.Component {
             );
         });
 
-        if(!activeUser || (this.state.images.length) === 0) {
+        if(this.state.images.length === 0) {
             return (
                 <div className="content-right">
                     <div className="chat-app-window">
@@ -119,9 +120,9 @@ class ImageLog extends React.Component {
                                 <Image size={50} />
                             </span>
                             <h4 className="py-50 px-1 sidebar-toggle start-chat-text">
-                                {(this.state.images.length) === 0
-                                    ? "No image to verify for this user"
-                                    : "Select a user to start image verification"
+                                {activeUser !== null
+                                    ? "No image to note for this user"
+                                    : "Select a user to start images notation"
                                 }
                             </h4>
                         </div>
