@@ -10,7 +10,6 @@ import User from "../../models/User";
 import ImageSidebarItem from "./ImageSidebarItem";
 import {
     getUserProfile,
-    getUserBlockStatus,
     getUserProfileImage,
     getUserImagesForNotation,
     getImagesForNotationCount
@@ -84,9 +83,7 @@ class ImageSidebar extends React.Component {
                     userObject.images = this.state.all_images.filter(item => item.userId?.toString() === userId?.toString());
                     // Make user as an object
                     const user = new User(userObject);
-                    user.setId = userId; 
-                    // User block status
-                    user.setStatus = await getUserBlockStatus(userId);
+                    user.setId = userId;
                     try {
                         if(!user.isDeleted) {
                             // User profile image

@@ -99,7 +99,7 @@ class UserProfile extends React.Component {
               <h4 className="chat-user-name"> 
                 {activeUser.isDeleted ? "Deleted user" : activeUser.name} 
                 <br/>
-                {activeUser.status
+                {!activeUser.isBlocked
                     ? <Icon.Unlock size={20} className="text-success" />
                     : <Icon.Lock size={20} className="text-danger" />
                 } 

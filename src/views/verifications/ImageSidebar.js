@@ -7,8 +7,7 @@ import {Button, Card, Spinner, Input, Form} from "reactstrap";
 import Error500 from "../Error500";
 import User from "../../models/User";
 import ImageSidebarItem from "./ImageSidebarItem";
-// import {twoDigitDisplay} from "../../helpers/helpers";
-import {getUserImages, getUserProfile, getUserProfileImage, getUserBlockStatus} from "../../redux/actions/IndependentActions";
+import {getUserImages, getUserProfile, getUserProfileImage} from "../../redux/actions/IndependentActions";
 
 class ImageSidebar extends React.Component {
     // props { activeChatId, verified, mainSidebar, handleActiveChat, handleUserSidebar, updateImagesToVerify, handleResetImage }
@@ -74,9 +73,7 @@ class ImageSidebar extends React.Component {
                     userObject.images = this.state.all_images.filter(item => item.userId?.toString() === userId?.toString());
                     // Make user as an object
                     const user = new User(userObject);
-                    user.setId = userId; 
-                    // User block status
-                    user.setStatus = await getUserBlockStatus(userId);
+                    user.setId = userId;
                     try {
                         if(!user.isDeleted) {
                             // User profile image

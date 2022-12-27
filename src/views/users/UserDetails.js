@@ -84,7 +84,7 @@ class UserDetails extends React.Component {
                             <div className="avatar">
                                 <DisplayImage src={user.imageSrc} height="70" width="70" />
                             </div>
-                            {user.status
+                            {!user.isBlocked
                                 ? <Icon.Unlock size={20} className="text-success" />
                                 : <Icon.Lock size={20} className="text-danger" />
                             }

@@ -2,17 +2,12 @@ import React from "react";
 import * as Icon from "react-feather";
 
 import Error500 from "../Error500";
+import User from "../../models/User";
 import UserDetails from "../users/UserDetails";
 import UserImagesDetails from "./UserImagesDetails";
 import {Col, Row, Form, Input, Button, Spinner} from "reactstrap";
-import {
-    getUserBlockStatus,
-    getUserProfile,
-    getUserProfileImage,
-    searchUserImages
-} from "../../redux/actions/IndependentActions";
 import Breadcrumbs from "../../components/@vuexy/breadCrumbs/BreadCrumb";
-import User from "../../models/User";
+import {getUserProfile, getUserProfileImage, searchUserImages} from "../../redux/actions/IndependentActions";
 
 class UsersImages extends React.Component {
     constructor(props) {
@@ -51,8 +46,6 @@ class UsersImages extends React.Component {
                 // Make user as an object
                 const user = new User(data);
                 user.setId = search;
-                // User block status
-                user.setStatus = await getUserBlockStatus(search);
                 try {
                     if(!user.isDeleted) {
                         // User profile image

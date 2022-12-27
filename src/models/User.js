@@ -16,10 +16,6 @@ export default class User {
         this.avatar = image?.compressedPreSignedUrl || image?.originalPreSignedUrl;
     }
 
-    set setStatus(status) { 
-        this.status = !status?.blocked;
-    }
-
     set setLastMessageTime(time) {
         this.lastMessageTime = time;
     }
@@ -37,7 +33,11 @@ export default class User {
     }
 
     get isDeleted() {
-        return this.name === "chat_yamo_deleted_account";
+        return this.status?.deleted;
+    }
+
+    get isBlocked() {
+        return this.status?.blocked;
     }
 
     get isNotFound() {

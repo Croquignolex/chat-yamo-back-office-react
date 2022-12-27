@@ -70,15 +70,6 @@ export const getImagesForNotedCount = async (backOfficeUserId, date) => {
     return makeRequest('get', url + '?date=' + date) ;
 };
 
-export const getImagesForNotationCount = async (backOfficeUserId) => {
-    const url = joinBaseUrlWithParams(NOTATIONS.GET_IMAGES_TO_NOTATE_COUNT,[{param: 'backOfficeUserId', value: backOfficeUserId}]);
-    return makeRequest('get', url) ;
-};
-
-export const getUserBlockStatus = async (userId) => {
-    return makeRequest('get', joinBaseUrlWithParams(USERS.BLOCK_STATUS, [{param: 'userId', value: userId}]));
-};
-
 export const getUserProfileImage = async (userId) => {
     const config = {headers: {
             "CHAT-ET-YAMO-MEDIA-SERVICE-ALL-USER-IMAGES": "true"
@@ -168,8 +159,19 @@ export const addBackofficeUser = async (username, lastName, firstName, password,
 };
 
 export const notateUserProfile = async (userId, score) => {
-    const url = joinBaseUrlWithParams(NOTATIONS.PROFILE, [{param: 'userId', value: userId}]);
+    const url = joinBaseUrlWithParams(
+        NOTATIONS.PROFILE,
+        [{param: 'userId', value: userId}]
+    );
     return makeRequest('post', url + '?score=' + score);
+};
+
+export const getImagesForNotationCount = async (backOfficeUserId) => {
+    const url = joinBaseUrlWithParams(
+        NOTATIONS.GET_IMAGES_TO_NOTATE_COUNT,
+        [{param: 'backOfficeUserId', value: backOfficeUserId}]
+    );
+    return makeRequest('post', url) ;
 };
 
 // ===================================== END POST
