@@ -40,9 +40,9 @@ class ImageSidebar extends React.Component {
         this.props.handleActiveChat(null, null);
         this.props.handleResetImage();
 
-        getImagesForNotationCount(this.props.backOfficeUserId)
+        getImagesForNotationCount(this.state.date.format('YYYY-MM-DD'))
             .then(res => {
-                this.setState({toVerify: res.totalImagesToProcess || 0});
+                this.setState({toVerify: res.count || 0});
             });
 
         getUserImagesForNotation(this.state.date.format('YYYY-MM-DD'))

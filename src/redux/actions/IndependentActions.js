@@ -66,8 +66,15 @@ export const getOldUserImages = async () => {
 };
 
 export const getImagesForNotedCount = async (backOfficeUserId, date) => {
-    const url = joinBaseUrlWithParams(NOTATIONS.GET_NOTED_IMAGES_COUNT,[{param: 'backOfficeUserId', value: backOfficeUserId}]);
+    const url = joinBaseUrlWithParams(
+        NOTATIONS.GET_NOTED_IMAGES_COUNT,
+        [{param: 'backOfficeUserId', value: backOfficeUserId}]
+    );
     return makeRequest('get', url + '?date=' + date) ;
+};
+
+export const getImagesForNotationCount = async (date) => {
+    return makeRequest('get', NOTATIONS.GET_IMAGES_TO_NOTATE_COUNT + '?date=' + date) ;
 };
 
 export const getUserProfileImage = async (userId) => {
@@ -142,6 +149,14 @@ export const sendMessage = async (userId, feedbackText, backofficeUserName, user
     return makeRequest('post', url, data);
 };
 
+export const sendNotedImages = async (backOfficeUserId, date, totalImagesToProcess) => {
+    const url = joinBaseUrlWithParams(
+        NOTATIONS.UPDATE_NOTED_IMAGES,
+        [{param: 'backOfficeUserId', value: backOfficeUserId}]
+    );
+    return makeRequest('post', url, {date, totalImagesToProcess});
+};
+
 export const changePassword = async (oldPassword, newPassword, backOfficeUserId) => {
     const url = joinBaseUrlWithParams(
         AUTH.PASSWORD,
@@ -164,14 +179,6 @@ export const notateUserProfile = async (userId, score) => {
         [{param: 'userId', value: userId}]
     );
     return makeRequest('post', url + '?score=' + score);
-};
-
-export const getImagesForNotationCount = async (backOfficeUserId) => {
-    const url = joinBaseUrlWithParams(
-        NOTATIONS.GET_IMAGES_TO_NOTATE_COUNT,
-        [{param: 'backOfficeUserId', value: backOfficeUserId}]
-    );
-    return makeRequest('post', url) ;
 };
 
 // ===================================== END POST

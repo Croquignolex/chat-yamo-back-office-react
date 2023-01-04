@@ -8,7 +8,7 @@ import ImageLog from "./ImageLog";
 import ImageSidebar from "./ImageSidebar";
 import UserProfile from "../../components/UserProfile";
 import {ContextLayout} from "../../utility/context/Layout";
-import {getImagesForNotedCount} from "../../redux/actions/IndependentActions";
+import {getImagesForNotedCount, sendNotedImages} from "../../redux/actions/IndependentActions";
 
 import "../../assets/scss/pages/app-chat.scss";
 
@@ -74,9 +74,15 @@ class ImageVerification extends React.Component {
     };
 
     handleRemoveAllImages = (images) => {
-        getImagesForNotedCount(this.props.backOfficeUserId, this.state.date.format('YYYY-MM-DD'))
-            .then(res => {
-                this.setState({verified: res.count || 0});
+        const backOfficeUserId = this.props.backOfficeUserId;
+        const date = this.state.date.format('YYYY-MM-DD');
+
+        sendNotedImages(backOfficeUserId, date, images?.length || 0)
+            .then(() => {
+                getImagesForNotedCount(backOfficeUserId, date)
+                    .then(res => {
+                        this.setState({verified: res.count || 0});
+                    });
             });
 
         this.setState((prevState) => {

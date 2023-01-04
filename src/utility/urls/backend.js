@@ -32,13 +32,12 @@ export const VALIDATIONS = {
 };
 
 export const NOTATIONS = {
-    GET_IMAGES: '/media/alltonote',
+    GET_IMAGES: '/media/users/toBeNotedMedia',
     PROFILE: '/media/users/{userId}/medias/note',
     NOTATE_ONE: '/media/users/{userId}/medias/{mediaId}/score/{score}',
     GET_NOTED_IMAGES_COUNT: '/media/users/{backOfficeUserId}/allnoted',
-    GET_IMAGES_TO_NOTATE_COUNT: '/media/users/{backOfficeUserId}/noted',
-
-    // GET_ALL: '/media/users/toBeNotedMedia',
+    GET_IMAGES_TO_NOTATE_COUNT: '/media/alltonote',
+    UPDATE_NOTED_IMAGES: '/media/users/{backOfficeUserId}/noted',
 };
 
 export const USERS = {
