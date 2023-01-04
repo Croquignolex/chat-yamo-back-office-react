@@ -49,7 +49,7 @@ const navigationConfig = [
     title: "Verifications",
     navLink: APP.VERIFICATIONS,
     icon: <Icon.Image size={20} />,
-    permissions: ['admin', 'imageverifier']
+    permissions: ['imageverifier']
   },
   {
     type: "item",
@@ -57,7 +57,7 @@ const navigationConfig = [
     title: "Notations",
     navLink: APP.NOTATIONS,
     icon: <Icon.Star size={20} />,
-    permissions: ['admin', 'imagechecker']
+    permissions: ['imagechecker']
   }, 
   {
     type: "item",
