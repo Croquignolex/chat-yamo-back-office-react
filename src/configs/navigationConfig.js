@@ -17,7 +17,7 @@ const navigationConfig = [
     title: "Users",
     navLink: APP.USERS,
     icon: <Icon.User size={20} />,
-    permissions: ['admin', 'writer', 'reader']
+    permissions: ['admin', 'writer', 'reader', 'imageverifier', 'imagechecker']
   },
   {
     id: "users-images",
@@ -25,7 +25,7 @@ const navigationConfig = [
     title: "Users images",
     navLink: APP.USERS_IMAGES,
     icon: <Icon.UserCheck size={20} />,
-    permissions: ['admin', 'writer', 'reader']
+    permissions: ['admin', 'writer', 'reader', 'imageverifier', 'imagechecker']
   },
   {
     id: "town-events",
@@ -33,7 +33,7 @@ const navigationConfig = [
     title: "Town-events",
     navLink: APP.TOWN_EVENTS,
     icon: <Icon.Calendar size={20} />,
-    permissions: ['admin', 'writer', 'reader']
+    permissions: ['admin', 'writer', 'reader', 'imageverifier', 'imagechecker']
   },
   {
     type: "item",
@@ -41,7 +41,7 @@ const navigationConfig = [
     title: "Feedbacks",
     navLink: APP.FEEDBACKS,
     icon: <Icon.MessageSquare size={20} />,
-    permissions: ['admin', 'writer', 'reader']
+    permissions: ['admin', 'writer', 'reader', 'imageverifier', 'imagechecker']
   },
   {
     type: "item",

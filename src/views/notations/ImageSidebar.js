@@ -16,7 +16,7 @@ import {
 } from "../../redux/actions/IndependentActions";
 
 class ImageSidebar extends React.Component {
-    // props { activeChatId, verified, mainSidebar, handleActiveChat, handleUserSidebar, updateImagesToVerify, handleResetImage }
+    // props { activeChatId, verified, mainSidebar, handleActiveChat, handleUserSidebar, updateImagesToVerify, handleResetImage, handleImagesToNotate }
     constructor(props) {
         super(props);
         this.state = {
@@ -42,7 +42,9 @@ class ImageSidebar extends React.Component {
 
         getImagesForNotationCount(this.state.date.format('YYYY-MM-DD'))
             .then(res => {
-                this.setState({toVerify: res.count || 0});
+                const toVerify = res.count || 0;
+                this.setState({toVerify});
+                this.props.handleImagesToNotate(toVerify);
             });
 
         getUserImagesForNotation(this.state.date.format('YYYY-MM-DD'))

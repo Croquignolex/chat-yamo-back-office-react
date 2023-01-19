@@ -29,7 +29,8 @@ class ImageVerification extends React.Component {
             receiverProfile: false,
             sidebarDocked: mql.matches,
             date: dayjs().startOf('day'),
-            deletedImages: []
+            deletedImages: [],
+            toVerify: 0
         };
     }
 
@@ -77,7 +78,7 @@ class ImageVerification extends React.Component {
         const backOfficeUserId = this.props.backOfficeUserId;
         const date = this.state.date.format('YYYY-MM-DD');
 
-        sendNotedImages(backOfficeUserId, date, images?.length || 0)
+        sendNotedImages(backOfficeUserId, date, this.state.toVerify)
             .then(() => {
                 getImagesForNotedCount(backOfficeUserId, date)
                     .then(res => {
@@ -97,6 +98,10 @@ class ImageVerification extends React.Component {
                 this.setState({verified: res.count || 0, deletedImages: []});
             });
     };
+
+    handleImagesToNotate = (toVerify) => {
+        this.setState({toVerify});
+    }
 
     onSetSidebarOpen = open => {
         this.setState({ sidebarOpen: open })
@@ -142,6 +147,7 @@ class ImageVerification extends React.Component {
                     handleResetImage={this.handleResetImage}
                     handleActiveChat={this.handleActiveChat}
                     handleUserSidebar={this.handleUserSidebar}
+                    handleImagesToNotate={this.handleImagesToNotate}
                 />
               }
               docked={this.state.sidebarDocked}
