@@ -62,9 +62,15 @@ class ImageVerification extends React.Component {
     };
 
     handleRemoveImage = (image) => {
-        getImagesForNotedCount(this.props.backOfficeUserId, this.state.date.format('YYYY-MM-DD'))
-            .then(res => {
-                this.setState({verified: res.count || 0});
+        const backOfficeUserId = this.props.backOfficeUserId;
+        const date = this.state.date.format('YYYY-MM-DD');
+
+        sendNotedImages(backOfficeUserId, date, this.state.toVerify)
+            .then(() => {
+                getImagesForNotedCount(backOfficeUserId, date)
+                    .then(res => {
+                        this.setState({verified: res.count || 0});
+                    });
             });
 
         this.setState((prevState) => {
