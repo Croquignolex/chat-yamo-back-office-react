@@ -4,11 +4,12 @@ import {
     AUTH,
     USERS,
     MEDIA,
+    NOTATIONS,
     FEEDBACKS,
     VALIDATIONS,
     BACKOFFICE_USERS,
     joinBaseUrlWithParams,
-    joinBaseUrlWithRequestParams, NOTATIONS,
+    joinBaseUrlWithRequestParams,
 } from "../../utility/urls/backend";
 
 // ===================================== START GET
@@ -63,6 +64,10 @@ export const getUserImages = async (date) => {
 
 export const getUserImagesForNotation = async (date) => {
     return makeRequest('get', NOTATIONS.GET_IMAGES + '?date=' + date);
+};
+
+export const getUserProfileImagesForNotation = async () => {
+    return makeRequest('get', NOTATIONS.GET_PROFILE_IMAGES);
 };
 
 export const getOldUserImages = async () => {

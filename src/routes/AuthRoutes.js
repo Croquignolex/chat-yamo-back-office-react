@@ -19,6 +19,7 @@ const AuthRoutes = () => {
             <RouteWrapper path={APP.VERIFICATIONS} component={DynamicImports.Verifications} />
             <RouteWrapper path={APP.BACKOFFICE_USERS} component={DynamicImports.BackofficeUsers} />
             <RouteWrapper path={APP.OLD_VERIFICATIONS} component={DynamicImports.OldVerifications} />
+            <RouteWrapper path={APP.PROFILE_NOTATIONS} component={DynamicImports.ProfileNotations} />
             <Redirect to={{ pathname: APP.HOME }} />
         </Switch>
     );

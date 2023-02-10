@@ -34,10 +34,11 @@ export const VALIDATIONS = {
 export const NOTATIONS = {
     GET_IMAGES: '/media/users/toBeNotedMedia',
     PROFILE: '/media/users/{userId}/medias/note',
+    GET_IMAGES_TO_NOTATE_COUNT: '/media/alltonote',
+    GET_PROFILE_IMAGES: '/media/users/toBeNotedProfile',
+    UPDATE_NOTED_IMAGES: '/media/users/{backOfficeUserId}/noted',
     NOTATE_ONE: '/media/users/{userId}/medias/{mediaId}/score/{score}',
     GET_NOTED_IMAGES_COUNT: '/media/users/{backOfficeUserId}/allnoted',
-    GET_IMAGES_TO_NOTATE_COUNT: '/media/alltonote',
-    UPDATE_NOTED_IMAGES: '/media/users/{backOfficeUserId}/noted',
 };
 
 export const USERS = {

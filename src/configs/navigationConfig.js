@@ -58,7 +58,15 @@ const navigationConfig = [
     navLink: APP.NOTATIONS,
     icon: <Icon.Star size={20} />,
     permissions: ['admin', 'imagechecker']
-  }, 
+  },
+  {
+    type: "item",
+    id: "profile-notations",
+    title: "Profile notations",
+    navLink: APP.PROFILE_NOTATIONS,
+    icon: <Icon.Star size={20} />,
+    permissions: ['admin', 'imagechecker', 'imageverifier']
+  },
   {
     type: "item",
     id: "old-notations",

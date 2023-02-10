@@ -12,5 +12,6 @@ export const APP = {
     USERS_IMAGES: '/users-images',
     VERIFICATIONS: '/verifications',
     BACKOFFICE_USERS: '/backoffice-users',
+    PROFILE_NOTATIONS: '/profile-notations',
     OLD_VERIFICATIONS: '/old-verifications'
 };
