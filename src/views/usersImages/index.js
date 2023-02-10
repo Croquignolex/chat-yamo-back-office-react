@@ -7,7 +7,12 @@ import UserDetails from "../users/UserDetails";
 import UserImagesDetails from "./UserImagesDetails";
 import {Col, Row, Form, Input, Button, Spinner} from "reactstrap";
 import Breadcrumbs from "../../components/@vuexy/breadCrumbs/BreadCrumb";
-import {getUserProfile, getUserProfileImage, searchUserImages} from "../../redux/actions/IndependentActions";
+import {
+    getUserStatus,
+    getUserProfile,
+    searchUserImages,
+    getUserProfileImage
+} from "../../redux/actions/IndependentActions";
 
 class UsersImages extends React.Component {
     constructor(props) {
@@ -46,6 +51,7 @@ class UsersImages extends React.Component {
                 // Make user as an object
                 const user = new User(data);
                 user.setId = search;
+                user.setStatus = await getUserStatus(user.id);
                 try {
                     if(!user.isDeleted) {
                         // User profile image

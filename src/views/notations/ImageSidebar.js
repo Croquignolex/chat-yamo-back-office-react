@@ -9,6 +9,7 @@ import Error500 from "../Error500";
 import User from "../../models/User";
 import ImageSidebarItem from "./ImageSidebarItem";
 import {
+    getUserStatus,
     getUserProfile,
     getUserProfileImage,
     getUserImagesForNotation,
@@ -86,6 +87,7 @@ class ImageSidebar extends React.Component {
                     // Make user as an object
                     const user = new User(userObject);
                     user.setId = userId;
+                    user.setStatus = await getUserStatus(user.id);
                     try {
                         if(!user.isDeleted) {
                             // User profile image

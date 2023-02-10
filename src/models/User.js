@@ -7,13 +7,15 @@ export default class User {
         this.id = this.userId;
 
         if(this.isDeleted) this.avatar = require("../assets/img/user-remove.png");
-        else this.avatar = require("../assets/img/unknown-user.png");
+        else this.avatar = this.avatar ? this.avatar : require("../assets/img/unknown-user.png");
     }
 
     set setAvatar(image) {
-        // const base64ImageString = Buffer.from(image, 'binary').toString('base64');
-        // this.avatar = "data:image/jpg;base64," + base64ImageString;
         this.avatar = image?.compressedPreSignedUrl || image?.originalPreSignedUrl;
+    }
+
+    set setImages(images) {
+        this.images = images;
     }
 
     set setLastMessageTime(time) {
@@ -32,12 +34,17 @@ export default class User {
         return this.avatar;
     }
 
+    set setStatus(status) {
+        this.deleted = status?.deleted;
+        this.blocked = status?.blocked;
+    }
+
     get isDeleted() {
-        return this.status?.deleted;
+        return this.deleted;
     }
 
     get isBlocked() {
-        return this.status?.blocked;
+        return this.blocked;
     }
 
     get isNotFound() {
@@ -54,18 +61,5 @@ export default class User {
 
     get isSubscriptionAvailable() {
         return this.subscriptionEnd && dayjs().isAfter(dayjs(this.subscriptionEnd));
-    }
-
-    get getStatus() {
-        switch (this.status) {
-            case "do not disturb":
-                return "avatar-status-busy";
-            case "away":
-                return "avatar-status-away";
-            case "offline":
-                return "avatar-status-offline";
-            default:
-                return "avatar-status-online";
-        }
     }
 }

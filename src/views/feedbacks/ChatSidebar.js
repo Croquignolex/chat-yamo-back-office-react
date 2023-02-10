@@ -9,7 +9,7 @@ import User from "../../models/User";
 import Feedback from "../../models/Feedback";
 import ChatSidebarItem from "./ChatSidebarItem";
 import {twoDigitDisplay} from "../../helpers/helpers";
-import {getCases, getUserProfile, getUserProfileImage} from "../../redux/actions/IndependentActions";
+import {getCases, getUserProfile, getUserProfileImage, getUserStatus} from "../../redux/actions/IndependentActions";
 
 class ChatSidebar extends React.Component {
     // props { activeChatId, mainSidebar, handleActiveChat, handleUserSidebar }
@@ -56,6 +56,7 @@ class ChatSidebar extends React.Component {
                     // Make user as an object
                     user.setLastMessageTime = feedback.createdDate.format("HH:mm");
                     user.setId = userId;
+                    user.setStatus = await getUserStatus(user.id);
                     try {
                         if(!user.isDeleted) {
                             // User profile image

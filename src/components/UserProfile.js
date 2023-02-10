@@ -4,6 +4,7 @@ import * as Icon from "react-feather";
 import {Button, Spinner} from "reactstrap";
 import PerfectScrollbar from "react-perfect-scrollbar";
 
+import User from "../models/User";
 import FormModal from "./FormModal";
 import Error500 from "../views/Error500";
 import MetaData from "../models/MetaData";
@@ -35,7 +36,7 @@ class UserProfile extends React.Component {
 
   static getDerivedStateFromProps(props, state) {
     if (props.activeUser !== state.activeUser) return {
-      activeUser: props.activeUser,
+      activeUser: new User(props.activeUser),
       loading: false, error: null, metaData: null, show: false
     }
     return null
@@ -94,7 +95,7 @@ class UserProfile extends React.Component {
             </span>
             <div className="header-profile-sidebar">
               <div className="avatar">
-                <DisplayImage src={activeUser.imageSrc || activeUser.avatar} height="70" width="70" /> 
+                <DisplayImage src={activeUser.imageSrc} height="70" width="70" />
               </div>
               <h4 className="chat-user-name"> 
                 {activeUser.isDeleted ? "Deleted user" : activeUser.name} 

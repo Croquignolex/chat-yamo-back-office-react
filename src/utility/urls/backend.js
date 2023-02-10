@@ -45,9 +45,9 @@ export const USERS = {
     SEARCH: '/profile/backoffice/checkuser',
 
     BLOCK: '/authentication/user/{userId}/block',
+    STATUS: '/authentication/backoffice/user/{userId}/status',
     METADATA: '/authentication/backoffice/user/{userId}/metadata',
-    BLOCK_STATUS: '/authentication/user/{userId}/userblockedstate',
-    CHECK_TOWN_EVENT: '/authentication/user/{userId}/checktownevent', 
+    CHECK_TOWN_EVENT: '/authentication/user/{userId}/checktownevent',
     SOUSCRIPTIONS: '/authentication/user/{userId}/subscriptionhistory', 
     STATUS_HISTORY: '/authentication/backoffice/user/{userId}/statusreason',
 };
