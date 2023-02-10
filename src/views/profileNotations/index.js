@@ -1,5 +1,4 @@
 import React from "react";
-import dayjs from "dayjs";
 import Sidebar from "react-sidebar";
 import {connect} from "react-redux";
 import {withRouter} from "react-router-dom";
@@ -8,7 +7,6 @@ import ImageLog from "./ImageLog";
 import ImageSidebar from "./ImageSidebar";
 import UserProfile from "../../components/UserProfile";
 import {ContextLayout} from "../../utility/context/Layout";
-import {getImagesForNotedCount, sendNotedImages} from "../../redux/actions/IndependentActions";
 
 import "../../assets/scss/pages/app-chat.scss";
 
@@ -62,17 +60,6 @@ class ImageVerification extends React.Component {
     };
 
     handleRemoveImage = (image) => {
-        /*const backOfficeUserId = this.props.backOfficeUserId;
-        const date = this.state.date.format('YYYY-MM-DD');*/
-
-        /*sendNotedImages(backOfficeUserId, date, this.state.toVerify)
-            .then(() => {
-                getImagesForNotedCount(backOfficeUserId, date)
-                    .then(res => {
-                        this.setState({verified: res.count || 0});
-                    });
-            });*/
-
         this.setState((prevState) => {
             const tempImages = prevState.deletedImages;
             tempImages.push(image);
@@ -81,17 +68,6 @@ class ImageVerification extends React.Component {
     };
 
     handleRemoveAllImages = (images) => {
-        /*const backOfficeUserId = this.props.backOfficeUserId;
-        const date = this.state.date.format('YYYY-MM-DD');*/
-
-        /*sendNotedImages(backOfficeUserId, date, this.state.toVerify)
-            .then(() => {
-                getImagesForNotedCount(backOfficeUserId, date)
-                    .then(res => {
-                        this.setState({verified: res.count || 0});
-                    });
-            });*/
-
         this.setState((prevState) => {
             const tempImages = [...prevState.deletedImages, ...images];
             const tempVerified = prevState.verified + 1;
@@ -101,10 +77,6 @@ class ImageVerification extends React.Component {
 
     handleResetImage = () => {
         this.setState({verified: 0, deletedImages: []});
-        /*getImagesForNotedCount(this.props.backOfficeUserId, this.state.date.format('YYYY-MM-DD'))
-            .then(res => {
-                this.setState({verified: res.count || 0, deletedImages: []});
-            });*/
     };
 
     handleImagesToNotate = (toVerify) => {
