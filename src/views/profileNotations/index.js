@@ -28,7 +28,7 @@ class ImageVerification extends React.Component {
             userSidebar: false,
             receiverProfile: false,
             sidebarDocked: mql.matches,
-            date: dayjs().startOf('day'),
+            // date: dayjs().startOf('day'),
             deletedImages: [],
             toVerify: 0
         };
@@ -62,16 +62,16 @@ class ImageVerification extends React.Component {
     };
 
     handleRemoveImage = (image) => {
-        const backOfficeUserId = this.props.backOfficeUserId;
-        const date = this.state.date.format('YYYY-MM-DD');
+        /*const backOfficeUserId = this.props.backOfficeUserId;
+        const date = this.state.date.format('YYYY-MM-DD');*/
 
-        sendNotedImages(backOfficeUserId, date, this.state.toVerify)
+        /*sendNotedImages(backOfficeUserId, date, this.state.toVerify)
             .then(() => {
                 getImagesForNotedCount(backOfficeUserId, date)
                     .then(res => {
                         this.setState({verified: res.count || 0});
                     });
-            });
+            });*/
 
         this.setState((prevState) => {
             const tempImages = prevState.deletedImages;
@@ -81,28 +81,30 @@ class ImageVerification extends React.Component {
     };
 
     handleRemoveAllImages = (images) => {
-        const backOfficeUserId = this.props.backOfficeUserId;
-        const date = this.state.date.format('YYYY-MM-DD');
+        /*const backOfficeUserId = this.props.backOfficeUserId;
+        const date = this.state.date.format('YYYY-MM-DD');*/
 
-        sendNotedImages(backOfficeUserId, date, this.state.toVerify)
+        /*sendNotedImages(backOfficeUserId, date, this.state.toVerify)
             .then(() => {
                 getImagesForNotedCount(backOfficeUserId, date)
                     .then(res => {
                         this.setState({verified: res.count || 0});
                     });
-            });
+            });*/
 
         this.setState((prevState) => {
             const tempImages = [...prevState.deletedImages, ...images];
-            return {deletedImages: tempImages};
+            const tempVerified = prevState.verified + 1;
+            return {deletedImages: tempImages, verified: tempVerified};
         });
     };
 
     handleResetImage = () => {
-        getImagesForNotedCount(this.props.backOfficeUserId, this.state.date.format('YYYY-MM-DD'))
+        this.setState({verified: 0, deletedImages: []});
+        /*getImagesForNotedCount(this.props.backOfficeUserId, this.state.date.format('YYYY-MM-DD'))
             .then(res => {
                 this.setState({verified: res.count || 0, deletedImages: []});
-            });
+            });*/
     };
 
     handleImagesToNotate = (toVerify) => {

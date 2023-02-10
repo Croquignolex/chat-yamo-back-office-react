@@ -48,8 +48,6 @@ class ImageSidebar extends React.Component {
 
         getUserProfileImagesForNotation()
             .then(res => {
-                this.setState({all_images: res, toVerify: res.length});
-
                 let users = res.reduce(function(results, org) {
                     results[org.userId] = [...results[org.userId] || [], org];
                     return results;
@@ -60,6 +58,8 @@ class ImageSidebar extends React.Component {
                 for(const user of Object.values(users)) {
                     buildUsers.push(user);
                 }
+
+                this.setState({all_images: res, toVerify: buildUsers.length});
 
                 this.setState({ users: buildUsers }, async () => {
                     for(const userImage of buildUsers) {

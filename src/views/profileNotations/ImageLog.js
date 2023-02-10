@@ -1,9 +1,11 @@
 import React from "react"
 import ReactDOM from "react-dom"
-import { Image, Menu} from "react-feather";
+import { Image, Menu, CheckCircle } from "react-feather";
+import {NotificationManager} from "react-notifications";
 import {Carousel, CarouselItem, CarouselControl, CarouselIndicators, Spinner} from "reactstrap";
 
 import DisplayImage from "../../components/DisplayImage";
+import { notateUserProfile } from "../../redux/actions/IndependentActions";
 
 class ImageLog extends React.Component {
     // props { activeChatID, activeUser, mainSidebar, handleReceiverSidebar }
@@ -24,8 +26,8 @@ class ImageLog extends React.Component {
         this.goToIndex = this.goToIndex.bind(this);
         this.onExiting = this.onExiting.bind(this);
         this.onExited = this.onExited.bind(this);
-        // this.notateProfile = this.notateProfile.bind(this);
-        // this.removeAllImageFormState = this.removeAllImageFormState.bind(this);
+        this.notateProfile = this.notateProfile.bind(this);
+        this.removeAllImageFormState = this.removeAllImageFormState.bind(this);
     }
 
     onExiting() {
@@ -80,20 +82,7 @@ class ImageLog extends React.Component {
         }
     };
 
-    /*notateImage = (score) => {
-        const image = this.state.images[this.state.activeIndex];
-        this.setState({ loading: true });
-        notateUserImage(image.userId, image.mediaId, score)
-            .then(() => {
-                // Remove image from array
-                this.removeImageFormState(image)
-                NotificationManager.success("Image has been successfully noted", null, 1000);
-            })
-            .catch((error) => console.log("error ", error))
-            .finally(() => this.setState({ loading: false }));
-    };*/
-
-    /*notateProfile = (score) => {
+    notateProfile = (score) => {
         const image = this.state.images[this.state.activeIndex];
         this.setState({ loading: true });
         notateUserProfile(image.userId, score)
@@ -104,20 +93,12 @@ class ImageLog extends React.Component {
             })
             .catch((error) => console.log("error ", error))
             .finally(() => this.setState({ loading: false }));
-    };*/
+    };
 
-    /*removeImageFormState = (image) => {
-        this.setState((prevState) => {
-            const tempImages = prevState.images.filter((i) => i.mediaId !== image.mediaId);
-            return {images: tempImages};
-        });
-        this.props.handleRemoveImage(image);
-    };*/
-
-    /*removeAllImageFormState = () => {
+    removeAllImageFormState = () => {
         this.props.handleRemoveAllImages(this.state.images);
         this.setState({images: []});
-    };*/
+    };
 
     render() {
         const { activeIndex } = this.state;
@@ -195,20 +176,14 @@ class ImageLog extends React.Component {
                                 </Carousel>
                             </div>
                             <div className="col-md-12 mb-5 mt-3">
-                                {/*<h3>Note the profile (all images)</h3>*/}
+                                <h3>Note the profile (all images)</h3>
                                 {this.state.loading ? <Spinner color="primary"/> : (
                                     <>
-                                        {/*<button className="btn btn-primary mr-1 score-size-1" onClick={() => this.notateProfile(1)}>1 <CheckCircle size={20} /></button>*/}
-                                        {/*<button className="btn btn-primary mr-1 score-size-2" onClick={() => this.notateProfile(2)}>2 <CheckCircle size={20} /></button>*/}
-                                        {/*<button className="btn btn-primary mr-1 score-size-3" onClick={() => this.notateProfile(3)}>3 <CheckCircle size={20} /></button>*/}
-                                        {/*<button className="btn btn-primary mr-1 score-size-4" onClick={() => this.notateProfile(4)}>4 <CheckCircle size={20} /></button>*/}
-                                        {/*<button className="btn btn-primary mr-1 score-size-5" onClick={() => this.notateProfile(5)}>5 <CheckCircle size={20} /></button>*/}
-
-                                        {/*<button className="btn btn-success mr-1 score-size-1" onClick={() => this.notateImage(1)}>1 <CheckCircle size={20} /></button>*/}
-                                        {/*<button className="btn btn-success mr-1 score-size-2" onClick={() => this.notateImage(2)}>2 <CheckCircle size={20} /></button>*/}
-                                        {/*<button className="btn btn-success mr-1 score-size-3" onClick={() => this.notateImage(3)}>3 <CheckCircle size={20} /></button>*/}
-                                        {/*<button className="btn btn-success mr-1 score-size-4" onClick={() => this.notateImage(4)}>4 <CheckCircle size={20} /></button>*/}
-                                        {/*<button className="btn btn-success mr-1 score-size-5" onClick={() => this.notateImage(5)}>5 <CheckCircle size={20} /></button>*/}
+                                        <button className="btn btn-primary mr-1 score-size-1" onClick={() => this.notateProfile(1)}>1 <CheckCircle size={20} /></button>
+                                        <button className="btn btn-primary mr-1 score-size-2" onClick={() => this.notateProfile(2)}>2 <CheckCircle size={20} /></button>
+                                        <button className="btn btn-primary mr-1 score-size-3" onClick={() => this.notateProfile(3)}>3 <CheckCircle size={20} /></button>
+                                        <button className="btn btn-primary mr-1 score-size-4" onClick={() => this.notateProfile(4)}>4 <CheckCircle size={20} /></button>
+                                        <button className="btn btn-primary mr-1 score-size-5" onClick={() => this.notateProfile(5)}>5 <CheckCircle size={20} /></button>
                                     </>
                                 )}
                             </div>
