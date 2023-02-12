@@ -111,7 +111,7 @@ class ImageLog extends React.Component {
             );
         });
 
-        if(this.state.images.length === 0) {
+        if(this.state.images.length === 0 || !activeUser) {
             return (
                 <div className="content-right">
                     <div className="chat-app-window">

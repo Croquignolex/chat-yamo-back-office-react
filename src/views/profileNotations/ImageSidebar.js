@@ -180,7 +180,7 @@ class ImageSidebar extends React.Component {
                             <Icon.ArrowRight size={15} />
                         </Button>*/}
                     </div>
-                    <strong className="text-primary">{verified}</strong> noted image(s) / <strong className="text-primary">{toVerify}</strong> image(s) to note
+                    <strong className="text-primary">{verified}</strong> noted profile(s) / <strong className="text-primary">{toVerify}</strong> profile(s) to note
                 </div>
                 <PerfectScrollbar className="chat-user-list list-group" options={{wheelPropagation: false}}>
                     {loading ?

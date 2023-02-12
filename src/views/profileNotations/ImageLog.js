@@ -111,7 +111,7 @@ class ImageLog extends React.Component {
             );
         });
 
-        if(this.state.images.length === 0) {
+        if(this.state.images.length === 0 || !activeUser) {
             return (
                 <div className="content-right">
                     <div className="chat-app-window">
@@ -176,7 +176,7 @@ class ImageLog extends React.Component {
                                 </Carousel>
                             </div>
                             <div className="col-md-12 mb-5 mt-3">
-                                <h3>Note the profile (all images)</h3>
+                                <h3>Note this profile</h3>
                                 {this.state.loading ? <Spinner color="primary"/> : (
                                     <>
                                         <button className="btn btn-primary mr-1 score-size-1" onClick={() => this.notateProfile(1)}>1 <CheckCircle size={20} /></button>
