@@ -3,6 +3,7 @@ import Sidebar from "react-sidebar";
 import {withRouter} from "react-router-dom";
 
 import ImageLog from "./ImageLog";
+import User from "../../models/User";
 import ImageSidebar from "./ImageSidebar";
 import UserProfile from "../../components/UserProfile";
 import {ContextLayout} from "../../utility/context/Layout";
@@ -50,7 +51,7 @@ class ImageVerification extends React.Component {
                 })
                 return flag;
             });
-            nextUser = {...user, images: tempImages};
+            nextUser = new User({...user, images: tempImages});
         }
 
         this.setState({activeChatID: caseId, activeUser: nextUser});
