@@ -1,7 +1,7 @@
 import React from "react"
 import ReactDOM from "react-dom"
-import {Image, Menu, ThumbsUp, ThumbsDown, Trash2} from "react-feather";
 import {NotificationManager} from "react-notifications";
+import {Image, Menu, ThumbsUp, ThumbsDown, Trash2, CheckCircle} from "react-feather";
 import {Carousel, CarouselItem, CarouselControl, CarouselIndicators, Spinner} from "reactstrap";
 
 import DisplayImage from "../../components/DisplayImage";
@@ -28,8 +28,8 @@ class ImageLog extends React.Component {
         this.onExited = this.onExited.bind(this);
         this.validateImage = this.validateImage.bind(this);
         this.deleteImage = this.deleteImage.bind(this);
-        // this.notateProfile = this.notateProfile.bind(this);
-        // this.removeAllImageFormState = this.removeAllImageFormState.bind(this);
+        this.notateProfile = this.notateProfile.bind(this);
+        this.removeAllImageFormState = this.removeAllImageFormState.bind(this);
     }
 
     onExiting() {
@@ -114,9 +114,13 @@ class ImageLog extends React.Component {
             .finally(() => this.setState({ loading: false }));
     };
 
-    /*notateProfile = (score) => {
+    notateProfile = (score) => {
         const image = this.state.images[this.state.activeIndex];
         this.setState({ loading: true });
+        // Validate all images
+        this.state.images.forEach((image) => {
+            verifyUserImage(image.userId, image.mediaId, image.mediaPath, 'true').then();
+        });
         notateUserProfile(image.userId, score)
             .then(() => {
                 // Remove all image from array
@@ -125,7 +129,7 @@ class ImageLog extends React.Component {
             })
             .catch((error) => console.log("error ", error))
             .finally(() => this.setState({ loading: false }));
-    };*/
+    };
 
     removeImageFormState = (image) => {
         this.setState((prevState) => {
@@ -135,10 +139,10 @@ class ImageLog extends React.Component {
         this.props.handleRemoveImage(image);
     };
 
-    /*removeAllImageFormState = () => {
+    removeAllImageFormState = () => {
         this.props.handleRemoveAllImages(this.state.images);
         this.setState({images: []});
-    };*/
+    };
 
     render() {
         const { activeIndex } = this.state;
@@ -215,27 +219,29 @@ class ImageLog extends React.Component {
                                     <CarouselControl direction="next" directionText="Next" onClickHandler={this.next} />
                                 </Carousel>
                             </div>
-                            {(this.state.images.length > 1) && (
-                                <div className="col-md-12 mb-5 mt-3">
-                                    {this.state.loading ? <Spinner color="primary"/> : (
+                            <div className="col-md-12 mt-2 text-center">
+                                {(this.state.images.length > 1) && (
+                                    (this.state.loading) ? <Spinner color="primary"/> : (
                                         <>
+                                            <h4>Validate current image</h4>
                                             <button className="btn btn-success mr-1" onClick={() => this.validateImage('true')}> <ThumbsUp size={20} /></button>
                                             <button className="btn btn-danger mr-1" onClick={() => this.validateImage('false')}><ThumbsDown size={20} /></button>
                                             <button className="btn btn-dark" onClick={this.deleteImage}><Trash2 size={20} /></button>
                                         </>
-                                    )}
-                                    {/*<h3>Note this profile</h3>
-                                    {this.state.loading ? <Spinner color="primary"/> : (
-                                        <>
-                                            <button className="btn btn-primary mr-1 score-size-1" onClick={() => this.notateProfile(1)}>1 <CheckCircle size={20} /></button>
-                                            <button className="btn btn-primary mr-1 score-size-2" onClick={() => this.notateProfile(2)}>2 <CheckCircle size={20} /></button>
-                                            <button className="btn btn-primary mr-1 score-size-3" onClick={() => this.notateProfile(3)}>3 <CheckCircle size={20} /></button>
-                                            <button className="btn btn-primary mr-1 score-size-4" onClick={() => this.notateProfile(4)}>4 <CheckCircle size={20} /></button>
-                                            <button className="btn btn-primary mr-1 score-size-5" onClick={() => this.notateProfile(5)}>5 <CheckCircle size={20} /></button>
-                                        </>
-                                    )}*/}
-                                </div>
-                            )}
+                                    )
+                                )}
+                                {!(this.state.loading) && (
+                                    <>
+                                        <hr/>
+                                        <h4>Notate profile</h4>
+                                        <button className="btn btn-success mr-1 score-size-1" onClick={() => this.notateProfile(1)}>1 <CheckCircle size={20} /></button>
+                                        <button className="btn btn-success mr-1 score-size-2" onClick={() => this.notateProfile(2)}>2 <CheckCircle size={20} /></button>
+                                        <button className="btn btn-success mr-1 score-size-3" onClick={() => this.notateProfile(3)}>3 <CheckCircle size={20} /></button>
+                                        <button className="btn btn-success mr-1 score-size-4" onClick={() => this.notateProfile(4)}>4 <CheckCircle size={20} /></button>
+                                        <button className="btn btn-success mr-1 score-size-5" onClick={() => this.notateProfile(5)}>5 <CheckCircle size={20} /></button>
+                                    </>
+                                )}
+                            </div>
                         </div> 
                     </div>
                 </div>
