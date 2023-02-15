@@ -1,5 +1,4 @@
 import React from "react";
-import {connect} from "react-redux";
 import * as Icon from "react-feather";
 import PerfectScrollbar from "react-perfect-scrollbar";
 import {Button, Card, Spinner, Input, Form} from "reactstrap";
@@ -24,7 +23,6 @@ class ImageSidebar extends React.Component {
             users: [],
             toVerify: 0,
             loading: false,
-            // date: dayjs().startOf('day'),
             search: ""
         }
     }
@@ -38,13 +36,6 @@ class ImageSidebar extends React.Component {
         this.setState({ loading: true, error: null, users: [], all_images: [], search: "" });
         this.props.handleActiveChat(null, null);
         this.props.handleResetImage();
-
-        /*getImagesForNotationCount(this.state.date.format('YYYY-MM-DD'))
-            .then(res => {
-                const toVerify = res.count || 0;
-                this.setState({toVerify});
-                this.props.handleImagesToNotate(toVerify);
-            });*/
 
         getUserProfileImagesForNotation()
             .then(res => {
@@ -125,20 +116,6 @@ class ImageSidebar extends React.Component {
         });
     };
 
-    /*handlePrevDate = () => {
-        this.setState((prevState) => {
-            const tempDate = prevState.date;
-            return {date: tempDate.subtract(1, 'day')};
-        }, () => this.loadData());
-    }*/
-
-    /*handleNextDate = () => {
-        this.setState((prevState) => {
-            const tempDate = prevState.date;
-            return {date: tempDate.add(1, 'day')};
-        }, () => this.loadData());
-    }*/
-
     handleSearchVerification = (e) => {
         e.preventDefault();
         // Mock to users type 
@@ -172,13 +149,6 @@ class ImageSidebar extends React.Component {
                         <Button color="primary" className="mr-50 rounded" onClick={this.loadData} size="sm">
                             <Icon.RefreshCcw size={15} />
                         </Button>
-                        {/*<Button size="sm" color="primary" className="mr-50 rounded" onClick={this.handlePrevDate} title="Previous day">
-                            <Icon.ArrowLeft size={15} />
-                        </Button>
-                        <strong>{this.state.date.format('DD-MM-YYYY')}</strong>
-                        <Button size="sm" color="primary" className="ml-50 rounded" onClick={this.handleNextDate} title="Next day">
-                            <Icon.ArrowRight size={15} />
-                        </Button>*/}
                     </div>
                     <strong className="text-primary">{verified}</strong> noted profile(s) / <strong className="text-primary">{toVerify}</strong> profile(s) to note
                 </div>
@@ -231,10 +201,4 @@ class ImageSidebar extends React.Component {
     }
 }
 
-const mapStateToProps = state => {
-    return {
-        backOfficeUserId: state.authUser?.data?.entityId,
-    }
-};
-
-export default connect(mapStateToProps)(ImageSidebar)
+export default ImageSidebar;
