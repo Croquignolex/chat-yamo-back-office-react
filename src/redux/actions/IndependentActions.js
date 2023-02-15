@@ -207,11 +207,11 @@ export const notateUserImage = async (userId, mediaId, score) => {
 };
 
 export const verifyUserImage = async (userId, mediaId, mediaPath, verified) => {
-    /*const config = {headers: {
+    const config = {headers: {
             "CHAT-ET-YAMO-MEDIA-SERVICE-ALL-USER-IMAGES": "true",
             "CHAT-ET-YAMO-MEDIA-SERVICE-PRE-SIGNED-URL": "true"
         }
-    };*/
+    };
     const url = joinBaseUrlWithParams(
         VALIDATIONS.VALIDATE_ONE,
         [
@@ -221,7 +221,7 @@ export const verifyUserImage = async (userId, mediaId, mediaPath, verified) => {
             {param: 'mediaPath', value: mediaPath}, 
         ]
     );
-    return makeRequest('put', url);
+    return makeRequest('put', url, null, config);
 };
 
 export const createMedia = async (userId, file) => {

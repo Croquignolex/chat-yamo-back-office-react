@@ -1,6 +1,6 @@
 import React from "react"
 import ReactDOM from "react-dom"
-import {Image, Menu, CheckCircle, ThumbsUp, ThumbsDown, Trash2} from "react-feather";
+import {Image, Menu, ThumbsUp, ThumbsDown, Trash2} from "react-feather";
 import {NotificationManager} from "react-notifications";
 import {Carousel, CarouselItem, CarouselControl, CarouselIndicators, Spinner} from "reactstrap";
 
@@ -27,7 +27,7 @@ class ImageLog extends React.Component {
         this.onExiting = this.onExiting.bind(this);
         this.onExited = this.onExited.bind(this);
         this.validateImage = this.validateImage.bind(this);
-        // this.deleteImage = this.deleteImage.bind(this);
+        this.deleteImage = this.deleteImage.bind(this);
         // this.notateProfile = this.notateProfile.bind(this);
         // this.removeAllImageFormState = this.removeAllImageFormState.bind(this);
     }
@@ -101,7 +101,7 @@ class ImageLog extends React.Component {
             .finally(() => this.setState({ loading: false }));
     };
 
-    /*deleteImage = () => {
+    deleteImage = () => {
         const image = this.state.images[this.state.activeIndex];
         this.setState({ loading: true });
         deleteUserImage(image.userId, image.mediaId)
@@ -112,7 +112,7 @@ class ImageLog extends React.Component {
             })
             .catch((error) => console.log("error ", error))
             .finally(() => this.setState({ loading: false }));
-    };*/
+    };
 
     /*notateProfile = (score) => {
         const image = this.state.images[this.state.activeIndex];
@@ -221,7 +221,7 @@ class ImageLog extends React.Component {
                                         <>
                                             <button className="btn btn-success mr-1" onClick={() => this.validateImage('true')}> <ThumbsUp size={20} /></button>
                                             <button className="btn btn-danger mr-1" onClick={() => this.validateImage('false')}><ThumbsDown size={20} /></button>
-                                            {/*<button className="btn btn-dark" onClick={this.deleteImage}><Trash2 size={20} /></button>*/}
+                                            <button className="btn btn-dark" onClick={this.deleteImage}><Trash2 size={20} /></button>
                                         </>
                                     )}
                                     {/*<h3>Note this profile</h3>
