@@ -1,11 +1,18 @@
 import React from "react"
 import ReactDOM from "react-dom"
+import {connect} from "react-redux";
 import {NotificationManager} from "react-notifications";
 import {Image, Menu, ThumbsUp, ThumbsDown, Trash2, CheckCircle} from "react-feather";
 import {Carousel, CarouselItem, CarouselControl, CarouselIndicators, Spinner} from "reactstrap";
 
 import DisplayImage from "../../components/DisplayImage";
-import {deleteUserImage, notateUserProfile, verifyUserImage} from "../../redux/actions/IndependentActions";
+import {
+    blockUser,
+    deleteUserImage,
+    notateUserProfile,
+    reportUser,
+    verifyUserImage
+} from "../../redux/actions/IndependentActions";
 
 class ImageLog extends React.Component {
     // props { activeChatID, activeUser, mainSidebar, handleReceiverSidebar }
@@ -131,6 +138,29 @@ class ImageLog extends React.Component {
             .finally(() => this.setState({ loading: false }));
     };
 
+    reportProfile = (userId) => {
+        const {backOfficeUserLastName, backOfficeUserFirstName} = this.props;
+        this.setState({reportLoading: true});
+        reportUser(userId, backOfficeUserFirstName, backOfficeUserLastName)
+            .then(() => {
+                // No action
+                NotificationManager.success("User profile has been successfully reported", null, 1000);
+            })
+            .catch((error) => console.log("error ", error))
+            .finally(() => this.setState({ reportLoading: false }));
+    };
+
+    blockProfile = (userId) => {
+        this.setState({blockLoading: true});
+        blockUser(userId)
+            .then(() => {
+                // No action
+                NotificationManager.success("User profile has been successfully blocked", null, 1000);
+            })
+            .catch((error) => console.log("error ", error))
+            .finally(() => this.setState({ blockLoading: false }));
+    };
+
     removeImageFormState = (image) => {
         this.setState((prevState) => {
             const tempImages = prevState.images.filter((i) => i.mediaId !== image.mediaId);
@@ -207,6 +237,18 @@ class ImageLog extends React.Component {
                         </div> 
                         
                         <div className="user-chats">
+                            <div className="mx-auto mb-2">
+                                {(this.state.reportLoading || this.state.blockLoading) ? <Spinner color="danger" /> : (
+                                    <>
+                                        <button className="btn btn-warning mr-50 mb-50" onClick={() => this.reportProfile(activeUser.id)}>
+                                            Repport
+                                        </button>
+                                        <button className="btn btn-danger mb-50" onClick={() => this.blockProfile(activeUser.id)}>
+                                            Block
+                                        </button>
+                                    </>
+                                )}
+                            </div>
                             <div className="col-md-6 mx-auto"> 
                                 <Carousel
                                     interval={false}
@@ -250,4 +292,12 @@ class ImageLog extends React.Component {
     }
 }
 
-export default ImageLog;
+const mapStateToProps = state => {
+    return {
+        backOfficeUserId: state.authUser?.data?.entityId,
+        backOfficeUserLastName: state.authUser?.data?.lastName,
+        backOfficeUserFirstName: state.authUser?.data?.firstName,
+    }
+};
+
+export default connect(mapStateToProps)(ImageLog);

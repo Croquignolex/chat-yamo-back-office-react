@@ -133,10 +133,11 @@ export const searchUser = async (attribute) => {
     return makeRequest('post', url, {attribute});
 };
 
-export const reportUser = async (userId) => {
+export const reportUser = async (userId, firstName, lastName) => {
     const url = joinBaseUrlWithParams(FEEDBACKS.REPORT);
     const feedbackText = `Feedback from image check: ${userId} should be deleted`;
-    return makeRequest('post', url, {feedbackText});
+    const backofficeUserName = `${firstName} ${lastName}`;
+    return makeRequest('post', url, {feedbackText, backofficeUserName});
 };
 
 export const sendMessage = async (userId, feedbackText, backofficeUserName, userName = null, mediaId = null) => {
@@ -188,6 +189,11 @@ export const notateUserProfile = async (userId, score) => {
         [{param: 'userId', value: userId}]
     );
     return makeRequest('post', url + '?score=' + score);
+};
+
+export const blockUser = async (userId) => {
+    const url = joinBaseUrlWithParams(USERS.BLOCK, [{param: 'userId', value: userId}]);
+    return makeRequest('post', url + '?reason=scam');
 };
 
 // ===================================== END POST
@@ -263,11 +269,6 @@ export const deleteUserImage = async (userId, mediaId) => {
         ]
     );
     return makeRequest('delete', url, null, config);
-};
-
-export const blockUser = async (userId) => {
-    const url = joinBaseUrlWithParams(USERS.BLOCK, [{param: 'userId', value: userId}]); 
-    return makeRequest('delete', url);
 };
 
 // ===================================== END DELETE
