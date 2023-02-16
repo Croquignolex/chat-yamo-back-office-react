@@ -2,17 +2,19 @@ import React from "react"
 import ReactDOM from "react-dom"
 import {connect} from "react-redux";
 import {NotificationManager} from "react-notifications";
-import {Image, Menu, ThumbsUp, ThumbsDown, Trash2, CheckCircle} from "react-feather";
+import {Image, Menu, ThumbsUp, ThumbsDown, Trash2, CheckCircle, RefreshCw} from "react-feather";
 import {Carousel, CarouselItem, CarouselControl, CarouselIndicators, Spinner} from "reactstrap";
 
 import DisplayImage from "../../components/DisplayImage";
 import {
     blockUser,
-    deleteUserImage,
-    notateUserProfile,
     reportUser,
-    verifyUserImage
+    verifyUserImage,
+    deleteUserImage,
+    getUserProfileV2,
+    notateUserProfile, updateUserProfile
 } from "../../redux/actions/IndependentActions";
+import Error500 from "../Error500";
 
 class ImageLog extends React.Component {
     // props { activeChatID, activeUser, mainSidebar, handleReceiverSidebar }
@@ -26,15 +28,18 @@ class ImageLog extends React.Component {
             all_images: [],
             blockLoading: false,
             reportLoading: false,
-            activeUser: null
+            profileLoading: false,
+            activeUser: null,
+            profileData: null,
         };
         this.next = this.next.bind(this);
+        this.onExited = this.onExited.bind(this);
         this.previous = this.previous.bind(this);
         this.goToIndex = this.goToIndex.bind(this);
         this.onExiting = this.onExiting.bind(this);
-        this.onExited = this.onExited.bind(this);
-        this.validateImage = this.validateImage.bind(this);
         this.deleteImage = this.deleteImage.bind(this);
+        this.changeGender = this.changeGender.bind(this);
+        this.validateImage = this.validateImage.bind(this);
         this.notateProfile = this.notateProfile.bind(this);
         this.removeAllImageFormState = this.removeAllImageFormState.bind(this);
     }
@@ -79,8 +84,20 @@ class ImageLog extends React.Component {
     loadData = () => {
         const {activeUser} = this.props;
 
-        if(activeUser != null){
-            this.setState({images: activeUser.images, activeIndex: 0, activeUser});
+        if(activeUser != null) {
+            // Load profile data
+            this.setState({ profileLoading: true, error: null, profileData: null });
+            getUserProfileV2(activeUser.id)
+                .then((data) => {
+                    this.setState({
+                        images: activeUser.images,
+                        activeIndex: 0,
+                        profileData: data,
+                        activeUser
+                    });
+                })
+                .catch((error) => this.setState({ error }))
+                .finally(() => this.setState({ profileLoading: false }));
         }
     };
  
@@ -138,10 +155,10 @@ class ImageLog extends React.Component {
             .finally(() => this.setState({ loading: false }));
     };
 
-    reportProfile = (userId) => {
+    reportProfile = () => {
         const {backOfficeUserLastName, backOfficeUserFirstName} = this.props;
         this.setState({reportLoading: true});
-        reportUser(userId, backOfficeUserFirstName, backOfficeUserLastName)
+        reportUser(this.props.activeUser.id, backOfficeUserFirstName, backOfficeUserLastName)
             .then(() => {
                 // No action
                 NotificationManager.success("User profile has been successfully reported", null, 1000);
@@ -150,15 +167,31 @@ class ImageLog extends React.Component {
             .finally(() => this.setState({ reportLoading: false }));
     };
 
-    blockProfile = (userId) => {
+    blockProfile = () => {
         this.setState({blockLoading: true});
-        blockUser(userId)
+        blockUser(this.props.activeUser.id)
             .then(() => {
                 // No action
                 NotificationManager.success("User profile has been successfully blocked", null, 1000);
             })
             .catch((error) => console.log("error ", error))
             .finally(() => this.setState({ blockLoading: false }));
+    };
+
+    changeGender = () => {
+        const profileData = this.state.profileData;
+        const newGender = profileData.gender === "Male" ? "Female" : "Male";
+        this.setState({profileLoading: true});
+        updateUserProfile(this.props.activeUser.id, newGender, profileData)
+            .then(() => {
+                this.setState((prevState) => {
+                    const tempProfileData = prevState.profileData;
+                    return {profileData: {...tempProfileData, gender: newGender}};
+                });
+                NotificationManager.success("User gender has been successfully changed", null, 1000);
+            })
+            .catch((error) => console.log("error ", error))
+            .finally(() => this.setState({ profileLoading: false }));
     };
 
     removeImageFormState = (image) => {
@@ -184,6 +217,18 @@ class ImageLog extends React.Component {
                 </CarouselItem>
             );
         });
+
+        if(this.state.error !== null) {
+            return (
+                <div className="content-right">
+                    <div className="chat-app-window">
+                        <div className={`start-chat-area d-flex`}>
+                            <Error500 onLinkClick={this.loadData} />
+                        </div>
+                    </div>
+                </div>
+            )
+        }
 
         if(this.state.images.length === 0 || !activeUser) {
             return (
@@ -237,13 +282,23 @@ class ImageLog extends React.Component {
                         </div> 
                         
                         <div className="user-chats">
+                            <div className="mx-auto">
+                                {(this.state.profileLoading) ? <Spinner color="primary" /> : (
+                                    <h4>
+                                        <span className="badge badge-dark badge-pill">{this.state.profileData.gender}</span>
+                                        <button className="btn btn-primary btn-sm ml-50" onClick={() => this.changeGender()}>
+                                            <RefreshCw size={20} />
+                                        </button>
+                                    </h4>
+                                )}
+                            </div>
                             <div className="mx-auto mb-2">
-                                {(this.state.reportLoading || this.state.blockLoading) ? <Spinner color="danger" /> : (
+                                {(this.state.reportLoading || this.state.blockLoading) ? <Spinner color="primary" /> : (
                                     <>
-                                        <button className="btn btn-warning mr-50 mb-50" onClick={() => this.reportProfile(activeUser.id)}>
+                                        <button className="btn btn-warning mr-50 mb-50" onClick={() => this.reportProfile()}>
                                             Repport
                                         </button>
-                                        <button className="btn btn-danger mb-50" onClick={() => this.blockProfile(activeUser.id)}>
+                                        <button className="btn btn-danger mb-50" onClick={() => this.blockProfile()}>
                                             Block
                                         </button>
                                     </>
@@ -266,7 +321,7 @@ class ImageLog extends React.Component {
                                     (this.state.loading) ? <Spinner color="primary"/> : (
                                         <>
                                             <h4>Validate current image</h4>
-                                            <button className="btn btn-success mr-1" onClick={() => this.validateImage('true')}> <ThumbsUp size={20} /></button>
+                                            <button className="btn btn-success mr-1" onClick={() => this.validateImage('true')}><ThumbsUp size={20} /></button>
                                             <button className="btn btn-danger mr-1" onClick={() => this.validateImage('false')}><ThumbsDown size={20} /></button>
                                             <button className="btn btn-dark" onClick={this.deleteImage}><Trash2 size={20} /></button>
                                         </>

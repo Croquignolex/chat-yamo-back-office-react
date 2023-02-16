@@ -34,6 +34,11 @@ export const getUserProfile = async (userId) => {
     return makeRequest('get', url);
 };
 
+export const getUserProfileV2 = async (userId) => {
+    const url = joinBaseUrlWithParams(USERS.GET_ONE_V2, [{param: 'userId', value: userId}]);
+    return makeRequest('get', url);
+};
+
 export const getUserSouscriptions = async (userId) => {
     const url = joinBaseUrlWithParams(USERS.SOUSCRIPTIONS, [{param: 'userId', value: userId}]);
     return makeRequest('get', url);
@@ -194,6 +199,24 @@ export const notateUserProfile = async (userId, score) => {
 export const blockUser = async (userId) => {
     const url = joinBaseUrlWithParams(USERS.BLOCK, [{param: 'userId', value: userId}]);
     return makeRequest('post', url + '?reason=scam');
+};
+
+export const updateUserProfile = async (userId, gender, profile) => {
+    const url = joinBaseUrlWithParams(
+        USERS.GET_ONE,
+        [{param: 'userId', value: userId}]
+    );
+    const data = {
+        gender,
+        age: profile?.age,
+        city: profile?.city,
+        name: profile?.name,
+        country: profile?.country,
+        province: profile?.province,
+        continent: profile?.continent,
+        greetingText: profile?.greetingText
+    };
+    return makeRequest('post', url, data);
 };
 
 // ===================================== END POST

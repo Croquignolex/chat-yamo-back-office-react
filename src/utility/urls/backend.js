@@ -43,6 +43,7 @@ export const NOTATIONS = {
 
 export const USERS = {
     GET_ONE: '/profile/{userId}',
+    GET_ONE_V2: '/profile/v2/{userId}',
     SEARCH: '/profile/backoffice/checkuser',
 
     BLOCK: '/authentication/user/{userId}/block',
