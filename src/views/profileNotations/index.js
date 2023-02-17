@@ -70,9 +70,10 @@ class ImageVerification extends React.Component {
 
     handleRemoveAllImages = (images) => {
         this.setState((prevState) => {
-            const tempImages = [...prevState.deletedImages, ...images];
+            // const tempImages = [...prevState.deletedImages, ...images];
             const tempVerified = prevState.verified + 1;
-            return {deletedImages: tempImages, verified: tempVerified};
+            // return {deletedImages: tempImages, verified: tempVerified};
+            return {verified: tempVerified};
         });
     };
 

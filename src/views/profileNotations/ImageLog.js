@@ -12,7 +12,8 @@ import {
     verifyUserImage,
     deleteUserImage,
     getUserProfileV2,
-    notateUserProfile, updateUserProfile
+    notateUserProfile,
+    updateUserProfile
 } from "../../redux/actions/IndependentActions";
 import Error500 from "../Error500";
 
@@ -142,9 +143,9 @@ class ImageLog extends React.Component {
         const image = this.state.images[this.state.activeIndex];
         this.setState({ loading: true });
         // Validate all images
-        this.state.images.forEach((image) => {
+        /*this.state.images.forEach((image) => {
             verifyUserImage(image.userId, image.mediaId, image.mediaPath, 'true').then();
-        });
+        });*/
         notateUserProfile(image.userId, score)
             .then(() => {
                 // Remove all image from array
@@ -195,16 +196,17 @@ class ImageLog extends React.Component {
     };
 
     removeImageFormState = (image) => {
-        this.setState((prevState) => {
+        this.next();
+        /*this.setState((prevState) => {
             const tempImages = prevState.images.filter((i) => i.mediaId !== image.mediaId);
             return {images: tempImages};
         });
-        this.props.handleRemoveImage(image);
+        this.props.handleRemoveImage(image);*/
     };
 
     removeAllImageFormState = () => {
+        // this.setState({images: []});
         this.props.handleRemoveAllImages(this.state.images);
-        this.setState({images: []});
     };
 
     render() {
@@ -296,7 +298,7 @@ class ImageLog extends React.Component {
                                 {(this.state.reportLoading || this.state.blockLoading) ? <Spinner color="primary" /> : (
                                     <>
                                         <button className="btn btn-warning mr-50 mb-50" onClick={() => this.reportProfile()}>
-                                            Repport
+                                            Report
                                         </button>
                                         <button className="btn btn-danger mb-50" onClick={() => this.blockProfile()}>
                                             Block
@@ -317,20 +319,14 @@ class ImageLog extends React.Component {
                                 </Carousel>
                             </div>
                             <div className="col-md-12 mt-2 text-center">
-                                {(this.state.images.length > 1) && (
-                                    (this.state.loading) ? <Spinner color="primary"/> : (
-                                        <>
-                                            <h4>Validate current image</h4>
-                                            <button className="btn btn-success mr-1" onClick={() => this.validateImage('true')}><ThumbsUp size={20} /></button>
-                                            <button className="btn btn-danger mr-1" onClick={() => this.validateImage('false')}><ThumbsDown size={20} /></button>
-                                            <button className="btn btn-dark" onClick={this.deleteImage}><Trash2 size={20} /></button>
-                                        </>
-                                    )
-                                )}
-                                {!(this.state.loading) && (
+                                {(this.state.loading) ? <Spinner color="primary"/> : (
                                     <>
+                                        <h4>Validate current image</h4>
+                                        <button className="btn btn-success mr-1" onClick={() => this.validateImage('true')}><ThumbsUp size={20} /></button>
+                                        <button className="btn btn-danger mr-1" onClick={() => this.validateImage('false')}><ThumbsDown size={20} /></button>
+                                        <button className="btn btn-dark" onClick={this.deleteImage}><Trash2 size={20} /></button>
                                         <hr/>
-                                        <h4>Notate profile</h4>
+                                        <h4>Note profile</h4>
                                         <button className="btn btn-success mr-1 score-size-1" onClick={() => this.notateProfile(1)}>1 <CheckCircle size={20} /></button>
                                         <button className="btn btn-success mr-1 score-size-2" onClick={() => this.notateProfile(2)}>2 <CheckCircle size={20} /></button>
                                         <button className="btn btn-success mr-1 score-size-3" onClick={() => this.notateProfile(3)}>3 <CheckCircle size={20} /></button>
