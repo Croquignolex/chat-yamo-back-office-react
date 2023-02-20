@@ -87,7 +87,7 @@ class ImageLog extends React.Component {
 
         if(activeUser != null) {
             // Load profile data
-            this.setState({ profileLoading: true, error: null, profileData: null });
+            this.setState({ error: null, profileData: null, images: [] });
             getUserProfileV2(activeUser.id)
                 .then((data) => {
                     this.setState({
@@ -285,13 +285,14 @@ class ImageLog extends React.Component {
                         
                         <div className="user-chats">
                             <div className="mx-auto">
-                                {(this.state.profileLoading) ? <Spinner color="primary" /> : (
-                                    <h4>
-                                        <span className="badge badge-dark badge-pill">{this.state.profileData.gender}</span>
-                                        <button className="btn btn-primary btn-sm ml-50" onClick={() => this.changeGender()}>
-                                            <RefreshCw size={20} />
-                                        </button>
-                                    </h4>
+                                {(this.state.profileLoading) ? <Spinner color="primary" /> : (this.state.profileData && (
+                                        <h4>
+                                            <span className="badge badge-dark badge-pill">{this.state.profileData.gender}</span>
+                                            <button className="btn btn-primary btn-sm ml-50" onClick={() => this.changeGender()}>
+                                                <RefreshCw size={20} />
+                                            </button>
+                                        </h4>
+                                    )
                                 )}
                             </div>
                             <div className="mx-auto mb-2">

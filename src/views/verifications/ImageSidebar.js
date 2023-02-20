@@ -84,6 +84,8 @@ class ImageSidebar extends React.Component {
                         if(!user.isDeleted) {
                             // User profile image
                             user.setAvatar = await getUserProfileImage(userId);
+                        } else {
+                            this.setState({toVerify: this.state.toVerify - 1});
                         }
                     } catch (e) {}
                     this.updateUsers(user);

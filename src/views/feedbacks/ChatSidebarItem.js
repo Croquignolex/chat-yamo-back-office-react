@@ -13,6 +13,8 @@ const ChatSidebarItem = ({ feedback, activeChatId, onClickItem }) => {
 
     if (user.isNotFound) return <li><Error500 refresh={false} /></li>;
 
+    if (user.isDeleted) return null;
+
     return (
         <li
             onClick={() => onClickItem(feedback)}
