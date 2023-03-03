@@ -198,7 +198,7 @@ export const notateUserProfile = async (userId, score) => {
 
 export const blockUser = async (userId) => {
     const url = joinBaseUrlWithParams(USERS.BLOCK, [{param: 'userId', value: userId}]);
-    return makeRequest('post', url + '?reason=scam');
+    return makeRequest('delete', url + '?reason=scam');
 };
 
 export const updateUserProfile = async (userId, gender, profile) => {

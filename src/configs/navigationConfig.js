@@ -1,5 +1,5 @@
-import React from "react"
-import * as Icon from "react-feather"
+import React from "react";
+import * as Icon from "react-feather";
 import {APP} from "../utility/urls/frontend";
 
 const navigationConfig = [
@@ -24,7 +24,7 @@ const navigationConfig = [
     type: "item",
     title: "Users images",
     navLink: APP.USERS_IMAGES,
-    icon: <Icon.UserCheck size={20} />,
+    icon: <Icon.Image size={20} />,
     permissions: ['admin', 'writer', 'reader', 'imageverifier', 'imagechecker']
   },
   {
@@ -43,22 +43,22 @@ const navigationConfig = [
     icon: <Icon.MessageSquare size={20} />,
     permissions: ['admin', 'writer', 'reader', 'imageverifier', 'imagechecker']
   },
-  {
+  /*{
     type: "item",
     id: "verification",
     title: "Verifications",
     navLink: APP.VERIFICATIONS,
     icon: <Icon.Image size={20} />,
     permissions: ['admin', 'imageverifier']
-  },
-  {
+  },*/
+  /*{
     type: "item",
     id: "notations",
     title: "Notations",
     navLink: APP.NOTATIONS,
     icon: <Icon.Star size={20} />,
     permissions: ['admin', 'imagechecker']
-  },
+  },*/
   {
     type: "item",
     id: "profile-notations",
@@ -67,14 +67,14 @@ const navigationConfig = [
     icon: <Icon.Star size={20} />,
     permissions: ['admin', 'imagechecker', 'imageverifier']
   },
-  {
+  /*{
     type: "item",
     id: "old-notations",
     title: "Old notations",
     navLink: APP.OLD_VERIFICATIONS,
     icon: <Icon.Archive size={20} />,
     permissions: ['admin', 'imagechecker']
-  },
+  },*/
 ]
 
 export default navigationConfig
