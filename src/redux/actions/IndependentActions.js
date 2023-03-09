@@ -30,7 +30,7 @@ export const getCaseMessages = async (userId) => {
 };
 
 export const getUserProfile = async (userId) => {
-    const url = joinBaseUrlWithParams(USERS.GET_ONE, [{param: 'userId', value: userId}]);
+    const url = joinBaseUrlWithParams(USERS.GET_ONE_V2, [{param: 'userId', value: userId}]);
     return makeRequest('get', url);
 };
 
