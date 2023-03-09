@@ -42,6 +42,7 @@ class ImageLog extends React.Component {
         this.changeGender = this.changeGender.bind(this);
         this.validateImage = this.validateImage.bind(this);
         this.notateProfile = this.notateProfile.bind(this);
+        this.removeImageFormState = this.removeImageFormState.bind(this);
         this.removeAllImageFormState = this.removeAllImageFormState.bind(this);
     }
 
@@ -132,7 +133,7 @@ class ImageLog extends React.Component {
         deleteUserImage(image.userId, image.mediaId)
             .then(() => {
                 // Remove image from array
-                this.removeImageFormState(image)
+                this.removeImageFormState(image, true)
                 NotificationManager.success("Image has been successfully deleted", null, 1000);
             })
             .catch((error) => console.log("error ", error))
@@ -195,13 +196,15 @@ class ImageLog extends React.Component {
             .finally(() => this.setState({ profileLoading: false }));
     };
 
-    removeImageFormState = (image) => {
+    removeImageFormState = (image, shouldDelete = false) => {
         this.next();
-        /*this.setState((prevState) => {
-            const tempImages = prevState.images.filter((i) => i.mediaId !== image.mediaId);
-            return {images: tempImages};
-        });
-        this.props.handleRemoveImage(image);*/
+        if(shouldDelete) {
+            this.setState((prevState) => {
+                const tempImages = prevState.images.filter((i) => i.mediaId !== image.mediaId);
+                return {images: tempImages};
+            });
+            this.props.handleRemoveImage(image);
+        }
     };
 
     removeAllImageFormState = () => {
