@@ -42,6 +42,11 @@ class ImageVerification extends React.Component {
         this.setState({receiverProfile: status === "open"});
     };
 
+    handleActiveUser = (user) => {
+        console.log({user})
+        this.setState({activeUser: new User(user)});
+    };
+
     handleActiveChat = (caseId, user) => {
         let nextUser = null;
 
@@ -149,6 +154,7 @@ class ImageVerification extends React.Component {
             handleRemoveImage={this.handleRemoveImage}
             handleRemoveAllImages={this.handleRemoveAllImages}
             handleReceiverSidebar={this.handleReceiverSidebar}
+            handleActiveUser={this.handleActiveUser}
         />
         <UserProfile
           activeUser={this.state.activeUser}

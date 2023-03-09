@@ -149,6 +149,9 @@ class ImageLog extends React.Component {
         });*/
         notateUserProfile(image.userId, score)
             .then(() => {
+                // Update user side profile show
+                const {activeUser, handleActiveUser} = this.props;
+                handleActiveUser({...activeUser, verified: true});
                 // Remove all image from array
                 this.removeAllImageFormState()
                 NotificationManager.success("Profile has been successfully noted", null, 1000);
@@ -173,7 +176,10 @@ class ImageLog extends React.Component {
         this.setState({blockLoading: true});
         blockUser(this.props.activeUser.id)
             .then(() => {
-                // No action
+                // Update user side profile show
+                const {activeUser, handleActiveUser} = this.props;
+                handleActiveUser({...activeUser, blocked: true});
+                // Notification
                 NotificationManager.success("User profile has been successfully blocked", null, 1000);
             })
             .catch((error) => console.log("error ", error))
@@ -190,6 +196,10 @@ class ImageLog extends React.Component {
                     const tempProfileData = prevState.profileData;
                     return {profileData: {...tempProfileData, gender: newGender}};
                 });
+                // Update user side profile show
+                const {activeUser, handleActiveUser} = this.props;
+                handleActiveUser({...activeUser, gender: newGender});
+                // Notification
                 NotificationManager.success("User gender has been successfully changed", null, 1000);
             })
             .catch((error) => console.log("error ", error))
