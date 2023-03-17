@@ -174,7 +174,8 @@ class ImageSidebar extends React.Component {
                                                 value={this.state.search}
                                             />
                                             <div className="form-control-position">
-                                                <Icon.X size={15} onClick={(this.loadData)} />
+                                                {/*<Icon.X size={15} onClick={(this.loadData)} />*/}
+                                                <Icon.X size={15} onClick={() => this.setState({search: "" })} />
                                             </div>
                                         </div>
                                         <div className="ml-1">

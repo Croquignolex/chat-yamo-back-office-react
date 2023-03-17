@@ -113,7 +113,7 @@ class ImageLog extends React.Component {
     validateImage = (answer) => {
         const image = this.state.images[this.state.activeIndex];
         this.setState({ loading: true });
-        verifyUserImage(image.userId, image.mediaId, image.mediaPath, answer)
+        verifyUserImage(this.props.activeUser.id, image.mediaId, image.mediaPath, answer)
             .then(() => {
                 // Remove image from array
                 this.removeImageFormState(image)
@@ -130,7 +130,7 @@ class ImageLog extends React.Component {
     deleteImage = () => {
         const image = this.state.images[this.state.activeIndex];
         this.setState({ loading: true });
-        deleteUserImage(image.userId, image.mediaId)
+        deleteUserImage(this.props.activeUser.id, image.mediaId)
             .then(() => {
                 // Remove image from array
                 this.removeImageFormState(image, true)
@@ -141,13 +141,12 @@ class ImageLog extends React.Component {
     };
 
     notateProfile = (score) => {
-        const image = this.state.images[this.state.activeIndex];
         this.setState({ loading: true });
         // Validate all images
         /*this.state.images.forEach((image) => {
             verifyUserImage(image.userId, image.mediaId, image.mediaPath, 'true').then();
         });*/
-        notateUserProfile(image.userId, score)
+        notateUserProfile(this.props.activeUser.id, score)
             .then(() => {
                 // Update user side profile show
                 const {activeUser, handleActiveUser} = this.props;
@@ -207,14 +206,15 @@ class ImageLog extends React.Component {
     };
 
     removeImageFormState = (image, shouldDelete = false) => {
-        this.next();
         if(shouldDelete) {
             this.setState((prevState) => {
                 const tempImages = prevState.images.filter((i) => i.mediaId !== image.mediaId);
-                return {images: tempImages};
+                return (tempImages.length === 0)
+                    ? {images: [{mediaId: null, originalUrl: require("../../assets/img/unknown-user.png")}]}
+                    : {images: tempImages};
             });
             this.props.handleRemoveImage(image);
-        }
+        } else this.next();
     };
 
     removeAllImageFormState = () => {
@@ -245,7 +245,7 @@ class ImageLog extends React.Component {
             )
         }
 
-        if(this.state.images.length === 0 || !activeUser) {
+        if(!activeUser) {
             return (
                 <div className="content-right">
                     <div className="chat-app-window">
@@ -254,10 +254,24 @@ class ImageLog extends React.Component {
                                 <Image size={50} />
                             </span>
                             <h4 className="py-50 px-1 sidebar-toggle start-chat-text">
-                                {activeUser !== null
-                                    ? "Profile already noted"
-                                    : "Select a user to start profile notation"
-                                }
+                                Select a user to start profile notation
+                            </h4>
+                        </div>
+                    </div>
+                </div>
+            )
+        }
+
+        if(this.state.images.length === 0) {
+            return (
+                <div className="content-right">
+                    <div className="chat-app-window">
+                        <div className={`start-chat-area d-flex`}>
+                            <span className="mb-1 start-chat-icon">
+                                <Image size={50} />
+                            </span>
+                            <h4 className="py-50 px-1 sidebar-toggle start-chat-text">
+                                <Spinner color="primary" />
                             </h4>
                         </div>
                     </div>
@@ -335,11 +349,15 @@ class ImageLog extends React.Component {
                             <div className="col-md-12 mt-50 text-center">
                                 {(this.state.loading) ? <Spinner color="primary"/> : (
                                     <>
-                                        <strong>Validate current image</strong><br/>
-                                        <button className="btn btn-success mr-1 btn-sm" onClick={() => this.validateImage('true')}><ThumbsUp size={15} /></button>
-                                        <button className="btn btn-danger mr-1 btn-sm" onClick={() => this.validateImage('false')}><ThumbsDown size={15} /></button>
-                                        <button className="btn btn-dark btn-sm" onClick={this.deleteImage}><Trash2 size={15} /></button>
-                                        <br/><strong>Note profile</strong><br/>
+                                        {(this.state.images[0].mediaId !== null) &&
+                                            <>
+                                                <strong>Validate current image</strong><br/>
+                                                <button className="btn btn-success mr-1 btn-sm" onClick={() => this.validateImage('true')}><ThumbsUp size={15} /></button>
+                                                <button className="btn btn-danger mr-1 btn-sm" onClick={() => this.validateImage('false')}><ThumbsDown size={15} /></button>
+                                                <button className="btn btn-dark btn-sm" onClick={this.deleteImage}><Trash2 size={15} /></button><br/>
+                                            </>
+                                        }
+                                        <strong>Note profile</strong><br/>
                                         <button className="btn btn-success mr-1 score-size-1" onClick={() => this.notateProfile(1)}>1 <CheckCircle size={20} /></button>
                                         <button className="btn btn-success mr-1 score-size-2" onClick={() => this.notateProfile(2)}>2 <CheckCircle size={20} /></button>
                                         <button className="btn btn-success mr-1 score-size-3" onClick={() => this.notateProfile(3)}>3 <CheckCircle size={20} /></button>
