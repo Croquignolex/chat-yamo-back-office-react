@@ -2,20 +2,24 @@ import React from "react"
 import ReactDOM from "react-dom"
 import {connect} from "react-redux";
 import {NotificationManager} from "react-notifications";
-import {Image, Menu, ThumbsUp, ThumbsDown, Trash2, CheckCircle, RefreshCw} from "react-feather";
 import {Carousel, CarouselItem, CarouselControl, CarouselIndicators, Spinner} from "reactstrap";
+import {Image, Menu, ThumbsUp, ThumbsDown, Trash2, CheckCircle, ArrowLeft, ArrowRight, Star} from "react-feather";
 
+import Error500 from "../Error500";
+import User from "../../models/User";
 import DisplayImage from "../../components/DisplayImage";
 import {
     blockUser,
     reportUser,
     verifyUserImage,
     deleteUserImage,
-    getUserProfileV2,
     notateUserProfile,
-    updateUserProfile
+    updateUserProfile,
+    getUserProfile,
+    getUserStatus,
+    getUserProfileImage,
+    searchUserImages
 } from "../../redux/actions/IndependentActions";
-import Error500 from "../Error500";
 
 class ImageLog extends React.Component {
     // props { activeChatID, activeUser, mainSidebar, handleReceiverSidebar }
@@ -23,7 +27,7 @@ class ImageLog extends React.Component {
         super(props);
         this.state = {
             error: null,
-            loading: false,
+            loading: true,
             activeIndex: 0,
             images: [],
             all_images: [],
@@ -43,7 +47,6 @@ class ImageLog extends React.Component {
         this.validateImage = this.validateImage.bind(this);
         this.notateProfile = this.notateProfile.bind(this);
         this.removeImageFormState = this.removeImageFormState.bind(this);
-        this.removeAllImageFormState = this.removeAllImageFormState.bind(this);
     }
 
     onExiting() {
@@ -85,21 +88,36 @@ class ImageLog extends React.Component {
 
     loadData = () => {
         const {activeUser} = this.props;
-
-        if(activeUser != null) {
-            // Load profile data
-            this.setState({ error: null, profileData: null, images: [] });
-            getUserProfileV2(activeUser.id)
-                .then((data) => {
+        if(activeUser !== null) {
+            this.setState({ loading: true, error: null, images: []});
+            const userId = activeUser.id;
+            getUserProfile(userId)
+                .then(async data => {
+                    // Make user as an object
+                    const user = new User(data);
+                    user.setId = userId;
+                    try {
+                        user.setStatus = await getUserStatus(userId);
+                        user.setAvatar = await getUserProfileImage(userId);
+                        user.setImages = await searchUserImages(userId);
+                        if(user.images?.length === 0) {
+                            user.setImages = [{mediaId: null, originalUrl: require("../../assets/img/no-image.png")}]
+                        }
+                    } catch (e) {}
                     this.setState({
-                        images: activeUser.images,
+                        images: user.images,
                         activeIndex: 0,
                         profileData: data,
-                        activeUser
+                        activeUser: user
                     });
+                    this.props.handleActiveUser(user);
                 })
-                .catch((error) => this.setState({ error }))
-                .finally(() => this.setState({ profileLoading: false }));
+                .catch((error) => console.log("error ", error))
+                .catch((error) => {
+                    this.setState({ error });
+                    this.props.handleActiveUser(null);
+                })
+                .finally(() => {this.setState({ loading: false })});
         }
     };
  
@@ -150,9 +168,7 @@ class ImageLog extends React.Component {
             .then(() => {
                 // Update user side profile show
                 const {activeUser, handleActiveUser} = this.props;
-                handleActiveUser({...activeUser, verified: true});
-                // Remove all image from array
-                this.removeAllImageFormState()
+                handleActiveUser({...activeUser, verified: true}, true);
                 NotificationManager.success("Profile has been successfully noted", null, 1000);
             })
             .catch((error) => console.log("error ", error))
@@ -210,32 +226,31 @@ class ImageLog extends React.Component {
             this.setState((prevState) => {
                 const tempImages = prevState.images.filter((i) => i.mediaId !== image.mediaId);
                 return (tempImages.length === 0)
-                    ? {images: [{mediaId: null, originalUrl: require("../../assets/img/unknown-user.png")}]}
+                    ? {images: [{mediaId: null, originalUrl: require("../../assets/img/no-image.png")}]}
                     : {images: tempImages};
             });
-            this.props.handleRemoveImage(image);
         } else this.next();
-    };
-
-    removeAllImageFormState = () => {
-        // this.setState({images: []});
-        this.props.handleRemoveAllImages(this.state.images);
     };
 
     render() {
         const { activeIndex } = this.state;
-        const { activeUser, mainSidebar, handleReceiverSidebar } = this.props;
+        const { activeUser, handleReceiverSidebar } = this.props;
         const slides = this.state.images.map((item) => {
             return (
                 <CarouselItem onExiting={this.onExiting} onExited={this.onExited} key={item.mediaId}>
-                    <DisplayImage src={item.compressedUrl || item.originalUrl} withPercentage />
+                    <DisplayImage src={
+                        item.compressedPreSignedUrl ||
+                        item.originalPreSignedUrl ||
+                        item.compressedUrl ||
+                        item.originalUrl
+                    } height={"300"}  width={""} />
                 </CarouselItem>
             );
         });
 
-        if(this.state.error !== null) {
+        if((this.state.error !== null) || (this.props.error !== null)) {
             return (
-                <div className="content-right">
+                <div className="content-right float-left width-100-percent">
                     <div className="chat-app-window">
                         <div className={`start-chat-area d-flex`}>
                             <Error500 onLinkClick={this.loadData} />
@@ -245,26 +260,9 @@ class ImageLog extends React.Component {
             )
         }
 
-        if(!activeUser) {
+        if(this.state.loading || this.props.loading) {
             return (
-                <div className="content-right">
-                    <div className="chat-app-window">
-                        <div className={`start-chat-area d-flex`}>
-                            <span className="mb-1 start-chat-icon">
-                                <Image size={50} />
-                            </span>
-                            <h4 className="py-50 px-1 sidebar-toggle start-chat-text">
-                                Select a user to start profile notation
-                            </h4>
-                        </div>
-                    </div>
-                </div>
-            )
-        }
-
-        if(this.state.images.length === 0) {
-            return (
-                <div className="content-right">
+                <div className="content-right float-left width-100-percent">
                     <div className="chat-app-window">
                         <div className={`start-chat-area d-flex`}>
                             <span className="mb-1 start-chat-icon">
@@ -280,61 +278,71 @@ class ImageLog extends React.Component {
         }
 
         return (
-            <div className="content-right">
+            <div className="content-right float-left width-100-percent">
                 <div className="chat-app-window">
                     <div className="active-chat d-block"> 
                         <div className="chat_navbar">
-                            <header className="chat_header d-flex justify-content-between align-items-center p-1">
-                                <div className="d-flex align-items-center">
-                                    <div
-                                        className="sidebar-toggle d-block d-lg-none mr-1"
-                                        onClick={() => mainSidebar(true)}>
-                                        <Menu size={24} />
+                            <header className="chat_header px-1 py-50">
+                                <div className="d-flex align-items-center justify-content-between">
+                                    <div className="d-flex justify-content-between">
+                                        <div className="avatar user-profile-toggle m-0 m-0 mr-1 align-content-start">
+                                            <DisplayImage src={activeUser.avatar} withModal={false} />
+                                        </div>
+                                        <h6>
+                                            {activeUser?.name}
+                                            {activeUser?.verified && <span className="ml-1"><CheckCircle size={17} className="text-success" /></span>}
+                                            {activeUser?.isPremium && <span className="ml-1"><Star size={17} className="text-warning" /></span>}
+                                            <br/> {activeUser?.city}, {activeUser?.country}
+                                        </h6>
                                     </div>
-                                    <div
-                                        className="avatar user-profile-toggle m-0 m-0 mr-1"
-                                        onClick={() => handleReceiverSidebar("open")}>
-                                        <DisplayImage src={activeUser.avatar} withModal={false} />
+                                    <div>
+                                        <a
+                                            href="/"
+                                            className="mb-0"
+                                            onClick={(e) => {
+                                                e.preventDefault();
+                                                handleReceiverSidebar("open");
+                                            }}
+                                        >
+                                            More information...
+                                        </a>
                                     </div>
-                                    <a
-                                        href="/"
-                                        className="mb-0"
-                                        onClick={(e) => {
-                                            e.preventDefault();
-                                            handleReceiverSidebar("open");
-                                        }}
-                                    >
-                                        More information...
-                                    </a>
                                 </div>
                             </header>
                         </div> 
                         
                         <div className="user-chats">
-                            <div className="mx-auto">
-                                {(this.state.profileLoading) ? <Spinner color="primary" /> : (this.state.profileData && (
-                                        <h4>
-                                            <span className="badge badge-dark badge-pill">{this.state.profileData.gender}</span>
-                                            <button className="btn btn-primary btn-sm ml-50" onClick={() => this.changeGender()}>
-                                                <RefreshCw size={15} />
-                                            </button>
-                                        </h4>
-                                    )
-                                )}
+                            <div className="float-left">
+                                <button className="btn btn-primary" onClick={() => this.props.handleChangeUser(false)}>
+                                    <ArrowLeft size={20} />
+                                </button>
+                            </div>
+                            <div className="float-right">
+                                <button className="btn btn-primary" onClick={() => this.props.handleChangeUser(true)}>
+                                    <ArrowRight size={20} />
+                                </button>
                             </div>
                             <div className="mx-auto mb-50">
-                                {(this.state.reportLoading || this.state.blockLoading) ? <Spinner color="primary" /> : (
+                                {(this.state.profileLoading || this.state.blockLoading) ? <Spinner color="primary" /> : (
                                     <>
-                                        <button className="btn btn-warning btn-sm mr-50" onClick={() => this.reportProfile()}>
-                                            Report
-                                        </button>
-                                        <button className="btn btn-danger btn-sm" onClick={() => this.blockProfile()}>
-                                            Block
-                                        </button>
+                                        <span className="mr-2">
+                                            <span className="badge badge-dark badge-pill">{this.state.profileData.gender}</span>
+                                            <button className="btn btn-primary btn-sm ml-50" onClick={() => this.changeGender()}>
+                                                Change
+                                            </button>
+                                        </span>
+                                        <span className="ml-2">
+                                            <button className="btn btn-warning btn-sm mr-50" onClick={() => this.reportProfile()}>
+                                                Report
+                                            </button>
+                                            <button className="btn btn-danger btn-sm" onClick={() => this.blockProfile()}>
+                                                Block
+                                            </button>
+                                        </span>
                                     </>
                                 )}
                             </div>
-                            <div className="col-md-6 mx-auto"> 
+                            <div className="col-md-6 mx-auto height-xx">
                                 <Carousel
                                     interval={false}
                                     activeIndex={activeIndex}
@@ -350,19 +358,21 @@ class ImageLog extends React.Component {
                                 {(this.state.loading) ? <Spinner color="primary"/> : (
                                     <>
                                         {(this.state.images[0].mediaId !== null) &&
-                                            <>
-                                                <strong>Validate current image</strong><br/>
-                                                <button className="btn btn-success mr-1 btn-sm" onClick={() => this.validateImage('true')}><ThumbsUp size={15} /></button>
-                                                <button className="btn btn-danger mr-1 btn-sm" onClick={() => this.validateImage('false')}><ThumbsDown size={15} /></button>
-                                                <button className="btn btn-dark btn-sm" onClick={this.deleteImage}><Trash2 size={15} /></button><br/>
-                                            </>
+                                            <span className="mr-4">
+                                                {/*<strong>Validate current image</strong><br/>*/}
+                                                <button className="btn btn-success mr-50 btn-sm" onClick={() => this.validateImage('true')}><ThumbsUp size={15} /></button>
+                                                <button className="btn btn-danger mr-50 btn-sm" onClick={() => this.validateImage('false')}><ThumbsDown size={15} /></button>
+                                                <button className="btn btn-dark btn-sm" onClick={this.deleteImage}><Trash2 size={15} /></button>
+                                            </span>
                                         }
-                                        <strong>Note profile</strong><br/>
-                                        <button className="btn btn-success mr-1 score-size-1" onClick={() => this.notateProfile(1)}>1 <CheckCircle size={20} /></button>
-                                        <button className="btn btn-success mr-1 score-size-2" onClick={() => this.notateProfile(2)}>2 <CheckCircle size={20} /></button>
-                                        <button className="btn btn-success mr-1 score-size-3" onClick={() => this.notateProfile(3)}>3 <CheckCircle size={20} /></button>
-                                        <button className="btn btn-success mr-1 score-size-4" onClick={() => this.notateProfile(4)}>4 <CheckCircle size={20} /></button>
-                                        <button className="btn btn-success mr-1 score-size-5" onClick={() => this.notateProfile(5)}>5 <CheckCircle size={20} /></button>
+                                        <span>
+                                            {/*<strong>Note profile</strong><br/>*/}
+                                            <button className="btn btn-success mr-50 score-size-1" onClick={() => this.notateProfile(1)}>1 <CheckCircle size={20} /></button>
+                                            <button className="btn btn-success mr-50 score-size-2" onClick={() => this.notateProfile(2)}>2 <CheckCircle size={20} /></button>
+                                            <button className="btn btn-success mr-50 score-size-3" onClick={() => this.notateProfile(3)}>3 <CheckCircle size={20} /></button>
+                                            <button className="btn btn-success mr-50 score-size-4" onClick={() => this.notateProfile(4)}>4 <CheckCircle size={20} /></button>
+                                            <button className="btn btn-success mr-50 score-size-5" onClick={() => this.notateProfile(5)}>5 <CheckCircle size={20} /></button>
+                                        </span>
                                     </>
                                 )}
                             </div>

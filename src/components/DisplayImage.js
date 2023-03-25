@@ -38,7 +38,7 @@ const DisplayImage = ({src, className, withWrapper, withModal, withPercentage, h
                     : <img  
                         alt="..." 
                         src={src} 
-                        width={width} 
+                        width={width}
                         height={height}  
                         className={className} 
                         onClick={toggleModal} 
@@ -57,16 +57,17 @@ const DisplayImage = ({src, className, withWrapper, withModal, withPercentage, h
 
 // Prop types definition
 DisplayImage.propTypes = {
+    src: PropTypes.string,
     width: PropTypes.string,
     height: PropTypes.string,
     withModal: PropTypes.bool,
     className: PropTypes.string,
     withWrapper: PropTypes.bool,
-    src: PropTypes.string.isRequired,
 }
 
 // Default props
 DisplayImage.defaultProps = {
+    src: "",
     width: "40",
     height: "40",
     className: "",

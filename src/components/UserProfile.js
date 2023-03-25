@@ -56,7 +56,7 @@ class UserProfile extends React.Component {
       const {souscriptionModal, activeUser} = this.state;
       if(souscriptionModal.show) this.setState({souscriptionModal: {...souscriptionModal, show: false}});
       else {
-        const title = activeUser.isDeleted ? "Deleted user" : `${activeUser.name} souscriptions history`;
+        const title = activeUser?.isDeleted ? "Deleted user" : `${activeUser?.name} souscriptions history`;
         this.setState({souscriptionModal: {show: true, title}});
       }
   };
@@ -65,7 +65,7 @@ class UserProfile extends React.Component {
       const {townEventModal, activeUser} = this.state;
       if(townEventModal.show) this.setState({townEventModal: {...townEventModal, show: false}});
       else {
-        const title = activeUser.isDeleted ? "Deleted user" : `${activeUser.name} town event check`;
+        const title = activeUser?.isDeleted ? "Deleted user" : `${activeUser?.name} town event check`;
         this.setState({townEventModal: {show: true, title}});
       }
   };
@@ -74,7 +74,7 @@ class UserProfile extends React.Component {
     const {statusHistoryModal, activeUser} = this.state;
     if(statusHistoryModal.show) this.setState({statusHistoryModal: {...statusHistoryModal, show: false}});
     else {
-      const title = activeUser.isDeleted ? "Deleted user" : `${activeUser.name} status history`;
+      const title = activeUser?.isDeleted ? "Deleted user" : `${activeUser?.name} status history`;
       this.setState({statusHistoryModal: {show: true, title}});
     }
   };
@@ -94,12 +94,12 @@ class UserProfile extends React.Component {
             </span>
             <div className="header-profile-sidebar">
               <div className="avatar">
-                <DisplayImage src={activeUser.imageSrc} height="70" width="70" />
+                <DisplayImage src={activeUser?.imageSrc} height="70" width="70" />
               </div>
               <h4 className="chat-user-name"> 
-                {activeUser.isDeleted ? "Deleted user" : activeUser.name} 
+                {activeUser?.isDeleted ? "Deleted user" : activeUser?.name}
                 <br/>
-                {!activeUser.isBlocked
+                {!activeUser?.isBlocked
                     ? <Icon.Unlock size={20} className="text-success" />
                     : <Icon.Lock size={20} className="text-danger" />
                 } 
@@ -112,7 +112,7 @@ class UserProfile extends React.Component {
                 <div className="user-info-title font-weight-bold">
                   Premium
                 </div>
-                {(activeUser.isPremium)
+                {(activeUser?.isPremium)
                     ? <div className="font-weight-bold text-success">Yes</div>
                     : <div className="font-weight-bold text-danger">No</div>
                 }
@@ -121,7 +121,7 @@ class UserProfile extends React.Component {
                 <div className="user-info-title font-weight-bold">
                   Verified
                 </div>
-                {(activeUser.verified)
+                {(activeUser?.verified)
                     ? <div className="font-weight-bold text-success">Yes</div>
                     : <div className="font-weight-bold text-danger">No</div>
                 }
@@ -130,7 +130,7 @@ class UserProfile extends React.Component {
                 <div className="user-info-title font-weight-bold">
                   Blocked
                 </div>
-                {(activeUser.isBlocked)
+                {(activeUser?.isBlocked)
                     ? <div className="font-weight-bold text-danger">Yes</div>
                     : <div className="font-weight-bold text-success">No</div>
                 }
@@ -139,7 +139,7 @@ class UserProfile extends React.Component {
                 <div className="user-info-title font-weight-bold">
                   Deleted
                 </div>
-                {(activeUser.isDeleted)
+                {(activeUser?.isDeleted)
                     ? <div className="font-weight-bold text-danger">Yes</div>
                     : <div className="font-weight-bold text-success">No</div>
                 }
@@ -148,58 +148,58 @@ class UserProfile extends React.Component {
                 <div className="user-info-title font-weight-bold">
                   Age
                 </div>
-                <div>{activeUser.age}</div>
+                <div>{activeUser?.age}</div>
               </div>
               <div className="d-flex user-info">
                 <div className="user-info-title font-weight-bold">
                   gender
                 </div>
-                <div>{activeUser.gender}</div>
+                <div>{activeUser?.gender}</div>
               </div>
               <div className="d-flex user-info">
                 <div className="user-info-title font-weight-bold">
                   City
                 </div>
-                <div>{activeUser.city}</div>
+                <div>{activeUser?.city}</div>
               </div>
               <div className="d-flex user-info">
                 <div className="user-info-title font-weight-bold">
                   Town
                 </div>
-                <div>{activeUser.province}</div>
+                <div>{activeUser?.province}</div>
               </div>
               <div className="d-flex user-info">
                 <div className="user-info-title font-weight-bold">
                   Country
                 </div>
-                <div>{activeUser.country}</div>
+                <div>{activeUser?.country}</div>
               </div>
               <div className="d-flex user-info">
                 <div className="user-info-title font-weight-bold">
                   Native country
                 </div>
-                <div>{activeUser.homeCountry}</div>
+                <div>{activeUser?.homeCountry}</div>
               </div>
               <div className="d-flex user-info">
                 <div className="user-info-title font-weight-bold">
                   Greeting text
                 </div>
-                <div>{activeUser.greetingText}</div>
+                <div>{activeUser?.greetingText}</div>
               </div>
               <div className="d-flex user-info">
                 <div className="user-info-title font-weight-bold">
                   End subcription
                 </div>
-                {(activeUser.verified)
-                    ? <div className="font-weight-bold text-success">{activeUser.subscriptionEndDate}</div>
-                    : <div className="font-weight-bold text-danger">{activeUser.subscriptionEndDate}</div>
+                {(activeUser?.verified)
+                    ? <div className="font-weight-bold text-success">{activeUser?.subscriptionEndDate}</div>
+                    : <div className="font-weight-bold text-danger">{activeUser?.subscriptionEndDate}</div>
                 }
               </div>
               <div className="d-flex user-info">
                 <div className="user-info-title font-weight-bold">
                   User ID
                 </div>
-                <div className="font-weight-bold text-primary">{activeUser.id}</div>
+                <div className="font-weight-bold text-primary">{activeUser?.id}</div>
               </div>
               <hr />
               {(this.state.error) && <Error500 refresh={false} />}
@@ -250,13 +250,13 @@ class UserProfile extends React.Component {
           </PerfectScrollbar>
         </div> 
         <FormModal small modal={souscriptionModal} toggleModal={this.toggleSouscriptionModal}>
-          <UserSouscriptions userId={activeUser.id} />
+          <UserSouscriptions userId={activeUser?.id} />
         </FormModal>
         <FormModal small modal={townEventModal} toggleModal={this.toggleTownEventModal}>
-          <UserTownEvents userId={activeUser.id} />
+          <UserTownEvents userId={activeUser?.id} />
         </FormModal>
         <FormModal small modal={statusHistoryModal} toggleModal={this.toggleStatusHistoryModal}>
-          <UserStatusHistory userId={activeUser.id} />
+          <UserStatusHistory userId={activeUser?.id} />
         </FormModal>
       </>
     )
