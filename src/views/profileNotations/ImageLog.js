@@ -3,7 +3,7 @@ import ReactDOM from "react-dom"
 import {connect} from "react-redux";
 import {NotificationManager} from "react-notifications";
 import {Carousel, CarouselItem, CarouselControl, CarouselIndicators, Spinner} from "reactstrap";
-import {Image, ThumbsUp, ThumbsDown, Trash2, CheckCircle, ArrowLeft, ArrowRight, Star} from "react-feather";
+import {Image, ThumbsUp, ThumbsDown, Trash2, CheckCircle, ArrowLeft, ArrowRight, Star, RefreshCcw} from "react-feather";
 
 import Error500 from "../Error500";
 import User from "../../models/User";
@@ -73,7 +73,7 @@ class ImageLog extends React.Component {
         if (this.animating) return;
         this.setState({ activeIndex: newIndex });
     }
- 
+
     componentDidMount() {
         this.loadData();
         this.scrollToBottom();
@@ -129,7 +129,7 @@ class ImageLog extends React.Component {
                 .finally(() => {this.setState({ loading: false })});
         }
     };
- 
+
     scrollToBottom = () => {
         if (this.chatArea) {
             const chatContainer = ReactDOM.findDOMNode(this.chatArea);
@@ -289,7 +289,7 @@ class ImageLog extends React.Component {
         return (
             <div className="content-right float-left width-100-percent">
                 <div className="chat-app-window">
-                    <div className="active-chat d-block"> 
+                    <div className="active-chat d-block">
                         <div className="chat_navbar">
                             <header className="chat_header px-1 py-50">
                                 <div className="d-flex align-items-center justify-content-between">
@@ -322,82 +322,102 @@ class ImageLog extends React.Component {
                                     )}
                                 </div>
                             </header>
-                        </div> 
-                        
+                        </div>
+
                         <div className="user-chats">
-                            {showNavigation && (
-                                <>
-                                    <div className="float-left">
-                                        <button className="btn btn-primary" onClick={() => this.props.handleChangeUser(false)}>
-                                            <ArrowLeft size={20} />
-                                        </button>
+                            <div className="d-flex flex-row justify-content-between">
+                                <div className={`col-3 d-flex flex-column ${(this.state.error) ? 'justify-content-center' : 'justify-content-between'}`}>
+                                    <div>
+                                        {!(this.state.error) && (
+                                            (this.state.profileLoading) ? <Spinner color="primary" /> : (
+                                                <>
+                                                    <strong>Change gender</strong><br/>
+                                                    <span className="badge badge-dark badge-pill mb-50">{profileData.gender ? profileData.gender : 'none'}</span>
+                                                    <button className="btn btn-primary btn-sm ml-50" onClick={() => this.changeGender()}>
+                                                        <RefreshCcw size={10} />
+                                                    </button>
+                                                </>
+                                            )
+                                        )}
                                     </div>
-                                    <div className="float-right">
-                                        <button className="btn btn-primary" onClick={() => this.props.handleChangeUser(true)}>
-                                            <ArrowRight size={20} />
-                                        </button>
+                                    <div>
+                                        {showNavigation && (
+                                            <>
+                                                <strong>Previous profile</strong><br/>
+                                                <button className="btn btn-primary btn-sm" onClick={() => this.props.handleChangeUser(false)}>
+                                                    <ArrowLeft size={20} />
+                                                </button>
+                                            </>
+                                        )}
                                     </div>
-                                </>
-                            )}
-                            {!(this.state.error) && (
-                                <div className="mx-auto mb-50">
-                                    {(this.state.profileLoading || this.state.blockLoading) ? <Spinner color="primary" /> : (
-                                        <>
-                                        <span className="mr-2">
-                                            <span className="badge badge-dark badge-pill">{profileData.gender ? profileData.gender : 'none'}</span>
-                                            <button className="btn btn-primary btn-sm ml-50" onClick={() => this.changeGender()}>
-                                                Change
-                                            </button>
-                                        </span>
-                                            <span className="ml-2">
-                                            <button className="btn btn-warning btn-sm mr-50" onClick={() => this.reportProfile()}>
-                                                Report
-                                            </button>
-                                            <button className="btn btn-danger btn-sm" onClick={() => this.blockProfile()}>
-                                                Block
-                                            </button>
-                                        </span>
-                                        </>
-                                    )}
+                                    <div>
+                                        {(!(this.state.error) && (this.state.images[0].mediaId !== null)) && (
+                                            (this.state.loading) ? <Spinner color="primary"/> : (
+                                                <>
+                                                    <strong>Validate current image</strong><br/>
+                                                    <button className="btn btn-success mr-50 btn-sm mb-50" onClick={() => this.validateImage('true')}><ThumbsUp size={15} /></button>
+                                                    <button className="btn btn-danger mr-50 btn-sm mb-50" onClick={() => this.validateImage('false')}><ThumbsDown size={15} /></button>
+                                                    <button className="btn btn-dark mr-50 btn-sm mb-50" onClick={this.deleteImage}><Trash2 size={15} /></button>
+                                                </>
+                                            )
+                                        )}
+                                    </div>
                                 </div>
-                            )}
-                            <div className="col-md-6 mx-auto height-xx">
-                                <Carousel
-                                    interval={false}
-                                    activeIndex={activeIndex}
-                                    next={this.next}
-                                    previous={this.previous}>
-                                    <CarouselIndicators items={this.state.images} activeIndex={activeIndex} onClickHandler={this.goToIndex} />
-                                    {slides}
-                                    <CarouselControl direction="prev" directionText="Previous" onClickHandler={this.previous} />
-                                    <CarouselControl direction="next" directionText="Next" onClickHandler={this.next} />
-                                </Carousel>
+                                <div className="col-6">
+                                    <Carousel
+                                        interval={false}
+                                        activeIndex={activeIndex}
+                                        next={this.next}
+                                        previous={this.previous}>
+                                        <CarouselIndicators items={this.state.images} activeIndex={activeIndex} onClickHandler={this.goToIndex} />
+                                        {slides}
+                                        <CarouselControl direction="prev" directionText="Previous" onClickHandler={this.previous} />
+                                        <CarouselControl direction="next" directionText="Next" onClickHandler={this.next} />
+                                    </Carousel>
+                                </div>
+                                <div className={`col-3 d-flex flex-column ${(this.state.error) ? 'justify-content-center' : 'justify-content-between'}`}>
+                                    <div>
+                                        {!(this.state.error) && (
+                                            (this.state.reportLoading || this.state.blockLoading) ? <Spinner color="primary" /> : (
+                                                <>
+                                                    <strong>Actions</strong><br/>
+                                                    <button className="btn btn-warning btn-sm mr-50 mb-50" onClick={() => this.reportProfile()}>
+                                                        Report
+                                                    </button>
+                                                    <button className="btn btn-danger btn-sm mr-50 mb-50" onClick={() => this.blockProfile()}>
+                                                        Block
+                                                    </button>
+                                                </>
+                                            )
+                                        )}
+                                    </div>
+                                    <div>
+                                        {showNavigation && (
+                                            <div>
+                                                <strong>Next profile</strong><br/>
+                                                <button className="btn btn-primary btn-sm" onClick={() => this.props.handleChangeUser(true)}>
+                                                    <ArrowRight size={20} />
+                                                </button>
+                                            </div>
+                                        )}
+                                    </div>
+                                    <div>
+                                        {!(this.state.error) && (
+                                            (this.state.loading) ? <Spinner color="primary"/> : (
+                                                <>
+                                                    <strong>Note profile</strong><br/>
+                                                    <button className="btn btn-success mr-50 mb-50 score-size-1" onClick={() => this.notateProfile(1)}>1 <CheckCircle size={20} /></button>
+                                                    <button className="btn btn-success mr-50 mb-50 score-size-2" onClick={() => this.notateProfile(2)}>2 <CheckCircle size={20} /></button>
+                                                    <button className="btn btn-success mr-50 mb-50 score-size-3" onClick={() => this.notateProfile(3)}>3 <CheckCircle size={20} /></button>
+                                                    <button className="btn btn-success mr-50 mb-50 score-size-4" onClick={() => this.notateProfile(4)}>4 <CheckCircle size={20} /></button>
+                                                    <button className="btn btn-success mr-50 mb-50 score-size-5" onClick={() => this.notateProfile(5)}>5 <CheckCircle size={20} /></button>
+                                                </>
+                                            )
+                                        )}
+                                    </div>
+                                </div>
                             </div>
-                            {!(this.state.error) && (
-                                <div className="col-md-12 mt-50 text-center">
-                                    {(this.state.loading) ? <Spinner color="primary"/> : (
-                                        <>
-                                            {(this.state.images[0].mediaId !== null) &&
-                                                <span className="mr-4">
-                                                    {/*<strong>Validate current image</strong><br/>*/}
-                                                    <button className="btn btn-success mr-50 btn-sm" onClick={() => this.validateImage('true')}><ThumbsUp size={15} /></button>
-                                                    <button className="btn btn-danger mr-50 btn-sm" onClick={() => this.validateImage('false')}><ThumbsDown size={15} /></button>
-                                                    <button className="btn btn-dark btn-sm" onClick={this.deleteImage}><Trash2 size={15} /></button>
-                                                </span>
-                                            }
-                                            <span>
-                                                {/*<strong>Note profile</strong><br/>*/}
-                                                <button className="btn btn-success mr-50 score-size-1" onClick={() => this.notateProfile(1)}>1 <CheckCircle size={20} /></button>
-                                                <button className="btn btn-success mr-50 score-size-2" onClick={() => this.notateProfile(2)}>2 <CheckCircle size={20} /></button>
-                                                <button className="btn btn-success mr-50 score-size-3" onClick={() => this.notateProfile(3)}>3 <CheckCircle size={20} /></button>
-                                                <button className="btn btn-success mr-50 score-size-4" onClick={() => this.notateProfile(4)}>4 <CheckCircle size={20} /></button>
-                                                <button className="btn btn-success mr-50 score-size-5" onClick={() => this.notateProfile(5)}>5 <CheckCircle size={20} /></button>
-                                            </span>
-                                        </>
-                                    )}
-                                </div>
-                            )}
-                        </div> 
+                        </div>
                     </div>
                 </div>
             </div>
