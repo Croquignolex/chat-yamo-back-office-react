@@ -234,7 +234,7 @@ class ImageLog extends React.Component {
 
     render() {
         const { activeIndex } = this.state;
-        const { activeUser, handleReceiverSidebar } = this.props;
+        const { activeUser, handleReceiverSidebar, showNavigation } = this.props;
         const slides = this.state.images.map((item) => {
             return (
                 <CarouselItem onExiting={this.onExiting} onExited={this.onExited} key={item.mediaId}>
@@ -312,16 +312,20 @@ class ImageLog extends React.Component {
                         </div> 
                         
                         <div className="user-chats">
-                            <div className="float-left">
-                                <button className="btn btn-primary" onClick={() => this.props.handleChangeUser(false)}>
-                                    <ArrowLeft size={20} />
-                                </button>
-                            </div>
-                            <div className="float-right">
-                                <button className="btn btn-primary" onClick={() => this.props.handleChangeUser(true)}>
-                                    <ArrowRight size={20} />
-                                </button>
-                            </div>
+                            {showNavigation && (
+                                <>
+                                    <div className="float-left">
+                                        <button className="btn btn-primary" onClick={() => this.props.handleChangeUser(false)}>
+                                            <ArrowLeft size={20} />
+                                        </button>
+                                    </div>
+                                    <div className="float-right">
+                                        <button className="btn btn-primary" onClick={() => this.props.handleChangeUser(true)}>
+                                            <ArrowRight size={20} />
+                                        </button>
+                                    </div>
+                                </>
+                            )}
                             <div className="mx-auto mb-50">
                                 {(this.state.profileLoading || this.state.blockLoading) ? <Spinner color="primary" /> : (
                                     <>

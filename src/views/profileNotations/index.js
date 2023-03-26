@@ -228,6 +228,7 @@ class ImageVerification extends React.Component {
             activeChatID={this.state.activeChatID}
             loading={this.state.loading}
             error={this.state.error}
+            showNavigation={this.state.users.length > 1}
             handleChangeUser={this.handleChangeUser}
             mainSidebar={this.onSetSidebarOpen}
             handleActiveUser={this.handleActiveUser}
