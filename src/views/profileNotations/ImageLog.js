@@ -112,10 +112,19 @@ class ImageLog extends React.Component {
                     });
                     this.props.handleActiveUser(user);
                 })
-                .catch((error) => console.log("error ", error))
                 .catch((error) => {
-                    this.setState({ error });
-                    this.props.handleActiveUser(null);
+                    console.log("error ", error);
+                    const user = new User(activeUser);
+                    user.setId = userId;
+                    user.setImages = [{mediaId: null, originalUrl: require("../../assets/img/no-image.png")}]
+                    this.setState({
+                        images: user.images,
+                        activeIndex: 0,
+                        profileData: {},
+                        activeUser: user,
+                        error
+                    });
+                    this.props.handleActiveUser(user);
                 })
                 .finally(() => {this.setState({ loading: false })});
         }
@@ -131,7 +140,7 @@ class ImageLog extends React.Component {
     validateImage = (answer) => {
         const image = this.state.images[this.state.activeIndex];
         this.setState({ loading: true });
-        verifyUserImage(this.props.activeUser.id, image.mediaId, image.mediaPath, answer)
+        verifyUserImage(this.state.activeUser.id, image.mediaId, image.mediaPath, answer)
             .then(() => {
                 // Remove image from array
                 this.removeImageFormState(image)
@@ -148,7 +157,7 @@ class ImageLog extends React.Component {
     deleteImage = () => {
         const image = this.state.images[this.state.activeIndex];
         this.setState({ loading: true });
-        deleteUserImage(this.props.activeUser.id, image.mediaId)
+        deleteUserImage(this.state.activeUser.id, image.mediaId)
             .then(() => {
                 // Remove image from array
                 this.removeImageFormState(image, true)
@@ -164,7 +173,7 @@ class ImageLog extends React.Component {
         /*this.state.images.forEach((image) => {
             verifyUserImage(image.userId, image.mediaId, image.mediaPath, 'true').then();
         });*/
-        notateUserProfile(this.props.activeUser.id, score)
+        notateUserProfile(this.state.activeUser.id, score)
             .then(() => {
                 // Update user side profile show
                 const {activeUser, handleActiveUser} = this.props;
@@ -178,7 +187,7 @@ class ImageLog extends React.Component {
     reportProfile = () => {
         const {backOfficeUserLastName, backOfficeUserFirstName} = this.props;
         this.setState({reportLoading: true});
-        reportUser(this.props.activeUser.id, backOfficeUserFirstName, backOfficeUserLastName)
+        reportUser(this.state.activeUser.id, backOfficeUserFirstName, backOfficeUserLastName)
             .then(() => {
                 // No action
                 NotificationManager.success("User profile has been successfully reported", null, 1000);
@@ -189,7 +198,7 @@ class ImageLog extends React.Component {
 
     blockProfile = () => {
         this.setState({blockLoading: true});
-        blockUser(this.props.activeUser.id)
+        blockUser(this.state.activeUser.id)
             .then(() => {
                 // Update user side profile show
                 const {activeUser, handleActiveUser} = this.props;
@@ -205,7 +214,7 @@ class ImageLog extends React.Component {
         const profileData = this.state.profileData;
         const newGender = profileData.gender === "Male" ? "Female" : "Male";
         this.setState({profileLoading: true});
-        updateUserProfile(this.props.activeUser.id, newGender, profileData)
+        updateUserProfile(this.state.activeUser.id, newGender, profileData)
             .then(() => {
                 this.setState((prevState) => {
                     const tempProfileData = prevState.profileData;
@@ -248,7 +257,7 @@ class ImageLog extends React.Component {
             );
         });
 
-        if((this.state.error !== null) || (this.props.error !== null)) {
+        if(this.props.error !== null) {
             return (
                 <div className="content-right float-left width-100-percent">
                     <div className="chat-app-window">
@@ -288,25 +297,29 @@ class ImageLog extends React.Component {
                                         <div className="avatar user-profile-toggle m-0 m-0 mr-1 align-content-start">
                                             <DisplayImage src={activeUser.avatar} withModal={false} />
                                         </div>
-                                        <h6>
-                                            {activeUser?.name}
-                                            {activeUser?.verified && <span className="ml-1"><CheckCircle size={17} className="text-success" /></span>}
-                                            {activeUser?.isPremium && <span className="ml-1"><Star size={17} className="text-warning" /></span>}
-                                            <br/> {activeUser?.city}, {activeUser?.country}
-                                        </h6>
+                                        {(this.state.error) ? <h6 className="text-danger pt-1">User not found</h6> : (
+                                            <h6>
+                                                {activeUser?.name}
+                                                {activeUser?.verified && <span className="ml-1"><CheckCircle size={17} className="text-success" /></span>}
+                                                {activeUser?.isPremium && <span className="ml-1"><Star size={17} className="text-warning" /></span>}
+                                                <br/> {activeUser?.city}, {activeUser?.country}
+                                            </h6>
+                                        )}
                                     </div>
-                                    <div>
-                                        <a
-                                            href="/"
-                                            className="mb-0"
-                                            onClick={(e) => {
-                                                e.preventDefault();
-                                                handleReceiverSidebar("open");
-                                            }}
-                                        >
-                                            More information...
-                                        </a>
-                                    </div>
+                                    {!(this.state.error) && (
+                                        <div>
+                                            <a
+                                                href="/"
+                                                className="mb-0"
+                                                onClick={(e) => {
+                                                    e.preventDefault();
+                                                    handleReceiverSidebar("open");
+                                                }}
+                                            >
+                                                More information...
+                                            </a>
+                                        </div>
+                                    )}
                                 </div>
                             </header>
                         </div> 
@@ -326,16 +339,17 @@ class ImageLog extends React.Component {
                                     </div>
                                 </>
                             )}
-                            <div className="mx-auto mb-50">
-                                {(this.state.profileLoading || this.state.blockLoading) ? <Spinner color="primary" /> : (
-                                    <>
+                            {!(this.state.error) && (
+                                <div className="mx-auto mb-50">
+                                    {(this.state.profileLoading || this.state.blockLoading) ? <Spinner color="primary" /> : (
+                                        <>
                                         <span className="mr-2">
                                             <span className="badge badge-dark badge-pill">{profileData.gender ? profileData.gender : 'none'}</span>
                                             <button className="btn btn-primary btn-sm ml-50" onClick={() => this.changeGender()}>
                                                 Change
                                             </button>
                                         </span>
-                                        <span className="ml-2">
+                                            <span className="ml-2">
                                             <button className="btn btn-warning btn-sm mr-50" onClick={() => this.reportProfile()}>
                                                 Report
                                             </button>
@@ -343,9 +357,10 @@ class ImageLog extends React.Component {
                                                 Block
                                             </button>
                                         </span>
-                                    </>
-                                )}
-                            </div>
+                                        </>
+                                    )}
+                                </div>
+                            )}
                             <div className="col-md-6 mx-auto height-xx">
                                 <Carousel
                                     interval={false}
@@ -358,28 +373,30 @@ class ImageLog extends React.Component {
                                     <CarouselControl direction="next" directionText="Next" onClickHandler={this.next} />
                                 </Carousel>
                             </div>
-                            <div className="col-md-12 mt-50 text-center">
-                                {(this.state.loading) ? <Spinner color="primary"/> : (
-                                    <>
-                                        {(this.state.images[0].mediaId !== null) &&
-                                            <span className="mr-4">
-                                                {/*<strong>Validate current image</strong><br/>*/}
-                                                <button className="btn btn-success mr-50 btn-sm" onClick={() => this.validateImage('true')}><ThumbsUp size={15} /></button>
-                                                <button className="btn btn-danger mr-50 btn-sm" onClick={() => this.validateImage('false')}><ThumbsDown size={15} /></button>
-                                                <button className="btn btn-dark btn-sm" onClick={this.deleteImage}><Trash2 size={15} /></button>
+                            {!(this.state.error) && (
+                                <div className="col-md-12 mt-50 text-center">
+                                    {(this.state.loading) ? <Spinner color="primary"/> : (
+                                        <>
+                                            {(this.state.images[0].mediaId !== null) &&
+                                                <span className="mr-4">
+                                                    {/*<strong>Validate current image</strong><br/>*/}
+                                                    <button className="btn btn-success mr-50 btn-sm" onClick={() => this.validateImage('true')}><ThumbsUp size={15} /></button>
+                                                    <button className="btn btn-danger mr-50 btn-sm" onClick={() => this.validateImage('false')}><ThumbsDown size={15} /></button>
+                                                    <button className="btn btn-dark btn-sm" onClick={this.deleteImage}><Trash2 size={15} /></button>
+                                                </span>
+                                            }
+                                            <span>
+                                                {/*<strong>Note profile</strong><br/>*/}
+                                                <button className="btn btn-success mr-50 score-size-1" onClick={() => this.notateProfile(1)}>1 <CheckCircle size={20} /></button>
+                                                <button className="btn btn-success mr-50 score-size-2" onClick={() => this.notateProfile(2)}>2 <CheckCircle size={20} /></button>
+                                                <button className="btn btn-success mr-50 score-size-3" onClick={() => this.notateProfile(3)}>3 <CheckCircle size={20} /></button>
+                                                <button className="btn btn-success mr-50 score-size-4" onClick={() => this.notateProfile(4)}>4 <CheckCircle size={20} /></button>
+                                                <button className="btn btn-success mr-50 score-size-5" onClick={() => this.notateProfile(5)}>5 <CheckCircle size={20} /></button>
                                             </span>
-                                        }
-                                        <span>
-                                            {/*<strong>Note profile</strong><br/>*/}
-                                            <button className="btn btn-success mr-50 score-size-1" onClick={() => this.notateProfile(1)}>1 <CheckCircle size={20} /></button>
-                                            <button className="btn btn-success mr-50 score-size-2" onClick={() => this.notateProfile(2)}>2 <CheckCircle size={20} /></button>
-                                            <button className="btn btn-success mr-50 score-size-3" onClick={() => this.notateProfile(3)}>3 <CheckCircle size={20} /></button>
-                                            <button className="btn btn-success mr-50 score-size-4" onClick={() => this.notateProfile(4)}>4 <CheckCircle size={20} /></button>
-                                            <button className="btn btn-success mr-50 score-size-5" onClick={() => this.notateProfile(5)}>5 <CheckCircle size={20} /></button>
-                                        </span>
-                                    </>
-                                )}
-                            </div>
+                                        </>
+                                    )}
+                                </div>
+                            )}
                         </div> 
                     </div>
                 </div>

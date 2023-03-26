@@ -72,8 +72,10 @@ class ImageSidebar extends React.Component {
                     }
                 });
             })
-            .catch(error => console.log("error ", error))
-            .catch(error => this.setState({ error }))
+            .catch(error => {
+                console.log("error ", error);
+                this.setState({ error });
+            })
             .finally(() => this.setState({ loading: false }));
     };
 
