@@ -233,7 +233,7 @@ class ImageLog extends React.Component {
     };
 
     render() {
-        const { activeIndex } = this.state;
+        const { activeIndex, profileData } = this.state;
         const { activeUser, handleReceiverSidebar, showNavigation } = this.props;
         const slides = this.state.images.map((item) => {
             return (
@@ -330,7 +330,7 @@ class ImageLog extends React.Component {
                                 {(this.state.profileLoading || this.state.blockLoading) ? <Spinner color="primary" /> : (
                                     <>
                                         <span className="mr-2">
-                                            <span className="badge badge-dark badge-pill">{this.state.profileData.gender}</span>
+                                            <span className="badge badge-dark badge-pill">{profileData.gender ? profileData.gender : 'none'}</span>
                                             <button className="btn btn-primary btn-sm ml-50" onClick={() => this.changeGender()}>
                                                 Change
                                             </button>

@@ -154,7 +154,7 @@ class UserProfile extends React.Component {
                 <div className="user-info-title font-weight-bold">
                   gender
                 </div>
-                <div>{activeUser?.gender}</div>
+                <div>{activeUser?.gender ? activeUser?.gender : 'none'}</div>
               </div>
               <div className="d-flex user-info">
                 <div className="user-info-title font-weight-bold">
