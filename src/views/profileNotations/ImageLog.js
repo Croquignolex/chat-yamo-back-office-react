@@ -242,9 +242,9 @@ class ImageLog extends React.Component {
     };
 
     render() {
-        const { activeIndex, profileData } = this.state;
+        const { activeIndex, profileData, images } = this.state;
         const { activeUser, handleReceiverSidebar, showNavigation } = this.props;
-        const slides = this.state.images.map((item) => {
+        const slides = images.map((item) => {
             return (
                 <CarouselItem onExiting={this.onExiting} onExited={this.onExited} key={item.mediaId}>
                     <DisplayImage src={
@@ -325,9 +325,25 @@ class ImageLog extends React.Component {
                         </div>
 
                         <div className="user-chats">
-                            <div className="d-flex flex-row justify-content-between">
-                                <div className={`col-3 d-flex flex-column ${(this.state.error) ? 'justify-content-center' : 'justify-content-between'}`}>
+                            {showNavigation && (
+                                <div className="d-flex flex-row justify-content-between">
                                     <div>
+                                        <strong>Previous profile</strong><br/>
+                                        <button className="btn btn-primary btn-sm" onClick={() => this.props.handleChangeUser(false)}>
+                                            <ArrowLeft size={15} className="mx-50" />
+                                        </button>
+                                    </div>
+                                    <div>
+                                        <strong>Next profile</strong><br/>
+                                        <button className="btn btn-primary btn-sm" onClick={() => this.props.handleChangeUser(true)}>
+                                            <ArrowRight size={15} className="mx-50" />
+                                        </button>
+                                    </div>
+                                </div>
+                            )}
+                            <div className={`d-flex flex-row justify-content-between ${showNavigation ? 'mb-3' : 'my-3'}`}>
+                                <div className={`col-3 d-flex flex-column justify-content-between`}>
+                                    <div className="mt-5 text-right">
                                         {!(this.state.error) && (
                                             (this.state.profileLoading) ? <Spinner color="primary" /> : (
                                                 <>
@@ -340,24 +356,14 @@ class ImageLog extends React.Component {
                                             )
                                         )}
                                     </div>
-                                    <div>
-                                        {showNavigation && (
-                                            <>
-                                                <strong>Previous profile</strong><br/>
-                                                <button className="btn btn-primary btn-sm" onClick={() => this.props.handleChangeUser(false)}>
-                                                    <ArrowLeft size={20} />
-                                                </button>
-                                            </>
-                                        )}
-                                    </div>
-                                    <div>
-                                        {(!(this.state.error) && (this.state.images[0].mediaId !== null)) && (
+                                    <div className="mb-5 text-right">
+                                        {(!(this.state.error) && (images[0].mediaId !== null)) && (
                                             (this.state.loading) ? <Spinner color="primary"/> : (
                                                 <>
                                                     <strong>Validate current image</strong><br/>
-                                                    <button className="btn btn-success mr-50 btn-sm mb-50" onClick={() => this.validateImage('true')}><ThumbsUp size={15} /></button>
-                                                    <button className="btn btn-danger mr-50 btn-sm mb-50" onClick={() => this.validateImage('false')}><ThumbsDown size={15} /></button>
-                                                    <button className="btn btn-dark mr-50 btn-sm mb-50" onClick={this.deleteImage}><Trash2 size={15} /></button>
+                                                    <button className="btn btn-success btn-sm mb-50" onClick={() => this.validateImage('true')}><ThumbsUp size={15} /></button>
+                                                    <button className="btn btn-danger ml-50 btn-sm mb-50" onClick={() => this.validateImage('false')}><ThumbsDown size={15} /></button>
+                                                    <button className="btn btn-dark ml-50 btn-sm mb-50" onClick={this.deleteImage}><Trash2 size={15} /></button>
                                                 </>
                                             )
                                         )}
@@ -369,14 +375,18 @@ class ImageLog extends React.Component {
                                         activeIndex={activeIndex}
                                         next={this.next}
                                         previous={this.previous}>
-                                        <CarouselIndicators items={this.state.images} activeIndex={activeIndex} onClickHandler={this.goToIndex} />
+                                        <CarouselIndicators items={images} activeIndex={activeIndex} onClickHandler={this.goToIndex} />
                                         {slides}
-                                        <CarouselControl direction="prev" directionText="Previous" onClickHandler={this.previous} />
-                                        <CarouselControl direction="next" directionText="Next" onClickHandler={this.next} />
+                                        {(images.length > 1) && (
+                                            <>
+                                                <CarouselControl direction="prev" directionText="Previous" onClickHandler={this.previous} />
+                                                <CarouselControl direction="next" directionText="Next" onClickHandler={this.next} />
+                                            </>
+                                        )}
                                     </Carousel>
                                 </div>
                                 <div className={`col-3 d-flex flex-column ${(this.state.error) ? 'justify-content-center' : 'justify-content-between'}`}>
-                                    <div>
+                                    <div className="mt-5 text-left">
                                         {!(this.state.error) && (
                                             (this.state.reportLoading || this.state.blockLoading) ? <Spinner color="primary" /> : (
                                                 <>
@@ -384,24 +394,14 @@ class ImageLog extends React.Component {
                                                     <button className="btn btn-warning btn-sm mr-50 mb-50" onClick={() => this.reportProfile()}>
                                                         Report
                                                     </button>
-                                                    <button className="btn btn-danger btn-sm mr-50 mb-50" onClick={() => this.blockProfile()}>
+                                                    <button className="btn btn-danger btn-sm mb-50" onClick={() => this.blockProfile()}>
                                                         Block
                                                     </button>
                                                 </>
                                             )
                                         )}
                                     </div>
-                                    <div>
-                                        {showNavigation && (
-                                            <div>
-                                                <strong>Next profile</strong><br/>
-                                                <button className="btn btn-primary btn-sm" onClick={() => this.props.handleChangeUser(true)}>
-                                                    <ArrowRight size={20} />
-                                                </button>
-                                            </div>
-                                        )}
-                                    </div>
-                                    <div>
+                                    <div className="mb-5 text-left">
                                         {!(this.state.error) && (
                                             (this.state.loading) ? <Spinner color="primary"/> : (
                                                 <>
@@ -410,7 +410,7 @@ class ImageLog extends React.Component {
                                                     <button className="btn btn-success mr-50 mb-50 score-size-2" onClick={() => this.notateProfile(2)}>2 <CheckCircle size={20} /></button>
                                                     <button className="btn btn-success mr-50 mb-50 score-size-3" onClick={() => this.notateProfile(3)}>3 <CheckCircle size={20} /></button>
                                                     <button className="btn btn-success mr-50 mb-50 score-size-4" onClick={() => this.notateProfile(4)}>4 <CheckCircle size={20} /></button>
-                                                    <button className="btn btn-success mr-50 mb-50 score-size-5" onClick={() => this.notateProfile(5)}>5 <CheckCircle size={20} /></button>
+                                                    <button className="btn btn-success mb-50 score-size-5" onClick={() => this.notateProfile(5)}>5 <CheckCircle size={20} /></button>
                                                 </>
                                             )
                                         )}
