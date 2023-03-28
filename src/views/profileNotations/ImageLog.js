@@ -87,47 +87,83 @@ class ImageLog extends React.Component {
     }
 
     loadData = () => {
-        const {activeUser} = this.props;
+        const {activeUser, handleActiveUser} = this.props;
         if(activeUser !== null) {
             this.setState({ loading: true, error: null, images: []});
             const userId = activeUser.id;
             getUserProfile(userId)
                 .then(async data => {
-                    // Make user as an object
-                    const user = new User(data);
-                    user.setId = userId;
-                    try {
-                        user.setStatus = await getUserStatus(userId);
-                        user.setAvatar = await getUserProfileImage(userId);
-                        user.setImages = await searchUserImages(userId);
-                        if(user.images?.length === 0) {
-                            user.setImages = [{mediaId: null, originalUrl: require("../../assets/img/no-image.png")}]
+                    // Catch profiles not to note
+                    if(data.name === "chat_yamo_deleted_account") {
+                        this.loadErrorProfile(data, {message: "Bad profile"});
+                    } else {
+                        // Make user as an object
+                        const user = new User(data);
+                        user.setId = userId;
+
+                        try {
+                            user.setStatus = await getUserStatus(userId);
+                            if(!user.isDeleted) {
+                                // User profile image
+                                user.setAvatar = await getUserProfileImage(userId);
+                            }
+                            const images = await searchUserImages(userId);
+                            const exitingImages = [];
+
+                            for(const image of (images || [])) {
+                                const response = await fetch(
+                                    image.compressedPreSignedUrl ||
+                                    image.originalPreSignedUrl ||
+                                    image.compressedUrl ||
+                                    image.originalUrl
+                                );
+
+                                response.ok && exitingImages.push(image);
+                            }
+
+                            if(exitingImages.length === 0) {
+                                // User default image
+                                user.setImages = [{mediaId: null, originalUrl: require("../../assets/img/no-image.png")}]
+                            } else {
+                                user.setImages = exitingImages;
+                            }
+
+                            // Get data but skip deleted
+                            if(user.isDeleted) {
+                                this.loadErrorProfile(data, {message: "Bad profile"});
+                            } else {
+                                this.setState({
+                                    images: user.images,
+                                    activeIndex: 0,
+                                    profileData: data,
+                                    activeUser: user
+                                });
+                                handleActiveUser(user);
+                            }
+                        } catch (e) {
+                            // Manage exception but not blocking
+                            this.loadErrorProfile(data, {message: "Bad profile"});
                         }
-                    } catch (e) {}
-                    this.setState({
-                        images: user.images,
-                        activeIndex: 0,
-                        profileData: data,
-                        activeUser: user
-                    });
-                    this.props.handleActiveUser(user);
+                    }
                 })
-                .catch((error) => {
-                    console.log("error ", error);
-                    const user = new User(activeUser);
-                    user.setId = userId;
-                    user.setImages = [{mediaId: null, originalUrl: require("../../assets/img/no-image.png")}]
-                    this.setState({
-                        images: user.images,
-                        activeIndex: 0,
-                        profileData: {},
-                        activeUser: user,
-                        error
-                    });
-                    this.props.handleActiveUser(user);
-                })
+                .catch((error) => this.loadErrorProfile(activeUser, error))
                 .finally(() => {this.setState({ loading: false })});
         }
+    };
+
+    loadErrorProfile = (activeUser, error) => {
+        const {handleActiveUser} = this.props;
+        console.log("error ", error);
+        const user = new User(activeUser);
+        user.setImages = [{mediaId: null, originalUrl: require("../../assets/img/no-image.png")}]
+        this.setState({
+            images: user.images,
+            activeIndex: 0,
+            profileData: {},
+            activeUser: user,
+            error
+        });
+        handleActiveUser(user);
     };
 
     scrollToBottom = () => {
@@ -243,7 +279,7 @@ class ImageLog extends React.Component {
 
     render() {
         const { activeIndex, profileData, images } = this.state;
-        const { activeUser, handleReceiverSidebar, showNavigation } = this.props;
+        const { activeUser, handleReceiverSidebar, showNavigation, handleChangeUser } = this.props;
         const slides = images.map((item) => {
             return (
                 <CarouselItem onExiting={this.onExiting} onExited={this.onExited} key={item.mediaId}>
@@ -295,7 +331,7 @@ class ImageLog extends React.Component {
                                 <div className="d-flex align-items-center justify-content-between">
                                     <div className="d-flex justify-content-between">
                                         <div className="avatar user-profile-toggle m-0 m-0 mr-1 align-content-start">
-                                            <DisplayImage src={activeUser.avatar} withModal={false} />
+                                            <DisplayImage src={activeUser?.avatar} withModal={false} />
                                         </div>
                                         {(this.state.error) ? <h6 className="text-danger pt-1">User not found</h6> : (
                                             <h6>
@@ -329,13 +365,13 @@ class ImageLog extends React.Component {
                                 <div className="d-flex flex-row justify-content-between">
                                     <div>
                                         <strong>Previous profile</strong><br/>
-                                        <button className="btn btn-primary btn-sm" onClick={() => this.props.handleChangeUser(false)}>
+                                        <button className="btn btn-primary btn-sm" onClick={() => handleChangeUser(false)}>
                                             <ArrowLeft size={15} className="mx-50" />
                                         </button>
                                     </div>
                                     <div>
                                         <strong>Next profile</strong><br/>
-                                        <button className="btn btn-primary btn-sm" onClick={() => this.props.handleChangeUser(true)}>
+                                        <button className="btn btn-primary btn-sm" onClick={() => handleChangeUser(true)}>
                                             <ArrowRight size={15} className="mx-50" />
                                         </button>
                                     </div>
@@ -348,7 +384,7 @@ class ImageLog extends React.Component {
                                             (this.state.profileLoading) ? <Spinner color="primary" /> : (
                                                 <>
                                                     <strong>Change gender</strong><br/>
-                                                    <span className="badge badge-dark badge-pill mb-50">{profileData.gender ? profileData.gender : 'none'}</span>
+                                                    <span className="badge badge-dark badge-pill mb-50">{profileData?.gender ? profileData?.gender : 'none'}</span>
                                                     <button className="btn btn-primary btn-sm ml-50" onClick={() => this.changeGender()}>
                                                         <RefreshCcw size={10} />
                                                     </button>

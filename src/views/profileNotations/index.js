@@ -160,7 +160,9 @@ class ImageVerification extends React.Component {
 
                 for(const user of Object.values(users)) {
                     const id = user[0].userId;
-                    if(id) buildUsers.push({id});
+                    if(id !== "EMPTY_USER_ID") {
+                        if(id) buildUsers.push({id});
+                    }
                 }
 
                 const activeUser = buildUsers[0];
