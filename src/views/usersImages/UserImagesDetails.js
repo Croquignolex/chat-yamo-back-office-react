@@ -68,7 +68,12 @@ class UserImagesDetails extends React.Component {
                         ? <strong className="text-success"><Icon.Check size={20}/> Verified</strong>
                         : <strong className="text-danger"><Icon.X size={20}/> Not verified</strong>
                     }
-                    <DisplayImage src={item.compressedPreSignedUrl || item.originalPreSignedUrl} withPercentage />
+                    <DisplayImage src={
+                        item.compressedPreSignedUrl ||
+                        item.originalPreSignedUrl ||
+                        item.compressedUrl ||
+                        item.originalUrl
+                    } withPercentage />
                 </CarouselItem>
             );
         });
@@ -86,8 +91,12 @@ class UserImagesDetails extends React.Component {
                                     previous={this.previous}>
                                     <CarouselIndicators items={images} activeIndex={activeIndex} onClickHandler={this.goToIndex} />
                                     {slides}
-                                    <CarouselControl direction="prev" directionText="Previous" onClickHandler={this.previous} />
-                                    <CarouselControl direction="next" directionText="Next" onClickHandler={this.next} />
+                                    {(images.length > 1) && (
+                                        <>
+                                            <CarouselControl direction="prev" directionText="Previous" onClickHandler={this.previous} />
+                                            <CarouselControl direction="next" directionText="Next" onClickHandler={this.next} />
+                                        </>
+                                    )}
                                 </Carousel>
                             </div>
                         </div>

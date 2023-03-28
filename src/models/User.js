@@ -6,15 +6,21 @@ export default class User {
 
         this.id = this.userId;
 
-        if(this.isDeleted || this.name === "chat_yamo_deleted_account") this.avatar = require("../assets/img/user-remove.png");
+        this.deleted = (this.name === "chat_yamo_deleted_account" || this.id === "EMPTY_USER_ID");
+
+        if(this.deleted) this.avatar = require("../assets/img/user-remove.png");
         else this.avatar = this.avatar ? this.avatar : require("../assets/img/unknown-user.png");
     }
 
     set setAvatar(image) {
-        this.avatar = image?.compressedPreSignedUrl || image?.originalPreSignedUrl;
+        const url = (
+            image?.compressedPreSignedUrl ||
+            image?.originalPreSignedUrl ||
+            image?.compressedUrl ||
+            image?.originalUrl
+        );
 
-        if(this.isDeleted || this.name === "chat_yamo_deleted_account") this.avatar = require("../assets/img/user-remove.png");
-        else this.avatar = this.avatar ? this.avatar : require("../assets/img/unknown-user.png");
+        if(url) this.avatar = url;
     }
 
     set setImages(images) {
@@ -38,10 +44,10 @@ export default class User {
     }
 
     set setStatus(status) {
-        this.deleted = status?.deleted;
+        this.deleted = status?.deleted || this.name === "chat_yamo_deleted_account" || this.id === "EMPTY_USER_ID";
         this.blocked = status?.blocked;
 
-        if(this.isDeleted || this.name === "chat_yamo_deleted_account") this.avatar = require("../assets/img/user-remove.png");
+        if(this.deleted) this.avatar = require("../assets/img/user-remove.png");
         else this.avatar = this.avatar ? this.avatar : require("../assets/img/unknown-user.png");
     }
 

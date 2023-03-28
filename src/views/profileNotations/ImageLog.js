@@ -93,57 +93,52 @@ class ImageLog extends React.Component {
             const userId = activeUser.id;
             getUserProfile(userId)
                 .then(async data => {
-                    // Catch profiles not to note
-                    if(data.name === "chat_yamo_deleted_account") {
-                        this.loadErrorProfile(data, {message: "Bad profile"});
-                    } else {
-                        // Make user as an object
-                        const user = new User(data);
-                        user.setId = userId;
+                    // Make user as an object
+                    const user = new User(data);
+                    user.setId = userId;
 
-                        try {
-                            user.setStatus = await getUserStatus(userId);
-                            if(!user.isDeleted) {
-                                // User profile image
-                                user.setAvatar = await getUserProfileImage(userId);
-                            }
-                            const images = await searchUserImages(userId);
-                            const exitingImages = [];
-
-                            for(const image of (images || [])) {
-                                const response = await fetch(
-                                    image.compressedPreSignedUrl ||
-                                    image.originalPreSignedUrl ||
-                                    image.compressedUrl ||
-                                    image.originalUrl
-                                );
-
-                                response.ok && exitingImages.push(image);
-                            }
-
-                            if(exitingImages.length === 0) {
-                                // User default image
-                                user.setImages = [{mediaId: null, originalUrl: require("../../assets/img/no-image.png")}]
-                            } else {
-                                user.setImages = exitingImages;
-                            }
-
-                            // Get data but skip deleted
-                            if(user.isDeleted) {
-                                this.loadErrorProfile(data, {message: "Bad profile"});
-                            } else {
-                                this.setState({
-                                    images: user.images,
-                                    activeIndex: 0,
-                                    profileData: data,
-                                    activeUser: user
-                                });
-                                handleActiveUser(user);
-                            }
-                        } catch (e) {
-                            // Manage exception but not blocking
-                            this.loadErrorProfile(data, {message: "Bad profile"});
+                    try {
+                        user.setStatus = await getUserStatus(userId);
+                        if(!user.isDeleted) {
+                            // User profile image
+                            user.setAvatar = await getUserProfileImage(userId);
                         }
+                        const images = await searchUserImages(userId);
+                        const exitingImages = [];
+
+                        for(const image of (images || [])) {
+                            const response = await fetch(
+                                image.compressedPreSignedUrl ||
+                                image.originalPreSignedUrl ||
+                                image.compressedUrl ||
+                                image.originalUrl
+                            );
+
+                            response.ok && exitingImages.push(image);
+                        }
+
+                        if(exitingImages.length === 0) {
+                            // User default image
+                            user.setImages = [{mediaId: null, originalUrl: require("../../assets/img/no-image.png")}]
+                        } else {
+                            user.setImages = exitingImages;
+                        }
+
+                        // Get data but skip deleted
+                        if(user.isDeleted) {
+                            this.loadErrorProfile(data, {message: "Bad profile"});
+                        } else {
+                            this.setState({
+                                images: user.images,
+                                activeIndex: 0,
+                                profileData: data,
+                                activeUser: user
+                            });
+                            handleActiveUser(user);
+                        }
+                    } catch (e) {
+                        // Manage exception but not blocking
+                        this.loadErrorProfile(data, {message: "Bad profile"});
                     }
                 })
                 .catch((error) => this.loadErrorProfile(activeUser, error))

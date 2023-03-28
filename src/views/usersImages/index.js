@@ -40,8 +40,24 @@ class UsersImages extends React.Component {
         this.setState({loading: true, error: null, user: null, images: null});
 
         searchUserImages(search)
-            .then(data => {
-                this.setState({ images: data });
+            .then(async data => {
+
+
+
+                const exitingImages = [];
+
+                for(const image of (data || [])) {
+                    const response = await fetch(
+                        image.compressedPreSignedUrl ||
+                        image.originalPreSignedUrl ||
+                        image.compressedUrl ||
+                        image.originalUrl
+                    );
+
+                    response.ok && exitingImages.push(image);
+                }
+
+                this.setState({ images: exitingImages });
             })
             .catch(error => this.setState({ error }))
             .finally(() => this.setState({loading: false}));
