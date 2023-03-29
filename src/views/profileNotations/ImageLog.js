@@ -274,7 +274,7 @@ class ImageLog extends React.Component {
 
     render() {
         const { activeIndex, profileData, images } = this.state;
-        const { activeUser, handleReceiverSidebar, showNavigation, handleChangeUser } = this.props;
+        const { activeUser, handleReceiverSidebar, showPreviousNavigation, showNextNavigation, handleChangeUser, toVerify, activeUserIndex } = this.props;
         const slides = images.map((item) => {
             return (
                 <CarouselItem onExiting={this.onExiting} onExited={this.onExited} key={item.mediaId}>
@@ -356,23 +356,29 @@ class ImageLog extends React.Component {
                         </div>
 
                         <div className="user-chats">
-                            {showNavigation && (
-                                <div className="d-flex flex-row justify-content-between">
-                                    <div>
-                                        <strong>Previous profile</strong><br/>
-                                        <button className="btn btn-primary btn-sm" onClick={() => handleChangeUser(false)}>
-                                            <ArrowLeft size={15} className="mx-50" />
-                                        </button>
-                                    </div>
-                                    <div>
-                                        <strong>Next profile</strong><br/>
-                                        <button className="btn btn-primary btn-sm" onClick={() => handleChangeUser(true)}>
-                                            <ArrowRight size={15} className="mx-50" />
-                                        </button>
-                                    </div>
+                            <div className="d-flex flex-row justify-content-between">
+                                <div>
+                                    {showPreviousNavigation && (
+                                        <>
+                                            <strong>Previous profile</strong><br/>
+                                            <button className="btn btn-primary btn-sm" onClick={() => handleChangeUser(false)}>
+                                                <ArrowLeft size={15} className="mx-50" />
+                                            </button>
+                                        </>
+                                    )}
                                 </div>
-                            )}
-                            <div className={`d-flex flex-row justify-content-between ${showNavigation ? 'mb-3' : 'my-3'}`}>
+                                <div>
+                                    {showNextNavigation && (
+                                        <>
+                                            <strong>Next profile</strong><br/>
+                                            <button className="btn btn-primary btn-sm" onClick={() => handleChangeUser(true)}>
+                                                <ArrowRight size={15} className="mx-50" />
+                                            </button>
+                                        </>
+                                    )}
+                                </div>
+                            </div>
+                            <div className={`d-flex flex-row justify-content-between ${(showPreviousNavigation || showNextNavigation)  ? 'mb-2' : 'mt-3 mb-2'}`}>
                                 <div className={`col-3 d-flex flex-column justify-content-between`}>
                                     <div className="mt-5 text-right">
                                         {!(this.state.error) && (
@@ -415,6 +421,11 @@ class ImageLog extends React.Component {
                                             </>
                                         )}
                                     </Carousel>
+                                    {(!this.state.error) && (
+                                        <h4 className="mt-1">
+                                            Profile <strong className="text-primary">{activeUserIndex + 1}</strong> / {toVerify}
+                                        </h4>
+                                    )}
                                 </div>
                                 <div className={`col-3 d-flex flex-column ${(this.state.error) ? 'justify-content-center' : 'justify-content-between'}`}>
                                     <div className="mt-5 text-left">

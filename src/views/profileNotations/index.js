@@ -22,6 +22,7 @@ class ImageVerification extends React.Component {
             users: [],
             activeUser: null,
             activeChatID: null,
+            activeUserIndex: 0,
             loading: false,
             error: null,
             // activeChat: null,
@@ -133,7 +134,7 @@ class ImageVerification extends React.Component {
 
             const activeUser = users[nextIndex];
 
-            this.setState({activeUser, activeChatID: activeUser.id});
+            this.setState({activeUser, activeChatID: activeUser.id, activeUserIndex: nextIndex});
         }
     }
 
@@ -141,13 +142,20 @@ class ImageVerification extends React.Component {
         e.preventDefault();
         if(needle && (needle !== "") && (needle !== this.state.activeChatID)) {
             const activeUser = {id: needle};
-            this.setState({toVerify: 1, verified: 0, users: [activeUser], activeUser, activeChatID: activeUser.id});
+            this.setState({
+                toVerify: 1,
+                verified: 0,
+                activeUserIndex: 0,
+                users: [activeUser],
+                activeUser,
+                activeChatID: activeUser.id
+            });
         }
     }
 
     loadData = () => {
         // Init request
-        this.setState({ loading: true, error: null, users: [], search: "", verified: 0});
+        this.setState({ loading: true, error: null, users: [], search: "", verified: 0, activeUserIndex: 0});
 
         getUserProfileImagesForNotation()
             .then(res => {
@@ -179,11 +187,13 @@ class ImageVerification extends React.Component {
     };
  
   render() {
+    const {activeUser, activeChatID, loading, error, users, activeUserIndex, verified, toVerify} = this.state;
+
     return (
       <div className="chat-application position-relative fullHeight">
           <ImageHeader
-              verified={this.state.verified}
-              toVerify={this.state.toVerify}
+              verified={verified}
+              toVerify={toVerify}
               loadData={this.loadData}
               handleSearch={this.handleSearch}
           />
@@ -226,11 +236,14 @@ class ImageVerification extends React.Component {
           )}
         </ContextLayout.Consumer>*/}
         <ImageLog
-            activeUser={this.state.activeUser}
-            activeChatID={this.state.activeChatID}
-            loading={this.state.loading}
-            error={this.state.error}
-            showNavigation={this.state.users.length > 1}
+            activeUser={activeUser}
+            activeChatID={activeChatID}
+            loading={loading}
+            error={error}
+            activeUserIndex={activeUserIndex}
+            toVerify={toVerify}
+            showPreviousNavigation={activeUserIndex > 0}
+            showNextNavigation={activeUserIndex < (users.length - 1)}
             handleChangeUser={this.handleChangeUser}
             mainSidebar={this.onSetSidebarOpen}
             handleActiveUser={this.handleActiveUser}
