@@ -4,6 +4,7 @@ import * as Icon from "react-feather";
 import Error500 from "../Error500";
 import User from "../../models/User";
 import UserDetails from "../users/UserDetails";
+import {imageExists} from "../../helpers/helpers";
 import UserImagesDetails from "./UserImagesDetails";
 import {Col, Row, Form, Input, Button, Spinner} from "reactstrap";
 import Breadcrumbs from "../../components/@vuexy/breadCrumbs/BreadCrumb";
@@ -41,20 +42,19 @@ class UsersImages extends React.Component {
 
         searchUserImages(search)
             .then(async data => {
-
-
-
                 const exitingImages = [];
 
                 for(const image of (data || [])) {
-                    const response = await fetch(
-                        image.compressedPreSignedUrl ||
-                        image.originalPreSignedUrl ||
-                        image.compressedUrl ||
-                        image.originalUrl
-                    );
+                    try {
+                        const response = await imageExists(
+                            image.compressedPreSignedUrl ||
+                            image.originalPreSignedUrl ||
+                            image.compressedUrl ||
+                            image.originalUrl
+                        )
 
-                    response.ok && exitingImages.push(image);
+                        response && exitingImages.push(image);
+                    } catch (e) {}
                 }
 
                 this.setState({ images: exitingImages });

@@ -324,6 +324,19 @@ export const downloadFile = (fileUrl, filename = '') => {
     })
 };
 
+export const imageExists = (url) => {
+    return new Promise(function(resolve, reject) {
+        const img = new Image();
+        img.onload = function() {
+            resolve(url);
+        }
+        img.onerror = function() {
+            reject(new Error("Image failed to load: " + url));
+        }
+        img.src = url;
+    });
+}
+
 /**
  * Get price with a currency according to nation
  * @param price

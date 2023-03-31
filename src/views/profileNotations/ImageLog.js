@@ -7,6 +7,7 @@ import {Image, ThumbsUp, ThumbsDown, Trash2, CheckCircle, ArrowLeft, ArrowRight,
 
 import Error500 from "../Error500";
 import User from "../../models/User";
+import {imageExists} from "../../helpers/helpers";
 import DisplayImage from "../../components/DisplayImage";
 import {
     blockUser,
@@ -107,14 +108,16 @@ class ImageLog extends React.Component {
                         const exitingImages = [];
 
                         for(const image of (images || [])) {
-                            const response = await fetch(
-                                image.compressedPreSignedUrl ||
-                                image.originalPreSignedUrl ||
-                                image.compressedUrl ||
-                                image.originalUrl
-                            );
+                            try {
+                                const response = await imageExists(
+                                    image.compressedPreSignedUrl ||
+                                    image.originalPreSignedUrl ||
+                                    image.compressedUrl ||
+                                    image.originalUrl
+                                )
 
-                            response.ok && exitingImages.push(image);
+                                response && exitingImages.push(image);
+                            } catch (e) {}
                         }
 
                         if(exitingImages.length === 0) {
