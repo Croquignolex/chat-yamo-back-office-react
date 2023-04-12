@@ -25,6 +25,7 @@ class ImageVerification extends React.Component {
             activeUserIndex: 0,
             loading: false,
             error: null,
+            lastActionNext: true,
             // activeChat: null,
             userProfile: false,
             userSidebar: false,
@@ -50,49 +51,6 @@ class ImageVerification extends React.Component {
         const verified = note ? this.state.verified + 1 : this.state.verified;
         this.setState({activeUser, verified});
     };
-
-    /*handleActiveChat = (caseId, user) => {
-        let nextUser = null;
-
-        if(user !== null && user.images) {
-            // Remove deleted images in list
-            let tempImages = user.images.filter((i) => {
-                let flag = true;
-                this.state.deletedImages.forEach((_i) => {
-                    if(_i.mediaId === i.mediaId) flag = false;
-                })
-                return flag;
-            });
-            nextUser = new User({...user, images: tempImages});
-        }
-
-        this.setState({activeChatID: caseId, activeUser: nextUser});
-    };*/
-
-    /*handleRemoveImage = (image) => {
-        this.setState((prevState) => {
-            const tempImages = prevState.deletedImages;
-            tempImages.push(image);
-            return {deletedImages: tempImages};
-        });
-    };*/
-
-    /*handleRemoveAllImages = (images) => {
-        this.setState((prevState) => {
-            // const tempImages = [...prevState.deletedImages, ...images];
-            const tempVerified = prevState.verified + 1;
-            // return {deletedImages: tempImages, verified: tempVerified};
-            return {verified: tempVerified};
-        });
-    };*/
-
-    /*handleResetImage = () => {
-        this.setState({verified: 0, deletedImages: []});
-    };*/
-
-    /*handleImagesToNotate = (toVerify) => {
-        this.setState({toVerify});
-    }*/
 
     onSetSidebarOpen = open => {
         this.setState({ sidebarOpen: open })
@@ -134,7 +92,7 @@ class ImageVerification extends React.Component {
 
             const activeUser = users[nextIndex];
 
-            this.setState({activeUser, activeChatID: activeUser.id, activeUserIndex: nextIndex});
+            this.setState({activeUser, activeChatID: activeUser.id, activeUserIndex: nextIndex, lastActionNext: next});
         }
     }
 
@@ -185,6 +143,40 @@ class ImageVerification extends React.Component {
             .catch(error => this.setState({ error }))
             .finally(() => this.setState({ loading: false }));
     };
+
+    handleRemoveProfileToList = (userId) => {
+        // Init request
+        this.setState({ loading: true, error: null, search: ""});
+
+        const users = this.state.users;
+        const filterUsers = users.filter(user => (user.id !== userId));
+
+        const length = filterUsers.length;
+
+        let currentIndex = 0;
+        let i = 0;
+
+        users.forEach(user => {
+            if(user.id === userId) currentIndex = i;
+            i++;
+        });
+
+        let nextIndex = this.state.lastActionNext ? currentIndex : currentIndex - 1;
+
+        if(nextIndex < 0) nextIndex = length - 1;
+        else if(nextIndex > (length - 1)) nextIndex = 0;
+
+        const activeUser = filterUsers[nextIndex];
+
+        this.setState({
+            toVerify: filterUsers.length,
+            users: filterUsers,
+            activeUser,
+            loading: false,
+            activeUserIndex: nextIndex,
+            activeChatID: activeUser.id
+        });
+    };
  
   render() {
     const {activeUser, activeChatID, loading, error, users, activeUserIndex, verified, toVerify} = this.state;
@@ -211,30 +203,6 @@ class ImageVerification extends React.Component {
             this.onSetSidebarOpen(false)
           }}
         />
-        {/*<ContextLayout.Consumer>
-          {context => (
-            <Sidebar
-              sidebar={
-                <ImageSidebar
-                    verified={this.state.verified} 
-                    mainSidebar={this.onSetSidebarOpen}
-                    activeChatId={this.state.activeChatID}
-                    handleResetImage={this.handleResetImage}
-                    handleActiveChat={this.handleActiveChat}
-                    handleUserSidebar={this.handleUserSidebar}
-                    handleImagesToNotate={this.handleImagesToNotate}
-                />
-              }
-              docked={this.state.sidebarDocked}
-              open={this.state.sidebarOpen}
-              touch={false}
-              sidebarClassName="chat-sidebar"
-              contentClassName="sidebar-children d-none"
-              pullRight={context.state.direction === "rtl"}>
-                <></>
-            </Sidebar>
-          )}
-        </ContextLayout.Consumer>*/}
         <ImageLog
             activeUser={activeUser}
             activeChatID={activeChatID}
@@ -248,6 +216,7 @@ class ImageVerification extends React.Component {
             mainSidebar={this.onSetSidebarOpen}
             handleActiveUser={this.handleActiveUser}
             handleReceiverSidebar={this.handleReceiverSidebar}
+            handleRemoveProfileToList={this.handleRemoveProfileToList}
         />
         <UserProfile
           activeUser={this.state.activeUser}
