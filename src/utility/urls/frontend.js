@@ -6,6 +6,7 @@ export const AUTH = {
 export const APP = {
     HOME: '/home',
     USERS: '/users',
+    EXPORTS: '/exports',
     FEEDBACKS: '/feedbacks',
     NOTATIONS: '/notations',
     TOWN_EVENTS: '/town-events',

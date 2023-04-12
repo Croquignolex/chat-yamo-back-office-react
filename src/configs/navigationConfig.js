@@ -36,6 +36,14 @@ const navigationConfig = [
     permissions: ['admin', 'writer', 'reader', 'imageverifier', 'imagechecker']
   },
   {
+    id: "exports",
+    type: "item",
+    title: "Exports",
+    navLink: APP.EXPORTS,
+    icon: <Icon.Share size={20} />,
+    permissions: ['admin']
+  },
+  {
     type: "item",
     id: "feedbacks",
     title: "Feedbacks",

@@ -52,6 +52,10 @@ export const USERS = {
     CHECK_TOWN_EVENT: '/authentication/user/{userId}/checktownevent',
     SOUSCRIPTIONS: '/authentication/user/{userId}/subscriptionhistory', 
     STATUS_HISTORY: '/authentication/backoffice/user/{userId}/statusreason',
+
+    EXPORT_SUBSCRIPTION: '/authentication/users/subscriptions',
+    EXPORT_DELETED_USERS: '/authentication/users/deleted/{date}',
+    EXPORT_NEW_USERS: '/authentication/users/new',
 };
 
 export const MEDIA = {

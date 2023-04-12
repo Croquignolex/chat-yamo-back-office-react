@@ -4,6 +4,7 @@ export const Users = lazy(() => import("./users"));
 export const TownEvents = lazy(() => import("./townEvents"));
 export const Password = lazy(() => import("./pages/Password"));
 export const Welcome = lazy(() => import("./../views/Welcome"));
+export const Exports = lazy(() => import("./../views/exports"));
 export const Feedbacks = lazy(() => import("./../views/feedbacks"));
 export const Notations = lazy(() => import("./../views/notations"));
 export const UserImages = lazy(() => import("./../views/usersImages"));

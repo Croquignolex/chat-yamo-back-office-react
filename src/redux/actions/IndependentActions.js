@@ -124,14 +124,29 @@ export const searchUserImages = async (userId) => {
     return makeRequest('get', url, null, config);
 };
 
-export const checkTownEvent = async (userId, date) => { 
-    const url = joinBaseUrlWithParams(USERS.CHECK_TOWN_EVENT,[{param: 'userId', value: userId}]);
-    return makeRequest('post', url + '?startFrom=' + date) ;
+export const exportSubscriptions = async (start, end) => {
+    const url = joinBaseUrlWithParams(USERS.EXPORT_SUBSCRIPTION);
+    return makeRequest('get', `${url}?start=${start}&end=${end}`) ;
+};
+
+export const exportDeletedUsers = async (start) => {
+    const url = joinBaseUrlWithParams(USERS.EXPORT_DELETED_USERS,[{param: 'date', value: start}]);
+    return makeRequest('get', url) ;
+};
+
+export const exportNewUsers = async (start, end) => {
+    const url = joinBaseUrlWithParams(USERS.EXPORT_NEW_USERS);
+    return makeRequest('get', `${url}?start=${start}&end=${end}`) ;
 };
 
 // ===================================== END GET
 
 // ===================================== START POST
+
+export const checkTownEvent = async (userId, date) => {
+    const url = joinBaseUrlWithParams(USERS.CHECK_TOWN_EVENT,[{param: 'userId', value: userId}]);
+    return makeRequest('post', url + '?startFrom=' + date) ;
+};
 
 export const searchUser = async (attribute) => {
     const url = joinBaseUrlWithParams(USERS.SEARCH);

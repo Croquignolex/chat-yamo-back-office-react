@@ -62,9 +62,9 @@ class TownEvents extends React.Component {
                 />
                 <Row>
                     <Col lg={8} sm={12}>
-                        <Label className="mt-2">Choose a date</Label>
                         <Form className="d-flex mx-auto" onSubmit={this.handleCheck}>
-                            <div className="position-relative">
+                            <div className="w-25">
+                                <Label>Choose a date</Label>
                                 <DatePicker 
                                     calendarStartDay={1}
                                     selected={selectedDate}  
@@ -73,7 +73,8 @@ class TownEvents extends React.Component {
                                     onChange={this.handleSelectedDate} 
                                 /> 
                             </div>
-                            <div className="position-relative ml-1">
+                            <div className="w-50 ml-1">
+                                <Label>Enter user id</Label>
                                 <Input
                                     type="text" 
                                     value={search} 
@@ -83,7 +84,7 @@ class TownEvents extends React.Component {
                             </div>
                             <div className="ml-1">
                                 {(!loading) && (
-                                    <Button color="primary" className="rounded" type="submit">
+                                    <Button color="primary" className="rounded mt-1" type="submit">
                                         Check
                                     </Button>
                                 )}
