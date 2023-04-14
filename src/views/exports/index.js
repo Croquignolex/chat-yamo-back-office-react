@@ -10,6 +10,7 @@ import {Col, Row, Form, Input, Button, Spinner, FormGroup, Label, Card} from "re
 import {exportDeletedUsers, exportNewUsers, exportSubscriptions} from "../../redux/actions/IndependentActions";
 
 import "react-datepicker/dist/react-datepicker.css";
+import {downloadFile} from "../../helpers/helpers";
 
 class Exports extends React.Component {
     constructor(props) {
@@ -54,14 +55,17 @@ class Exports extends React.Component {
         // Reset error data
         this.setState({loading: true, data: null});
 
-        const {type, startDate, endDate} = this.state;
+        const {type, startDate, endDate, selectedStartDate} = this.state;
 
         if(type.value === "sub_reminder")
         {
             exportSubscriptions(startDate, endDate)
                 .then((data) => {
-                    // fileDownload(data.filename, "filename");
-                    this.setState({ data });
+                    const file = URL.createObjectURL(new Blob([data], { type: "text/csv" }));
+                    const name = `premium_user_metadata_${dayjs(selectedStartDate).format("YYYY_MM_DD")}.csv`;
+                    downloadFile(file, name)
+                        .then(() => this.setState({ data }))
+                        .catch((error) => this.setState({ error }));
                 })
                 .catch((error) => this.setState({ error }))
                 .finally(() => this.setState({loading: false}))
@@ -70,8 +74,11 @@ class Exports extends React.Component {
         {
             exportDeletedUsers(startDate)
                 .then((data) => {
-                    // fileDownload(data.filename, "filename");
-                    this.setState({ data });
+                    const file = URL.createObjectURL(new Blob([data], { type: "text/csv" }));
+                    const name = `deleted_user_metadata_${dayjs(selectedStartDate).format("YYYY_MM")}.csv`;
+                    downloadFile(file, name)
+                        .then(() => this.setState({ data }))
+                        .catch((error) => this.setState({ error }));
                 })
                 .catch((error) => this.setState({ error }))
                 .finally(() => this.setState({loading: false}))
@@ -80,8 +87,11 @@ class Exports extends React.Component {
         {
             exportNewUsers(startDate, endDate)
                 .then((data) => {
-                    // fileDownload(data.filename, "filename");
-                    this.setState({ data });
+                    const file = URL.createObjectURL(new Blob([data], { type: "text/csv" }));
+                    const name = `new_user_metadata_${dayjs(selectedStartDate).format("YYYY_MM_DD")}.csv`;
+                    downloadFile(file, name)
+                        .then(() => this.setState({ data }))
+                        .catch((error) => this.setState({ error }));
                 })
                 .catch((error) => this.setState({ error }))
                 .finally(() => this.setState({loading: false}))

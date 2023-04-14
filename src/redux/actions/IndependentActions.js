@@ -126,17 +126,17 @@ export const searchUserImages = async (userId) => {
 
 export const exportSubscriptions = async (start, end) => {
     const url = joinBaseUrlWithParams(USERS.EXPORT_SUBSCRIPTION);
-    return makeRequest('get', `${url}?start=${start}&end=${end}`) ;
+    return makeRequest('get', `${url}?start=${start}&end=${end}`, null, {responseType: "blob"}) ;
 };
 
 export const exportDeletedUsers = async (start) => {
     const url = joinBaseUrlWithParams(USERS.EXPORT_DELETED_USERS,[{param: 'date', value: start}]);
-    return makeRequest('get', url) ;
+    return makeRequest('get', url, null, {responseType: "blob"}) ;
 };
 
 export const exportNewUsers = async (start, end) => {
     const url = joinBaseUrlWithParams(USERS.EXPORT_NEW_USERS);
-    return makeRequest('get', `${url}?start=${start}&end=${end}`) ;
+    return makeRequest('get', `${url}?start=${start}&end=${end}`, null, {responseType: "blob"}) ;
 };
 
 // ===================================== END GET
