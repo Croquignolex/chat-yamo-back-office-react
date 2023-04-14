@@ -1,8 +1,17 @@
-import React from "react"
+import React, {forwardRef} from "react";
 import ReactDOM from "react-dom"
 import {connect} from "react-redux";
 import {NotificationManager} from "react-notifications";
-import {Carousel, CarouselItem, CarouselControl, CarouselIndicators, Spinner} from "reactstrap";
+import {
+    Carousel,
+    CarouselItem,
+    CarouselControl,
+    CarouselIndicators,
+    Spinner,
+    Label,
+    FormGroup,
+    Input
+} from "reactstrap";
 import {Image, ThumbsUp, ThumbsDown, Trash2, CheckCircle, ArrowLeft, ArrowRight, Star, RefreshCcw} from "react-feather";
 
 import Error500 from "../Error500";
@@ -21,6 +30,8 @@ import {
     getUserProfileImage,
     searchUserImages
 } from "../../redux/actions/IndependentActions";
+import DatePicker from "react-datepicker";
+import dayjs from "dayjs";
 
 class ImageLog extends React.Component {
     // props { activeChatID, activeUser, mainSidebar, handleReceiverSidebar }
@@ -284,8 +295,12 @@ class ImageLog extends React.Component {
     };
 
     render() {
+        const min = dayjs().startOf('year').toDate();
+        const max = dayjs().endOf('year').toDate();
+
+
         const { activeIndex, profileData, images } = this.state;
-        const { activeUser, handleReceiverSidebar, showPreviousNavigation, showNextNavigation, handleChangeUser, toVerify, activeUserIndex } = this.props;
+        const { activeUser, handleReceiverSidebar, showPreviousNavigation, showNextNavigation, handleChangeUser, toVerify, activeUserIndex, selectedDate, handleSelectedDate } = this.props;
         const slides = images.map((item) => {
             return (
                 <CarouselItem onExiting={this.onExiting} onExited={this.onExited} key={item.mediaId}>
@@ -298,6 +313,10 @@ class ImageLog extends React.Component {
                 </CarouselItem>
             );
         });
+
+        const CustomInput = forwardRef(({ value, onClick }, ref) => (
+            <Input readOnly ref={ref} type="text" onClick={onClick} defaultValue={value}/>
+        ));
 
         if(this.props.error !== null) {
             return (
@@ -333,7 +352,7 @@ class ImageLog extends React.Component {
                 <div className="chat-app-window">
                     <div className="active-chat d-block">
                         <div className="chat_navbar">
-                            <header className="chat_header px-1 py-50">
+                            <header className="chat_header px-1">
                                 <div className="d-flex align-items-center justify-content-between">
                                     <div className="d-flex justify-content-between">
                                         <div className="avatar user-profile-toggle m-0 m-0 mr-1 align-content-start">
@@ -347,6 +366,21 @@ class ImageLog extends React.Component {
                                                 <br/> {activeUser?.city}, {activeUser?.country}
                                             </h6>
                                         )}
+                                    </div>
+                                    <div>
+                                        <div className="m-50">
+                                            <Label>Choose a month</Label>
+                                            <DatePicker
+                                                selectsStart
+                                                showMonthYearPicker
+                                                selected={selectedDate}
+                                                dateFormat="MMMM"
+                                                minDate={min}
+                                                maxDate={max}
+                                                onChange={handleSelectedDate}
+                                                customInput={<CustomInput />}
+                                            />
+                                        </div>
                                     </div>
                                     {!(this.state.error) && (
                                         <div>

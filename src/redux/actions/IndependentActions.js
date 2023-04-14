@@ -71,8 +71,8 @@ export const getUserImagesForNotation = async (date) => {
     return makeRequest('get', NOTATIONS.GET_IMAGES + '?date=' + date);
 };
 
-export const getUserProfileImagesForNotation = async () => {
-    return makeRequest('get', NOTATIONS.GET_PROFILE_IMAGES);
+export const getUserProfileImagesForNotation = async (month) => {
+    return makeRequest('get', NOTATIONS.GET_PROFILE_IMAGES + '?month=' + month);
 };
 
 export const getOldUserImages = async () => {

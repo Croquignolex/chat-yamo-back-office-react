@@ -3,7 +3,6 @@ import Select from 'react-select';
 import * as Icon from "react-feather";
 import React, {forwardRef} from "react";
 import DatePicker from "react-datepicker";
-import fileDownload from 'js-file-download';
 
 import Error500 from "../Error500";
 import Breadcrumbs from "../../components/@vuexy/breadCrumbs/BreadCrumb";
@@ -61,7 +60,7 @@ class Exports extends React.Component {
         {
             exportSubscriptions(startDate, endDate)
                 .then((data) => {
-                    fileDownload(data.filename, "filename");
+                    // fileDownload(data.filename, "filename");
                     this.setState({ data });
                 })
                 .catch((error) => this.setState({ error }))
@@ -71,7 +70,7 @@ class Exports extends React.Component {
         {
             exportDeletedUsers(startDate)
                 .then((data) => {
-                    fileDownload(data.filename, "filename");
+                    // fileDownload(data.filename, "filename");
                     this.setState({ data });
                 })
                 .catch((error) => this.setState({ error }))
@@ -81,7 +80,7 @@ class Exports extends React.Component {
         {
             exportNewUsers(startDate, endDate)
                 .then((data) => {
-                    fileDownload(data.filename, "filename");
+                    // fileDownload(data.filename, "filename");
                     this.setState({ data });
                 })
                 .catch((error) => this.setState({ error }))

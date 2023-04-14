@@ -9,6 +9,7 @@ import UserProfile from "../../components/UserProfile";
 import {getUserProfileImagesForNotation} from "../../redux/actions/IndependentActions";
 
 import "../../assets/scss/pages/app-chat.scss";
+import dayjs from "dayjs";
 
 const mql = window.matchMedia(`(min-width: 992px)`);
 
@@ -34,6 +35,8 @@ class ImageVerification extends React.Component {
             // deletedImages: [],
             sidebarOpen: false,
             sidebarDocked: mql.matches,
+
+            selectedDate: new Date()
         };
     }
 
@@ -111,11 +114,18 @@ class ImageVerification extends React.Component {
         }
     }
 
-    loadData = () => {
+    loadData = (date) => {
+        let month = date;
+
+        if(!date) {
+            month = dayjs().format("MM");
+            this.setState({selectedDate: dayjs().toDate()});
+        }
+
         // Init request
         this.setState({ loading: true, error: null, users: [], search: "", verified: 0, activeUserIndex: 0});
 
-        getUserProfileImagesForNotation()
+        getUserProfileImagesForNotation(month)
             .then(res => {
                 let users = res.reduce(function(results, org) {
                     results[org.userId] = [...results[org.userId] || [], org];
@@ -177,9 +187,15 @@ class ImageVerification extends React.Component {
             activeChatID: activeUser.id
         });
     };
+
+    handleSelectedDate = (selectedDate) => {
+        const date = dayjs(selectedDate).format("MM");
+        this.setState({selectedDate});
+        this.loadData(date);
+    };
  
   render() {
-    const {activeUser, activeChatID, loading, error, users, activeUserIndex, verified, toVerify} = this.state;
+    const {activeUser, activeChatID, loading, error, users, activeUserIndex, verified, toVerify, selectedDate} = this.state;
 
     return (
       <div className="chat-application position-relative fullHeight">
@@ -210,6 +226,8 @@ class ImageVerification extends React.Component {
             error={error}
             activeUserIndex={activeUserIndex}
             toVerify={toVerify}
+            selectedDate={selectedDate}
+            date={toVerify}
             showPreviousNavigation={activeUserIndex > 0}
             showNextNavigation={activeUserIndex < (users.length - 1)}
             handleChangeUser={this.handleChangeUser}
@@ -217,6 +235,7 @@ class ImageVerification extends React.Component {
             handleActiveUser={this.handleActiveUser}
             handleReceiverSidebar={this.handleReceiverSidebar}
             handleRemoveProfileToList={this.handleRemoveProfileToList}
+            handleSelectedDate={this.handleSelectedDate}
         />
         <UserProfile
           activeUser={this.state.activeUser}
