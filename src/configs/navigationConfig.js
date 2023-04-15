@@ -41,7 +41,7 @@ const navigationConfig = [
     title: "Exports",
     navLink: APP.EXPORTS,
     icon: <Icon.Share size={20} />,
-    permissions: ['admin']
+    permissions: ['admin', 'userlistviewer']
   },
   {
     type: "item",
@@ -51,22 +51,6 @@ const navigationConfig = [
     icon: <Icon.MessageSquare size={20} />,
     permissions: ['admin', 'writer', 'reader', 'imageverifier', 'imagechecker']
   },
-  /*{
-    type: "item",
-    id: "verification",
-    title: "Verifications",
-    navLink: APP.VERIFICATIONS,
-    icon: <Icon.Image size={20} />,
-    permissions: ['admin', 'imageverifier']
-  },*/
-  /*{
-    type: "item",
-    id: "notations",
-    title: "Notations",
-    navLink: APP.NOTATIONS,
-    icon: <Icon.Star size={20} />,
-    permissions: ['admin', 'imagechecker']
-  },*/
   {
     type: "item",
     id: "profile-notations",
@@ -75,14 +59,6 @@ const navigationConfig = [
     icon: <Icon.Star size={20} />,
     permissions: ['admin', 'imagechecker', 'imageverifier']
   },
-  /*{
-    type: "item",
-    id: "old-notations",
-    title: "Old notations",
-    navLink: APP.OLD_VERIFICATIONS,
-    icon: <Icon.Archive size={20} />,
-    permissions: ['admin', 'imagechecker']
-  },*/
 ]
 
 export default navigationConfig
