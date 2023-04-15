@@ -118,7 +118,7 @@ class ImageVerification extends React.Component {
         let month = date;
 
         if(!date) {
-            month = dayjs().format("MM");
+            month = dayjs().format("M");
             this.setState({selectedDate: dayjs().toDate()});
         }
 
@@ -189,7 +189,7 @@ class ImageVerification extends React.Component {
     };
 
     handleSelectedDate = (selectedDate) => {
-        const date = dayjs(selectedDate).format("MM");
+        const date = dayjs(selectedDate).format("M");
         this.setState({selectedDate});
         this.loadData(date);
     };

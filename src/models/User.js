@@ -51,6 +51,13 @@ export default class User {
         else this.avatar = this.avatar ? this.avatar : require("../assets/img/unknown-user.png");
     }
 
+    set setForceStatus(status) {
+        this.deleted = this.name === "chat_yamo_deleted_account" || this.id === "EMPTY_USER_ID";
+        this.blocked = status?.blocked;
+
+        this.avatar = this.avatar ? this.avatar : require("../assets/img/unknown-user.png");
+    }
+
     get isDeleted() {
         return this.deleted;
     }

@@ -308,8 +308,8 @@ export const downloadFile = (fileUrl, filename = '') => {
 
             a.href = fileUrl;
             a.target = "_blank";
-            // a.download = filename;
-            a.download = 'Content-Disposition: attachment; filename="' + filename + '"';
+            a.download = filename;
+            // a.download = 'Content-Disposition: attachment; filename="' + filename + '"';
 
             // Trigger the download by simulating click
             a.click();

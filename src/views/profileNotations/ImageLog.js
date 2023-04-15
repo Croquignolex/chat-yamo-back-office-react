@@ -9,7 +9,6 @@ import {
     CarouselIndicators,
     Spinner,
     Label,
-    FormGroup,
     Input
 } from "reactstrap";
 import {Image, ThumbsUp, ThumbsDown, Trash2, CheckCircle, ArrowLeft, ArrowRight, Star, RefreshCcw} from "react-feather";
@@ -109,7 +108,8 @@ class ImageLog extends React.Component {
                     const user = new User(data);
 
                     try {
-                        user.setStatus = await getUserStatus(userId);
+                        // user.setStatus = await getUserStatus(userId);
+                        user.setForceStatus = await getUserStatus(userId);
 
                         if(user.isDeleted) {
                             // Remove profile from list and go to another profile
@@ -297,7 +297,6 @@ class ImageLog extends React.Component {
     render() {
         const min = dayjs().startOf('year').toDate();
         const max = dayjs().endOf('year').toDate();
-
 
         const { activeIndex, profileData, images } = this.state;
         const { activeUser, handleReceiverSidebar, showPreviousNavigation, showNextNavigation, handleChangeUser, toVerify, activeUserIndex, selectedDate, handleSelectedDate } = this.props;
