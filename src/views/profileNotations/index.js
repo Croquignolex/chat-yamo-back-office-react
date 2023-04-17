@@ -203,7 +203,9 @@ class ImageVerification extends React.Component {
               verified={verified}
               toVerify={toVerify}
               loadData={this.loadData}
+              selectedDate={selectedDate}
               handleSearch={this.handleSearch}
+              handleSelectedDate={this.handleSelectedDate}
           />
         <div
           className={`chat-overlay ${
@@ -226,7 +228,6 @@ class ImageVerification extends React.Component {
             error={error}
             activeUserIndex={activeUserIndex}
             toVerify={toVerify}
-            selectedDate={selectedDate}
             date={toVerify}
             showPreviousNavigation={activeUserIndex > 0}
             showNextNavigation={activeUserIndex < (users.length - 1)}
@@ -235,7 +236,7 @@ class ImageVerification extends React.Component {
             handleActiveUser={this.handleActiveUser}
             handleReceiverSidebar={this.handleReceiverSidebar}
             handleRemoveProfileToList={this.handleRemoveProfileToList}
-            handleSelectedDate={this.handleSelectedDate}
+
         />
         <UserProfile
           activeUser={this.state.activeUser}

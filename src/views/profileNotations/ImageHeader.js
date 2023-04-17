@@ -1,6 +1,8 @@
-import React from "react";
+import React, {forwardRef} from "react";
 import * as Icon from "react-feather";
 import {Button, Input, Form} from "reactstrap";
+import DatePicker from "react-datepicker";
+import dayjs from "dayjs";
 
 class ImageSidebar extends React.Component {
     // props { activeChatId, verified, mainSidebar, handleActiveChat, handleUserSidebar, updateImagesToVerify, handleResetImage, handleImagesToNotate }
@@ -23,12 +25,19 @@ class ImageSidebar extends React.Component {
 
     render() {
         const { search } = this.state;
-        const { verified, toVerify, handleSearch } = this.props;
+        const { verified, toVerify, handleSearch, selectedDate, handleSelectedDate } = this.props;
+
+        const min = dayjs().startOf('year').toDate();
+        const max = dayjs().endOf('year').toDate();
+
+        const CustomInput = forwardRef(({ value, onClick }, ref) => (
+            <Input readOnly ref={ref} type="text" onClick={onClick} defaultValue={value}/>
+        ));
 
         return (
-            <div className="d-flex justify-content-between mb-50">
+            <div className="d-flex justify-content-between mb-50 overflow-auto">
                 <div>
-                    <Form className="d-flex mx-auto " onSubmit={(e) => handleSearch(e, search)}>
+                    <Form className="d-flex mx-auto" onSubmit={(e) => handleSearch(e, search)}>
                         <div className="position-relative">
                             <Input
                                 type="text"
@@ -39,15 +48,26 @@ class ImageSidebar extends React.Component {
                             />
                             <div className="form-control-position">
                                 <Icon.X size={15} onClick={this.refresh} />
-                                {/*<Icon.X size={15} onClick={() => this.setState({search: "" })} />*/}
                             </div>
                         </div>
-                        <div className="ml-1">
+                        <div className="ml-50">
                             <Button size="sm" color="primary" className="rounded" type="submit" title="Search">
                                 <Icon.Search size={20} />
                             </Button>
                         </div>
                     </Form>
+                </div>
+                <div>
+                        <DatePicker
+                            selectsStart
+                            showMonthYearPicker
+                            selected={selectedDate}
+                            dateFormat="MMMM"
+                            minDate={min}
+                            maxDate={max}
+                            onChange={handleSelectedDate}
+                            customInput={<CustomInput />}
+                        />
                 </div>
                 <div>
                     <strong className="text-primary">{verified}</strong> noted profile(s) / <strong className="text-primary">{toVerify}</strong> profile(s) to note

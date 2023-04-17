@@ -1,4 +1,4 @@
-import React, {forwardRef} from "react";
+import React from "react";
 import ReactDOM from "react-dom"
 import {connect} from "react-redux";
 import {NotificationManager} from "react-notifications";
@@ -8,8 +8,6 @@ import {
     CarouselControl,
     CarouselIndicators,
     Spinner,
-    Label,
-    Input
 } from "reactstrap";
 import {Image, ThumbsUp, ThumbsDown, Trash2, CheckCircle, ArrowLeft, ArrowRight, Star, RefreshCcw} from "react-feather";
 
@@ -29,8 +27,6 @@ import {
     getUserProfileImage,
     searchUserImages
 } from "../../redux/actions/IndependentActions";
-import DatePicker from "react-datepicker";
-import dayjs from "dayjs";
 
 class ImageLog extends React.Component {
     // props { activeChatID, activeUser, mainSidebar, handleReceiverSidebar }
@@ -118,47 +114,63 @@ class ImageLog extends React.Component {
                             // User profile image
                             user.setAvatar = await getUserProfileImage(userId);
 
-                            const images = await searchUserImages(userId);
-                            const exitingImages = [];
+                            // Check profile image
+                            const imgRep = await imageExists(user.avatar);
 
-                            for(const image of (images || [])) {
-                                try {
+                            if(!imgRep) {
+                                // Remove profile from list and go to another profile
+                                handleRemoveProfileToList(userId);
+                            } else {
+                                const images = await searchUserImages(userId);
+                                const exitingImages = [];
+
+                                for(const image of (images || [])) {
                                     const response = await imageExists(
                                         image.compressedPreSignedUrl ||
                                         image.originalPreSignedUrl ||
                                         image.compressedUrl ||
                                         image.originalUrl
-                                    )
+                                    );
 
                                     response && exitingImages.push(image);
-                                } catch (e) {}
-                            }
+                                }
 
-                            if(exitingImages.length === 0) {
-                                // User default image
-                                user.setImages = [{mediaId: null, originalUrl: require("../../assets/img/no-image.png")}]
-                            } else {
-                                user.setImages = exitingImages;
-                            }
+                                if(exitingImages.length === 0) {
+                                    // User default image
+                                    // user.setImages = [{mediaId: null, originalUrl: require("../../assets/img/no-image.png")}]
+                                    handleRemoveProfileToList(userId);
+                                } else {
+                                    user.setImages = exitingImages;
 
-                            // Get data but skip deleted
-                            if(user.isDeleted) {
-                                this.loadErrorProfile(data, {message: "Bad profile"});
-                            } else {
-                                this.setState({
-                                    images: user.images,
-                                    activeIndex: 0,
-                                    profileData: data,
-                                    activeUser: user
-                                });
-                                handleActiveUser(user);
-                            }
+                                    this.setState({
+                                        images: user.images,
+                                        activeIndex: 0,
+                                        profileData: data,
+                                        activeUser: user
+                                    });
+                                    handleActiveUser(user);
 
-                            this.setState({ loading: false });
+                                    this.setState({ loading: false });
+                                }
+
+                                // Get data but skip deleted
+                                /*if(user.isDeleted) {
+                                    this.loadErrorProfile(data, {message: "Bad profile"});
+                                } else {
+                                    this.setState({
+                                        images: user.images,
+                                        activeIndex: 0,
+                                        profileData: data,
+                                        activeUser: user
+                                    });
+                                    handleActiveUser(user);
+                                }*/
+                            }
                         }
                     } catch (e) {
                         // Manage exception but not blocking
-                        this.loadErrorProfile(data, {message: "Bad profile"});
+                        // this.loadErrorProfile(data, {message: "Bad profile"});
+                        handleRemoveProfileToList(userId);
                     }
                 })
                 .catch((error) => {
@@ -295,11 +307,8 @@ class ImageLog extends React.Component {
     };
 
     render() {
-        const min = dayjs().startOf('year').toDate();
-        const max = dayjs().endOf('year').toDate();
-
         const { activeIndex, profileData, images } = this.state;
-        const { activeUser, handleReceiverSidebar, showPreviousNavigation, showNextNavigation, handleChangeUser, toVerify, activeUserIndex, selectedDate, handleSelectedDate } = this.props;
+        const { activeUser, handleReceiverSidebar, showPreviousNavigation, showNextNavigation, handleChangeUser, toVerify, activeUserIndex } = this.props;
         const slides = images.map((item) => {
             return (
                 <CarouselItem onExiting={this.onExiting} onExited={this.onExited} key={item.mediaId}>
@@ -312,10 +321,6 @@ class ImageLog extends React.Component {
                 </CarouselItem>
             );
         });
-
-        const CustomInput = forwardRef(({ value, onClick }, ref) => (
-            <Input readOnly ref={ref} type="text" onClick={onClick} defaultValue={value}/>
-        ));
 
         if(this.props.error !== null) {
             return (
@@ -350,7 +355,7 @@ class ImageLog extends React.Component {
             <div className="content-right float-left width-100-percent">
                 <div className="chat-app-window">
                     <div className="active-chat d-block">
-                        <div className="chat_navbar">
+                        <div className="chat_navbar mt-50">
                             <header className="chat_header px-1">
                                 <div className="d-flex align-items-center justify-content-between">
                                     <div className="d-flex justify-content-between">
@@ -365,21 +370,6 @@ class ImageLog extends React.Component {
                                                 <br/> {activeUser?.city}, {activeUser?.country}
                                             </h6>
                                         )}
-                                    </div>
-                                    <div>
-                                        <div className="m-50">
-                                            <Label>Choose a month</Label>
-                                            <DatePicker
-                                                selectsStart
-                                                showMonthYearPicker
-                                                selected={selectedDate}
-                                                dateFormat="MMMM"
-                                                minDate={min}
-                                                maxDate={max}
-                                                onChange={handleSelectedDate}
-                                                customInput={<CustomInput />}
-                                            />
-                                        </div>
                                     </div>
                                     {!(this.state.error) && (
                                         <div>
