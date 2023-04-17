@@ -24,13 +24,24 @@ class Exports extends React.Component {
             startDate: dayjs().format("YYYY-MM-DD"),
             selectedEndDate: new Date(),
             endDate: dayjs().format("YYYY-MM-DD"),
-            type: {label: 'Sub reminder', value: 'sub_reminder'}
+            type: {label: 'Premium users', value: 'premium_users'}
         }
     }
 
     updateTypeSelect = (type) => {
-        if(type.value === "del_users") this.setState({type, range: false});
-        else this.setState({type, range: true});
+        const {selectedStartDate} = this.state;
+        let startDate, range;
+
+        if(type.value === "deleted_users") {
+            range = false;
+            startDate = dayjs(selectedStartDate).format("YYYY-MM");
+        }
+        else {
+            range = true;
+            startDate = dayjs(selectedStartDate).format("YYYY-MM-DD");
+        }
+
+        this.setState({type, range, startDate});
     };
 
     handleSelectedStartDate = (selectedStartDate) => {
@@ -53,11 +64,11 @@ class Exports extends React.Component {
     handleExport = (e) => {
         e.preventDefault();
         // Reset error data
-        this.setState({loading: true, data: null});
+        this.setState({loading: true, data: null, error: null});
 
         const {type, startDate, endDate, selectedStartDate} = this.state;
 
-        if(type.value === "sub_reminder")
+        if(type.value === "premium_users")
         {
             exportSubscriptions(startDate, endDate)
                 .then((data) => {
@@ -70,7 +81,7 @@ class Exports extends React.Component {
                 .catch((error) => this.setState({ error }))
                 .finally(() => this.setState({loading: false}))
         }
-        else if(type.value === "del_users")
+        else if(type.value === "deleted_users")
         {
             exportDeletedUsers(startDate)
                 .then((data) => {
@@ -110,8 +121,8 @@ class Exports extends React.Component {
         ));
 
         const selectItems = [
-            {label: 'Sub reminder', value: 'sub_reminder'},
-            {label: 'Delete users', value: 'del_users'},
+            {label: 'Premium users', value: 'premium_users'},
+            {label: 'Deleted users', value: 'deleted_users'},
             {label: 'New users', value: 'new_users'},
         ];
 
