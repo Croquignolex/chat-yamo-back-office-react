@@ -55,6 +55,7 @@ class ChatSidebar extends React.Component {
                     const user = new User(data);
                     // Make user as an object
                     user.setLastMessageTime = feedback.createdDate.format("HH:mm");
+                    user.setPendingMessage = (feedback.userId === feedback.authorId);
                     user.setId = userId;
                     user.setStatus = await getUserStatus(user.id);
                     try {

@@ -15,6 +15,10 @@ const ChatSidebarItem = ({ feedback, activeChatId, onClickItem }) => {
 
     if (user.isDeleted) return null;
 
+    if(activeChatId === feedback.id) {
+        user.setPendingMessage = false;
+    }
+
     return (
         <li
             onClick={() => onClickItem(feedback)}
@@ -31,7 +35,10 @@ const ChatSidebarItem = ({ feedback, activeChatId, onClickItem }) => {
                         <span style={{marginTop: "2px"}}>{user.isDeleted ? "Deleted user" : user.name}</span>
                         {user.verified && <span className="ml-1"><CheckCircle size={17} className="text-success" /></span>}
                         {user.isPremium && <span className="ml-1"><Star size={17} className="text-warning" /></span>}
-                        <span className="text-secondary float-right">{user.lastMessageTime}</span>
+                        <span className="text-secondary float-right">
+                            {user.lastMessageTime}
+                            {user.isPendingMessage && <span className="dot float-right"></span>}
+                        </span>
                     </h5>
                     <h6 className={`text-bold-600 mb-0 ${user.isDeleted ? 'text-danger' : ''}`}>
                         {user.localisation}

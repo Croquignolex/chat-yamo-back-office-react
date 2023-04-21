@@ -31,6 +31,14 @@ export default class User {
         this.lastMessageTime = time;
     }
 
+    set setPendingMessage(flag) {
+        this.pendingMessage = flag;
+    }
+
+    get isPendingMessage() {
+        return this.pendingMessage;
+    }
+
     set setId(id) {
         this.id = id;
     }
