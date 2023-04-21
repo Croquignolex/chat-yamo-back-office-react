@@ -90,8 +90,8 @@ class ImageVerification extends React.Component {
 
             let nextIndex = next ? currentIndex + 1 : currentIndex - 1;
 
-            if(nextIndex < 0) nextIndex = length - 1;
-            else if(nextIndex > (length - 1)) nextIndex = 0;
+            if(nextIndex < 0) nextIndex = 0;
+            else if(nextIndex > (length - 1)) nextIndex = (length - 1);
 
             const activeUser = users[nextIndex];
 
@@ -173,8 +173,8 @@ class ImageVerification extends React.Component {
 
         let nextIndex = this.state.lastActionNext ? currentIndex : currentIndex - 1;
 
-        if(nextIndex < 0) nextIndex = length - 1;
-        else if(nextIndex > (length - 1)) nextIndex = 0;
+        if(nextIndex < 0) nextIndex = 0;
+        else if(nextIndex > (length - 1)) nextIndex = (length - 1);
 
         const activeUser = filterUsers[nextIndex];
 

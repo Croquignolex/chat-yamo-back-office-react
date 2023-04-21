@@ -20,4 +20,5 @@ export const BACKOFFICE_USERS_ROLES = [
     {label: "Reader", value: "reader", color: "#28c76f", className: 'success'},
     {label: "Image Checker", value: "imagechecker", color: "#00cfe8", className: 'info'},
     {label: "Image Verifier", value: "imageverifier", color: "#7367f0", className: 'primary'},
+    {label: "User List Viewer", value: "userlistviewer", color: "#6c757d", className: 'secondary'},
 ];
