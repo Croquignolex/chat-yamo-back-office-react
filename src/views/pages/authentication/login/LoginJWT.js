@@ -3,7 +3,7 @@ import { connect } from "react-redux"
 import { Mail, Lock } from "react-feather"
 import { loginWithJWT } from "../../../../redux/actions/auth"
 import { CardBody, FormGroup, Form, Input, Label } from "reactstrap"
-import {setRequestGlobalAction} from "../../../../redux/actions/GeneralAction";
+import {disableAppLoading, enableAppLoading} from "../../../../redux/actions/GeneralAction";
 
 class LoginJWT extends React.Component {
   constructor(props) {
@@ -17,10 +17,10 @@ class LoginJWT extends React.Component {
 
   handleLogin = e => {
     e.preventDefault();
-    this.props.setRequestGlobalAction(true);
+    this.props.enableAppLoading();
     this.props.loginWithJWT(this.state)
         .finally(() => {
-          this.props.setRequestGlobalAction(false);
+          this.props.disableAppLoading();
         });
   };
 
@@ -65,4 +65,4 @@ class LoginJWT extends React.Component {
   }
 }
 
-export default connect(null, { setRequestGlobalAction, loginWithJWT })(LoginJWT)
+export default connect(null, { enableAppLoading, disableAppLoading, loginWithJWT })(LoginJWT)

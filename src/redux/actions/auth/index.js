@@ -18,6 +18,7 @@ export const setAuthUser = () => (dispatch) => {
                 lastName: data.userDetails?.lastName,
                 username: data.userDetails?.username,
                 firstName: data.userDetails?.firstName,
+                allRoles: data.allRoles
             };
             dispatch({ type: SET_AUTH_USER_SUCCESS, payload });
             return resolve();
@@ -48,23 +49,41 @@ export const loginWithJWT = user => dispatch => {
                 // refreshToken: response.data.refreshToken,
             };
 
-            // Persist data into localstorage
-            saveAuthToken(
-                data.accessToken || 'Fake access Token',
-                data.tokenType || 'Bearer',
-                data.expiresIn || 2000,
-                data.refreshToken || 'Fake refresh Token',
-                data.entityId || 0,
-                data.userDetails || {},
-            );
+            api.get(AUTH.ROLES)
+                .then(response => {
+                    // Build Roles
+                    const roles = response.data?.roles?.map((role) => {
+                        return {
+                            label: role,
+                            value: role,
+                            color: "#" + Math.floor(Math.random()*16777215).toString(16),
+                        }
+                    });
 
-            // Fetch user data
-            dispatch(setAuthUser());
+                    console.log(roles)
 
-            return Promise.resolve();
+                    // Persist data into localstorage
+                    saveAuthToken(
+                        data.accessToken || 'Fake access Token',
+                        data.tokenType || 'Bearer',
+                        data.expiresIn || 2000,
+                        data.refreshToken || 'Fake refresh Token',
+                        data.entityId || 0,
+                        data.userDetails || {},
+                        roles || []
+                    );
+
+                    // Fetch user data
+                    dispatch(setAuthUser());
+
+                    return Promise.resolve();
+                })
+                .catch(() => {
+                    return Promise.reject()
+                });
         })
-        .catch(err => {
-            return Promise.reject();
+        .catch(() => {
+            return Promise.reject()
         });
 };
 

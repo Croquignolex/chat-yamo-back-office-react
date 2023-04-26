@@ -2,6 +2,7 @@ import {backendConfig} from "../../configs/AppConfig";
 
 export const AUTH = {
     LOGIN: '/feedbacks/backoffice/login',
+    ROLES: '/feedbacks/backoffice/allroles',
     REGISTER: '/feedbacks/backoffice/register',
     PASSWORD: '/feedbacks/backoffice/{backOfficeUserId}/changepasswd',
 };

@@ -1,14 +1,14 @@
 import React from "react";
-
-import Error500 from "../Error500";
 import {connect} from "react-redux";
 import * as Icon from "react-feather";
+import {Badge, Button, Card, CardBody, Col, Row, Spinner, Table} from "reactstrap";
+
+import Error500 from "../Error500";
 import NewBackofficeUser from "./new";
 import FormModal from "../../components/FormModal";
 import ConfirmModal from "../../components/ConfirmModal";
 import BackofficeUser from "../../models/BackofficeUser";
 import Breadcrumbs from "../../components/@vuexy/breadCrumbs/BreadCrumb";
-import {Badge, Button, Card, CardBody, Col, Row, Spinner, Table} from "reactstrap";
 import {deleteBackofficeUser, getBackofficeUsers} from "../../redux/actions/IndependentActions";
 
 class BackofficeUsers extends React.Component {
@@ -135,11 +135,22 @@ class BackofficeUsers extends React.Component {
                                                 <td>{backofficeUser.firstName}</td>
                                                 <td>{backofficeUser.lastName}</td>
                                                 <td>
-                                                    {backofficeUser.getRoles.map((role) => (
-                                                        <Badge color={role.className} key={role.label} className="mr-50">
-                                                            {role.label}
-                                                        </Badge>
-                                                    ))}
+                                                    {
+                                                        backofficeUser.roles.map((role) => {
+                                                            const needleRole = this.props.allRoles.find((item) => item.value === role);
+                                                            return needleRole
+                                                                ? (
+                                                                    <Badge style={{backgroundColor: needleRole.color}} key={role} className="mr-50">
+                                                                        {role}
+                                                                    </Badge>
+                                                                )
+                                                                : (
+                                                                    <Badge color="secondary" key={role} className="mr-50">
+                                                                        {role}
+                                                                    </Badge>
+                                                                )
+                                                        })
+                                                    }
                                                 </td>
                                                 <td className="text-center">
                                                     {(itemAction === backofficeUser.id)
@@ -188,6 +199,7 @@ const mapStateToProps = state => {
     return {
         backOfficeUserId: state.authUser?.data?.entityId,
         backOfficeUserRoles: state.authUser?.data?.roles,
+        allRoles: state.authUser?.data?.allRoles
     }
 };
 

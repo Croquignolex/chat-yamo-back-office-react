@@ -13,12 +13,3 @@ export const backendConfig = {
 };
 
 export const REACT_APP_CHAT_BACKOFFICE_USER_ID = process.env.REACT_APP_CHAT_BACKOFFICE_USER_ID;
-
-export const BACKOFFICE_USERS_ROLES = [
-    {label: "Admin", value: "admin", color: "#ea5455", className: 'danger'},
-    {label: "Writer", value: "writer", color: "#ff9f43", className: 'warning'},
-    {label: "Reader", value: "reader", color: "#28c76f", className: 'success'},
-    {label: "Image Checker", value: "imagechecker", color: "#00cfe8", className: 'info'},
-    {label: "Image Verifier", value: "imageverifier", color: "#7367f0", className: 'primary'},
-    {label: "User List Viewer", value: "userlistviewer", color: "#6c757d", className: 'secondary'},
-];

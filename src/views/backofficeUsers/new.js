@@ -1,4 +1,5 @@
 import React from "react";
+import {connect} from "react-redux";
 
 import Error500 from "../Error500";
 import FormInput from "../../components/FormInput";
@@ -6,7 +7,6 @@ import FormSelect from "../../components/FormSelect";
 import {requiredChecker} from "../../helpers/helpers";
 import {NotificationManager} from "react-notifications";
 import BackofficeUser from "../../models/BackofficeUser";
-import {BACKOFFICE_USERS_ROLES} from "../../configs/AppConfig";
 import {Button, Card, FormGroup, Label, Spinner, Form} from "reactstrap";
 import {addBackofficeUser} from "../../redux/actions/IndependentActions";
 
@@ -123,7 +123,7 @@ class NewBackofficeUser extends React.Component {
                         colored
                         input={roles}
                         label='Choisir les roles'
-                        options={BACKOFFICE_USERS_ROLES}
+                        options={this.props.allRoles}
                         handleInput={(data) => this.setState({ roles: {...roles, data}, error: null })}
                     />
                 </FormGroup>
@@ -139,4 +139,9 @@ class NewBackofficeUser extends React.Component {
     }
 }
 
-export default NewBackofficeUser;
+const mapStateToProps = ({ authUser }) => {
+    const allRoles = authUser.data?.allRoles || [];
+    return { allRoles };
+};
+
+export default connect(mapStateToProps)(NewBackofficeUser);

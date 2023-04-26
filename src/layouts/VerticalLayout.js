@@ -207,8 +207,6 @@ class VerticalLayout extends PureComponent {
 // map state to props
 const mapStateToProps = ({ authUser }) => {
   const roles = authUser.data?.roles || [];
-  // const needleRole = BACKOFFICE_USERS_ROLES.find((item) => roles.includes(item.value));
-  // Build data
   return { userRoles: roles };
 };
 
