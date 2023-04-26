@@ -71,8 +71,9 @@ export const getUserImagesForNotation = async (date) => {
     return makeRequest('get', NOTATIONS.GET_IMAGES + '?date=' + date);
 };
 
-export const getUserProfileImagesForNotation = async (month) => {
-    return makeRequest('get', NOTATIONS.GET_PROFILE_IMAGES + '?month=' + month);
+export const getUserProfileImagesForNotation = async (week) => {
+    // return makeRequest('get', NOTATIONS.GET_PROFILE_IMAGES + '?numberOfWeek =' + week);
+    return makeRequest('get', NOTATIONS.GET_PROFILE_IMAGES);
 };
 
 export const getOldUserImages = async () => {
@@ -306,7 +307,7 @@ export const deleteUserImage = async (userId, mediaId) => {
             {param: 'mediaId', value: mediaId},
         ]
     );
-    return makeRequest('delete', url, null, config);
+    return makeRequest('delete', url + '?isBackoffice=true', null, config);
 };
 
 // ===================================== END DELETE

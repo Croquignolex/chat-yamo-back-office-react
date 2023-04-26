@@ -57,7 +57,7 @@ class ImageSidebar extends React.Component {
                         </div>
                     </Form>
                 </div>
-                <div>
+                {/*<div>
                         <DatePicker
                             selectsStart
                             showMonthYearPicker
@@ -68,7 +68,7 @@ class ImageSidebar extends React.Component {
                             onChange={handleSelectedDate}
                             customInput={<CustomInput />}
                         />
-                </div>
+                </div>*/}
                 <div>
                     <strong className="text-primary">{verified}</strong> noted profile(s) / <strong className="text-primary">{toVerify}</strong> profile(s) to note
                     <Button color="primary" className="ml-50 rounded" onClick={this.refresh} size="sm">
