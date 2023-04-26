@@ -14,5 +14,6 @@ export const APP = {
     VERIFICATIONS: '/verifications',
     BACKOFFICE_USERS: '/backoffice-users',
     PROFILE_NOTATIONS: '/profile-notations',
+    MANUAL_ACTIVATION: '/manualActivation',
     OLD_VERIFICATIONS: '/old-verifications'
 };

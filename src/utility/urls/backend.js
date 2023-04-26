@@ -54,6 +54,7 @@ export const USERS = {
     CHECK_TOWN_EVENT: '/authentication/user/{userId}/checktownevent',
     SOUSCRIPTIONS: '/authentication/user/{userId}/subscriptionhistory', 
     STATUS_HISTORY: '/authentication/backoffice/user/{userId}/statusreason',
+    ACTIVATE_SUBSCRIPTION: '/authentication/backoffice/user/{userId}/activatesubscription',
 
     EXPORT_SUBSCRIPTION: '/authentication/users/subscriptions',
     EXPORT_DELETED_USERS: '/authentication/users/deleted/{date}',

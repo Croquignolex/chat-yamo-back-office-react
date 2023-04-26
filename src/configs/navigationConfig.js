@@ -59,6 +59,14 @@ const navigationConfig = [
     icon: <Icon.Star size={20} />,
     permissions: ['admin', 'imagechecker', 'imageverifier']
   },
+  {
+    type: "item",
+    id: "manualActivation",
+    title: "Manual Activation",
+    navLink: APP.MANUAL_ACTIVATION,
+    icon: <Icon.Award size={20} />,
+    permissions: ['admin']
+  },
 ]
 
 export default navigationConfig

@@ -1,8 +1,9 @@
-import React, {forwardRef} from "react";
+// import React, {forwardRef} from "react";
+import React from "react";
 import * as Icon from "react-feather";
 import {Button, Input, Form} from "reactstrap";
-import DatePicker from "react-datepicker";
-import dayjs from "dayjs";
+// import DatePicker from "react-datepicker";
+// import dayjs from "dayjs";
 
 class ImageSidebar extends React.Component {
     // props { activeChatId, verified, mainSidebar, handleActiveChat, handleUserSidebar, updateImagesToVerify, handleResetImage, handleImagesToNotate }
@@ -25,14 +26,15 @@ class ImageSidebar extends React.Component {
 
     render() {
         const { search } = this.state;
-        const { verified, toVerify, handleSearch, selectedDate, handleSelectedDate } = this.props;
+        // const { verified, toVerify, handleSearch, selectedDate, handleSelectedDate } = this.props;
+        const { verified, toVerify, handleSearch } = this.props;
 
-        const min = dayjs().startOf('year').toDate();
-        const max = dayjs().endOf('year').toDate();
+        // const min = dayjs().startOf('year').toDate();
+        // const max = dayjs().endOf('year').toDate();
 
-        const CustomInput = forwardRef(({ value, onClick }, ref) => (
+       /* const CustomInput = forwardRef(({ value, onClick }, ref) => (
             <Input readOnly ref={ref} type="text" onClick={onClick} defaultValue={value}/>
-        ));
+        ));*/
 
         return (
             <div className="d-flex justify-content-between mb-50 overflow-auto">

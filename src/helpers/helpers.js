@@ -411,3 +411,74 @@ export const checkRole = (allowedRoles, userRoles) => {
     //return needleRole.length !== 0;
     return !!needleRole
 };
+
+/**
+ *
+ * @param file
+ * @returns {Promise<unknown>}
+ */
+export const readFile = (file) => {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.addEventListener('load', () => resolve(reader.result), false);
+        reader.addEventListener('error', (error) => reject(error));
+        reader.readAsDataURL(file);
+    });
+};
+
+/**
+ *
+ * @param base64Image
+ * @returns {Promise<unknown>}
+ */
+const base64ToImageObject = (base64Image) => {
+    return new Promise((resolve, reject) => {
+        const image = new Image();
+        image.addEventListener('load', () => resolve(image));
+        image.addEventListener('error', (error) => reject(error));
+        image.setAttribute('crossOrigin', 'anonymous');
+        image.src = base64Image;
+    });
+};
+
+/**
+ *
+ * @param imageSrc
+ * @param pixelCrop
+ * @returns {Promise<unknown>}
+ */
+export const extractCroppedImage = (imageSrc, pixelCrop) => {
+    return new Promise((resolve, reject) => {
+        base64ToImageObject(imageSrc)
+            .then((image) => {
+                // Data
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
+
+                // Ensure that context has been created
+                (!ctx) && reject("Unable to create image context");
+
+                // Set canvas width to final desired crop size
+                canvas.width = 800
+                canvas.height = 400
+
+                // Build crouped image
+                ctx.fillStyle = '#ffffff';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                ctx.drawImage(
+                    image,
+                    pixelCrop.x,
+                    pixelCrop.y,
+                    pixelCrop.width,
+                    pixelCrop.height,
+                    0,
+                    0,
+                    800,
+                    400
+                );
+
+                resolve(canvas.toDataURL('image/jpeg'))
+            })
+            .catch((error) => reject(error));
+    });
+};
