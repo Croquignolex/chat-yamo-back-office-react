@@ -65,7 +65,7 @@ const navigationConfig = [
     title: "Manual Activation",
     navLink: APP.MANUAL_ACTIVATION,
     icon: <Icon.Award size={20} />,
-    permissions: ['admin']
+    permissions: ['admin', 'subcriptionactivator']
   },
 ]
 
