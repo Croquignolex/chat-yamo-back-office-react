@@ -459,7 +459,7 @@ export const extractCroppedImage = (imageSrc, pixelCrop) => {
                 (!ctx) && reject("Unable to create image context");
 
                 // Set canvas width to final desired crop size
-                canvas.width = 800
+                canvas.width = 400
                 canvas.height = 400
 
                 // Build crouped image
@@ -473,7 +473,7 @@ export const extractCroppedImage = (imageSrc, pixelCrop) => {
                     pixelCrop.height,
                     0,
                     0,
-                    800,
+                    400,
                     400
                 );
 

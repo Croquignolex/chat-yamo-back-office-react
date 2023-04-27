@@ -27,7 +27,7 @@ class CroupArea extends React.Component {
             <>
                 <div style={croupContainerStyle}>
                     <Cropper
-                        aspect={2}
+                        aspect={1}
                         crop={crop}
                         image={src}
                         zoom={zoom}
