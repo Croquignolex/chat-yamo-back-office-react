@@ -74,7 +74,8 @@ class Exports extends React.Component {
         const {user, file} = this.state;
 
         if(user && file) {
-            activateSubscription(user, file)
+            const bytesArray =  file.split("data:image/jpeg;base64,");
+            activateSubscription(user, bytesArray[1])
                 .then((data) => {
                     this.setState({data, file: "", user: ""})
                 })

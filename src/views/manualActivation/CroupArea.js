@@ -7,7 +7,7 @@ class CroupArea extends React.Component {
         super(props);
         this.state = {
             crop: { x: 0, y: 0 },
-            zoom: 1,
+            zoom: 2,
             croppedAreaPixels: null
         }
     }
@@ -27,13 +27,24 @@ class CroupArea extends React.Component {
             <>
                 <div style={croupContainerStyle}>
                     <Cropper
-                        aspect={1}
+                        aspect={2}
                         crop={crop}
                         image={src}
                         zoom={zoom}
                         onZoomChange={(data) => this.setState({zoom: data})}
                         onCropChange={(data) => this.setState({crop: data})}
                         onCropComplete={(croppedArea, pixels) => this.setState({croppedAreaPixels: pixels})}
+                    />
+                </div>
+                <div className="mt-2 controls">
+                    <input
+                        type="range"
+                        value={zoom}
+                        min={1}
+                        max={3}
+                        step={0.1}
+                        onChange={(e) => this.setState({zoom: e.target.value})}
+                        className="form-control-range col-centered w-50 zoom-range"
                     />
                 </div>
                 <div className="mt-2">
