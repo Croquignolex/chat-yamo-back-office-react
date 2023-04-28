@@ -58,6 +58,10 @@ export const getBackofficeUsers = async (backOfficeUserId) => {
     return makeRequest('get', url);
 };
 
+export const getAllRoles = async () => {
+    return makeRequest('get', AUTH.ROLES);
+};
+
 export const getUserImages = async (date) => {
     const config = {headers: {
             "CHAT-ET-YAMO-MEDIA-SERVICE-ALL-USER-IMAGES": "true",

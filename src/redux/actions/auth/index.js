@@ -18,7 +18,7 @@ export const setAuthUser = () => (dispatch) => {
                 lastName: data.userDetails?.lastName,
                 username: data.userDetails?.username,
                 firstName: data.userDetails?.firstName,
-                allRoles: data.allRoles
+                // allRoles: data.allRoles
             };
             dispatch({ type: SET_AUTH_USER_SUCCESS, payload });
             return resolve();
@@ -49,7 +49,18 @@ export const loginWithJWT = user => dispatch => {
                 // refreshToken: response.data.refreshToken,
             };
 
-            api.get(AUTH.ROLES)
+            // Persist data into localstorage
+            saveAuthToken(
+                data.accessToken || 'Fake access Token',
+                data.tokenType || 'Bearer',
+                data.expiresIn || 2000,
+                data.refreshToken || 'Fake refresh Token',
+                data.entityId || 0,
+                data.userDetails || {},
+                // roles || []
+            );
+
+            /*api.get(AUTH.ROLES)
                 .then(response => {
                     // Build Roles
                     const roles = response.data?.roles?.map((role) => {
@@ -60,27 +71,16 @@ export const loginWithJWT = user => dispatch => {
                         }
                     });
 
-                    console.log(roles)
-
-                    // Persist data into localstorage
-                    saveAuthToken(
-                        data.accessToken || 'Fake access Token',
-                        data.tokenType || 'Bearer',
-                        data.expiresIn || 2000,
-                        data.refreshToken || 'Fake refresh Token',
-                        data.entityId || 0,
-                        data.userDetails || {},
-                        roles || []
-                    );
-
-                    // Fetch user data
-                    dispatch(setAuthUser());
-
                     return Promise.resolve();
                 })
                 .catch(() => {
                     return Promise.reject()
-                });
+                });*/
+
+            // Fetch user data
+            dispatch(setAuthUser());
+
+            return Promise.resolve();
         })
         .catch(() => {
             return Promise.reject()

@@ -9,7 +9,7 @@ import FormModal from "../../components/FormModal";
 import ConfirmModal from "../../components/ConfirmModal";
 import BackofficeUser from "../../models/BackofficeUser";
 import Breadcrumbs from "../../components/@vuexy/breadCrumbs/BreadCrumb";
-import {deleteBackofficeUser, getBackofficeUsers} from "../../redux/actions/IndependentActions";
+import {deleteBackofficeUser, getBackofficeUsers, getAllRoles} from "../../redux/actions/IndependentActions";
 
 class BackofficeUsers extends React.Component {
     constructor(props) {
@@ -22,6 +22,7 @@ class BackofficeUsers extends React.Component {
             newModal: {show: false, title: ""},
             deleteModal: {show: false, title: "", body: "", data: ""},
             editModal: {},
+            allRoles: []
         }
     }
 
@@ -31,12 +32,25 @@ class BackofficeUsers extends React.Component {
 
     loadBackofficeUsers = () => {
         // Init request
-        this.setState({ listLoading: true, error: null, backofficeUsers: [] });
-        getBackofficeUsers(this.props?.backOfficeUserId)
+        this.setState({ listLoading: true, error: null, backofficeUsers: [], allRoles: [] });
+
+        getAllRoles()
             .then(data => {
-                const backofficeUsers = data?.map(u => new BackofficeUser(u));
-                // Set backofficeUsers
-                this.setState({ backofficeUsers });
+                const allRoles = data.roles.map((role) => {
+                    return {
+                        label: role,
+                        value: role,
+                        color: "#" + Math.floor(Math.random()*16777215).toString(16),
+                    }
+                });
+                this.setState({ allRoles });
+
+                getBackofficeUsers(this.props?.backOfficeUserId)
+                    .then(data => {
+                        const backofficeUsers = data?.map(u => new BackofficeUser(u));
+                        // Set backofficeUsers
+                        this.setState({ backofficeUsers });
+                    })
             })
             .catch(error => this.setState({ error }))
             .finally(() => this.setState({ listLoading: false }));
@@ -92,7 +106,7 @@ class BackofficeUsers extends React.Component {
 
     render() {
 
-        const { backofficeUsers, error, listLoading, itemAction, newModal, deleteModal } = this.state;
+        const { backofficeUsers, allRoles, error, listLoading, itemAction, newModal, deleteModal } = this.state;
 
         if(error) {
             return (
@@ -137,7 +151,7 @@ class BackofficeUsers extends React.Component {
                                                 <td>
                                                     {
                                                         backofficeUser.roles.map((role) => {
-                                                            const needleRole = this.props.allRoles.find((item) => item.value === role);
+                                                            const needleRole = allRoles.find((item) => item.value === role);
                                                             return needleRole
                                                                 ? (
                                                                     <Badge style={{backgroundColor: needleRole.color}} key={role} className="mr-50">
@@ -188,7 +202,11 @@ class BackofficeUsers extends React.Component {
                     toggleModal={this.toggleDeleteModal}
                 />
                 <FormModal small modal={newModal} toggleModal={this.toggleNewModal}>
-                    <NewBackofficeUser handleCompleted={this.handleCompleted} backOfficeUserId={this.props?.backOfficeUserId} />
+                    <NewBackofficeUser
+                        handleCompleted={this.handleCompleted}
+                        backOfficeUserId={this.props?.backOfficeUserId}
+                        allRoles={allRoles}
+                    />
                 </FormModal>
             </>
         )
@@ -199,7 +217,7 @@ const mapStateToProps = state => {
     return {
         backOfficeUserId: state.authUser?.data?.entityId,
         backOfficeUserRoles: state.authUser?.data?.roles,
-        allRoles: state.authUser?.data?.allRoles
+        // allRoles: state.authUser?.data?.allRoles
     }
 };
 

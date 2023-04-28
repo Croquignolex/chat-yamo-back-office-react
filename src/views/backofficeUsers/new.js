@@ -1,5 +1,4 @@
 import React from "react";
-import {connect} from "react-redux";
 
 import Error500 from "../Error500";
 import FormInput from "../../components/FormInput";
@@ -139,9 +138,12 @@ class NewBackofficeUser extends React.Component {
     }
 }
 
+/*
 const mapStateToProps = ({ authUser }) => {
     const allRoles = authUser.data?.allRoles || [];
     return { allRoles };
 };
+*/
 
-export default connect(mapStateToProps)(NewBackofficeUser);
+// export default connect(mapStateToProps)(NewBackofficeUser);
+export default NewBackofficeUser;
