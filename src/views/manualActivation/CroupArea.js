@@ -1,6 +1,7 @@
 import React from "react";
-import { Button} from "reactstrap";
+import Select from "react-select";
 import Cropper from 'react-easy-crop';
+import {Button, Label} from "reactstrap";
 
 class CroupArea extends React.Component {
     constructor(props) {
@@ -8,9 +9,15 @@ class CroupArea extends React.Component {
         this.state = {
             crop: { x: 0, y: 0 },
             zoom: 2,
-            croppedAreaPixels: null
+            aspect: 1,
+            croppedAreaPixels: null,
+            type: {label: 'Square', value: 1}
         }
     }
+
+    updateTypeSelect = (type) => {
+        this.setState({aspect: type.value, type});
+    };
 
     render() {
         const croupContainerStyle = {
@@ -19,15 +26,24 @@ class CroupArea extends React.Component {
             height: 400,
             background: '#fff'
         };
+        const selectItems = [
+            {label: 'Square', value: 1},
+            {label: 'Landscape 1', value: 4/3},
+            {label: 'Landscape 2', value: 6/3},
+            {label: 'Landscape 3', value: 8/3},
+            {label: 'Portrait 1', value: 11/12},
+            {label: 'Portrait 2', value: 11/14},
+            {label: 'Portrait 3', value: 11/16},
+        ];
 
-        const { crop, zoom, croppedAreaPixels } = this.state;
+        const { crop, zoom, aspect, type, croppedAreaPixels } = this.state;
         const { src, handleModal } = this.props;
 
         return (
             <>
                 <div style={croupContainerStyle}>
                     <Cropper
-                        aspect={2}
+                        aspect={aspect}
                         crop={crop}
                         image={src}
                         zoom={zoom}
@@ -36,7 +52,8 @@ class CroupArea extends React.Component {
                         onCropComplete={(croppedArea, pixels) => this.setState({croppedAreaPixels: pixels})}
                     />
                 </div>
-                <div className="mt-2 controls">
+                <div className="mt-2 controls text-center">
+                    <Label>Zoom</Label>
                     <input
                         type="range"
                         value={zoom}
@@ -47,7 +64,16 @@ class CroupArea extends React.Component {
                         className="form-control-range col-centered w-50 zoom-range"
                     />
                 </div>
-                <div className="mt-2">
+                <div className="mt-2 text-center">
+                    <Label>Shape</Label>
+                    <Select
+                        className="col-centered w-50 text-left"
+                        value={type}
+                        options={selectItems}
+                        onChange={this.updateTypeSelect}
+                    />
+                </div>
+                <div className="mt-50">
                     <Button color="primary" className="rounded" onClick={() => handleModal(src, croppedAreaPixels)}>
                         Croup
                     </Button>

@@ -1,9 +1,8 @@
 import * as Icon from "react-feather";
 import React from "react";
 
-import Error500 from "../Error500";
 import Breadcrumbs from "../../components/@vuexy/breadCrumbs/BreadCrumb";
-import {Col, Row, Form, Input, Button, Spinner, Card, Label} from "reactstrap";
+import {Col, Row, Form, Input, Button, Spinner, Label} from "reactstrap";
 
 import CroupArea from "./CroupArea";
 import FormModal from "../../components/FormModal";
@@ -24,6 +23,7 @@ class Exports extends React.Component {
     }
 
     updateSearchInput = (e) => {
+        this.setState({error: null});
         const user = e?.target?.value;
         this.setState({user})
     };
@@ -148,13 +148,14 @@ class Exports extends React.Component {
                             {(error) && (
                                 (error.input) ? (
                                     <>
-                                        <Icon.X size={40} className="text-danger" />
-                                        <h4 className="text-danger">{error.input}</h4>
+                                        <Icon.AlertTriangle size={40} className="text-warning" />
+                                        <h4 className="text-warning">{error.input}</h4>
                                     </>
                                 ) : (
-                                    <Card className="sidebar-content h-100">
-                                        <Error500 refresh={false} />
-                                    </Card>
+                                    <>
+                                        <Icon.X size={40} className="text-danger" />
+                                        <h4 className="text-danger">Could not proceed manual activation</h4>
+                                    </>
                                 )
                             )}
                         </div>
