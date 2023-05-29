@@ -137,7 +137,7 @@ class Exports extends React.Component {
                     breadCrumbActive="Chooses data to export"
                 />
                 <Row>
-                    <Col lg={8} sm={12}>
+                    <Col lg={10} sm={12}>
                         <Form className="d-flex mx-auto" onSubmit={this.handleExport}>
                             <div className="w-25">
                                 <Label>Choose data type</Label>
