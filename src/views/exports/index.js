@@ -127,6 +127,8 @@ class Exports extends React.Component {
         ];
 
         const now = new Date();
+        const sixMonthEarlier = dayjs().subtract(6, 'month').toDate();
+        const twoYearLater = dayjs().add(2, 'year').toDate();
 
         return (
             <>
@@ -157,6 +159,7 @@ class Exports extends React.Component {
                                                 startDate={selectedStartDate}
                                                 calendarStartDay={1}
                                                 dateFormat="yyyy/MM/dd"
+                                                minDate={sixMonthEarlier}
                                                 maxDate={now}
                                                 onChange={this.handleSelectedStartDate}
                                                 customInput={<CustomInput isBegin />}
@@ -174,7 +177,7 @@ class Exports extends React.Component {
                                                 dateFormat="yyyy/MM/dd"
                                                 customInput={<CustomInput />}
                                                 onChange={this.handleSelectedEndDate}
-                                                maxDate={now}
+                                                maxDate={twoYearLater}
                                             />
                                         </div>
                                     </>
@@ -187,7 +190,8 @@ class Exports extends React.Component {
                                             selected={selectedStartDate}
                                             calendarStartDay={1}
                                             dateFormat="yyyy/MM"
-                                            maxDate={now}
+                                            maxDate={twoYearLater}
+                                            minDate={sixMonthEarlier}
                                             onChange={this.handleSelectedStartDate}
                                             customInput={<CustomInput />}
                                         />
