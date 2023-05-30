@@ -18,48 +18,41 @@ const DisplayVideo = ({src, type, className, withWrapper, withModal, withPercent
         e.target.poster = require("../assets/img/unknown-user.png");
     };
 
+    const thumbnail = require("../assets/img/video-icon.png");
+
     return (
         <>
             {/* Normal image size display */}
             {withWrapper ? (
                 <div className={`c-image ${className}`}>
-                    <Wrapper src={src} className="c-image-content rounded-top" onClick={toggleModal} />
+                    <Wrapper src={thumbnail} className="c-image-content rounded-top" onClick={toggleModal} />
                 </div>
             ) : (
-                withPercentage 
-                    ? (
-                        <>
-                            <img className="img-responsive play-button" src={require("../assets/img/play.png")} alt="play" />
-                            <video src={src}
-                                   onClick={toggleModal}
-                                   className="hand-cusor"
-                                   style={{ width: "100%" }}
-                                   onError={handleErrorImage}
-                            >
-                            </video>
-                        </>
-
-                    )
-                    : (
-                        <>
-                            <img className="img-responsive play-button" src={require("../assets/img/play.png")} alt="play" />
-                            <video src={src}
-                                   onClick={toggleModal}
-                                   className={className}
-                                   width={width}
-                                   height={height}
-                                   onError={handleErrorImage}
-                            >
-                            </video>
-                        </>
-                    )
+                withPercentage
+                    ? <img
+                        alt="..."
+                        src={thumbnail}
+                        onClick={toggleModal}
+                        className="hand-cusor"
+                        style={{ width: "100%" }}
+                        onError={handleErrorImage}
+                    />
+                    : <img
+                        alt="..."
+                        src={thumbnail}
+                        width={width}
+                        height={height}
+                        className={className}
+                        onClick={toggleModal}
+                        onError={handleErrorImage}
+                    />
             )}
             {/* Large image size display into modal */}
             {withModal && (
                 <Modal isOpen={modal} toggle={toggleModal} className="modal-dialog-centered" size="lg">
-                    <video id="background-video" autoPlay loop muted controls preload="auto" onError={handleErrorImage}
-                    >
-                        <source src={src} type={type} />
+                    {/*<video autoPlay loop muted style={{pointerEvents: 'none'}} preload="auto" onError={handleErrorImage}>*/}
+                    <video autoPlay loop muted controls preload="auto" onError={handleErrorImage}>
+                        {type ? <source src={src} type={type} /> : <source src={src} />}
                     </video>
                 </Modal>
             )}
@@ -85,7 +78,6 @@ DisplayVideo.defaultProps = {
     height: "40",
     className: "",
     withModal: true,
-    type: "video/mp4",
     withWrapper: false,
     withPercentage: false
 }

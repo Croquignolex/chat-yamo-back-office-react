@@ -103,7 +103,7 @@ class ChatInput extends Component {
 
             files.shift();
 
-            files.forEach((file) => {
+            for(const file of files) {
                 const _msg = {
                     userId: activeUser.id,
                     caseId: activeChatID,
@@ -121,9 +121,8 @@ class ChatInput extends Component {
                 };
 
                 const messageObj = new Message(_msg);
-
-                this.buildMedia(file, messageObj);
-            });
+                await this.buildMedia(file, messageObj);
+            }
         }
     };
 

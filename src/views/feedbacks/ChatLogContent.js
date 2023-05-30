@@ -4,6 +4,7 @@ import {Card, CardBody} from "reactstrap";
 import {Clock, CheckCircle, XCircle} from "react-feather";
 
 import DisplayImage from "../../components/DisplayImage";
+import DisplayVideo from "../../components/DisplayVideo";
 
 const Wrapper = styled.div`
     .c-image-wrapper {
@@ -89,6 +90,18 @@ const ChatLogContent = ({ activeUser, messages }) => {
         }
     };
 
+    const MediaDisplay = ({message}) => {
+        if(message.media) {
+            if(message.type === 'video') {
+                return <DisplayVideo src={message.media} withWrapper />;
+            } else {
+                return <DisplayImage src={message.media} withWrapper />;
+            }
+        }
+
+        return null;
+    };
+
     return (
         <>
             {messages.map((message, index, arr) => {
@@ -101,9 +114,7 @@ const ChatLogContent = ({ activeUser, messages }) => {
                             <div className="chat-body">
                                 <CardWrapper>
                                     <CardBody className={`p-0 ${message.media ? 'c-image-wrapper' : ''}`}>
-                                        {message.media && (
-                                            <DisplayImage src={message.imageSrc} withWrapper />
-                                        )}
+                                        <MediaDisplay message={message} />
                                         <div className={`chat-content ${message.media ? 'got-image' : ''}`}>
                                             <div className="c-text-content mb-50">
                                                 <p className="preformatted">{message.content}</p>

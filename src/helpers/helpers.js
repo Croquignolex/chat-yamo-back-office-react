@@ -325,13 +325,13 @@ export const downloadFile = (fileUrl, filename = '') => {
 };
 
 export const imageExists = (url) => {
-    return new Promise(function(resolve, reject) {
+    return new Promise(function(resolve) {
         const img = new Image();
         img.onload = function() {
             resolve(url);
         }
         img.onerror = function() {
-            reject(new Error("Image failed to load: " + url));
+            resolve(null);
         }
         img.src = url;
     });
