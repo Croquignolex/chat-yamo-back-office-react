@@ -8,18 +8,31 @@ import MediaInput from "./MediaInput";
 import Message from "../../../models/Message";
 import {getUniqueId} from "../../../helpers/helpers";
 import {REACT_APP_CHAT_BACKOFFICE_USER_ID} from "../../../configs/AppConfig";
-import {createMedia, sendMessage} from "../../../redux/actions/IndependentActions";
+import {createMedia, createVideoMedia, sendMessage} from "../../../redux/actions/IndependentActions";
 
 class ChatInput extends Component {
     // props { activeChatID, activeUser, notifyChanges }
     state = {
         msg: '',
+        files: [],
         show: false
     };
 
     onChangeMsg = (e) => {
         e.preventDefault();
         this.setState({msg: e.target.value});
+    };
+
+    onFilesLoad = (files) => {
+        this.setState({files});
+    };
+
+    toggleMediaInput = (show) => {
+        this.setState({show});
+    };
+
+    resetMessage = () => {
+        this.setState({msg: '', files: []});
     };
 
     handleMsgSubmit = async (e) => {
@@ -50,15 +63,15 @@ class ChatInput extends Component {
             }
         };
 
-        this.sendPlainMessage(_msg)
+        this.buildMessage(new Message(_msg))
     };
 
-    handleMsgWithFileSubmit = (files = null) => {
-        console.log({files})
-        /*const {activeChatID, activeUser, notifyChanges, backOfficeUserName} = this.props;
+    handleMsgWithFileSubmit = async () => {
+        const {activeChatID, activeUser, backOfficeUserName} = this.props;
         const message = this.state.msg;
+        const files = this.state.files;
 
-        if (!file && message.length === 0) {
+        if (files.length === 0 && message.length === 0) {
             NotificationManager.warning("Message body can not be empty", null, 500);
             return;
         }
@@ -82,61 +95,86 @@ class ChatInput extends Component {
             }
         };
 
-        if(!file) this.sendPlainMessage(_msg);
+        const messageObj = new Message(_msg);
+
+        if(files.length === 0) this.buildMessage(messageObj)
         else {
-            // Update
-            const messageWithMedia = new Message(_msg);
-            messageWithMedia.setPlainMedia = file.preview;
-            notifyChanges(messageWithMedia);
+            await this.buildMedia(files[0], messageObj);
+
+            files.shift();
+
+            files.forEach((file) => {
+                const _msg = {
+                    userId: activeUser.id,
+                    caseId: activeChatID,
+                    mediaId: null,
+                    content: "",
+                    backofficeUserName: backOfficeUserName,
+                    messageId: getUniqueId(),
+                    authorId: REACT_APP_CHAT_BACKOFFICE_USER_ID,
+                    createdAt: Date.now(),
+                    request: {
+                        loading: true,
+                        error: null,
+                        data: message
+                    }
+                };
+
+                const messageObj = new Message(_msg);
+
+                this.buildMedia(file, messageObj);
+            });
+        }
+    };
+
+    buildMedia = (file, message) => {
+        const {activeUser, notifyChanges} = this.props;
+
+        if(['image/jpg', 'image/jpeg', 'image/png'].includes(file.type)) {
+            message.setImageMedia = file.preview;
+            notifyChanges(message);
             // Create media
             createMedia(activeUser.id, file)
                 .then((data) => {
-                    sendMessage(activeUser.id, message, backOfficeUserName, activeUser.name, data.mediaId)
-                        .then(() => {
-                            messageWithMedia.seRequest = {..._msg.request, loading: false};
-                            notifyChanges(messageWithMedia);
-                        })
-                        .catch(error => {
-                            messageWithMedia.seRequest = {..._msg.request, error, loading: false};
-                            notifyChanges(messageWithMedia);
-                        });
+                    this.buildMessage(message, data.mediaId);
                 })
                 .catch(error => {
-                    messageWithMedia.seRequest = {..._msg.request, error, loading: false};
-                    notifyChanges(messageWithMedia);
+                    message.seRequest = {...message.request, error, loading: false};
+                    notifyChanges(message);
                 });
-        }*/
+        } else if (['video/mp4', 'video/webm', 'video/x-msvideo'].includes(file.type)) {
+            message.setVideoMedia = file.preview;
+            notifyChanges(message);
+            // Create media
+            createVideoMedia(activeUser.id, file)
+                .then((data) => {
+                    this.buildMessage(message, data.mediaId);
+                })
+                .catch(error => {
+                    message.seRequest = {...message.request, error, loading: false};
+                    notifyChanges(message);
+                });
+        }
+    }
 
-    };
-
-    sendPlainMessage = (_msg) => {
+    buildMessage = (message, mediaId = null) => {
         const {activeUser, notifyChanges, backOfficeUserName} = this.props;
-        const plainMessage = new Message(_msg);
+        notifyChanges(message);
 
-        notifyChanges(plainMessage);
         // Send request
-        sendMessage(activeUser.id, _msg.content, backOfficeUserName, activeUser.name)
+        sendMessage(activeUser.id, message.content, backOfficeUserName, activeUser.name, mediaId)
             .then(() => {
-                //
-                plainMessage.seRequest = {..._msg.request, loading: false};
-                notifyChanges(plainMessage);
+                message.seRequest = {...message.request, loading: false};
+                notifyChanges(message);
             })
             .catch(error => {
-                plainMessage.seRequest = {..._msg.request, error, loading: false};
-                notifyChanges(plainMessage);
+                message.seRequest = {...message.request, error, loading: false};
+                notifyChanges(message);
             });
     }
 
-    toggleMediaInput = (show) => {
-        this.setState({show});
-    };
-
-    resetMessage = () => {
-        this.setState({msg: ''});
-    };
-
     render() {
-        const { show, msg } = this.state;
+        const { show, msg, files } = this.state;
 
         return (
             <>
@@ -163,7 +201,9 @@ class ChatInput extends Component {
                 <MediaInput
                     show={show}
                     message={msg}
+                    files={files}
                     onMsgChange={this.onChangeMsg}
+                    onFilesLoad={this.onFilesLoad}
                     onSubmit={this.handleMsgWithFileSubmit}
                     onClose={() => this.toggleMediaInput(false)}
                 />

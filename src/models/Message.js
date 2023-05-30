@@ -14,7 +14,13 @@ export default class Message {
         // backofficeUserName
     }
 
-    set setPlainMedia(media) {
+    set setImageMedia(media) {
+        this.type = 'image';
+        this.media = media;
+    }
+
+    set setVideoMedia(media) {
+        this.type = 'video';
         this.media = media;
     }
 
@@ -26,6 +32,10 @@ export default class Message {
         // const base64ImageString = Buffer.from(image, 'binary').toString('base64');
         // this.media = "data:image/jpg;base64," + base64ImageString;
         this.media = image?.compressedPreSignedUrl || image?.originalPreSignedUrl;
+    }
+
+    set setType(type) {
+        this.type = type;
     }
 
     get isBackUser() {

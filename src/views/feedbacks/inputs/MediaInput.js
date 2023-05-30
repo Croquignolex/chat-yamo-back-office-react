@@ -5,8 +5,8 @@ import {
     ModalBody,
     ModalHeader,
 } from "reactstrap";
+import React from 'react';
 import {Send} from "react-feather";
-import React, {useState} from 'react';
 import {useDropzone} from "react-dropzone";
 
 import DisplayImage from "../../../components/DisplayImage";
@@ -14,13 +14,12 @@ import DisplayVideo from "../../../components/DisplayVideo";
 
 import "../../../assets/scss/plugins/extensions/dropzone.scss";
 
-const MediaInput = ({ message, onMsgChange, show, onClose, onSubmit }) => {
-    const [files, setFiles] = useState([]);
+const MediaInput = ({ message, files, onMsgChange, onFilesLoad, show, onClose, onSubmit }) => {
     const { getRootProps, getInputProps } = useDropzone({
         // maxFiles: 1,
         accept: "image/jpg,image/jpeg,image/png,video/mp4,video/quicktime,video/x-msvideo,video/x-ms-wmv",
         onDrop: acceptedFiles => {
-            setFiles(
+            onFilesLoad(
                 acceptedFiles.map(file =>
                     Object.assign(file, {
                         preview: URL.createObjectURL(file)
@@ -41,7 +40,7 @@ const MediaInput = ({ message, onMsgChange, show, onClose, onSubmit }) => {
 
     const _onSubmit = (e) => {
         e.preventDefault();
-        onSubmit(files.length > 0 ? files : null);
+        onSubmit();
     };
 
     return(
