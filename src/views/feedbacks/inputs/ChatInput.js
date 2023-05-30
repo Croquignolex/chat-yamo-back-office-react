@@ -53,8 +53,9 @@ class ChatInput extends Component {
         this.sendPlainMessage(_msg)
     };
 
-    handleMsgWithFileSubmit = (file = null) => {
-        const {activeChatID, activeUser, notifyChanges, backOfficeUserName} = this.props;
+    handleMsgWithFileSubmit = (files = null) => {
+        console.log({files})
+        /*const {activeChatID, activeUser, notifyChanges, backOfficeUserName} = this.props;
         const message = this.state.msg;
 
         if (!file && message.length === 0) {
@@ -104,7 +105,7 @@ class ChatInput extends Component {
                     messageWithMedia.seRequest = {..._msg.request, error, loading: false};
                     notifyChanges(messageWithMedia);
                 });
-        }
+        }*/
 
     };
 

@@ -281,6 +281,16 @@ export const verifyUserImage = async (userId, mediaId, mediaPath, verified) => {
     return makeRequest('put', url, null, config);
 };
 
+export const createVideoMedia = async (userId, file) => {
+    const url = joinBaseUrlWithParams(
+        MEDIA.CHATROOMS.CREATE_VIDEO,
+        [
+            {param: 'chatroomId', value: `${userId}:${REACT_APP_CHAT_BACKOFFICE_USER_ID}`}
+        ]
+    );
+    return makeRequest('put', url, {picture: file}, {shouldParseFormData: true, fileData: ['picture']});
+};
+
 export const createMedia = async (userId, file) => {
     const url = joinBaseUrlWithParams(
         MEDIA.CHATROOMS.CREATE,

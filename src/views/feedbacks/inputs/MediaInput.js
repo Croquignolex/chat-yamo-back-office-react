@@ -8,13 +8,17 @@ import {
 import {Send} from "react-feather";
 import React, {useState} from 'react';
 import {useDropzone} from "react-dropzone";
+
+import DisplayImage from "../../../components/DisplayImage";
+import DisplayVideo from "../../../components/DisplayVideo";
+
 import "../../../assets/scss/plugins/extensions/dropzone.scss";
 
 const MediaInput = ({ message, onMsgChange, show, onClose, onSubmit }) => {
     const [files, setFiles] = useState([]);
     const { getRootProps, getInputProps } = useDropzone({
-        maxFiles: 1,
-        accept: "image/jpg,image/jpeg",
+        // maxFiles: 1,
+        accept: "image/jpg,image/jpeg,image/png,video/mp4,video/quicktime,video/x-msvideo,video/x-ms-wmv",
         onDrop: acceptedFiles => {
             setFiles(
                 acceptedFiles.map(file =>
@@ -29,14 +33,15 @@ const MediaInput = ({ message, onMsgChange, show, onClose, onSubmit }) => {
     const thumbs = files.map(file => (
         <div className="dz-thumb" key={file.name}>
             <div className="dz-thumb-inner">
-                <img src={file.preview} className="dz-img" alt="..." />
+                {['image/jpg', 'image/jpeg', 'image/png'].includes(file.type) && <DisplayImage src={file.preview} withPercentage /> }
+                {['video/mp4', 'video/webm', 'video/x-msvideo'].includes(file.type) && <DisplayVideo src={file.preview} type={file.type} withPercentage />}
             </div>
         </div>
     ));
 
     const _onSubmit = (e) => {
         e.preventDefault();
-        onSubmit(files.length > 0 ? files[0] : null);
+        onSubmit(files.length > 0 ? files : null);
     };
 
     return(
