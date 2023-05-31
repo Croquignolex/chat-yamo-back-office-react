@@ -58,8 +58,9 @@ const MediaInput = ({ message, files, onMsgChange, onFilesLoad, show, onClose, o
                     <section className="w-100">
                         <div {...getRootProps({ className: "dropzone" })}>
                             <input {...getInputProps()} />
-                            <p className="mx-1">
-                                Téléverser une image içi
+                            <p className="mx-1 mt-50 text-center text-danger">
+                                Drop files or click to upload <br/>
+                                Allowed extensions:  JPEG, JPG, PNG, MP4, MOV, AVI, WMV.
                             </p>
                         </div>
                         <aside className="thumb-container">{thumbs}</aside>

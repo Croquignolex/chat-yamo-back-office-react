@@ -1,24 +1,30 @@
 import {Modal} from "reactstrap";
 import PropTypes from "prop-types";
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import styled from "styled-components";
+import {generateVideoThumbnailViaUrl} from '@rajesh896/video-thumbnails-generator';
 
 // Wrapper style
 const Wrapper = styled.div`background-image: url(${props => props.src})`;
+const defaultThumbnail = require("../assets/img/unknown-user.png");
 
 // Component
 const DisplayVideo = ({src, type, className, withWrapper, withModal, withPercentage, height, width}) => {
     const [modal, setModal] = useState(false);
+    const [thumbnail, setThumbnail] = useState(defaultThumbnail);
 
     const toggleModal = () => {
         setModal(!modal);
     };
 
     const handleErrorImage = (e) =>{
-        e.target.poster = require("../assets/img/unknown-user.png");
+        e.target.poster = defaultThumbnail;
     };
 
-    const thumbnail = require("../assets/img/video-icon.png");
+    useEffect(() => {
+        generateVideoThumbnailViaUrl(src, 1)
+            .then((res) => setThumbnail(res))
+    }, [src]);
 
     return (
         <>
@@ -35,7 +41,6 @@ const DisplayVideo = ({src, type, className, withWrapper, withModal, withPercent
                         onClick={toggleModal}
                         className="hand-cusor"
                         style={{ width: "100%" }}
-                        onError={handleErrorImage}
                     />
                     : <img
                         alt="..."
@@ -44,14 +49,13 @@ const DisplayVideo = ({src, type, className, withWrapper, withModal, withPercent
                         height={height}
                         className={className}
                         onClick={toggleModal}
-                        onError={handleErrorImage}
                     />
             )}
             {/* Large image size display into modal */}
             {withModal && (
                 <Modal isOpen={modal} toggle={toggleModal} className="modal-dialog-centered" size="lg">
                     {/*<video autoPlay loop muted style={{pointerEvents: 'none'}} preload="auto" onError={handleErrorImage}>*/}
-                    <video autoPlay loop muted controls preload="auto" onError={handleErrorImage}>
+                    <video autoPlay loop muted controls preload="auto" controlsList="nofullscreen" onError={handleErrorImage}>
                         {type ? <source src={src} type={type} /> : <source src={src} />}
                     </video>
                 </Modal>
