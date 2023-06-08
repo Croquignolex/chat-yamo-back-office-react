@@ -119,6 +119,15 @@ class UserProfile extends React.Component {
               </div>
               <div className="d-flex user-info">
                 <div className="user-info-title font-weight-bold">
+                  Certified
+                </div>
+                {(activeUser?.isCertified)
+                    ? <div className="font-weight-bold text-success">Yes</div>
+                    : <div className="font-weight-bold text-danger">No</div>
+                }
+              </div>
+              <div className="d-flex user-info">
+                <div className="user-info-title font-weight-bold">
                   Verified
                 </div>
                 {(activeUser?.verified)

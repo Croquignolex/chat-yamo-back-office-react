@@ -12,7 +12,7 @@ import {
     getUserStatus,
     getUserProfile,
     searchUserImages,
-    getUserProfileImage
+    getUserProfileImage, getUserIdentity
 } from "../../redux/actions/IndependentActions";
 
 class UsersImages extends React.Component {
@@ -68,6 +68,7 @@ class UsersImages extends React.Component {
                 const user = new User(data);
                 user.setId = search;
                 user.setStatus = await getUserStatus(user.id);
+                user.setCertified = await getUserIdentity(user.id);
                 try {
                     if(!user.isDeleted) {
                         // User profile image

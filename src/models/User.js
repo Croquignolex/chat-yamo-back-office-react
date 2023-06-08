@@ -51,6 +51,10 @@ export default class User {
         return this.avatar;
     }
 
+    set setCertified(identify) {
+        this.certified = identify?.identityVerified;
+    }
+
     set setStatus(status) {
         this.deleted = status?.deleted || this.name === "chat_yamo_deleted_account" || this.id === "EMPTY_USER_ID";
         this.blocked = status?.blocked;
@@ -64,6 +68,10 @@ export default class User {
         this.blocked = status?.blocked;
 
         this.avatar = this.avatar ? this.avatar : require("../assets/img/unknown-user.png");
+    }
+
+    get isCertified() {
+        return this.certified;
     }
 
     get isDeleted() {

@@ -9,7 +9,13 @@ import User from "../../models/User";
 import Feedback from "../../models/Feedback";
 import ChatSidebarItem from "./ChatSidebarItem";
 import {twoDigitDisplay} from "../../helpers/helpers";
-import {getCases, getUserProfile, getUserProfileImage, getUserStatus} from "../../redux/actions/IndependentActions";
+import {
+    getCases,
+    getUserIdentity,
+    getUserProfile,
+    getUserProfileImage,
+    getUserStatus
+} from "../../redux/actions/IndependentActions";
 
 class ChatSidebar extends React.Component {
     // props { activeChatId, mainSidebar, handleActiveChat, handleUserSidebar }
@@ -58,6 +64,7 @@ class ChatSidebar extends React.Component {
                     user.setPendingMessage = (feedback.userId === feedback.authorId);
                     user.setId = userId;
                     user.setStatus = await getUserStatus(user.id);
+                    user.setCertified = await getUserIdentity(user.id);
                     try {
                         if(!user.isDeleted) {
                             // User profile image

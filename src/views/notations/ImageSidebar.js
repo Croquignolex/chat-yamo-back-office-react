@@ -13,7 +13,7 @@ import {
     getUserProfile,
     getUserProfileImage,
     getUserImagesForNotation,
-    getImagesForNotationCount
+    getImagesForNotationCount, getUserIdentity
 } from "../../redux/actions/IndependentActions";
 
 class ImageSidebar extends React.Component {
@@ -90,6 +90,7 @@ class ImageSidebar extends React.Component {
                     const user = new User(userObject);
                     user.setId = userId;
                     user.setStatus = await getUserStatus(user.id);
+                    user.setCertified = await getUserIdentity(user.id);
                     try {
                         if(!user.isDeleted) {
                             // User profile image

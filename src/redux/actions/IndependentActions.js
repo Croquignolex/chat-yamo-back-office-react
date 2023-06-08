@@ -48,6 +48,10 @@ export const getUserStatus = async (userId) => {
     return makeRequest('get', joinBaseUrlWithParams(USERS.STATUS, [{param: 'userId', value: userId}]));
 };
 
+export const getUserIdentity = async (userId) => {
+    return makeRequest('get', joinBaseUrlWithParams(MEDIA.USERS.IDENTITY, [{param: 'userId', value: userId}]));
+};
+
 export const getUserStatusHistory = async (userId) => {
     const url = joinBaseUrlWithParams(USERS.STATUS_HISTORY, [{param: 'userId', value: userId}]);
     return makeRequest('get', url);
