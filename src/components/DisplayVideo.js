@@ -55,7 +55,7 @@ const DisplayVideo = ({src, type, className, withWrapper, withModal, withPercent
             {withModal && (
                 <Modal isOpen={modal} toggle={toggleModal} className="modal-dialog-centered" size="lg">
                     {/*<video autoPlay loop muted style={{pointerEvents: 'none'}} preload="auto" onError={handleErrorImage}>*/}
-                    <video autoPlay loop muted controls preload="auto" controlsList="nofullscreen" onError={handleErrorImage}>
+                    <video autoPlay loop muted controls controlsList="nofullscreen" onError={handleErrorImage}>
                         {type ? <source src={src} type={type} /> : <source src={src} />}
                     </video>
                 </Modal>

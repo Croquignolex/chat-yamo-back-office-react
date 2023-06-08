@@ -147,7 +147,7 @@ class ChatInput extends Component {
             // Create media
             createVideoMedia(activeUser.id, file)
                 .then((data) => {
-                    this.buildMessage(message, data.mediaId);
+                    this.buildMessage(message, null, data.mediaId);
                 })
                 .catch(error => {
                     message.seRequest = {...message.request, error, loading: false};
@@ -156,12 +156,12 @@ class ChatInput extends Component {
         }
     }
 
-    buildMessage = (message, mediaId = null) => {
+    buildMessage = (message, mediaId = null, videoId = null) => {
         const {activeUser, notifyChanges, backOfficeUserName} = this.props;
         notifyChanges(message);
 
         // Send request
-        sendMessage(activeUser.id, message.content, backOfficeUserName, activeUser.name, mediaId)
+        sendMessage(activeUser.id, message.content, backOfficeUserName, activeUser.name, mediaId, videoId)
             .then(() => {
                 message.seRequest = {...message.request, loading: false};
                 notifyChanges(message);

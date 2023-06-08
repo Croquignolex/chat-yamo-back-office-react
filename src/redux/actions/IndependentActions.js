@@ -165,11 +165,14 @@ export const reportUser = async (userId, firstName, lastName) => {
     return makeRequest('post', url, {feedbackText, backofficeUserName});
 };
 
-export const sendMessage = async (userId, feedbackText, backofficeUserName, userName = null, mediaId = null) => {
+export const sendMessage = async (userId, feedbackText, backofficeUserName, userName = null, mediaId = null, videoId = null) => {
     // Build request data & ensure that mediaId not available into request data if null
     let data = {feedbackText, backofficeUserName};
     if(mediaId) {
         data.mediaId = mediaId;
+    }
+    if(videoId) {
+        data.videoId = videoId;
     }
     if(userName) {
         data.userName = userName;
