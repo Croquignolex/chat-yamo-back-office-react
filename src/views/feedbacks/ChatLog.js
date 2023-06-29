@@ -9,7 +9,6 @@ import ChatInput from "./inputs/ChatInput";
 import ChatLogContent from "./ChatLogContent";
 import DisplayImage from "../../components/DisplayImage";
 import {getCaseMessages, getMessageImage} from "../../redux/actions/IndependentActions";
-import {imageExists} from "../../helpers/helpers";
 
 class ChatLog extends React.Component {
     // props { activeChatID, activeUser, mainSidebar, handleReceiverSidebar }
