@@ -124,15 +124,18 @@ class ImageLog extends React.Component {
                                 const images = await searchUserImages(userId);
                                 const exitingImages = [];
 
-                                for(const image of (images || [])) {
-                                    const response = await imageExists(
-                                        image.compressedPreSignedUrl ||
-                                        image.originalPreSignedUrl ||
-                                        image.compressedUrl ||
-                                        image.originalUrl
-                                    );
+                                for(const image of (images || []))
+                                {
+                                    try {
+                                        const response = await imageExists(
+                                            image.compressedPreSignedUrl ||
+                                            image.originalPreSignedUrl ||
+                                            image.compressedUrl ||
+                                            image.originalUrl
+                                        );
 
-                                    response && exitingImages.push(image);
+                                        response && exitingImages.push(image);
+                                    } catch (e) {}
                                 }
 
                                 if(exitingImages.length === 0) {
@@ -299,9 +302,8 @@ class ImageLog extends React.Component {
         if(shouldDelete) {
             this.setState((prevState) => {
                 const tempImages = prevState.images.filter((i) => i.mediaId !== image.mediaId);
-                return (tempImages.length === 0)
-                    ? {images: [{mediaId: null, originalUrl: require("../../assets/img/no-image.png")}]}
-                    : {images: tempImages};
+                const images = (tempImages.length === 0) ? [{mediaId: null, originalUrl: require("../../assets/img/no-image.png")}] : tempImages;
+                return {images, activeIndex: 0};
             });
         } else this.next();
     };
