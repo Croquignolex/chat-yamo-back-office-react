@@ -80,6 +80,7 @@ class ChatInput extends Component {
         this.resetMessage();
 
         const _msg = {
+            activeUser: activeUser,
             userId: activeUser.id,
             caseId: activeChatID,
             mediaId: null,
@@ -96,6 +97,7 @@ class ChatInput extends Component {
         };
 
         const messageObj = new Message(_msg);
+        const realActiveUser = messageObj.activeUser;
 
         if(files.length === 0) this.buildMessage(messageObj)
         else {
@@ -105,7 +107,8 @@ class ChatInput extends Component {
 
             for(const file of files) {
                 const _msg = {
-                    userId: activeUser.id,
+                    activeUser: realActiveUser,
+                    userId: realActiveUser.id,
                     caseId: activeChatID,
                     mediaId: null,
                     content: "",
@@ -127,7 +130,8 @@ class ChatInput extends Component {
     };
 
     buildMedia = (file, message) => {
-        const {activeUser, notifyChanges} = this.props;
+        const {notifyChanges} = this.props;
+        const activeUser = message.activeUser;
 
         if(['image/jpg', 'image/jpeg', 'image/png'].includes(file.type)) {
             message.setImageMedia = file.preview;
@@ -157,7 +161,8 @@ class ChatInput extends Component {
     }
 
     buildMessage = (message, mediaId = null, videoId = null) => {
-        const {activeUser, notifyChanges, backOfficeUserName} = this.props;
+        const {notifyChanges, backOfficeUserName} = this.props;
+        const activeUser = message.activeUser;
         notifyChanges(message);
 
         // Send request
