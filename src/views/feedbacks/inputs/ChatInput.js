@@ -48,6 +48,7 @@ class ChatInput extends Component {
         this.resetMessage();
 
         const _msg = {
+            activeUser: activeUser,
             userId: activeUser.id,
             caseId: activeChatID,
             mediaId: null,

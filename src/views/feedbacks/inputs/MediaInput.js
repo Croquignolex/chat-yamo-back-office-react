@@ -34,7 +34,7 @@ const MediaInput = ({ message, files, onMsgChange, onFilesLoad, show, onClose, o
         <div className="dz-thumb" key={file.name}>
             <div className="dz-thumb-inner">
                 {['image/jpg', 'image/jpeg', 'image/png'].includes(file.type) && <DisplayImage src={file.preview} withPercentage /> }
-                {['video/mp4', 'video/webm'].includes(file.type) && <DisplayVideo src={file.preview} type={file.type} withPercentage />}
+                {['video/mp4', 'video/webm', 'video/mpeg'].includes(file.type) && <DisplayVideo src={file.preview} type={file.type} withPercentage />}
                 {/*{['video/mp4', 'video/webm', 'video/x-msvideo'].includes(file.type) && <DisplayVideo src={file.preview} type={file.type} withPercentage />}*/}
             </div>
         </div>
@@ -62,7 +62,7 @@ const MediaInput = ({ message, files, onMsgChange, onFilesLoad, show, onClose, o
                             <input {...getInputProps()} />
                             <p className="mx-1 mt-50 text-center text-danger">
                                 Drop files or click to upload <br/>
-                                Allowed extensions:  JPEG, JPG, PNG, MP4, MOV, AVI, WMV.
+                                Allowed extensions:  JPEG, JPG, PNG, MP4, MPEG, WEBP.
                                 {/*Allowed extensions:  JPEG, JPG, PNG, MP4, MOV, AVI, WMV.*/}
                             </p>
                         </div>

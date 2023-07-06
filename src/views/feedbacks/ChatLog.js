@@ -89,7 +89,7 @@ class ChatLog extends React.Component {
     notifyChanges = (message) => {
         const messages = [...this.state.messages];
 
-        if(message.caseId === `${this.props.activeUser}:${message.authorId}`) {
+        if(message.caseId === `${this.props.activeUser.id}:${message.authorId}`) {
             const messageIndex = messages.findIndex(m => m.id === message.id);
             // Update
             if (messageIndex === -1) messages.push(message);
