@@ -11,7 +11,7 @@ import {REACT_APP_CHAT_BACKOFFICE_USER_ID} from "../../../configs/AppConfig";
 import {createMedia, createVideoMedia, sendMessage} from "../../../redux/actions/IndependentActions";
 
 class ChatInput extends Component {
-    // props { activeChatID, activeUser, notifyChanges }
+    // props { caseId, activeChatID, activeUser, notifyChanges }
     state = {
         msg: '',
         files: [],
@@ -37,7 +37,7 @@ class ChatInput extends Component {
 
     handleMsgSubmit = async (e) => {
         e.preventDefault();
-        const {activeChatID, activeUser, backOfficeUserName} = this.props;
+        const {caseId, activeUser, backOfficeUserName} = this.props;
         const message = this.state.msg;
 
         if (message.length === 0) {
@@ -50,7 +50,7 @@ class ChatInput extends Component {
         const _msg = {
             activeUser: activeUser,
             userId: activeUser.id,
-            caseId: activeChatID,
+            caseId: caseId,
             mediaId: null,
             content: message,
             backofficeUserName: backOfficeUserName,
@@ -68,7 +68,7 @@ class ChatInput extends Component {
     };
 
     handleMsgWithFileSubmit = async () => {
-        const {activeChatID, activeUser, backOfficeUserName} = this.props;
+        const {activeUser, backOfficeUserName, caseId} = this.props;
         const message = this.state.msg;
         const files = this.state.files;
 
@@ -83,7 +83,7 @@ class ChatInput extends Component {
         const _msg = {
             activeUser: activeUser,
             userId: activeUser.id,
-            caseId: activeChatID,
+            caseId: caseId,
             mediaId: null,
             content: message,
             backofficeUserName: backOfficeUserName,
@@ -110,7 +110,7 @@ class ChatInput extends Component {
                 const _msg = {
                     activeUser: realActiveUser,
                     userId: realActiveUser.id,
-                    caseId: activeChatID,
+                    caseId: caseId,
                     mediaId: null,
                     content: "",
                     backofficeUserName: backOfficeUserName,

@@ -89,20 +89,29 @@ class ChatLog extends React.Component {
     notifyChanges = (message) => {
         const messages = [...this.state.messages];
 
-        if(message.caseId === `${this.props.activeUser.id}:${message.authorId}`) {
-            const messageIndex = messages.findIndex(m => m.id === message.id);
-            // Update
-            if (messageIndex === -1) messages.push(message);
-            else {
-                messages[messageIndex] = message;
+        if(messages.length > 0) {
+            // if(message.caseId === `${this.props.activeUser.id}:${message.authorId}`) {
+            if(message.caseId === messages[0]?.caseId) {
+                const messageIndex = messages.findIndex(m => m.id === message.id);
+                // Update
+                if (messageIndex === -1) messages.push(message);
+                else {
+                    messages[messageIndex] = message;
+                }
+                this.setState(({ messages }));
             }
-            this.setState(({ messages }));
         }
     };
 
     render() {
         const { messages, loading, error } = this.state;
         const { activeUser, activeChatID, mainSidebar, handleReceiverSidebar } = this.props;
+
+        let caseId = activeChatID;
+
+        if(messages.length > 0) {
+            caseId = messages[0].caseId;
+        }
 
         if(!activeUser) {
             return (
@@ -175,6 +184,7 @@ class ChatLog extends React.Component {
                                         </PerfectScrollbar >
                                         <div className="chat-app-form">
                                             <ChatInput
+                                                caseId={caseId}
                                                 activeUser={activeUser}
                                                 activeChatID={activeChatID}
                                                 notifyChanges={this.notifyChanges}
