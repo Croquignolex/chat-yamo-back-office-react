@@ -9,7 +9,7 @@ import {
     VALIDATIONS,
     BACKOFFICE_USERS,
     joinBaseUrlWithParams,
-    joinBaseUrlWithRequestParams,
+    joinBaseUrlWithRequestParams, NOTIFICATION,
 } from "../../utility/urls/backend";
 
 // ===================================== START GET
@@ -52,8 +52,12 @@ export const getUserIdentity = async (userId) => {
     return makeRequest('get', joinBaseUrlWithParams(MEDIA.USERS.IDENTITY, [{param: 'userId', value: userId}]));
 };
 
-export const getSuspiciousState = async (userId) => {
+export const getUserSuspiciousState = async (userId) => {
     return makeRequest('get', joinBaseUrlWithParams(MEDIA.USERS.STATE, [{param: 'userId', value: userId}]));
+};
+
+export const getUserAppData = async (userId) => {
+    return makeRequest('get', joinBaseUrlWithParams(NOTIFICATION.CONTEXT, [{param: 'userId', value: userId}]));
 };
 
 export const getUserStatusHistory = async (userId) => {

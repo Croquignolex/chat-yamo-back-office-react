@@ -10,11 +10,12 @@ import {Col, Row, Form, Input, Button, Spinner} from "reactstrap";
 import Breadcrumbs from "../../components/@vuexy/breadCrumbs/BreadCrumb";
 import {
     getUserStatus,
+    getUserAppData,
     getUserProfile,
     getUserIdentity,
     searchUserImages,
-    getSuspiciousState,
-    getUserProfileImage
+    getUserProfileImage,
+    getUserSuspiciousState
 } from "../../redux/actions/IndependentActions";
 
 class UsersImages extends React.Component {
@@ -71,8 +72,9 @@ class UsersImages extends React.Component {
                 user.setId = search;
                 try {
                     user.setStatus = await getUserStatus(user.id);
+                    user.setAppData = await getUserAppData(user.id);
                     user.setCertified = await getUserIdentity(user.id);
-                    user.setSuspiciousState = await getSuspiciousState(user.id);
+                    user.setSuspiciousState = await getUserSuspiciousState(user.id);
 
                     if(!user.isDeleted) {
                         // User profile image

@@ -2,30 +2,46 @@ import React from "react";
 import ReactDOM from "react-dom"
 import {connect} from "react-redux";
 import {NotificationManager} from "react-notifications";
+
 import {
+    Spinner,
     Carousel,
     CarouselItem,
     CarouselControl,
     CarouselIndicators,
-    Spinner,
 } from "reactstrap";
-import {Image, ThumbsUp, ThumbsDown, Trash2, CheckCircle, ArrowLeft, ArrowRight, Star, RefreshCcw} from "react-feather";
+
+import {
+    Star,
+    Image,
+    Trash2,
+    ThumbsUp,
+    ArrowLeft,
+    ThumbsDown,
+    ArrowRight,
+    RefreshCcw,
+    CheckCircle
+} from "react-feather";
 
 import Error500 from "../Error500";
 import User from "../../models/User";
 import {imageExists} from "../../helpers/helpers";
 import DisplayImage from "../../components/DisplayImage";
+
 import {
     blockUser,
     reportUser,
-    verifyUserImage,
+    getUserStatus,
+    getUserProfile,
+    getUserAppData,
     deleteUserImage,
+    verifyUserImage,
+    getUserIdentity,
+    searchUserImages,
     notateUserProfile,
     updateUserProfile,
-    getUserProfile,
-    getUserStatus,
     getUserProfileImage,
-    searchUserImages
+    getUserSuspiciousState
 } from "../../redux/actions/IndependentActions";
 
 class ImageLog extends React.Component {
@@ -104,8 +120,15 @@ class ImageLog extends React.Component {
                     const user = new User(data);
 
                     try {
-                        // user.setStatus = await getUserStatus(userId);
-                        user.setForceStatus = await getUserStatus(userId);
+                        // Not concerned in removal conditions
+                        try {
+                            // user.setStatus = await getUserStatus(userId);
+                            user.setAppData = await getUserAppData(userId);
+                            user.setCertified = await getUserIdentity(userId);
+                            user.setForceStatus = await getUserStatus(userId);
+                            user.setSuspiciousState = await getUserSuspiciousState(userId);
+
+                        } catch (e) {}
 
                         if(user.isDeleted) {
                             // Remove profile from list and go to another profile

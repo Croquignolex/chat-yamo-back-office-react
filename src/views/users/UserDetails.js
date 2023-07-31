@@ -2,8 +2,10 @@ import React from "react";
 import * as Icon from "react-feather"
 import {CardBody, Card, Spinner, Button} from "reactstrap";
 
-import Error500 from "../Error500"; 
 import "../../assets/scss/pages/users.scss";
+
+import Error500 from "../Error500";
+import UserAppData from "./UserAppData";
 import MetaData from "../../models/MetaData";
 import UserTownEvents from "./UserTownEvents";
 import FormModal from "../../components/FormModal";
@@ -24,7 +26,8 @@ class UserDetails extends React.Component {
             // Modals
             townEventModal: {show: false, title: ""},
             souscriptionModal: {show: false, title: ""},
-            statusHistoryModal: {show: false, title: ""}
+            statusHistoryModal: {show: false, title: ""},
+            appDataModal: {show: false, title: ""}
         }
     }
 
@@ -69,9 +72,19 @@ class UserDetails extends React.Component {
         }
     };
 
+    toggleAppDataModal = () => {
+        const {appDataModal} = this.state;
+        const { user } = this.props;
+        if(appDataModal.show) this.setState({appDataModal: {...appDataModal, show: false}});
+        else {
+            const title = user?.isDeleted ? "Deleted user" : `${user?.name} app data`;
+            this.setState({appDataModal: {show: true, title}});
+        }
+    };
+
     render() {
 
-        const { metaData, souscriptionModal, townEventModal, statusHistoryModal } = this.state;
+        const { metaData, souscriptionModal, townEventModal, statusHistoryModal, appDataModal } = this.state;
         const { user } = this.props;
 
         if (!user) return null;
@@ -204,6 +217,12 @@ class UserDetails extends React.Component {
                             </div>
                             <div className="d-flex user-info">
                                 <div className="user-info-title font-weight-bold">
+                                    App version
+                                </div>
+                                <div className="font-weight-bold text-primary">{user?.appData?.appVersion}</div>
+                            </div>
+                            <div className="d-flex user-info">
+                                <div className="user-info-title font-weight-bold">
                                     User ID
                                 </div>
                                 <div className="font-weight-bold text-primary">{user.id}</div>
@@ -254,6 +273,9 @@ class UserDetails extends React.Component {
                                         <Button color="primary" onClick={this.toggleTownEventModal} className="ml-50">
                                             Town event
                                         </Button>
+                                        <Button color="info" onClick={this.toggleAppDataModal} className="ml-50">
+                                            App Data
+                                        </Button>
                                     </div>
                                 </>
                             )}
@@ -269,6 +291,9 @@ class UserDetails extends React.Component {
                 </FormModal>
                 <FormModal small modal={statusHistoryModal} toggleModal={this.toggleStatusHistoryModal}>
                     <UserStatusHistory userId={user.id} />
+                </FormModal>
+                <FormModal small modal={appDataModal} toggleModal={this.toggleAppDataModal}>
+                    <UserAppData appData={user?.appData} />
                 </FormModal>
             </> 
         )

@@ -79,6 +79,10 @@ export const MEDIA = {
     }
 };
 
+export const NOTIFICATION = {
+    CONTEXT: '/notification/{userId}/notificationContext',
+};
+
 const BASE = '';
 
 export const joinBaseUrlWithParams = (to, params = [], trueBase = false) => {

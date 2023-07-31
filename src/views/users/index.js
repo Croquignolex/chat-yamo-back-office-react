@@ -9,9 +9,10 @@ import Breadcrumbs from "../../components/@vuexy/breadCrumbs/BreadCrumb";
 import {
     searchUser,
     getUserStatus,
+    getUserAppData,
     getUserIdentity,
-    getSuspiciousState,
-    getUserProfileImage
+    getUserProfileImage,
+    getUserSuspiciousState
 } from "../../redux/actions/IndependentActions";
 
 class Users extends React.Component {
@@ -40,8 +41,9 @@ class Users extends React.Component {
                 const user = new User(data);
                 try {
                     user.setStatus = await getUserStatus(user.id);
+                    user.setAppData = await getUserAppData(user.id);
                     user.setCertified = await getUserIdentity(user.id);
-                    user.setSuspiciousState = await getSuspiciousState(user.id);
+                    user.setSuspiciousState = await getUserSuspiciousState(user.id);
 
                     if(!user.isDeleted) {
                         // User profile image

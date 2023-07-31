@@ -8,6 +8,7 @@ import FormModal from "./FormModal";
 import Error500 from "../views/Error500";
 import MetaData from "../models/MetaData";
 import DisplayImage from "./DisplayImage";
+import UserAppData from "../views/users/UserAppData";
 import UserTownEvents from "../views/users/UserTownEvents";
 import UserStatusHistory from "../views/users/UserStatusHistory";
 import UserSouscriptions from "../views/users/UserSouscriptions";
@@ -29,7 +30,8 @@ class UserProfile extends React.Component {
       // Modals
       townEventModal: {show: false, title: ""},
       souscriptionModal: {show: false, title: ""},
-      statusHistoryModal: {show: false, title: ""}
+      statusHistoryModal: {show: false, title: ""},
+      appDataModal: {show: false, title: ""}
     }
   }
 
@@ -79,8 +81,17 @@ class UserProfile extends React.Component {
     }
   };
 
+  toggleAppDataModal = () => {
+    const {appDataModal, activeUser} = this.state;
+    if(appDataModal.show) this.setState({appDataModal: {...appDataModal, show: false}});
+    else {
+      const title = activeUser?.isDeleted ? "Deleted user" : `${activeUser?.name} app data`;
+      this.setState({appDataModal: {show: true, title}});
+    }
+  };
+
   render() {
-    const { activeUser, metaData, souscriptionModal, townEventModal, statusHistoryModal } = this.state;
+    const { activeUser, metaData, souscriptionModal, townEventModal, statusHistoryModal, appDataModal } = this.state;
     const { receiverProfile, handleReceiverSidebar } = this.props;
 
     if (!activeUser) return null;
@@ -215,6 +226,12 @@ class UserProfile extends React.Component {
               </div>
               <div className="d-flex user-info">
                 <div className="user-info-title font-weight-bold">
+                  App version
+                </div>
+                <div className="font-weight-bold text-primary">{activeUser?.appData?.appVersion}</div>
+              </div>
+              <div className="d-flex user-info">
+                <div className="user-info-title font-weight-bold">
                   User ID
                 </div>
                 <div className="font-weight-bold text-primary">{activeUser?.id}</div>
@@ -262,7 +279,10 @@ class UserProfile extends React.Component {
                 </Button>
                 <Button color="primary" onClick={this.toggleTownEventModal} className="ml-50">
                     Town event
-                  </Button> 
+                </Button>
+                <Button color="info" onClick={this.toggleAppDataModal} className="mt-50">
+                  App Data
+                </Button>
               </div>
             </div>
           </PerfectScrollbar>
@@ -275,6 +295,9 @@ class UserProfile extends React.Component {
         </FormModal>
         <FormModal small modal={statusHistoryModal} toggleModal={this.toggleStatusHistoryModal}>
           <UserStatusHistory userId={activeUser?.id} />
+        </FormModal>
+        <FormModal small modal={appDataModal} toggleModal={this.toggleAppDataModal}>
+          <UserAppData appData={activeUser?.appData} />
         </FormModal>
       </>
     )

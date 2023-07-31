@@ -9,10 +9,11 @@ import ImageSidebarItem from "../verifications/ImageSidebarItem";
 import {
     getUserStatus,
     getUserProfile,
+    getUserAppData,
     getUserIdentity,
     getOldUserImages,
-    getSuspiciousState,
-    getUserProfileImage
+    getUserProfileImage,
+    getUserSuspiciousState
 } from "../../redux/actions/IndependentActions";
 
 class ImageSidebar extends React.Component {
@@ -82,8 +83,9 @@ class ImageSidebar extends React.Component {
                     user.setId = userId;
                     try {
                         user.setStatus = await getUserStatus(user.id);
+                        user.setAppData = await getUserAppData(user.id);
                         user.setCertified = await getUserIdentity(user.id);
-                        user.setSuspiciousState = await getSuspiciousState(user.id);
+                        user.setSuspiciousState = await getUserSuspiciousState(user.id);
 
                         if(!user.isDeleted) {
                             // User profile image

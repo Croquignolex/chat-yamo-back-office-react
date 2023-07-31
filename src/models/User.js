@@ -74,6 +74,23 @@ export default class User {
         this.blacklisted = !!state;
     }
 
+    set setAppData(data) {
+        this.appData = {
+            status : data.status,
+            deviceType : data.deviceType,
+            languageCode : data.languageCode,
+            appVersion : data.appVersion,
+            release : data.release,
+            sdkInt : data.sdkInt,
+            manufacturer : data.manufacturer,
+            model : data.model,
+            hardware : data.hardware,
+            device : data.device,
+            deviceConsistentId : data.deviceConsistentId,
+            deviceCountryIsoCode : data.deviceCountryIsoCode,
+        };
+    }
+
     get isCertified() {
         return this.certified;
     }

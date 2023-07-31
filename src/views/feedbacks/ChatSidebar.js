@@ -13,9 +13,10 @@ import {
     getCases,
     getUserStatus,
     getUserProfile,
+    getUserAppData,
     getUserIdentity,
-    getSuspiciousState,
-    getUserProfileImage
+    getUserProfileImage,
+    getUserSuspiciousState
 } from "../../redux/actions/IndependentActions";
 
 class ChatSidebar extends React.Component {
@@ -66,8 +67,9 @@ class ChatSidebar extends React.Component {
                     user.setId = userId;
                     try {
                         user.setStatus = await getUserStatus(user.id);
+                        user.setAppData = await getUserAppData(user.id);
                         user.setCertified = await getUserIdentity(user.id);
-                        user.setSuspiciousState = await getSuspiciousState(user.id);
+                        user.setSuspiciousState = await getUserSuspiciousState(user.id);
 
                         if(!user.isDeleted) {
                             // User profile image
