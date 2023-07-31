@@ -70,12 +70,20 @@ export default class User {
         this.avatar = this.avatar ? this.avatar : require("../assets/img/unknown-user.png");
     }
 
+    set setSuspiciousState(state) {
+        this.blacklisted = !!state;
+    }
+
     get isCertified() {
         return this.certified;
     }
 
     get isDeleted() {
         return this.deleted;
+    }
+
+    get isBlacklisted() {
+        return this.blacklisted;
     }
 
     get isBlocked() {

@@ -9,8 +9,10 @@ import ImageSidebarItem from "./ImageSidebarItem";
 import {
     getUserStatus,
     getUserProfile,
+    getUserIdentity,
+    getSuspiciousState,
     getUserProfileImage,
-    getUserProfileImagesForNotation, getUserIdentity
+    getUserProfileImagesForNotation
 } from "../../redux/actions/IndependentActions";
 
 class ImageSidebar extends React.Component {
@@ -76,9 +78,11 @@ class ImageSidebar extends React.Component {
                     // Make user as an object
                     const user = new User(userObject);
                     user.setId = userId;
-                    user.setStatus = await getUserStatus(user.id);
-                    user.setCertified = await getUserIdentity(user.id);
                     try {
+                        user.setStatus = await getUserStatus(user.id);
+                        user.setCertified = await getUserIdentity(user.id);
+                        user.setSuspiciousState = await getSuspiciousState(user.id);
+
                         if(!user.isDeleted) {
                             // User profile image
                             user.setAvatar = await getUserProfileImage(userId);

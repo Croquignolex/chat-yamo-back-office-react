@@ -11,10 +11,11 @@ import ChatSidebarItem from "./ChatSidebarItem";
 import {twoDigitDisplay} from "../../helpers/helpers";
 import {
     getCases,
-    getUserIdentity,
+    getUserStatus,
     getUserProfile,
-    getUserProfileImage,
-    getUserStatus
+    getUserIdentity,
+    getSuspiciousState,
+    getUserProfileImage
 } from "../../redux/actions/IndependentActions";
 
 class ChatSidebar extends React.Component {
@@ -63,9 +64,11 @@ class ChatSidebar extends React.Component {
                     user.setLastMessageTime = feedback.createdDate.format("HH:mm");
                     user.setPendingMessage = (feedback.userId === feedback.authorId);
                     user.setId = userId;
-                    user.setStatus = await getUserStatus(user.id);
-                    user.setCertified = await getUserIdentity(user.id);
                     try {
+                        user.setStatus = await getUserStatus(user.id);
+                        user.setCertified = await getUserIdentity(user.id);
+                        user.setSuspiciousState = await getSuspiciousState(user.id);
+
                         if(!user.isDeleted) {
                             // User profile image
                             user.setAvatar = await getUserProfileImage(userId);

@@ -155,6 +155,15 @@ class UserProfile extends React.Component {
               </div>
               <div className="d-flex user-info">
                 <div className="user-info-title font-weight-bold">
+                  Blacklisted
+                </div>
+                {(activeUser?.isBlacklisted)
+                    ? <div className="font-weight-bold text-danger">Yes</div>
+                    : <div className="font-weight-bold text-success">No</div>
+                }
+              </div>
+              <div className="d-flex user-info">
+                <div className="user-info-title font-weight-bold">
                   Age
                 </div>
                 <div>{activeUser?.age}</div>

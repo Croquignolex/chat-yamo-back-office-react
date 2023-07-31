@@ -11,8 +11,10 @@ import Breadcrumbs from "../../components/@vuexy/breadCrumbs/BreadCrumb";
 import {
     getUserStatus,
     getUserProfile,
+    getUserIdentity,
     searchUserImages,
-    getUserProfileImage, getUserIdentity
+    getSuspiciousState,
+    getUserProfileImage
 } from "../../redux/actions/IndependentActions";
 
 class UsersImages extends React.Component {
@@ -67,9 +69,11 @@ class UsersImages extends React.Component {
                 // Make user as an object
                 const user = new User(data);
                 user.setId = search;
-                user.setStatus = await getUserStatus(user.id);
-                user.setCertified = await getUserIdentity(user.id);
                 try {
+                    user.setStatus = await getUserStatus(user.id);
+                    user.setCertified = await getUserIdentity(user.id);
+                    user.setSuspiciousState = await getSuspiciousState(user.id);
+
                     if(!user.isDeleted) {
                         // User profile image
                         user.setAvatar = await getUserProfileImage(search);

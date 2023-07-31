@@ -138,6 +138,15 @@ class UserDetails extends React.Component {
                             </div>
                             <div className="d-flex user-info">
                                 <div className="user-info-title font-weight-bold">
+                                    Blacklisted
+                                </div>
+                                {(user.isBlacklisted)
+                                    ? <div className="font-weight-bold text-danger">Yes</div>
+                                    : <div className="font-weight-bold text-success">No</div>
+                                }
+                            </div>
+                            <div className="d-flex user-info">
+                                <div className="user-info-title font-weight-bold">
                                     Name
                                 </div>
                                 <div>{user.name}</div>
