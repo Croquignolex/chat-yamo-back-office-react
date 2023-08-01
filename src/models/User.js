@@ -71,7 +71,7 @@ export default class User {
     }
 
     set setSuspiciousState(state) {
-        this.blacklisted = !!state;
+        this.blacklisted = state?.suspicious;
     }
 
     set setAppData(data) {

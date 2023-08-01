@@ -46,7 +46,7 @@ class UserAppData extends React.Component {
                         <td className="font-weight-bold">{this.props.appData?.model}</td>
                     </tr>
                     <tr>
-                        <td>>Hardware</td>
+                        <td>Hardware</td>
                         <td className="font-weight-bold">{this.props.appData?.hardware}</td>
                     </tr>
                     <tr>
