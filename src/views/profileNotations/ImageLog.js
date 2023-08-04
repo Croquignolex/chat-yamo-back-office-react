@@ -43,6 +43,7 @@ import {
     getUserProfileImage,
     getUserSuspiciousState
 } from "../../redux/actions/IndependentActions";
+import * as Icon from "react-feather";
 
 class ImageLog extends React.Component {
     // props { activeChatID, activeUser, mainSidebar, handleReceiverSidebar }
@@ -397,18 +398,38 @@ class ImageLog extends React.Component {
                                         )}
                                     </div>
                                     {!(this.state.error) && (
-                                        <div>
-                                            <a
-                                                href="/"
-                                                className="mb-0"
-                                                onClick={(e) => {
-                                                    e.preventDefault();
-                                                    handleReceiverSidebar("open");
-                                                }}
-                                            >
-                                                More information...
-                                            </a>
-                                        </div>
+                                        <>
+                                            <div>
+                                                {(activeUser?.isBlacklisted)
+                                                    ? (
+                                                        <div className="badge badge-danger badge-pill font-weight-bold">
+                                                            <Icon.Slash size={17} className="mr-25" />
+                                                            Blacklisted
+                                                            <Icon.Slash size={17} className="ml-25" />
+                                                        </div>
+                                                    )
+                                                    : (
+                                                        <div className="badge badge-success badge-pill font-weight-bold">
+                                                            <Icon.Heart size={17} className="mr-25" />
+                                                            Not blacklisted
+                                                            <Icon.Heart size={17} className="ml-25" />
+                                                        </div>
+                                                    )
+                                                }
+                                            </div>
+                                            <div>
+                                                <a
+                                                    href="/"
+                                                    className="mb-0"
+                                                    onClick={(e) => {
+                                                        e.preventDefault();
+                                                        handleReceiverSidebar("open");
+                                                    }}
+                                                >
+                                                    More information...
+                                                </a>
+                                            </div>
+                                        </>
                                     )}
                                 </div>
                             </header>
