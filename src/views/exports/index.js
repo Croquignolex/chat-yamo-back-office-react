@@ -76,7 +76,7 @@ class Exports extends React.Component {
                     const name = `premium_user_metadata_${dayjs(selectedStartDate).format("YYYY_MM_DD")}.csv`;
                     downloadFile(file, name)
                         .then(() => this.setState({ data }))
-                        .catch((error) => this.setState({ error }));
+                        .catch((error) => console.log({error}));
                 })
                 .catch((error) => this.setState({ error }))
                 .finally(() => this.setState({loading: false}))
@@ -89,7 +89,7 @@ class Exports extends React.Component {
                     const name = `deleted_user_metadata_${dayjs(selectedStartDate).format("YYYY_MM")}.csv`;
                     downloadFile(file, name)
                         .then(() => this.setState({ data }))
-                        .catch((error) => this.setState({ error }));
+                        .catch((error) => console.log({error}));
                 })
                 .catch((error) => this.setState({ error }))
                 .finally(() => this.setState({loading: false}))
@@ -102,7 +102,7 @@ class Exports extends React.Component {
                     const name = `new_user_metadata_${dayjs(selectedStartDate).format("YYYY_MM_DD")}.csv`;
                     downloadFile(file, name)
                         .then(() => this.setState({ data }))
-                        .catch((error) => this.setState({ error }));
+                        .catch((error) => console.log({error}));
                 })
                 .catch((error) => this.setState({ error }))
                 .finally(() => this.setState({loading: false}))
