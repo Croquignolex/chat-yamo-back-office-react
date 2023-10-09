@@ -141,19 +141,29 @@ export const searchUserImages = async (userId) => {
     return makeRequest('get', url, null, config);
 };
 
-export const exportSubscriptions = async (start, end) => {
+export const exportSubscriptions = async (start, end, excludeBlacklist) => {
     const url = joinBaseUrlWithParams(USERS.EXPORT_SUBSCRIPTION);
-    return makeRequest('get', `${url}?start=${start}&end=${end}`, null, {responseType: "blob"}) ;
+    return makeRequest(
+        'get',
+        `${url}?start=${start}&end=${end}&excludeBlacklist=${excludeBlacklist}`,
+        null,
+        {responseType: "blob"}
+    ) ;
 };
 
-export const exportDeletedUsers = async (start) => {
+export const exportDeletedUsers = async (start, excludeBlacklist) => {
     const url = joinBaseUrlWithParams(USERS.EXPORT_DELETED_USERS,[{param: 'date', value: start}]);
-    return makeRequest('get', url, null, {responseType: "blob"}) ;
+    return makeRequest('get', `${url}?excludeBlacklist=${excludeBlacklist}`, null, {responseType: "blob"}) ;
 };
 
-export const exportNewUsers = async (start, end) => {
+export const exportNewUsers = async (start, end, excludeBlacklist) => {
     const url = joinBaseUrlWithParams(USERS.EXPORT_NEW_USERS);
-    return makeRequest('get', `${url}?start=${start}&end=${end}`, null, {responseType: "blob"}) ;
+    return makeRequest(
+        'get',
+        `${url}?start=${start}&end=${end}&excludeBlacklist=${excludeBlacklist}`,
+        null,
+        {responseType: "blob"}
+    ) ;
 };
 
 // ===================================== END GET

@@ -20,6 +20,7 @@ class Exports extends React.Component {
             error: null,
             data: null,
             range: true,
+            exclude: true,
             selectedStartDate: new Date(),
             startDate: dayjs().format("YYYY-MM-DD"),
             selectedEndDate: new Date(),
@@ -66,11 +67,11 @@ class Exports extends React.Component {
         // Reset error data
         this.setState({loading: true, data: null, error: null});
 
-        const {type, startDate, endDate, selectedStartDate} = this.state;
+        const {type, startDate, endDate, selectedStartDate, exclude} = this.state;
 
         if(type.value === "premium_users")
         {
-            exportSubscriptions(startDate, endDate)
+            exportSubscriptions(startDate, endDate, exclude)
                 .then((data) => {
                     const file = URL.createObjectURL(new Blob([data], { type: "text/csv" }));
                     const name = `premium_user_metadata_${dayjs(selectedStartDate).format("YYYY_MM_DD")}.csv`;
@@ -83,7 +84,7 @@ class Exports extends React.Component {
         }
         else if(type.value === "deleted_users")
         {
-            exportDeletedUsers(startDate)
+            exportDeletedUsers(startDate, exclude)
                 .then((data) => {
                     const file = URL.createObjectURL(new Blob([data], { type: "text/csv" }));
                     const name = `deleted_user_metadata_${dayjs(selectedStartDate).format("YYYY_MM")}.csv`;
@@ -96,7 +97,7 @@ class Exports extends React.Component {
         }
         else if(type.value === "new_users")
         {
-            exportNewUsers(startDate, endDate)
+            exportNewUsers(startDate, endDate, exclude)
                 .then((data) => {
                     const file = URL.createObjectURL(new Blob([data], { type: "text/csv" }));
                     const name = `new_user_metadata_${dayjs(selectedStartDate).format("YYYY_MM_DD")}.csv`;
@@ -112,7 +113,7 @@ class Exports extends React.Component {
 
     render() {
 
-        const {error, loading, type, data, range, selectedStartDate, selectedEndDate} = this.state;
+        const {error, loading, type, data, range, selectedStartDate, selectedEndDate, exclude} = this.state;
 
         const CustomInput = forwardRef(({ value, onClick }, ref) => (
             <FormGroup>
@@ -138,6 +139,14 @@ class Exports extends React.Component {
                 />
                 <Row>
                     <Col lg={10} sm={12}>
+                        <div className="ml-2 mb-1">
+                            <Input
+                                type="checkbox"
+                                checked={exclude}
+                                onChange={() => this.setState({exclude: !exclude})}
+                            />
+                            <Label check>Add Blacklist</Label>
+                        </div>
                         <Form className="d-flex mx-auto" onSubmit={this.handleExport}>
                             <div className="w-25">
                                 <Label>Choose data type</Label>
