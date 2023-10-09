@@ -139,12 +139,13 @@ class ImageLog extends React.Component {
                             user.setAvatar = await getUserProfileImage(userId);
 
                             // Check profile image
-                            const imgRep = await imageExists(user.avatar);
+                            // Display even when user profile image is not found
+                            // const imgRep = await imageExists(user.avatar);
 
-                            if(!imgRep) {
+                            /*if(!imgRep) {
                                 // Remove profile from list and go to another profile
                                 handleRemoveProfileToList(userId);
-                            } else {
+                            } else {*/
                                 const images = await searchUserImages(userId);
                                 const exitingImages = [];
 
@@ -163,7 +164,7 @@ class ImageLog extends React.Component {
                                 }
 
                                 if(exitingImages.length === 0) {
-                                    // User default image
+                                    // No image in the profile
                                     // user.setImages = [{mediaId: null, originalUrl: require("../../assets/img/no-image.png")}]
                                     handleRemoveProfileToList(userId);
                                 } else {
@@ -192,7 +193,7 @@ class ImageLog extends React.Component {
                                     });
                                     handleActiveUser(user);
                                 }*/
-                            }
+                            // }
                         }
                     } catch (e) {
                         // Manage exception but not blocking
