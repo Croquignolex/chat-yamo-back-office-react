@@ -116,7 +116,7 @@ class UsersImages extends React.Component {
                             )}
                             {(this.state.user !== null && this.state.error === null) && (
                                 <Col lg={5} sm={6}>
-                                    <UserDetails user={this.state.user} simplify />
+                                    <UserDetails user={this.state.user} />
                                 </Col>
                             )}
                         </Row>
