@@ -57,7 +57,7 @@ class TownEvents extends React.Component {
         return ( 
             <>
                 <Breadcrumbs
-                    breadCrumbTitle="Town-events"
+                    breadCrumbTitle="Town events"
                     breadCrumbActive="Check a user town-event"
                 />
                 <Row>

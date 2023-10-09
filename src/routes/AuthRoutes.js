@@ -17,6 +17,7 @@ const AuthRoutes = () => {
             <RouteWrapper path={APP.TOWN_EVENTS} component={DynamicImports.TownEvents} />
             <RouteWrapper path={APP.USERS_IMAGES} component={DynamicImports.UserImages} />
             <RouteWrapper path={APP.BACKOFFICE_USERS} component={DynamicImports.BackofficeUsers} />
+            <RouteWrapper path={APP.EXPORTS_BLACKLIST} component={DynamicImports.ExportsBlackList} />
             <RouteWrapper path={APP.PROFILE_NOTATIONS} component={DynamicImports.ProfileNotations} />
             <RouteWrapper path={APP.MANUAL_ACTIVATION} component={DynamicImports.ManualActivation} />
             <Redirect to={{ pathname: APP.HOME }} />

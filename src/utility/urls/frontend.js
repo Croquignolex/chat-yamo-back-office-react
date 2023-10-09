@@ -13,7 +13,8 @@ export const APP = {
     USERS_IMAGES: '/users-images',
     VERIFICATIONS: '/verifications',
     BACKOFFICE_USERS: '/backoffice-users',
-    PROFILE_NOTATIONS: '/profile-notations',
     MANUAL_ACTIVATION: '/manualActivation',
-    OLD_VERIFICATIONS: '/old-verifications'
+    OLD_VERIFICATIONS: '/old-verifications',
+    PROFILE_NOTATIONS: '/profile-notations',
+    EXPORTS_BLACKLIST: '/exports-blacklist'
 };

@@ -175,6 +175,11 @@ export const checkTownEvent = async (userId, date) => {
     return makeRequest('post', url + '?startFrom=' + date) ;
 };
 
+export const exportsBlacklist = async (phoneNumber, reason) => {
+    const url = joinBaseUrlWithParams(USERS.EXPORT_BLACKLIST);
+    return makeRequest('post', url, {phoneNumber, reason})  ;
+};
+
 export const searchUser = async (attribute) => {
     const url = joinBaseUrlWithParams(USERS.SEARCH);
     return makeRequest('post', url, {attribute});

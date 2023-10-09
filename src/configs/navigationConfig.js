@@ -30,17 +30,25 @@ const navigationConfig = [
   {
     id: "town-events",
     type: "item",
-    title: "Town-events",
+    title: "Town events",
     navLink: APP.TOWN_EVENTS,
     icon: <Icon.Calendar size={20} />,
     permissions: ['admin', 'writer', 'reader', 'imageverifier', 'imagechecker']
+  },
+  {
+    id: "exports-blacklist",
+    type: "item",
+    title: "Exports blacklist",
+    navLink: APP.EXPORTS_BLACKLIST,
+    icon: <Icon.ZapOff size={20} />,
+    permissions: ['admin', 'exportblacklist']
   },
   {
     id: "exports",
     type: "item",
     title: "Exports",
     navLink: APP.EXPORTS,
-    icon: <Icon.Share size={20} />,
+    icon: <Icon.Zap size={20} />,
     permissions: ['admin', 'userlistviewer']
   },
   {
