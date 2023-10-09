@@ -27,19 +27,53 @@ class ChatSidebar extends React.Component {
             error: null,
             feedbacks: [],
             loading: false,
-            date: dayjs().startOf('day'),
+            date: dayjs(),
             search: "",
             hour: 0
         }
     }
 
     componentDidMount() {
-        this.loadData();
+        // Update the correct hour range
+        const now = dayjs();
+        let nextHour = 0;
+        let nextDate = dayjs().startOf('day');
+
+        this.setState(() => {
+            for(let i = 0; i <= 18; i = i + 6) {
+                const minDate = dayjs().startOf('day').add(i, 'hour');
+                const maxDate = dayjs().startOf('day').add(i + 6, 'hour');
+
+                /*console.log('###############################################')
+                console.log(minDate.format('YYYY-MM-DDTHH:mm:ss'))
+                console.log(now.format('YYYY-MM-DDTHH:mm:ss'))
+                console.log(maxDate.format('YYYY-MM-DDTHH:mm:ss'))
+                console.log('i ===========>', i)
+                console.log('i+6 ===========>', i+6)
+                console.log(minDate.isBefore(now) && maxDate.isAfter(now))*/
+
+                if(minDate.isBefore(now) && maxDate.isAfter(now))
+                {
+                    nextHour = (i + 6) > 24 ? nextHour : i;
+                    nextDate = nextDate.add(i, 'hour');
+                }
+            }
+
+            return {
+                hour: nextHour,
+                date: nextDate
+            };
+        }, () => this.loadData());
     }
 
     loadData = () => {
         // Init request
         this.setState({ loading: true, error: null, feedbacks: [], search: "" });
+
+        console.log('**********************************************')
+        console.log(this.state.date.format('YYYY-MM-DDTHH:mm:ss'))
+        console.log(this.state.hour)
+
         getCases(this.state.date.format('YYYY-MM-DDTHH:mm:ss'))
             .then(data => {
                 const feedbacks = data?.messages.map(f => new Feedback(f));
