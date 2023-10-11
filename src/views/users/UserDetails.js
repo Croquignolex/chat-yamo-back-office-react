@@ -12,7 +12,7 @@ import FormModal from "../../components/FormModal";
 import UserSouscriptions from "./UserSouscriptions";
 import UserStatusHistory from "./UserStatusHistory";
 import DisplayImage from "../../components/DisplayImage";
-import {getUserMetaData} from "../../redux/actions/IndependentActions";
+import {getFreeConversation, getUserMetaData} from "../../redux/actions/IndependentActions";
 
 class UserDetails extends React.Component {
     constructor(props) {
@@ -23,6 +23,7 @@ class UserDetails extends React.Component {
             error: null, 
             loading: false,
             metaData: null,
+            freeConversation: 0,
             // Modals
             townEventModal: {show: false, title: ""},
             souscriptionModal: {show: false, title: ""},
@@ -33,6 +34,7 @@ class UserDetails extends React.Component {
 
     componentDidMount() {
         this.showMetaData();
+        this.handleFreeConversation();
     }
 
     /*componentDidUpdate(prevProps, prevState, snapshot) {
@@ -40,6 +42,18 @@ class UserDetails extends React.Component {
             this.showMetaData();
         }
     }*/
+
+    handleFreeConversation = () => {
+        const id = this.props.user?.id;
+
+        if(id) {
+            getFreeConversation(id)
+                .then(data => {
+                    this.setState({ freeConversation: data?.count })
+                })
+                .catch(() => this.setState({ freeConversation: 'ERROR' }));
+        }
+    }
 
     showMetaData = () => {
         const id = this.props.user?.id;
@@ -107,7 +121,7 @@ class UserDetails extends React.Component {
 
     render() {
 
-        const { metaData, souscriptionModal, townEventModal, statusHistoryModal, appDataModal } = this.state;
+        const { metaData, freeConversation, souscriptionModal, townEventModal, statusHistoryModal, appDataModal } = this.state;
         const { user } = this.props;
 
         if (!user) return null;
@@ -234,6 +248,12 @@ class UserDetails extends React.Component {
                                     Account creation
                                 </div>
                                 <div className="font-weight-bold text-primary">{metaData?.creation}</div>
+                            </div>
+                            <div className="d-flex user-info">
+                                <div className="user-info-title font-weight-bold">
+                                    Free conversation
+                                </div>
+                                <div className="font-weight-bold text-primary">{freeConversation}</div>
                             </div>
                             <div className="d-flex user-info">
                                 <div className="user-info-title font-weight-bold">

@@ -12,7 +12,7 @@ import UserAppData from "../views/users/UserAppData";
 import UserTownEvents from "../views/users/UserTownEvents";
 import UserStatusHistory from "../views/users/UserStatusHistory";
 import UserSouscriptions from "../views/users/UserSouscriptions";
-import {getUserMetaData} from "../redux/actions/IndependentActions";
+import {getFreeConversation, getUserMetaData} from "../redux/actions/IndependentActions";
 
 import "../assets/scss/pages/users.scss";
 
@@ -27,6 +27,7 @@ class UserProfile extends React.Component {
       error: null,
       loading: false,
       metaData: null,
+      freeConversation: 0,
       // Modals
       townEventModal: {show: false, title: ""},
       souscriptionModal: {show: false, title: ""},
@@ -37,11 +38,13 @@ class UserProfile extends React.Component {
 
   componentDidMount() {
     this.showMetaData();
+    this.handleFreeConversation();
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
     if (prevProps.activeUser !== this.props.activeUser) {
       this.showMetaData();
+      this.handleFreeConversation();
     }
   }
 
@@ -53,6 +56,18 @@ class UserProfile extends React.Component {
       }
     }
     return null
+  }
+
+  handleFreeConversation = () => {
+    const id = this.state.activeUser?.id || this.state.activeUser?.userId;
+
+    if(id) {
+      getFreeConversation(id)
+          .then(data => {
+            this.setState({ freeConversation: data?.count })
+          })
+          .catch(() => this.setState({ freeConversation: 'ERROR' }));
+    }
   }
 
   showMetaData = () => {
@@ -105,7 +120,7 @@ class UserProfile extends React.Component {
   };
 
   render() {
-    const { activeUser, metaData, souscriptionModal, townEventModal, statusHistoryModal, appDataModal } = this.state;
+    const { activeUser, metaData, freeConversation, souscriptionModal, townEventModal, statusHistoryModal, appDataModal } = this.state;
     const { receiverProfile, handleReceiverSidebar } = this.props;
 
     if (!activeUser) return null;
@@ -234,6 +249,12 @@ class UserProfile extends React.Component {
                   Account creation
                 </div>
                 <div className="font-weight-bold text-primary">{metaData?.creation}</div>
+              </div>
+              <div className="d-flex user-info">
+                <div className="user-info-title font-weight-bold">
+                  Free conversation
+                </div>
+                <div className="font-weight-bold text-primary">{freeConversation}</div>
               </div>
               <div className="d-flex user-info">
                 <div className="user-info-title font-weight-bold">

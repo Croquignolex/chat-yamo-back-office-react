@@ -9,7 +9,7 @@ import {
     VALIDATIONS,
     BACKOFFICE_USERS,
     joinBaseUrlWithParams,
-    joinBaseUrlWithRequestParams, NOTIFICATION,
+    joinBaseUrlWithRequestParams, NOTIFICATION, CHATROOM,
 } from "../../utility/urls/backend";
 
 // ===================================== START GET
@@ -21,6 +21,11 @@ export const getCases = async (date) => {
 
 export const getUserMetaData = async (userId) => {
     const url = joinBaseUrlWithParams(USERS.METADATA, [{param: 'userId', value: userId}]);
+    return makeRequest('get', url);
+};
+
+export const getFreeConversation = async (userId) => {
+    const url = joinBaseUrlWithParams(CHATROOM.FREE_CHAT, [{param: 'userId', value: userId}]);
     return makeRequest('get', url);
 };
 

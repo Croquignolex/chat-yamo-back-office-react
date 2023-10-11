@@ -84,6 +84,10 @@ export const NOTIFICATION = {
     CONTEXT: '/notification/{userId}/notificationContext',
 };
 
+export const CHATROOM = {
+    FREE_CHAT: '/chatrooms/{userId}/messages/freeChatroomState',
+};
+
 const BASE = '';
 
 export const joinBaseUrlWithParams = (to, params = [], trueBase = false) => {
