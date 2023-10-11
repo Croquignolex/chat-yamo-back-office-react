@@ -6,6 +6,8 @@ export default class MetaData {
 
         this.id = metadata.identifier;
         this.oldPhone = metadata.oldPhoneNumber;
+        // this.creation = dayjs(metadata.accountCreationDate).format('MMMM D, YYYY at HH:mm');
+        this.creation = metadata.accountCreationDate;
     }
 
     get createdDate() {

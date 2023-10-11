@@ -31,7 +31,30 @@ class UserDetails extends React.Component {
         }
     }
 
-    handleShowMetaData = () => {
+    componentDidMount() {
+        this.showMetaData();
+    }
+
+    /*componentDidUpdate(prevProps, prevState, snapshot) {
+        if (prevProps.activeUser !== this.props.activeUser) {
+            this.showMetaData();
+        }
+    }*/
+
+    showMetaData = () => {
+        const id = this.props.user?.id;
+
+        if(id) {
+            getUserMetaData(id)
+                .then(data => {
+                    const metaData = new MetaData(data);
+                    this.setState({ metaData })
+                })
+                .catch(error => this.setState({ error }));
+        }
+    }
+
+    /*handleShowMetaData = () => {
         this.setState({loading: true, error: null, metaData: null, show: false});
         getUserMetaData(this.props.user?.id)
             .then(data => {
@@ -40,7 +63,7 @@ class UserDetails extends React.Component {
             })
             .catch(error => this.setState({ error }))
             .finally(() => this.setState({ loading: false }));
-    }
+    }*/
 
     toggleSouscriptionModal = () => {
         const {souscriptionModal} = this.state;
@@ -208,6 +231,12 @@ class UserDetails extends React.Component {
                             </div>
                             <div className="d-flex user-info">
                                 <div className="user-info-title font-weight-bold">
+                                    Account creation
+                                </div>
+                                <div className="font-weight-bold text-primary">{metaData?.creation}</div>
+                            </div>
+                            <div className="d-flex user-info">
+                                <div className="user-info-title font-weight-bold">
                                     End subcription
                                 </div>
                                 {(user.verified)
@@ -254,7 +283,7 @@ class UserDetails extends React.Component {
                                     <div className="text-center">
                                         {(this.state.loading) ? <Spinner color="primary" /> : (
                                             (!this.state.show) && (
-                                                <Button color="danger" onClick={this.handleShowMetaData}>
+                                                <Button color="danger" onClick={() => this.setState({show: true})}>
                                                     Private data
                                                 </Button>
                                             )

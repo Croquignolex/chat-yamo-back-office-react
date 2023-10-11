@@ -35,23 +35,37 @@ class UserProfile extends React.Component {
     }
   }
 
+  componentDidMount() {
+    this.showMetaData();
+  }
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if (prevProps.activeUser !== this.props.activeUser) {
+      this.showMetaData();
+    }
+  }
+
   static getDerivedStateFromProps(props, state) {
-    if (props.activeUser !== state.activeUser) return {
-      activeUser: props.activeUser,
-      loading: false, error: null, metaData: null, show: false
+    if (props.activeUser !== state.activeUser) {
+      return {
+        activeUser: props.activeUser,
+        loading: false, error: null, metaData: null, show: false
+      }
     }
     return null
   }
 
-  handleShowMetaData = () => {
-     this.setState({loading: true, error: null, metaData: null, show: false});
-     getUserMetaData(this.state.activeUser?.id || this.state.activeUser?.userId)
-         .then(data => {
-           const metaData = new MetaData(data);
-           this.setState({ metaData, show: true })
-         })
-         .catch(error => this.setState({ error }))
-         .finally(() => this.setState({ loading: false }));
+  showMetaData = () => {
+    const id = this.state.activeUser?.id || this.state.activeUser?.userId;
+
+    if(id) {
+      getUserMetaData(id)
+          .then(data => {
+            const metaData = new MetaData(data);
+            this.setState({ metaData })
+          })
+          .catch(error => this.setState({ error }));
+    }
   }
  
   toggleSouscriptionModal = () => {
@@ -95,7 +109,7 @@ class UserProfile extends React.Component {
     const { receiverProfile, handleReceiverSidebar } = this.props;
 
     if (!activeUser) return null;
-
+// console.log({metaData})
     return (
       <>
         <div className={`user-profile-sidebar ${receiverProfile ? "show" : null}`}>
@@ -217,6 +231,12 @@ class UserProfile extends React.Component {
               </div>
               <div className="d-flex user-info">
                 <div className="user-info-title font-weight-bold">
+                  Account creation
+                </div>
+                <div className="font-weight-bold text-primary">{metaData?.creation}</div>
+              </div>
+              <div className="d-flex user-info">
+                <div className="user-info-title font-weight-bold">
                   End subcription
                 </div>
                 {(activeUser?.verified)
@@ -261,7 +281,7 @@ class UserProfile extends React.Component {
               <div className="text-center">
                 {(this.state.loading) ? <Spinner color="primary" /> : (
                     (!this.state.show) && (
-                        <Button color="danger" onClick={this.handleShowMetaData}>
+                        <Button color="danger" onClick={() => this.setState({show: true})}>
                           Private data
                         </Button>
                     )
