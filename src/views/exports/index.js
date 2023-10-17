@@ -225,7 +225,7 @@ class Exports extends React.Component {
                                     </>
                                 )
                             )}
-                            {(error) && (
+                            {(error && !data) && (
                                 <Card className="sidebar-content h-100">
                                     <Error500 refresh={false} />
                                 </Card>
