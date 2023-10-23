@@ -174,7 +174,7 @@ class UserDetails extends React.Component {
                                 <div className="user-info-title font-weight-bold">
                                     Subscription
                                 </div>
-                                <div className="font-weight-bold text-success">
+                                <div className="font-weight-bold primary">
                                     {subscription}
                                 </div>
                             </div>
