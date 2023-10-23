@@ -5,6 +5,10 @@ export default class Souscriptions {
         Object.assign(this, souscriptions);
 
         this.type = this.subscriptionType || "Unknow";
+        this.pack = this.subscriptionPack || "Unknow";
+
+        //"subscriptionType": "SOLO",
+        //"subscriptionPack": "SOLO"
     }
 
     get startDate() {

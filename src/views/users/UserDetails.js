@@ -12,7 +12,9 @@ import FormModal from "../../components/FormModal";
 import UserSouscriptions from "./UserSouscriptions";
 import UserStatusHistory from "./UserStatusHistory";
 import DisplayImage from "../../components/DisplayImage";
-import {getFreeConversation, getUserMetaData} from "../../redux/actions/IndependentActions";
+import {getFreeConversation, getUserMetaData, getUserSouscriptions} from "../../redux/actions/IndependentActions";
+import Souscriptions from "../../models/Souscriptions";
+import dayjs from "dayjs";
 
 class UserDetails extends React.Component {
     constructor(props) {
@@ -24,6 +26,7 @@ class UserDetails extends React.Component {
             loading: false,
             metaData: null,
             freeConversation: 0,
+            subscription: "",
             // Modals
             townEventModal: {show: false, title: ""},
             souscriptionModal: {show: false, title: ""},
@@ -35,6 +38,7 @@ class UserDetails extends React.Component {
     componentDidMount() {
         this.showMetaData();
         this.handleFreeConversation();
+        this.handleSubscription();
     }
 
     /*componentDidUpdate(prevProps, prevState, snapshot) {
@@ -52,6 +56,22 @@ class UserDetails extends React.Component {
                     this.setState({ freeConversation: data?.count })
                 })
                 .catch(() => this.setState({ freeConversation: 'ERROR' }));
+        }
+    }
+
+    handleSubscription = () => {
+        const id = this.props.user?.id;
+
+        if(id) {
+            getUserSouscriptions(id)
+                .then(data => {
+                    const sub = new Souscriptions(data[0]);
+                    if(dayjs().isBefore(sub.endDate)) {
+                        const subscription = `${sub.pack} (${sub.type})`;
+                        this.setState({ subscription });
+                    }
+                })
+                .catch(() => this.setState({ subscription: 'ERROR' }));
         }
     }
 
@@ -121,7 +141,7 @@ class UserDetails extends React.Component {
 
     render() {
 
-        const { metaData, freeConversation, souscriptionModal, townEventModal, statusHistoryModal, appDataModal } = this.state;
+        const { metaData, freeConversation, subscription, souscriptionModal, townEventModal, statusHistoryModal, appDataModal } = this.state;
         const { user } = this.props;
 
         if (!user) return null;
@@ -149,6 +169,14 @@ class UserDetails extends React.Component {
                                     ? <div className="font-weight-bold text-success">Yes</div>
                                     : <div className="font-weight-bold text-danger">No</div>
                                 }
+                            </div>
+                            <div className="d-flex user-info">
+                                <div className="user-info-title font-weight-bold">
+                                    Subscription
+                                </div>
+                                <div className="font-weight-bold text-success">
+                                    {subscription}
+                                </div>
                             </div>
                             <div className="d-flex user-info">
                                 <div className="user-info-title font-weight-bold">

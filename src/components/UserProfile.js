@@ -12,9 +12,11 @@ import UserAppData from "../views/users/UserAppData";
 import UserTownEvents from "../views/users/UserTownEvents";
 import UserStatusHistory from "../views/users/UserStatusHistory";
 import UserSouscriptions from "../views/users/UserSouscriptions";
-import {getFreeConversation, getUserMetaData} from "../redux/actions/IndependentActions";
+import {getFreeConversation, getUserMetaData, getUserSouscriptions} from "../redux/actions/IndependentActions";
 
 import "../assets/scss/pages/users.scss";
+import Souscriptions from "../models/Souscriptions";
+import dayjs from "dayjs";
 
 class UserProfile extends React.Component {
   // props { receiverProfile, activeUser, handleReceiverSidebar }
@@ -28,6 +30,7 @@ class UserProfile extends React.Component {
       loading: false,
       metaData: null,
       freeConversation: 0,
+      subscription: "",
       // Modals
       townEventModal: {show: false, title: ""},
       souscriptionModal: {show: false, title: ""},
@@ -39,12 +42,14 @@ class UserProfile extends React.Component {
   componentDidMount() {
     this.showMetaData();
     this.handleFreeConversation();
+    this.handleSubscription();
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
     if (prevProps.activeUser !== this.props.activeUser) {
       this.showMetaData();
       this.handleFreeConversation();
+      this.handleSubscription()
     }
   }
 
@@ -67,6 +72,23 @@ class UserProfile extends React.Component {
             this.setState({ freeConversation: data?.count })
           })
           .catch(() => this.setState({ freeConversation: 'ERROR' }));
+    }
+  }
+
+  handleSubscription = () => {
+    const id = this.state.activeUser?.id || this.state.activeUser?.userId;
+
+    if(id) {
+      getUserSouscriptions(id)
+          .then(data => {
+            const sub = new Souscriptions(data[0]);
+            console.log({data}, data[0], sub, dayjs().isBefore(sub.endDate))
+            if(dayjs().isBefore(sub.endDate)) {
+              const subscription = `${sub.pack} (${sub.type})`;
+              this.setState({ subscription });
+            }
+          })
+          .catch(() => this.setState({ subscription: 'ERROR' }));
     }
   }
 
@@ -120,7 +142,7 @@ class UserProfile extends React.Component {
   };
 
   render() {
-    const { activeUser, metaData, freeConversation, souscriptionModal, townEventModal, statusHistoryModal, appDataModal } = this.state;
+    const { activeUser, metaData, freeConversation, subscription, souscriptionModal, townEventModal, statusHistoryModal, appDataModal } = this.state;
     const { receiverProfile, handleReceiverSidebar } = this.props;
 
     if (!activeUser) return null;
@@ -156,6 +178,14 @@ class UserProfile extends React.Component {
                     ? <div className="font-weight-bold text-success">Yes</div>
                     : <div className="font-weight-bold text-danger">No</div>
                 }
+              </div>
+              <div className="d-flex user-info">
+                <div className="user-info-title font-weight-bold">
+                  Subscription
+                </div>
+                <div className="font-weight-bold text-primary">
+                  {subscription}
+                </div>
               </div>
               <div className="d-flex user-info">
                 <div className="user-info-title font-weight-bold">
