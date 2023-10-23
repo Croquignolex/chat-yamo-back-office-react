@@ -22,7 +22,7 @@ class UserDetails extends React.Component {
         this.state = {
             // Metadata state
             show: false,
-            error: null, 
+            error: null,
             loading: false,
             metaData: null,
             freeConversation: 0,
@@ -104,8 +104,8 @@ class UserDetails extends React.Component {
         const { user } = this.props;
         if(souscriptionModal.show) this.setState({souscriptionModal: {...souscriptionModal, show: false}});
         else {
-          const title = user.isDeleted ? "Deleted user" : `${user.name} souscriptions history`;
-          this.setState({souscriptionModal: {show: true, title}});
+            const title = user.isDeleted ? "Deleted user" : `${user.name} souscriptions history`;
+            this.setState({souscriptionModal: {show: true, title}});
         }
     };
 
@@ -114,8 +114,8 @@ class UserDetails extends React.Component {
         const { user } = this.props;
         if(townEventModal.show) this.setState({townEventModal: {...townEventModal, show: false}});
         else {
-          const title = user.isDeleted ? "Deleted user" : `${user.name} town event check`;
-          this.setState({townEventModal: {show: true, title}});
+            const title = user.isDeleted ? "Deleted user" : `${user.name} town event check`;
+            this.setState({townEventModal: {show: true, title}});
         }
     };
 
@@ -372,7 +372,7 @@ class UserDetails extends React.Component {
                 <FormModal small modal={appDataModal} toggleModal={this.toggleAppDataModal}>
                     <UserAppData appData={user?.appData} />
                 </FormModal>
-            </> 
+            </>
         )
     }
 }

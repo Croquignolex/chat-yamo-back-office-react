@@ -98,11 +98,9 @@ class Exports extends React.Component {
 
         const selectItems = [
             {label: 'Default', value: 'DEFAULT'},
-            {label: 'Incognito', value: 'INCOGNITO'},
-            {label: 'Advanced filters', value: 'ADVANCED_FILTERS'},
-            {label: 'Diaspora', value: 'DIASPORA'},
-            {label: 'Conversation', value: 'CONVERSATION'},
-            {label: 'Premium', value: 'PREMIUM'},
+            {label: 'Solo', value: 'PREMIUM'},
+            {label: 'Diaspora Elite', value: 'DIASPORA'},
+            {label: 'Premium Plus', value: 'ADVANCED_FILTERS'},
         ];
 
         return (

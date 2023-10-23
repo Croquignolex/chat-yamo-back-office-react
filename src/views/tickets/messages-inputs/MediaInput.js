@@ -5,22 +5,18 @@ import {
     ModalBody,
     ModalHeader,
 } from "reactstrap";
-import React from 'react';
 import {Send} from "react-feather";
+import React, {useState} from 'react';
 import {useDropzone} from "react-dropzone";
-
-import DisplayImage from "../../../components/DisplayImage";
-import DisplayVideo from "../../../components/DisplayVideo";
-
 import "../../../assets/scss/plugins/extensions/dropzone.scss";
 
-const MediaInput = ({ message, files, onMsgChange, onFilesLoad, show, onClose, onSubmit }) => {
+const MediaInput = ({ message, onMsgChange, show, onClose, onSubmit }) => {
+    const [files, setFiles] = useState([]);
     const { getRootProps, getInputProps } = useDropzone({
-        // maxFiles: 1,
-        // accept: "image/jpg,image/jpeg,image/png,video/mp4,video/webm,video/x-msvideo",
-        accept: "image/jpg,image/jpeg,image/png,video/mp4,video/webm",
+        maxFiles: 1,
+        accept: "image/jpg,image/jpeg",
         onDrop: acceptedFiles => {
-            onFilesLoad(
+            setFiles(
                 acceptedFiles.map(file =>
                     Object.assign(file, {
                         preview: URL.createObjectURL(file)
@@ -33,16 +29,14 @@ const MediaInput = ({ message, files, onMsgChange, onFilesLoad, show, onClose, o
     const thumbs = files.map(file => (
         <div className="dz-thumb" key={file.name}>
             <div className="dz-thumb-inner">
-                {['image/jpg', 'image/jpeg', 'image/png'].includes(file.type) && <DisplayImage src={file.preview} withPercentage /> }
-                {['video/mp4', 'video/webm', 'video/mpeg'].includes(file.type) && <DisplayVideo src={file.preview} type={file.type} withPercentage />}
-                {/*{['video/mp4', 'video/webm', 'video/x-msvideo'].includes(file.type) && <DisplayVideo src={file.preview} type={file.type} withPercentage />}*/}
+                <img src={file.preview} className="dz-img" alt="..." />
             </div>
         </div>
     ));
 
     const _onSubmit = (e) => {
         e.preventDefault();
-        onSubmit();
+        onSubmit(files.length > 0 ? files[0] : null);
     };
 
     return(
@@ -60,10 +54,8 @@ const MediaInput = ({ message, files, onMsgChange, onFilesLoad, show, onClose, o
                     <section className="w-100">
                         <div {...getRootProps({ className: "dropzone" })}>
                             <input {...getInputProps()} />
-                            <p className="mx-1 mt-50 text-center text-danger">
-                                Drop files or click to upload <br/>
-                                Allowed extensions:  JPEG, JPG, PNG, MP4, MPEG, WEBM.
-                                {/*Allowed extensions:  JPEG, JPG, PNG, MP4, MOV, AVI, WMV.*/}
+                            <p className="mx-1">
+                                Téléverser une image içi
                             </p>
                         </div>
                         <aside className="thumb-container">{thumbs}</aside>

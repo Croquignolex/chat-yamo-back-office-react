@@ -7,7 +7,14 @@ import DatePicker from "react-datepicker";
 import Error500 from "../Error500";
 import Breadcrumbs from "../../components/@vuexy/breadCrumbs/BreadCrumb";
 import {Col, Row, Form, Input, Button, Spinner, FormGroup, Label, Card} from "reactstrap";
-import {exportDeletedUsers, exportNewUsers, exportSubscriptions} from "../../redux/actions/IndependentActions";
+import {
+    exportDeletedUsers,
+    exportNewUsers,
+    exportSubscriptions,
+    exportDeletedUserEmails,
+    exportNewUserEmails,
+    exportSubscriptionEmails,
+} from "../../redux/actions/IndependentActions";
 
 import "react-datepicker/dist/react-datepicker.css";
 import {downloadFile} from "../../helpers/helpers";
@@ -31,29 +38,13 @@ class Exports extends React.Component {
 
     updateTypeSelect = (type) => {
         const {selectedStartDate} = this.state;
-        let startDate, range;
-
-        if(type.value === "deleted_users") {
-            range = false;
-            startDate = dayjs(selectedStartDate).format("YYYY-MM");
-        }
-        else {
-            range = true;
-            startDate = dayjs(selectedStartDate).format("YYYY-MM-DD");
-        }
-
+        const range = true;
+        const startDate = dayjs(selectedStartDate).format("YYYY-MM-DD");
         this.setState({type, range, startDate});
     };
 
     handleSelectedStartDate = (selectedStartDate) => {
-        let startDate;
-
-        if(this.state.range) {
-            startDate = dayjs(selectedStartDate).format("YYYY-MM-DD");
-        } else {
-            startDate = dayjs(selectedStartDate).format("YYYY-MM");
-        }
-
+        const startDate = dayjs(selectedStartDate).format("YYYY-MM-DD");
         this.setState({selectedStartDate, startDate});
     };
 
@@ -82,12 +73,25 @@ class Exports extends React.Component {
                 .catch((error) => this.setState({ error }))
                 .finally(() => this.setState({loading: false}))
         }
-        else if(type.value === "deleted_users")
-        {
-            exportDeletedUsers(startDate, exclude)
+        if(type.value === "premium_user_emails")
+         {
+             exportSubscriptionEmails(startDate, endDate, exclude)
                 .then((data) => {
                     const file = URL.createObjectURL(new Blob([data], { type: "text/csv" }));
-                    const name = `deleted_user_metadata_${dayjs(selectedStartDate).format("YYYY_MM")}.csv`;
+                    const name = `premium_user_emails_${dayjs(selectedStartDate).format("YYYY_MM_DD")}.csv`;
+                    downloadFile(file, name)
+                        .then(() => this.setState({ data }))
+                        .catch((error) => console.log({error}));
+             })
+             .catch((error) => this.setState({ error }))
+             .finally(() => this.setState({loading: false}))
+         }
+        else if(type.value === "deleted_users")
+        {
+            exportDeletedUsers(startDate, endDate, exclude)
+                .then((data) => {
+                    const file = URL.createObjectURL(new Blob([data], { type: "text/csv" }));
+                    const name = `deleted_user_metadata_${dayjs(selectedStartDate).format("YYYY_MM_DD")}.csv`;
                     downloadFile(file, name)
                         .then(() => this.setState({ data }))
                         .catch((error) => console.log({error}));
@@ -95,12 +99,38 @@ class Exports extends React.Component {
                 .catch((error) => this.setState({ error }))
                 .finally(() => this.setState({loading: false}))
         }
+        else if(type.value === "deleted_user_emails")
+                {
+                    exportDeletedUserEmails(startDate, endDate, exclude)
+                        .then((data) => {
+                            const file = URL.createObjectURL(new Blob([data], { type: "text/csv" }));
+                            const name = `deleted_user_emails_${dayjs(selectedStartDate).format("YYYY_MM_DD")}.csv`;
+                            downloadFile(file, name)
+                                .then(() => this.setState({ data }))
+                                .catch((error) => console.log({error}));
+                        })
+                        .catch((error) => this.setState({ error }))
+                        .finally(() => this.setState({loading: false}))
+                }
         else if(type.value === "new_users")
         {
             exportNewUsers(startDate, endDate, exclude)
                 .then((data) => {
                     const file = URL.createObjectURL(new Blob([data], { type: "text/csv" }));
                     const name = `new_user_metadata_${dayjs(selectedStartDate).format("YYYY_MM_DD")}.csv`;
+                    downloadFile(file, name)
+                        .then(() => this.setState({ data }))
+                        .catch((error) => console.log({error}));
+                })
+                .catch((error) => this.setState({ error }))
+                .finally(() => this.setState({loading: false}))
+        }
+        else if(type.value === "new_user_emails")
+        {
+            exportNewUserEmails(startDate, endDate, exclude)
+                .then((data) => {
+                    const file = URL.createObjectURL(new Blob([data], { type: "text/csv" }));
+                    const name = `new_user_emails_${dayjs(selectedStartDate).format("YYYY_MM_DD")}.csv`;
                     downloadFile(file, name)
                         .then(() => this.setState({ data }))
                         .catch((error) => console.log({error}));
@@ -125,6 +155,9 @@ class Exports extends React.Component {
             {label: 'Premium users', value: 'premium_users'},
             {label: 'Deleted users', value: 'deleted_users'},
             {label: 'New users', value: 'new_users'},
+            {label: 'Premium user emails', value: 'premium_user_emails'},
+            {label: 'Deleted user emails', value: 'deleted_user_emails'},
+            {label: 'New user emails', value: 'new_user_emails'},
         ];
 
         const now = new Date();
@@ -156,8 +189,7 @@ class Exports extends React.Component {
                                     onChange={this.updateTypeSelect}
                                 />
                             </div>
-                            {range
-                                ? (
+                            {(
                                     <>
                                         <div className="w-25 ml-1">
                                             <Label>Choose start date</Label>
@@ -190,21 +222,6 @@ class Exports extends React.Component {
                                             />
                                         </div>
                                     </>
-                                ) : (
-                                    <div className="w-25 ml-1">
-                                        <Label>Choose a date</Label>
-                                        <DatePicker
-                                            selectsStart
-                                            showMonthYearPicker
-                                            selected={selectedStartDate}
-                                            calendarStartDay={1}
-                                            dateFormat="yyyy/MM"
-                                            maxDate={twoYearLater}
-                                            minDate={sixMonthEarlier}
-                                            onChange={this.handleSelectedStartDate}
-                                            customInput={<CustomInput />}
-                                        />
-                                    </div>
                                 )
                             }
                             <div className="ml-1">

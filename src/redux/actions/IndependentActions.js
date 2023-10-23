@@ -153,12 +153,17 @@ export const exportSubscriptions = async (start, end, excludeBlacklist) => {
         `${url}?start=${start}&end=${end}&excludeBlacklist=${excludeBlacklist}`,
         null,
         {responseType: "blob"}
-    ) ;
+    );
 };
 
-export const exportDeletedUsers = async (start, excludeBlacklist) => {
-    const url = joinBaseUrlWithParams(USERS.EXPORT_DELETED_USERS,[{param: 'date', value: start}]);
-    return makeRequest('get', `${url}?excludeBlacklist=${excludeBlacklist}`, null, {responseType: "blob"}) ;
+export const exportDeletedUsers = async (start, end, excludeBlacklist) => {
+    const url = joinBaseUrlWithParams(USERS.EXPORT_DELETED_USERS);
+    return makeRequest(
+        'get',
+        `${url}?start=${start}&end=${end}&excludeBlacklist=${excludeBlacklist}`,
+        null,
+        {responseType: "blob"}
+    );
 };
 
 export const exportNewUsers = async (start, end, excludeBlacklist) => {
@@ -168,7 +173,37 @@ export const exportNewUsers = async (start, end, excludeBlacklist) => {
         `${url}?start=${start}&end=${end}&excludeBlacklist=${excludeBlacklist}`,
         null,
         {responseType: "blob"}
-    ) ;
+    );
+};
+
+export const exportSubscriptionEmails = async (start, end, excludeBlacklist) => {
+    const url = joinBaseUrlWithParams(USERS.EXPORT_SUBSCRIPTION_EMAILS);
+    return makeRequest(
+        'get',
+        `${url}?start=${start}&end=${end}&excludeBlacklist=${excludeBlacklist}`,
+        null,
+        {responseType: "blob"}
+     );
+};
+
+export const exportDeletedUserEmails = async (start, end, excludeBlacklist) => {
+    const url = joinBaseUrlWithParams(USERS.EXPORT_DELETED_USER_EMAILS);
+    return makeRequest(
+        'get',
+        `${url}?start=${start}&end=${end}&excludeBlacklist=${excludeBlacklist}`,
+        null,
+        {responseType: "blob"}
+    );
+};
+
+export const exportNewUserEmails = async (start, end, excludeBlacklist) => {
+    const url = joinBaseUrlWithParams(USERS.EXPORT_NEW_USER_EMAILS);
+    return makeRequest(
+        'get',
+        `${url}?start=${start}&end=${end}&excludeBlacklist=${excludeBlacklist}`,
+        null,
+        {responseType: "blob"}
+    );
 };
 
 // ===================================== END GET

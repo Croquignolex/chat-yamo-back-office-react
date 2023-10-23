@@ -57,9 +57,12 @@ export const USERS = {
     ACTIVATE_SUBSCRIPTION: '/authentication/backoffice/user/{userId}/activatesubscription',
 
     EXPORT_SUBSCRIPTION: '/authentication/users/subscriptions',
-    EXPORT_DELETED_USERS: '/authentication/users/deleted/{date}',
+    EXPORT_DELETED_USERS: '/authentication/users/deleted',
     EXPORT_NEW_USERS: '/authentication/users/new',
     EXPORT_BLACKLIST: '/authentication/backoffice/user/blacklistExportUser',
+    EXPORT_SUBSCRIPTION_EMAILS: '/authentication/users/subscriptionEmails',
+    EXPORT_DELETED_USER_EMAILS: '/authentication/users/deletedUserEmails',
+    EXPORT_NEW_USER_EMAILS: '/authentication/users/newUserEmails',
 };
 
 export const MEDIA = {
