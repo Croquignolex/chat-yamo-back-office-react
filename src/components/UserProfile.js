@@ -82,7 +82,7 @@ class UserProfile extends React.Component {
       getUserSouscriptions(id)
           .then(data => {
             const sub = new Souscriptions(data[0]);
-            console.log({data}, data[0], sub, dayjs().isBefore(sub.endDate))
+            // console.log({data}, data[0], sub, dayjs().isBefore(sub.endDate))
             if(dayjs().isBefore(sub.endDate)) {
               const subscription = `${sub.pack} (${sub.type})`;
               this.setState({ subscription });
