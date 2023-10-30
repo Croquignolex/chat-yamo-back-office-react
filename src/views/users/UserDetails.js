@@ -49,6 +49,7 @@ class UserDetails extends React.Component {
 
     handleFreeConversation = () => {
         const id = this.props.user?.id;
+        this.setState({ freeConversation: 0 });
 
         if(id) {
             getFreeConversation(id)
@@ -61,6 +62,7 @@ class UserDetails extends React.Component {
 
     handleSubscription = () => {
         const id = this.props.user?.id;
+        this.setState({ subscription: '' });
 
         if(id) {
             getUserSouscriptions(id)
@@ -77,6 +79,7 @@ class UserDetails extends React.Component {
 
     showMetaData = () => {
         const id = this.props.user?.id;
+        this.setState({ metaData: null });
 
         if(id) {
             getUserMetaData(id)

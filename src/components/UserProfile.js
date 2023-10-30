@@ -65,6 +65,7 @@ class UserProfile extends React.Component {
 
   handleFreeConversation = () => {
     const id = this.state.activeUser?.id || this.state.activeUser?.userId;
+    this.setState({ freeConversation: 0 });
 
     if(id) {
       getFreeConversation(id)
@@ -77,6 +78,7 @@ class UserProfile extends React.Component {
 
   handleSubscription = () => {
     const id = this.state.activeUser?.id || this.state.activeUser?.userId;
+    this.setState({ subscription: '' });
 
     if(id) {
       getUserSouscriptions(id)
@@ -94,6 +96,7 @@ class UserProfile extends React.Component {
 
   showMetaData = () => {
     const id = this.state.activeUser?.id || this.state.activeUser?.userId;
+    this.setState({ metaData: null });
 
     if(id) {
       getUserMetaData(id)
