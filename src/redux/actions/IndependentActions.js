@@ -309,12 +309,12 @@ export const updateUserProfile = async (userId, gender, profile) => {
     return makeRequest('post', url, data);
 };
 
-export const activateSubscription = async (userId, image, subscriptionPack) => {
+export const activateSubscription = async (userId, promotionCode, image, subscriptionPack) => {
     const url = joinBaseUrlWithParams(
         USERS.ACTIVATE_SUBSCRIPTION,
         [{param: 'userId', value: userId}]
     );
-    return makeRequest('post', url, {image, subscriptionPack});
+    return makeRequest('post', url, {image, subscriptionPack, promotionCode});
 };
 
 // ===================================== END POST

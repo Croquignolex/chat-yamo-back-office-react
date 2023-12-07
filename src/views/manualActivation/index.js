@@ -18,6 +18,7 @@ class Exports extends React.Component {
             error: null,
             data: null,
             user: "",
+            code: "",
             file: "",
             pictureCropperModal: {show: false, title: "", src: null},
             subscription:  {label: 'Default', value: 'DEFAULT'}
@@ -28,6 +29,12 @@ class Exports extends React.Component {
         this.setState({error: null});
         const user = e?.target?.value;
         this.setState({user})
+    };
+
+    updatePromoCodeInput = (e) => {
+        this.setState({error: null});
+        const code = e?.target?.value;
+        this.setState({code})
     };
 
     updateSubscriptionSelect = (subscription) => {
@@ -77,11 +84,11 @@ class Exports extends React.Component {
         // Reset error data
         this.setState({loading: true, data: null, error: null});
 
-        const {user, file, subscription} = this.state;
+        const {user, code, file, subscription} = this.state;
 
         if(user && file) {
             const bytesArray =  file.split("data:image/jpeg;base64,");
-            activateSubscription(user, bytesArray[1], subscription.value)
+            activateSubscription(user, code, bytesArray[1], subscription.value)
                 .then((data) => {
                     this.setState({data, file: "", user: ""})
                 })
@@ -94,10 +101,10 @@ class Exports extends React.Component {
 
     render() {
 
-        const {error, loading, data, user, file, subscription, pictureCropperModal} = this.state;
+        const {error, loading, data, user, code, file, subscription, pictureCropperModal} = this.state;
 
         const selectItems = [
-            {label: 'Default', value: 'DEFAULT'},
+            // {label: 'Default', value: 'DEFAULT'},
             {label: 'Solo', value: 'PREMIUM'},
             {label: 'Diaspora Elite', value: 'DIASPORA'},
             {label: 'Premium Plus', value: 'ADVANCED_FILTERS'},
@@ -129,25 +136,36 @@ class Exports extends React.Component {
                                     onChange={this.updateSubscriptionSelect}
                                 />
                             </div>
-                            <div className="ml-1">
-                                <Button outline color="primary" className="rounded mt-1" tag="label">
-                                    Choose image
-                                    <Input
-                                        hidden
-                                        type="file"
-                                        id='upload'
-                                        name="file"
-                                        accept="image/*"
-                                        onChange={this.handleImageUpload}
-                                    />
-                                </Button>
+                            <div className="w-25 ml-1">
+                                <Label>Promo code</Label>
+                                <Input
+                                    type="text"
+                                    placeholder="Enter a promo code..."
+                                    onChange={(this.updatePromoCodeInput)}
+                                    value={code}
+                                />
                             </div>
-                            <div className="ml-1">
-                                {(!loading) && (
-                                    <Button color="primary" className="rounded mt-1" type="submit">
-                                        Upload
+                            <div className="w-25">
+                                <div className="ml-1">
+                                    <Button outline color="primary" className="rounded mt-1" tag="label">
+                                        Choose image
+                                        <Input
+                                            hidden
+                                            type="file"
+                                            id='upload'
+                                            name="file"
+                                            accept="image/*"
+                                            onChange={this.handleImageUpload}
+                                        />
                                     </Button>
-                                )}
+                                </div>
+                                <div className="ml-1">
+                                    {(!loading) && (
+                                        <Button color="primary" className="rounded mt-1" type="submit">
+                                            Upload
+                                        </Button>
+                                    )}
+                                </div>
                             </div>
                         </Form>
                         {(file) && (
