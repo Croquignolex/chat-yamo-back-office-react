@@ -60,6 +60,7 @@ class ImageLog extends React.Component {
             profileLoading: false,
             activeUser: null,
             profileData: null,
+            deleteDescription: '',
         };
         this.next = this.next.bind(this);
         this.onExited = this.onExited.bind(this);
@@ -174,7 +175,8 @@ class ImageLog extends React.Component {
                                         images: user.images,
                                         activeIndex: 0,
                                         profileData: data,
-                                        activeUser: user
+                                        activeUser: user,
+                                        deleteDescription: user.greetingText
                                     });
                                     handleActiveUser(user);
 
@@ -334,7 +336,7 @@ class ImageLog extends React.Component {
     };
 
     render() {
-        const { activeIndex, profileData, images } = this.state;
+        const { activeIndex, profileData, images, deleteDescription } = this.state;
         const { activeUser, handleReceiverSidebar, showPreviousNavigation, showNextNavigation, handleChangeUser, toVerify, activeUserIndex } = this.props;
         const slides = images.map((item) => {
             return (
@@ -470,6 +472,9 @@ class ImageLog extends React.Component {
                                                     <button className="btn btn-primary btn-sm ml-50" onClick={() => this.changeGender()}>
                                                         <RefreshCcw size={10} />
                                                     </button>
+                                                    <div className="mt-5">
+                                                        <strong className="text-dark">{deleteDescription}</strong>
+                                                    </div>
                                                 </>
                                             )
                                         )}
