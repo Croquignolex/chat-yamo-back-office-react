@@ -20,7 +20,8 @@ import {
     ThumbsDown,
     ArrowRight,
     RefreshCcw,
-    CheckCircle
+    CheckCircle,
+    X
 } from "react-feather";
 
 import Error500 from "../Error500";
@@ -41,7 +42,7 @@ import {
     notateUserProfile,
     updateUserProfile,
     getUserProfileImage,
-    getUserSuspiciousState
+    getUserSuspiciousState, deleteUserProfileDescription
 } from "../../redux/actions/IndependentActions";
 import * as Icon from "react-feather";
 
@@ -58,6 +59,7 @@ class ImageLog extends React.Component {
             blockLoading: false,
             reportLoading: false,
             profileLoading: false,
+            descriptionLoading: false,
             activeUser: null,
             profileData: null,
             deleteDescription: '',
@@ -325,6 +327,24 @@ class ImageLog extends React.Component {
             .finally(() => this.setState({ profileLoading: false }));
     };
 
+    deleteDescription = () => {
+        this.setState({descriptionLoading: true});
+        deleteUserProfileDescription(this.state.activeUser.id, this.state.profileData)
+            .then(() => {
+                this.setState((prevState) => {
+                    const tempProfileData = prevState.profileData;
+                    return {profileData: {...tempProfileData, greetingText: "", deleteDescription: ""}};
+                });
+                // Update user side profile show
+                const {activeUser, handleActiveUser} = this.props;
+                handleActiveUser({...activeUser, greetingText: ""});
+                // Notification
+                NotificationManager.success("User profile description has been successfully deleted", null, 1000);
+            })
+            .catch((error) => console.log("error ", error))
+            .finally(() => this.setState({ descriptionLoading: false }));
+    };
+
     removeImageFormState = (image, shouldDelete = false) => {
         if(shouldDelete) {
             this.setState((prevState) => {
@@ -465,18 +485,31 @@ class ImageLog extends React.Component {
                                 <div className={`col-3 d-flex flex-column justify-content-between`}>
                                     <div className="mt-5 text-right">
                                         {!(this.state.error) && (
-                                            (this.state.profileLoading) ? <Spinner color="primary" /> : (
-                                                <>
-                                                    <strong>Change gender</strong><br/>
-                                                    <span className="badge badge-dark badge-pill mb-50">{profileData?.gender ? profileData?.gender : 'none'}</span>
-                                                    <button className="btn btn-primary btn-sm ml-50" onClick={() => this.changeGender()}>
-                                                        <RefreshCcw size={10} />
-                                                    </button>
-                                                    <div className="mt-5">
-                                                        <strong className="text-dark">{deleteDescription}</strong>
-                                                    </div>
-                                                </>
-                                            )
+                                            <>
+                                                {
+                                                    (this.state.profileLoading) ? <Spinner color="primary" /> : (
+                                                        <>
+                                                            <strong>Change gender</strong><br/>
+                                                            <span className="badge badge-dark badge-pill mb-50">{profileData?.gender ? profileData?.gender : 'none'}</span>
+                                                            <button className="btn btn-primary btn-sm ml-50" onClick={() => this.changeGender()}>
+                                                                <RefreshCcw size={10} />
+                                                            </button>
+                                                        </>
+                                                    )
+                                                }
+                                                {
+                                                    (this.state.descriptionLoading) ? <Spinner color="primary" /> : (
+                                                        <>
+                                                            <div className="mt-4">
+                                                                <strong>Delete Description</strong><br/>
+                                                                <button className="btn btn-danger btn-sm" onClick={() => this.deleteDescription()}>
+                                                                    <X size={10} />
+                                                                </button>
+                                                            </div>
+                                                        </>
+                                                    )
+                                                }
+                                            </>
                                         )}
                                     </div>
                                     <div className="mb-5 text-right">

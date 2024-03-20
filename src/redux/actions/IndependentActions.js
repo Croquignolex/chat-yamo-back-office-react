@@ -304,7 +304,35 @@ export const updateUserProfile = async (userId, gender, profile) => {
         country: profile?.country,
         province: profile?.province,
         continent: profile?.continent,
-        greetingText: profile?.greetingText
+        greetingText: profile?.greetingText,
+        homeCountry: profile?.homeCountry,
+        frenchCity: profile?.frenchCity,
+        frenchCountry: profile?.frenchCountry,
+        birthYear: profile?.birthYear,
+        birthDate: profile?.birthDate,
+    };
+    return makeRequest('post', url, data);
+};
+
+export const deleteUserProfileDescription = async (userId, profile) => {
+    const url = joinBaseUrlWithParams(
+        USERS.GET_ONE,
+        [{param: 'userId', value: userId}]
+    );
+    const data = {
+        gender: profile?.gender,
+        age: profile?.age,
+        city: profile?.city,
+        name: profile?.name,
+        country: profile?.country,
+        province: profile?.province,
+        continent: profile?.continent,
+        greetingText: "",
+        homeCountry: profile?.homeCountry,
+        frenchCity: profile?.frenchCity,
+        frenchCountry: profile?.frenchCountry,
+        birthYear: profile?.birthYear,
+        birthDate: profile?.birthDate,
     };
     return makeRequest('post', url, data);
 };
