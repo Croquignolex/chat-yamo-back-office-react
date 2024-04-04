@@ -69,6 +69,14 @@ const navigationConfig = [
   },
   {
     type: "item",
+    id: "profile-reverification",
+    title: "Profile reverification",
+    navLink: APP.PROFILE_REVERIFICATION,
+    icon: <Icon.RefreshCw size={20} />,
+    permissions: ['admin', 'imagechecker', 'imageverifier']
+  },
+  {
+    type: "item",
     id: "manualActivation",
     title: "Manual Activation",
     navLink: APP.MANUAL_ACTIVATION,

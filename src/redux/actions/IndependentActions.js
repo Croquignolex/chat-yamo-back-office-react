@@ -97,6 +97,11 @@ export const getUserProfileImagesForNotation = async (week) => {
     return makeRequest('get', NOTATIONS.GET_PROFILE_IMAGES);
 };
 
+export const getProfilesToDoubleCheck = async (categories, dates) => {
+    // return makeRequest('get', NOTATIONS.GET_PROFILE_IMAGES + '?numberOfWeek =' + week);
+    return makeRequest('get', `${FEEDBACKS.DOUBLE_CHECK}?localDates=${dates}&categories=${categories}`) ;
+};
+
 export const getOldUserImages = async () => {
     return makeRequest('get', VALIDATIONS.OLD_GET_ALL);
 };

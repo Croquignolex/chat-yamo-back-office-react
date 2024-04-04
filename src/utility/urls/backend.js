@@ -17,6 +17,7 @@ export const FEEDBACKS = {
     REPORT: '/feedbacks/submit', 
     GET_ONE: '/feedbacks/{userId}/case',
     GET_ALL: '/feedbacks/cases/messages/from',
+    DOUBLE_CHECK: '/feedbacks/backoffice/profilesToDoubleCheck',
     MESSAGES: {
         GET_ALL: '/feedbacks/cases/messages',
         SEND: '/feedbacks/{userId}/{backOfficeUserId}/newmessage',

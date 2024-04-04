@@ -16,5 +16,6 @@ export const APP = {
     MANUAL_ACTIVATION: '/manualActivation',
     OLD_VERIFICATIONS: '/old-verifications',
     PROFILE_NOTATIONS: '/profile-notations',
+    PROFILE_REVERIFICATION: '/profile-reverification',
     EXPORTS_BLACKLIST: '/exports-blacklist'
 };
