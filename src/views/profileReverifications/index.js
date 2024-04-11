@@ -101,9 +101,9 @@ class ImageVerification extends React.Component {
         }
     }
 
-    handleSearch = (e, needle) => {
-        e.preventDefault();
-        if(needle && (needle !== "") && (needle !== this.state.activeChatID)) {
+    handleSearch = (needle) => {
+        // e.preventDefault();
+        if((needle !== this.state.activeChatID)) {
             const activeUser = {id: needle};
             this.setState({
                 toVerify: 1,
@@ -122,7 +122,7 @@ class ImageVerification extends React.Component {
             categories && (categories !== "") && (categories !== this.state.categories) ||
             dates && (dates !== "") && (dates !== this.state.dates)
         ) {
-            console.log({categories, dates})
+            // console.log({categories, dates})
 
             // const activeUser = {id: needle};
             this.setState({
@@ -162,8 +162,10 @@ class ImageVerification extends React.Component {
 
                 for(const user of Object.values(users)) {
                     const id = user[0].userId;
+                    const category = user[0].category;
+                    const date = dates ? dates.split(',')[0] : "";
                     if(id !== "EMPTY_USER_ID") {
-                        if(id) buildUsers.push({id});
+                        if(id) buildUsers.push({id, category, date});
                     }
                 }
 

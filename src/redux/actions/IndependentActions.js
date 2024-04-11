@@ -366,6 +366,18 @@ export const notateUserImage = async (userId, mediaId, score) => {
     return makeRequest('put', url);
 };
 
+export const reVerifiedProfile = async (userId, date, category) => {
+    const url = joinBaseUrlWithParams(
+        FEEDBACKS.RE_VERIFIED_PROFILE,
+        [
+            {param: 'userId', value: userId},
+            {param: 'date', value: date},
+            {param: 'category', value: category},
+        ]
+    );
+    return makeRequest('put', url);
+};
+
 export const verifyUserImage = async (userId, mediaId, mediaPath, verified) => {
     const config = {headers: {
             "CHAT-ET-YAMO-MEDIA-SERVICE-ALL-USER-IMAGES": "true",

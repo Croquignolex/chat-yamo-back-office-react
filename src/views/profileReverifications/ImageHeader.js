@@ -29,7 +29,12 @@ class ImageSidebar extends React.Component {
     };
 
     refresh = () => {
-        this.setState({search: ""});
+        this.setState({
+            search: "",
+            selectedDate: [dayjs().format('YYYY-MM-DD')],
+            categories: {data: ["BLACKLISTED_URL"], errorMessage: '', isValid: true}
+        });
+        // this.setState({search: ""});
         this.props.loadData();
     };
 
@@ -66,7 +71,13 @@ class ImageSidebar extends React.Component {
             <div>
                 <div className="d-flex justify-content-between mb-50">
                     <div>
-                        <Form className="d-flex mx-auto" onSubmit={(e) => handleSearch(e, search)}>
+                        <Form className="d-flex mx-auto" onSubmit={(e) => {
+                            e.preventDefault();
+                            if(search && (search !== "")) {
+                                this.setState({selectedDate: [], categories: {data: [], errorMessage: '', isValid: true}})
+                                handleSearch(search);
+                            }
+                        }}>
                             <div className="position-relative">
                                 <Input
                                     type="text"

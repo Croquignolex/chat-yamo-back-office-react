@@ -18,6 +18,7 @@ export const FEEDBACKS = {
     GET_ONE: '/feedbacks/{userId}/case',
     GET_ALL: '/feedbacks/cases/messages/from',
     DOUBLE_CHECK: '/feedbacks/backoffice/profilesToDoubleCheck',
+    RE_VERIFIED_PROFILE: '/feedbacks/backoffice/profiles/{userId}/localDates/{date}/categories/{category}',
     MESSAGES: {
         GET_ALL: '/feedbacks/cases/messages',
         SEND: '/feedbacks/{userId}/{backOfficeUserId}/newmessage',

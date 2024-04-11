@@ -42,7 +42,7 @@ import {
     notateUserProfile,
     updateUserProfile,
     getUserProfileImage,
-    getUserSuspiciousState, deleteUserProfileDescription
+    getUserSuspiciousState, deleteUserProfileDescription, reVerifiedProfile
 } from "../../redux/actions/IndependentActions";
 import * as Icon from "react-feather";
 
@@ -60,6 +60,7 @@ class ImageLog extends React.Component {
             reportLoading: false,
             profileLoading: false,
             descriptionLoading: false,
+            reverificationLoading: false,
             activeUser: null,
             profileData: null,
             deleteDescription: '',
@@ -115,13 +116,16 @@ class ImageLog extends React.Component {
 
     loadData = () => {
         const {activeUser, handleActiveUser, handleRemoveProfileToList} = this.props;
+        // console.log({activeUser})
         if(activeUser !== null) {
             this.setState({ loading: true, error: null, images: []});
             const userId = activeUser.id;
+            const date = activeUser.date;
+            const category = activeUser.category;
             getUserProfile(userId)
                 .then(async data => {
                     // Make user as an object
-                    const user = new User(data);
+                    const user = new User({...data, date, category});
 
                     try {
                         // Not concerned in removal conditions
@@ -345,6 +349,19 @@ class ImageLog extends React.Component {
             .finally(() => this.setState({ descriptionLoading: false }));
     };
 
+    reverification = () => {
+        // console.log("this.state.activeUser", this.state.activeUser)
+        this.setState({reverificationLoading: true});
+        const {id, date, category} = this.state.activeUser;
+        reVerifiedProfile(id, date, category)
+            .then(() => {
+                // Notification
+                NotificationManager.success("User profile has been successfully re-verified", null, 1000);
+            })
+            .catch((error) => console.log("error ", error))
+            .finally(() => this.setState({ reverificationLoading: false }));
+    };
+
     removeImageFormState = (image, shouldDelete = false) => {
         if(shouldDelete) {
             this.setState((prevState) => {
@@ -498,7 +515,7 @@ class ImageLog extends React.Component {
                                                     )
                                                 }
                                                 {
-                                                    (this.state.descriptionLoading) ? <Spinner color="primary" /> : (
+                                                    (this.state.descriptionLoading) ? <div className="mt-4"><Spinner color="primary" /></div> : (
                                                         <>
                                                             <div className="mt-4">
                                                                 <strong>Delete Description</strong><br/>
@@ -549,17 +566,36 @@ class ImageLog extends React.Component {
                                 <div className={`col-3 d-flex flex-column ${(this.state.error) ? 'justify-content-center' : 'justify-content-between'}`}>
                                     <div className="mt-5 text-left">
                                         {!(this.state.error) && (
-                                            (this.state.reportLoading || this.state.blockLoading) ? <Spinner color="primary" /> : (
-                                                <>
-                                                    <strong>Actions</strong><br/>
-                                                    <button className="btn btn-warning btn-sm mr-50 mb-50" onClick={() => this.reportProfile()}>
-                                                        Report
-                                                    </button>
-                                                    <button className="btn btn-danger btn-sm mb-50" onClick={() => this.blockProfile()}>
-                                                        Block
-                                                    </button>
-                                                </>
-                                            )
+                                            <>
+                                                {
+                                                    (activeUser.date && activeUser.category) && (
+                                                        (this.state.reverificationLoading) ? <div className="mb-3"><Spinner color="primary" /></div> : (
+                                                            <>
+                                                                <div className="mb-3">
+                                                                    <strong>Révérification</strong><br/>
+                                                                    <button className="btn btn-primary btn-sm px-4" onClick={() => this.reverification()}>
+                                                                        <CheckCircle size={15} />
+                                                                        {/*<X size={10} />*/}
+                                                                    </button>
+                                                                </div>
+                                                            </>
+                                                        )
+                                                    )
+                                                }
+                                                {
+                                                    (this.state.reportLoading || this.state.blockLoading) ? <Spinner color="primary" /> : (
+                                                        <>
+                                                            <strong>Actions</strong><br/>
+                                                            <button className="btn btn-warning btn-sm mr-50 mb-50" onClick={() => this.reportProfile()}>
+                                                                Report
+                                                            </button>
+                                                            <button className="btn btn-danger btn-sm mb-50" onClick={() => this.blockProfile()}>
+                                                                Block
+                                                            </button>
+                                                        </>
+                                                    )
+                                                }
+                                            </>
                                         )}
                                     </div>
                                     <div className="mb-5 text-left">
