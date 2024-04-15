@@ -10,6 +10,7 @@ import {getProfilesToDoubleCheck, getUserProfileImagesForNotation} from "../../r
 
 import "../../assets/scss/pages/app-chat.scss";
 import dayjs from "dayjs";
+import {NotificationManager} from "react-notifications";
 
 const mql = window.matchMedia(`(min-width: 992px)`);
 
@@ -103,7 +104,7 @@ class ImageVerification extends React.Component {
 
     handleSearch = (needle) => {
         // e.preventDefault();
-        if((needle !== this.state.activeChatID)) {
+        // if((needle !== this.state.activeChatID)) {
             const activeUser = {id: needle};
             this.setState({
                 toVerify: 1,
@@ -111,17 +112,19 @@ class ImageVerification extends React.Component {
                 activeUserIndex: 0,
                 users: [activeUser],
                 activeUser,
+                categories: "",
+                dates: "",
                 activeChatID: activeUser.id
             });
-        }
+        // } else NotificationManager.warning(`Please fill required search fields`, null, 5000);
     }
 
-    handleComplexSearch = (e, categories, dates) => {
-        e.preventDefault();
-        if(
-            categories && (categories !== "") && (categories !== this.state.categories) ||
-            dates && (dates !== "") && (dates !== this.state.dates)
-        ) {
+    handleComplexSearch = (categories, dates) => {
+        // e.preventDefault();
+        // if(
+        //     categories && (categories !== "") && (categories !== this.state.categories) ||
+        //     dates && (dates !== "") && (dates !== this.state.dates)
+        // ) {
             // console.log({categories, dates})
 
             // const activeUser = {id: needle};
@@ -135,23 +138,28 @@ class ImageVerification extends React.Component {
                 // activeUser,
                 // activeChatID: activeUser.id
             }, () => this.loadData());
-        }
+        // } else NotificationManager.warning(`Please fill all required search fields`, null, 5000);
     }
 
-    loadData = (date) => {
-        let month = date;
+    loadData = (categories, dates) => {
+        // let month = date;
+        let cat, dat = "";
 
-        if(!date) {
-            month = dayjs().format("M");
-            this.setState({selectedDate: dayjs().toDate()});
+        if(categories && dates) {
+            // month = dayjs().format("M");
+            this.setState({categories, dates});
+
+            cat = categories;
+            dat = dates;
+        } else {
+            cat = this.state.categories;
+            dat = this.state.dates;
         }
-
-        const {categories, dates} = this.state;
 
         // Init request
         this.setState({ loading: true, error: null, users: [], search: "", verified: 0, activeUserIndex: 0});
 
-        getProfilesToDoubleCheck(categories, dates)
+        getProfilesToDoubleCheck(cat, dat)
             .then(res => {
                 let users = res.reduce(function(results, org) {
                     results[org.userId] = [...results[org.userId] || [], org];

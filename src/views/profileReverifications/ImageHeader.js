@@ -1,16 +1,18 @@
 // import React, {forwardRef} from "react";
 import React, {forwardRef} from "react";
 import * as Icon from "react-feather";
-import {Button, Input, Form, FormGroup} from "reactstrap";
+import {Button, Input, Form, FormGroup, Label} from "reactstrap";
 import FormSelect from "../../components/FormSelect";
-import DatePicker from "react-multi-date-picker";
-import DatePanel from "react-multi-date-picker/plugins/date_panel"
+// import DatePicker from "react-multi-date-picker";
+// import DatePanel from "react-multi-date-picker/plugins/date_panel"
 // import Select from 'react-select';
 // import DatePicker from "react-datepicker";
 // import dayjs from "dayjs";
 
-import "react-multi-date-picker/styles/layouts/mobile.css"
+// import "react-multi-date-picker/styles/layouts/mobile.css"
 import dayjs from "dayjs";
+import DatePicker from "react-datepicker";
+import {NotificationManager} from "react-notifications";
 
 class ImageSidebar extends React.Component {
     // props { activeChatId, verified, mainSidebar, handleActiveChat, handleUserSidebar, updateImagesToVerify, handleResetImage, handleImagesToNotate }
@@ -20,6 +22,11 @@ class ImageSidebar extends React.Component {
             search: "",
             selectedDate: [dayjs().format('YYYY-MM-DD')],
             categories: {data: ["BLACKLISTED_URL"], errorMessage: '', isValid: true},
+
+            selectedStartDate: new Date(),
+            startDate: dayjs().format("YYYY-MM-DD"),
+            selectedEndDate: new Date(),
+            endDate: dayjs().format("YYYY-MM-DD"),
         }
     }
 
@@ -31,11 +38,25 @@ class ImageSidebar extends React.Component {
     refresh = () => {
         this.setState({
             search: "",
-            selectedDate: [dayjs().format('YYYY-MM-DD')],
+            // selectedDate: [dayjs().format('YYYY-MM-DD')],
+            selectedStartDate: new Date(),
+            startDate: dayjs().format("YYYY-MM-DD"),
+            selectedEndDate: new Date(),
+            endDate: dayjs().format("YYYY-MM-DD"),
             categories: {data: ["BLACKLISTED_URL"], errorMessage: '', isValid: true}
         });
         // this.setState({search: ""});
-        this.props.loadData();
+        this.props.loadData("BLACKLISTED_URL", dayjs().format("YYYY-MM-DD"));
+    };
+
+    handleSelectedStartDate = (selectedStartDate) => {
+        const startDate = dayjs(selectedStartDate).format("YYYY-MM-DD");
+        this.setState({selectedStartDate, startDate});
+    };
+
+    handleSelectedEndDate = (selectedEndDate) => {
+        const endDate = dayjs(selectedEndDate).format("YYYY-MM-DD");
+        this.setState({selectedEndDate, endDate});
     };
 
     render() {
@@ -50,7 +71,7 @@ class ImageSidebar extends React.Component {
             {label: "BLACKLISTED_PHONE_PROVIDER", value: "BLACKLISTED_PHONE_PROVIDER"},
         ];
 
-        const { search, categories, selectedDate } = this.state;
+        const { search, categories, selectedDate, selectedStartDate, selectedEndDate, startDate, endDate } = this.state;
         // const { verified, toVerify, handleSearch, selectedDate, handleSelectedDate } = this.props;
         const { verified, toVerify, handleSearch, handleComplexSearch } = this.props;
 // console.log(categories.data?.join(","), selectedDate?.join(","))
@@ -61,9 +82,13 @@ class ImageSidebar extends React.Component {
             <Input readOnly ref={ref} type="text" onClick={onClick} defaultValue={value}/>
         ));*/
 
+        const now = new Date();
+        const sixMonthEarlier = dayjs().subtract(6, 'month').toDate();
+        const twoYearLater = dayjs().add(2, 'year').toDate();
+
         const CustomInput = forwardRef(({ value, onClick }, ref) => (
             <FormGroup>
-                <Input ref={ref} type="text" onClick={onClick} defaultValue={value}/>
+                <Input readOnly ref={ref} type="text" onClick={onClick} defaultValue={value}/>
             </FormGroup>
         ));
 
@@ -74,9 +99,18 @@ class ImageSidebar extends React.Component {
                         <Form className="d-flex mx-auto" onSubmit={(e) => {
                             e.preventDefault();
                             if(search && (search !== "")) {
-                                this.setState({selectedDate: [], categories: {data: [], errorMessage: '', isValid: true}})
+                                this.setState({
+                                    // search: "",
+                                    // selectedDate: [dayjs().format('YYYY-MM-DD')],
+                                    selectedStartDate: null,
+                                    startDate: "",
+                                    selectedEndDate: null,
+                                    endDate: "",
+                                    categories: {data: [], errorMessage: '', isValid: true}
+                                });
+                                // this.setState({selectedDate: [], categories: {data: [], errorMessage: '', isValid: true}})
                                 handleSearch(search);
-                            }
+                            } else NotificationManager.warning(`Please fill user id`);
                         }}>
                             <div className="position-relative">
                                 <Input
@@ -117,8 +151,47 @@ class ImageSidebar extends React.Component {
                     </div>
                 </div>
 
-                <Form className="d-flex mx-auto m-1" onSubmit={(e) => handleComplexSearch(e, categories.data?.join(","), selectedDate?.join(","))}>
-                    <div className="position-relative" style={{minWidth: "300px"}}>
+                <Form className="d-flex mx-auto m-1" onSubmit={(e) => {
+                    e.preventDefault();
+                    const cats = categories.data?.join(",") || "";
+                    let dates = "";
+                    if(startDate === endDate) {
+                        dates = startDate;
+                    } else {
+                        if(selectedEndDate && selectedStartDate) {
+                            const datesArray = [
+                                ...Array(2 + dayjs(selectedEndDate)
+                                    .diff(dayjs(selectedStartDate), 'days'))
+                                    .keys()
+                            ].map(
+                                n => dayjs(selectedStartDate).add(n, 'days')
+                                    .format("YYYY-MM-DD")
+                            );
+                            dates = datesArray?.join(",") || "";
+                            // console.log({categories, datesArray, dates})
+                        }
+                    }
+                    console.log({cats, dates})
+                    // categories && (categories !== "") && (categories !== this.state.categories) ||
+                    // dates && (dates !== "") && (dates !== this.state.dates)
+
+                    if(cats && (cats !== "") && dates && (dates !== "")) {
+                        this.setState({
+                            search: "",
+                            // selectedDate: [dayjs().format('YYYY-MM-DD')],
+                            // selectedStartDate: null,
+                            // startDate: "",
+                            // selectedEndDate: null,
+                            // endDate: "",
+                            // categories: {data: [], errorMessage: '', isValid: true}
+                        });
+                        // console.log({categories, dates})
+                        // const dates = selectedDate?.join(",");
+                        handleComplexSearch(cats, dates)
+                    } else NotificationManager.warning(`Please fill all required search fields`);
+                }}>
+                    <div className="w-25">
+                        <Label>Choose categories</Label>
                         <FormSelect
                             multi
                             input={categories}
@@ -127,8 +200,38 @@ class ImageSidebar extends React.Component {
                             handleInput={(data) => this.setState({ categories: {...categories, data} })}
                         />
                     </div>
-                    <div className="position-relative ml-50">
-                        <DatePicker
+                    <>
+                        <div className="w-25 ml-1">
+                            <Label>Choose start date</Label>
+                            <DatePicker
+                                selectsStart
+                                endDate={now}
+                                selected={selectedStartDate}
+                                startDate={selectedStartDate}
+                                calendarStartDay={1}
+                                dateFormat="yyyy/MM/dd"
+                                minDate={sixMonthEarlier}
+                                maxDate={now}
+                                onChange={this.handleSelectedStartDate}
+                                customInput={<CustomInput isBegin />}
+                            />
+                        </div>
+                        <div className="w-25 ml-1">
+                            <Label>Choose end date</Label>
+                            <DatePicker
+                                selectsEnd
+                                selected={selectedEndDate}
+                                endDate={selectedEndDate}
+                                minDate={selectedStartDate}
+                                startDate={selectedStartDate}
+                                calendarStartDay={1}
+                                dateFormat="yyyy/MM/dd"
+                                customInput={<CustomInput />}
+                                onChange={this.handleSelectedEndDate}
+                                maxDate={twoYearLater}
+                            />
+                        </div>
+                        {/*<DatePicker
                             multiple
                             // render={<CustomInput />}
                             value={selectedDate}
@@ -138,10 +241,10 @@ class ImageSidebar extends React.Component {
                             style={{height: "38px"}}
                             format="YYYY-MM-DD"
                             plugins={[<DatePanel />]}
-                        />
-                    </div>
-                    <div className="ml-50">
-                        <Button size="sm" color="primary" className="rounded" type="submit" title="Search">
+                        />*/}
+                    </>
+                    <div className="ml-1">
+                        <Button size="sm" color="primary" className="rounded mt-2" type="submit" title="Search">
                             <Icon.Search size={20} />
                         </Button>
                     </div>
