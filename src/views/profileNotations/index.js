@@ -141,15 +141,17 @@ class ImageVerification extends React.Component {
                     }
                 }
 
-                const activeUser = buildUsers[0];
+                if(buildUsers.length > 0) {
+                    const activeUser = buildUsers[0];
 
-                if(activeUser.id === this.state.activeChatID) {
-                    this.setState({toVerify: buildUsers.length, users: buildUsers});
-                } else {
-                    this.setState({toVerify: buildUsers.length, users: buildUsers, activeUser, activeChatID: activeUser.id});
+                    if(activeUser.id === this.state.activeChatID) {
+                        this.setState({toVerify: buildUsers.length, users: buildUsers});
+                    } else {
+                        this.setState({toVerify: buildUsers.length, users: buildUsers, activeUser, activeChatID: activeUser.id});
+                    }
                 }
             })
-            .catch(error => console.log("error ", error))
+            // .catch(error => console.log("error ", error))
             .catch(error => this.setState({ error }))
             .finally(() => this.setState({ loading: false }));
     };

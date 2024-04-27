@@ -52,7 +52,7 @@ class ImageLog extends React.Component {
         super(props);
         this.state = {
             error: null,
-            loading: true,
+            loading: false,
             activeIndex: 0,
             images: [],
             all_images: [],
@@ -356,7 +356,7 @@ class ImageLog extends React.Component {
     };
 
     render() {
-        const { activeIndex, profileData, images, deleteDescription } = this.state;
+        const { activeIndex, profileData, images } = this.state;
         const { activeUser, handleReceiverSidebar, showPreviousNavigation, showNextNavigation, handleChangeUser, toVerify, activeUserIndex } = this.props;
         const slides = images.map((item) => {
             return (
@@ -377,6 +377,23 @@ class ImageLog extends React.Component {
                     <div className="chat-app-window">
                         <div className={`start-chat-area d-flex`}>
                             <Error500 onLinkClick={this.loadData} />
+                        </div>
+                    </div>
+                </div>
+            )
+        }
+
+        if(this.props.activeUser === null) {
+            return (
+                <div className="content-right float-left width-100-percent">
+                    <div className="chat-app-window">
+                        <div className={`start-chat-area d-flex`}>
+                            <span className="mb-1 start-chat-icon">
+                                <Image size={50} />
+                            </span>
+                            <h4 className="py-50 px-1 sidebar-toggle start-chat-text">
+                                No data found
+                            </h4>
                         </div>
                     </div>
                 </div>
