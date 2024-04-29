@@ -32,6 +32,7 @@ class ImageVerification extends React.Component {
             userProfile: false,
             userSidebar: false,
             receiverProfile: false,
+            activeDescription: "",
             // date: dayjs().startOf('day'),
             // deletedImages: [],
             categories: "BLACKLISTED_URL",
@@ -233,7 +234,7 @@ class ImageVerification extends React.Component {
     };
  
   render() {
-    const {activeUser, activeChatID, loading, error, users, activeUserIndex, verified, toVerify, selectedDate} = this.state;
+    const {activeUser, activeChatID, loading, error, users, activeUserIndex, verified, toVerify, selectedDate, activeDescription} = this.state;
 
     return (
       <div className="chat-application position-relative fullHeight">
@@ -243,6 +244,7 @@ class ImageVerification extends React.Component {
               loadData={this.loadData}
               selectedDate={selectedDate}
               handleSearch={this.handleSearch}
+              activeDescription={activeDescription}
               handleComplexSearch={this.handleComplexSearch}
               handleSelectedDate={this.handleSelectedDate}
           />

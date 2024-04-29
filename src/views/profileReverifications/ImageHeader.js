@@ -171,7 +171,7 @@ class ImageSidebar extends React.Component {
                             // console.log({categories, datesArray, dates})
                         }
                     }
-                    console.log({cats, dates})
+                    // console.log({cats, dates})
                     // categories && (categories !== "") && (categories !== this.state.categories) ||
                     // dates && (dates !== "") && (dates !== this.state.dates)
 
@@ -184,10 +184,10 @@ class ImageSidebar extends React.Component {
                             // selectedEndDate: null,
                             // endDate: "",
                             // categories: {data: [], errorMessage: '', isValid: true}
-                        });
+                        }, () => handleComplexSearch(cats, dates));
                         // console.log({categories, dates})
                         // const dates = selectedDate?.join(",");
-                        handleComplexSearch(cats, dates)
+                        // handleComplexSearch(cats, dates)
                     } else NotificationManager.warning(`Please fill all required search fields`);
                 }}>
                     <div className="w-25">
@@ -205,13 +205,13 @@ class ImageSidebar extends React.Component {
                             <Label>Choose start date</Label>
                             <DatePicker
                                 selectsStart
-                                endDate={now}
+                                // endDate={now}
                                 selected={selectedStartDate}
-                                startDate={selectedStartDate}
+                                // startDate={selectedStartDate}
                                 calendarStartDay={1}
                                 dateFormat="yyyy/MM/dd"
                                 minDate={sixMonthEarlier}
-                                maxDate={now}
+                                maxDate={selectedEndDate}
                                 onChange={this.handleSelectedStartDate}
                                 customInput={<CustomInput isBegin />}
                             />
@@ -221,9 +221,9 @@ class ImageSidebar extends React.Component {
                             <DatePicker
                                 selectsEnd
                                 selected={selectedEndDate}
-                                endDate={selectedEndDate}
+                                // endDate={selectedEndDate}
                                 minDate={selectedStartDate}
-                                startDate={selectedStartDate}
+                                // startDate={selectedStartDate}
                                 calendarStartDay={1}
                                 dateFormat="yyyy/MM/dd"
                                 customInput={<CustomInput />}

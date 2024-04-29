@@ -373,7 +373,7 @@ class ImageLog extends React.Component {
     };
 
     render() {
-        const { activeIndex, profileData, images } = this.state;
+        const { activeIndex, profileData, images, deleteDescription } = this.state;
         const { activeUser, handleReceiverSidebar, showPreviousNavigation, showNextNavigation, handleChangeUser, toVerify, activeUserIndex } = this.props;
         const slides = images.map((item) => {
             return (
@@ -387,7 +387,7 @@ class ImageLog extends React.Component {
                 </CarouselItem>
             );
         });
-        // console.log("activeUser", activeUser)
+        console.log("deleteDescription", deleteDescription)
         // console.log("this.props.error", this.props.error)
         // console.log("this.state.loading", this.state.loading)
         // console.log("this.props.loading", this.props.loading)
@@ -446,15 +446,21 @@ class ImageLog extends React.Component {
                                 <div className="d-flex align-items-center justify-content-between">
                                     <div className="d-flex justify-content-between">
                                         <div className="avatar user-profile-toggle m-0 m-0 mr-1 align-content-start">
-                                            <DisplayImage src={activeUser?.avatar} withModal={false} />
+                                            {(activeUser.greetingText)
+                                                ? <DisplayImage src={activeUser?.avatar} withModal={false} width={"60"} height={"60"} />
+                                                : <DisplayImage src={activeUser?.avatar} withModal={false} />
+                                            }
                                         </div>
                                         {(this.state.error) ? <h6 className="text-danger pt-1">User not found</h6> : (
-                                            <h6>
-                                                {activeUser?.name}
-                                                {activeUser?.verified && <span className="ml-1"><CheckCircle size={17} className="text-success" /></span>}
-                                                {activeUser?.isPremium && <span className="ml-1"><Star size={17} className="text-warning" /></span>}
-                                                <br/> {activeUser?.city}, {activeUser?.country}
-                                            </h6>
+                                           <>
+                                               <h6>
+                                                   {activeUser?.name}
+                                                   {activeUser?.verified && <span className="ml-1"><CheckCircle size={17} className="text-success" /></span>}
+                                                   {activeUser?.isPremium && <span className="ml-1"><Star size={17} className="text-warning" /></span>}
+                                                   <br/> {activeUser?.city}, {activeUser?.country}
+                                                   <br/> {activeUser.greetingText}
+                                               </h6>
+                                           </>
                                         )}
                                     </div>
                                     {!(this.state.error) && (
