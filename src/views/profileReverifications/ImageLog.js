@@ -6,9 +6,10 @@ import {NotificationManager} from "react-notifications";
 import {
     Spinner,
     Carousel,
+    Popover,
     CarouselItem,
     CarouselControl,
-    CarouselIndicators,
+    CarouselIndicators, UncontrolledPopover, PopoverHeader, PopoverBody, Button,
 } from "reactstrap";
 
 import {
@@ -26,7 +27,7 @@ import {
 
 import Error500 from "../Error500";
 import User from "../../models/User";
-import {imageExists} from "../../helpers/helpers";
+import {formatString, imageExists} from "../../helpers/helpers";
 import DisplayImage from "../../components/DisplayImage";
 
 import {
@@ -444,28 +445,28 @@ class ImageLog extends React.Component {
                         <div className="chat_navbar mt-50">
                             <header className="chat_header px-1">
                                 <div className="d-flex align-items-center justify-content-between">
-                                    <div className="d-flex justify-content-between">
+                                    <div className="d-flex flex-1">
                                         <div className="avatar user-profile-toggle m-0 m-0 mr-1 align-content-start">
                                             {(activeUser.greetingText)
-                                                ? <DisplayImage src={activeUser?.avatar} withModal={false} width={"60"} height={"60"} />
+                                                ? <DisplayImage src={activeUser?.avatar} withModal={false} width={"50"} height={"50"} />
                                                 : <DisplayImage src={activeUser?.avatar} withModal={false} />
                                             }
                                         </div>
                                         {(this.state.error) ? <h6 className="text-danger pt-1">User not found</h6> : (
                                            <>
-                                               <h6>
+                                               <h6 className="align-content-start">
                                                    {activeUser?.name}
                                                    {activeUser?.verified && <span className="ml-1"><CheckCircle size={17} className="text-success" /></span>}
                                                    {activeUser?.isPremium && <span className="ml-1"><Star size={17} className="text-warning" /></span>}
                                                    <br/> {activeUser?.city}, {activeUser?.country}
-                                                   <br/> {activeUser.greetingText}
+                                                   <br/> <FormatStringWithPopHover text={activeUser.greetingText} />
                                                </h6>
                                            </>
                                         )}
                                     </div>
                                     {!(this.state.error) && (
                                         <>
-                                            <div>
+                                            <div className="flex-1 text-center">
                                                 {(activeUser?.isBlacklisted)
                                                     ? (
                                                         <div className="badge badge-danger badge-pill font-weight-bold">
@@ -483,7 +484,7 @@ class ImageLog extends React.Component {
                                                     )
                                                 }
                                             </div>
-                                            <div>
+                                            <div className="flex-1 text-right">
                                                 <a
                                                     href="/"
                                                     className="mb-0"
@@ -647,6 +648,23 @@ class ImageLog extends React.Component {
         )
     }
 }
+
+const FormatStringWithPopHover = ({text}) => {
+    try {
+        if(text.length > 30) {
+            return (
+                <>
+                    {text.substring(0, 30)}
+                    <span id="descriptionHover" className="hand-cusor"> ...</span>
+                    <UncontrolledPopover placement="bottom" target="descriptionHover" trigger="hover">
+                        <PopoverBody>{text}</PopoverBody>
+                    </UncontrolledPopover>
+                </>
+            )
+        }
+    } catch (e) { console.log(e); }
+    return <>{text}</>;
+};
 
 const mapStateToProps = state => {
     return {

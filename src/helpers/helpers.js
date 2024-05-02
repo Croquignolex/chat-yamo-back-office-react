@@ -482,3 +482,14 @@ export const extractCroppedImage = (imageSrc, pixelCrop) => {
             .catch((error) => reject(error));
     });
 };
+
+export const formatString = (text, maxCharacters) => {
+    try {
+        if(text.length > maxCharacters) {
+            return text.substring(0, maxCharacters) + '...';
+        }
+    } catch (e) {
+        console.log("Format string function error", {text, maxCharacters, exception: e});
+    }
+    return text;
+};

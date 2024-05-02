@@ -4,3 +4,12 @@
 .react-datepicker-popper {
   z-index: 100 !important;
 }
+
+.react-datepicker__day--outside-month {
+  //display: none !important;
+  visibility: hidden;
+}
+
+.flex-1 {
+  flex: 1;
+}
