@@ -71,9 +71,9 @@ class ImageSidebar extends React.Component {
             {label: "BLACKLISTED_PHONE_PROVIDER", value: "BLACKLISTED_PHONE_PROVIDER"},
         ];
 
-        const { search, categories, selectedDate, selectedStartDate, selectedEndDate, startDate, endDate } = this.state;
+        const { search, categories, selectedStartDate, selectedEndDate, startDate, endDate } = this.state;
         // const { verified, toVerify, handleSearch, selectedDate, handleSelectedDate } = this.props;
-        const { verified, toVerify, handleSearch, handleComplexSearch } = this.props;
+        const { verified, toVerify, handleSearch, loadData } = this.props;
 // console.log(categories.data?.join(","), selectedDate?.join(","))
         // const min = dayjs().startOf('year').toDate();
         // const max = dayjs().endOf('year').toDate();
@@ -82,7 +82,6 @@ class ImageSidebar extends React.Component {
             <Input readOnly ref={ref} type="text" onClick={onClick} defaultValue={value}/>
         ));*/
 
-        const now = new Date();
         const sixMonthEarlier = dayjs().subtract(6, 'month').toDate();
         const twoYearLater = dayjs().add(2, 'year').toDate();
 
@@ -98,6 +97,7 @@ class ImageSidebar extends React.Component {
                     <div>
                         <Form className="d-flex mx-auto" onSubmit={(e) => {
                             e.preventDefault();
+                            // console.log({search})
                             if(search && (search !== "")) {
                                 this.setState({
                                     // search: "",
@@ -184,7 +184,7 @@ class ImageSidebar extends React.Component {
                             // selectedEndDate: null,
                             // endDate: "",
                             // categories: {data: [], errorMessage: '', isValid: true}
-                        }, () => handleComplexSearch(cats, dates));
+                        }, () => loadData(cats, dates));
                         // console.log({categories, dates})
                         // const dates = selectedDate?.join(",");
                         // handleComplexSearch(cats, dates)

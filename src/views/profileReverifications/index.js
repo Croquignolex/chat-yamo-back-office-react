@@ -6,11 +6,10 @@ import ImageLog from "./ImageLog";
 import User from "../../models/User";
 import ImageHeader from "./ImageHeader";
 import UserProfile from "../../components/UserProfile";
-import {getProfilesToDoubleCheck, getUserProfileImagesForNotation} from "../../redux/actions/IndependentActions";
+import {getProfilesToDoubleCheck} from "../../redux/actions/IndependentActions";
 
 import "../../assets/scss/pages/app-chat.scss";
 import dayjs from "dayjs";
-import {NotificationManager} from "react-notifications";
 
 const mql = window.matchMedia(`(min-width: 992px)`);
 
@@ -105,7 +104,8 @@ class ImageVerification extends React.Component {
 
     handleSearch = (needle) => {
         // e.preventDefault();
-        // if((needle !== this.state.activeChatID)) {
+        // console.log({needle}, this.state.users)
+        if(needle !== this.state.activeChatID) {
             const activeUser = {id: needle};
             this.setState({
                 toVerify: 1,
@@ -117,10 +117,10 @@ class ImageVerification extends React.Component {
                 dates: "",
                 activeChatID: activeUser.id
             });
-        // } else NotificationManager.warning(`Please fill required search fields`, null, 5000);
+        }
     }
 
-    handleComplexSearch = (categories, dates) => {
+    /*handleComplexSearch = (categories, dates) => {
         // e.preventDefault();
         // if(
         //     categories && (categories !== "") && (categories !== this.state.categories) ||
@@ -138,9 +138,9 @@ class ImageVerification extends React.Component {
                 // users: [activeUser],
                 // activeUser,
                 // activeChatID: activeUser.id
-            }, () => this.loadData());
+            }, () => this.loadData(categories, dates));
         // } else NotificationManager.warning(`Please fill all required search fields`, null, 5000);
-    }
+    }*/
 
     loadData = (categories, dates) => {
         // let month = date;
@@ -158,7 +158,10 @@ class ImageVerification extends React.Component {
         }
 
         // Init request
-        this.setState({ loading: true, error: null, users: [], search: "", verified: 0, activeUserIndex: 0});
+        this.setState({
+            loading: true, error: null, users: [], search: "", verified: 0, activeUserIndex: 0,
+            activeUser: null, activeChatID: null,
+        });
 
         getProfilesToDoubleCheck(cat, dat)
             .then(res => {
@@ -227,11 +230,11 @@ class ImageVerification extends React.Component {
         });
     };
 
-    handleSelectedDate = (selectedDate) => {
+   /* handleSelectedDate = (selectedDate) => {
         const date = dayjs(selectedDate).format("M");
         this.setState({selectedDate});
         this.loadData(date);
-    };
+    };*/
  
   render() {
     const {activeUser, activeChatID, loading, error, users, activeUserIndex, verified, toVerify, selectedDate, activeDescription} = this.state;
@@ -245,8 +248,8 @@ class ImageVerification extends React.Component {
               selectedDate={selectedDate}
               handleSearch={this.handleSearch}
               activeDescription={activeDescription}
-              handleComplexSearch={this.handleComplexSearch}
-              handleSelectedDate={this.handleSelectedDate}
+              // handleComplexSearch={this.handleComplexSearch}
+              // handleSelectedDate={this.handleSelectedDate}
           />
         <div
           className={`chat-overlay ${

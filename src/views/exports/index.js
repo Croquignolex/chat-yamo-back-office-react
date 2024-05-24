@@ -143,7 +143,7 @@ class Exports extends React.Component {
 
     render() {
 
-        const {error, loading, type, data, range, selectedStartDate, selectedEndDate, exclude} = this.state;
+        const {error, loading, type, data, selectedStartDate, selectedEndDate, exclude} = this.state;
 
         const CustomInput = forwardRef(({ value, onClick }, ref) => (
             <FormGroup>

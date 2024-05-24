@@ -6,10 +6,11 @@ import {NotificationManager} from "react-notifications";
 import {
     Spinner,
     Carousel,
-    Popover,
     CarouselItem,
     CarouselControl,
-    CarouselIndicators, UncontrolledPopover, PopoverHeader, PopoverBody, Button,
+    CarouselIndicators,
+    UncontrolledPopover,
+    PopoverBody,
 } from "reactstrap";
 
 import {
@@ -27,7 +28,7 @@ import {
 
 import Error500 from "../Error500";
 import User from "../../models/User";
-import {formatString, imageExists} from "../../helpers/helpers";
+import {imageExists} from "../../helpers/helpers";
 import DisplayImage from "../../components/DisplayImage";
 
 import {
@@ -43,7 +44,9 @@ import {
     notateUserProfile,
     updateUserProfile,
     getUserProfileImage,
-    getUserSuspiciousState, deleteUserProfileDescription, reVerifiedProfile
+    getUserSuspiciousState,
+    deleteUserProfileDescription,
+    reVerifiedProfile
 } from "../../redux/actions/IndependentActions";
 import * as Icon from "react-feather";
 
@@ -374,7 +377,7 @@ class ImageLog extends React.Component {
     };
 
     render() {
-        const { activeIndex, profileData, images, deleteDescription } = this.state;
+        const { activeIndex, profileData, images } = this.state;
         const { activeUser, handleReceiverSidebar, showPreviousNavigation, showNextNavigation, handleChangeUser, toVerify, activeUserIndex } = this.props;
         const slides = images.map((item) => {
             return (
@@ -388,7 +391,7 @@ class ImageLog extends React.Component {
                 </CarouselItem>
             );
         });
-        console.log("deleteDescription", deleteDescription)
+        // console.log("deleteDescription", deleteDescription)
         // console.log("this.props.error", this.props.error)
         // console.log("this.state.loading", this.state.loading)
         // console.log("this.props.loading", this.props.loading)
@@ -557,7 +560,8 @@ class ImageLog extends React.Component {
                                         )}
                                     </div>
                                     <div className="mb-5 text-right">
-                                        {(!(this.state.error) && (images[0].mediaId !== null)) && (
+
+                                        {images && images.length > 0 && (!(this.state.error) && (images[0].mediaId !== null)) && (
                                             (this.state.loading) ? <Spinner color="primary"/> : (
                                                 <>
                                                     <strong>Validate current image</strong><br/>
@@ -651,7 +655,7 @@ class ImageLog extends React.Component {
 
 const FormatStringWithPopHover = ({text}) => {
     try {
-        if(text.length > 30) {
+        if(text && text.length > 30) {
             return (
                 <>
                     {text.substring(0, 30)}

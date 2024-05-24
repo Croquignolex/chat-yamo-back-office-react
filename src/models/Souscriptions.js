@@ -4,8 +4,8 @@ export default class Souscriptions {
     constructor(souscriptions) {
         Object.assign(this, souscriptions);
 
-        this.type = this.subscriptionType || "Unknow";
-        this.pack = this.subscriptionPack || "Unknow";
+        this.type = this.subscriptionType || "";
+        this.pack = this.subscriptionPack || "";
 
         //"subscriptionType": "SOLO",
         //"subscriptionPack": "SOLO"
