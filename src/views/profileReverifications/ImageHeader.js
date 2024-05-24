@@ -69,6 +69,8 @@ class ImageSidebar extends React.Component {
             {label: "BLACKLISTED_PHONE_NUMBER", value: "BLACKLISTED_PHONE_NUMBER"},
             {label: "ESCORT_SUSPICIONS", value: "ESCORT_SUSPICIONS"},
             {label: "BLACKLISTED_PHONE_PROVIDER", value: "BLACKLISTED_PHONE_PROVIDER"},
+            {label: "IMAGE_CHECK_FEEDBACK", value: "IMAGE_CHECK_FEEDBACK"},
+            {label: "BLACKLISTED_PROFILE", value: "BLACKLISTED_PROFILE"},
         ];
 
         const { search, categories, selectedStartDate, selectedEndDate, startDate, endDate } = this.state;
