@@ -27,13 +27,10 @@ class ImageVerification extends React.Component {
             loading: false,
             error: null,
             lastActionNext: true,
-            // activeChat: null,
             userProfile: false,
             userSidebar: false,
             receiverProfile: false,
             activeDescription: "",
-            // date: dayjs().startOf('day'),
-            // deletedImages: [],
             categories: "BLACKLISTED_URL",
             dates: dayjs().format('YYYY-MM-DD'),
             sidebarOpen: false,
@@ -103,12 +100,10 @@ class ImageVerification extends React.Component {
     }
 
     handleSearch = (needle) => {
-        // e.preventDefault();
-        // console.log({needle}, this.state.users)
         if(needle !== this.state.activeChatID) {
             const activeUser = {id: needle};
             this.setState({
-                toVerify: 1,
+                toVerify: 0,
                 verified: 0,
                 activeUserIndex: 0,
                 users: [activeUser],
@@ -120,34 +115,16 @@ class ImageVerification extends React.Component {
         }
     }
 
-    /*handleComplexSearch = (categories, dates) => {
-        // e.preventDefault();
-        // if(
-        //     categories && (categories !== "") && (categories !== this.state.categories) ||
-        //     dates && (dates !== "") && (dates !== this.state.dates)
-        // ) {
-            // console.log({categories, dates})
-
-            // const activeUser = {id: needle};
-            this.setState({
-                // toVerify: 1,
-                verified: 0,
-                activeUserIndex: 0,
-                categories,
-                dates,
-                // users: [activeUser],
-                // activeUser,
-                // activeChatID: activeUser.id
-            }, () => this.loadData(categories, dates));
-        // } else NotificationManager.warning(`Please fill all required search fields`, null, 5000);
-    }*/
+    handleToVerify = () => {
+        if(this.state.toVerify === 0) {
+            this.setState({toVerify: 1});
+        }
+    }
 
     loadData = (categories, dates) => {
-        // let month = date;
         let cat, dat = "";
 
         if(categories && dates) {
-            // month = dayjs().format("M");
             this.setState({categories, dates});
 
             cat = categories;
@@ -191,14 +168,13 @@ class ImageVerification extends React.Component {
                     }
                 }
             })
-            // .catch(error => console.log("error ", error))
             .catch(error => this.setState({ error }))
             .finally(() => this.setState({ loading: false }));
     };
 
     handleRemoveProfileToList = (userId) => {
         // Init request
-        this.setState({ loading: true, error: null, search: ""});
+        this.setState({ error: null, search: ""});
 
         const users = this.state.users;
         const filterUsers = users.filter(user => (user.id !== userId));
@@ -224,17 +200,11 @@ class ImageVerification extends React.Component {
             toVerify: filterUsers.length,
             users: filterUsers,
             activeUser,
-            loading: false,
+            loading: (filterUsers.length === 0) ? false : this.state.loading,
             activeUserIndex: nextIndex,
             activeChatID: activeUser.id
         });
     };
-
-   /* handleSelectedDate = (selectedDate) => {
-        const date = dayjs(selectedDate).format("M");
-        this.setState({selectedDate});
-        this.loadData(date);
-    };*/
  
   render() {
     const {activeUser, activeChatID, loading, error, users, activeUserIndex, verified, toVerify, selectedDate, activeDescription} = this.state;
@@ -248,8 +218,6 @@ class ImageVerification extends React.Component {
               selectedDate={selectedDate}
               handleSearch={this.handleSearch}
               activeDescription={activeDescription}
-              // handleComplexSearch={this.handleComplexSearch}
-              // handleSelectedDate={this.handleSelectedDate}
           />
         <div
           className={`chat-overlay ${
@@ -280,6 +248,7 @@ class ImageVerification extends React.Component {
             handleActiveUser={this.handleActiveUser}
             handleReceiverSidebar={this.handleReceiverSidebar}
             handleRemoveProfileToList={this.handleRemoveProfileToList}
+            handleToVerify={this.handleToVerify}
 
         />
         <UserProfile

@@ -51,7 +51,6 @@ import {
 import * as Icon from "react-feather";
 
 class ImageLog extends React.Component {
-    // props { activeChatID, activeUser, mainSidebar, handleReceiverSidebar }
     constructor(props) {
         super(props);
         this.state = {
@@ -119,8 +118,7 @@ class ImageLog extends React.Component {
     }
 
     loadData = () => {
-        const {activeUser, handleActiveUser, handleRemoveProfileToList} = this.props;
-        // console.log({activeUser})
+        const {activeUser, handleActiveUser, handleRemoveProfileToList, handleToVerify} = this.props;
         if(activeUser !== null) {
             this.setState({ loading: true, error: null, images: []});
             const userId = activeUser.id;
@@ -131,15 +129,15 @@ class ImageLog extends React.Component {
                     // Make user as an object
                     const user = new User({...data, date, category});
 
+                    handleToVerify();
+
                     try {
                         // Not concerned in removal conditions
                         try {
-                            // user.setStatus = await getUserStatus(userId);
                             user.setAppData = await getUserAppData(userId);
                             user.setCertified = await getUserIdentity(userId);
                             user.setForceStatus = await getUserStatus(userId);
                             user.setSuspiciousState = await getUserSuspiciousState(userId);
-
                         } catch (e) {}
 
                         if(user.isDeleted) {
@@ -149,67 +147,43 @@ class ImageLog extends React.Component {
                             // User profile image
                             user.setAvatar = await getUserProfileImage(userId);
 
-                            // Check profile image
-                            // Display even when user profile image is not found
-                            // const imgRep = await imageExists(user.avatar);
+                            const images = await searchUserImages(userId);
+                            const exitingImages = [];
 
-                            /*if(!imgRep) {
-                                // Remove profile from list and go to another profile
+                            for(const image of (images || []))
+                            {
+                                try {
+                                    const response = await imageExists(
+                                        image.compressedPreSignedUrl ||
+                                        image.originalPreSignedUrl ||
+                                        image.compressedUrl ||
+                                        image.originalUrl
+                                    );
+
+                                    response && exitingImages.push(image);
+                                } catch (e) {}
+                            }
+
+                            if(exitingImages.length === 0) {
+                                // No image in the profile
                                 handleRemoveProfileToList(userId);
-                            } else {*/
-                                const images = await searchUserImages(userId);
-                                const exitingImages = [];
+                            } else {
+                                user.setImages = exitingImages;
 
-                                for(const image of (images || []))
-                                {
-                                    try {
-                                        const response = await imageExists(
-                                            image.compressedPreSignedUrl ||
-                                            image.originalPreSignedUrl ||
-                                            image.compressedUrl ||
-                                            image.originalUrl
-                                        );
+                                this.setState({
+                                    images: user.images,
+                                    activeIndex: 0,
+                                    profileData: data,
+                                    activeUser: user,
+                                    deleteDescription: user.greetingText
+                                });
+                                handleActiveUser(user);
 
-                                        response && exitingImages.push(image);
-                                    } catch (e) {}
-                                }
-
-                                if(exitingImages.length === 0) {
-                                    // No image in the profile
-                                    // user.setImages = [{mediaId: null, originalUrl: require("../../assets/img/no-image.png")}]
-                                    handleRemoveProfileToList(userId);
-                                } else {
-                                    user.setImages = exitingImages;
-
-                                    this.setState({
-                                        images: user.images,
-                                        activeIndex: 0,
-                                        profileData: data,
-                                        activeUser: user,
-                                        deleteDescription: user.greetingText
-                                    });
-                                    handleActiveUser(user);
-
-                                    this.setState({ loading: false });
-                                }
-
-                                // Get data but skip deleted
-                                /*if(user.isDeleted) {
-                                    this.loadErrorProfile(data, {message: "Bad profile"});
-                                } else {
-                                    this.setState({
-                                        images: user.images,
-                                        activeIndex: 0,
-                                        profileData: data,
-                                        activeUser: user
-                                    });
-                                    handleActiveUser(user);
-                                }*/
-                            // }
+                                this.setState({ loading: false });
+                            }
                         }
                     } catch (e) {
                         // Manage exception but not blocking
-                        // this.loadErrorProfile(data, {message: "Bad profile"});
                         handleRemoveProfileToList(userId);
                     }
                 })
@@ -275,9 +249,6 @@ class ImageLog extends React.Component {
     notateProfile = (score) => {
         this.setState({ loading: true });
         // Validate all images
-        /*this.state.images.forEach((image) => {
-            verifyUserImage(image.userId, image.mediaId, image.mediaPath, 'true').then();
-        });*/
         notateUserProfile(this.state.activeUser.id, score)
             .then(() => {
                 // Update user side profile show
@@ -391,10 +362,7 @@ class ImageLog extends React.Component {
                 </CarouselItem>
             );
         });
-        // console.log("deleteDescription", deleteDescription)
-        // console.log("this.props.error", this.props.error)
-        // console.log("this.state.loading", this.state.loading)
-        // console.log("this.props.loading", this.props.loading)
+
         if(this.props.error !== null) {
             return (
                 <div className="content-right float-left width-100-percent">

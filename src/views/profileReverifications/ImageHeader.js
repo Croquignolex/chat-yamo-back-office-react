@@ -1,21 +1,13 @@
-// import React, {forwardRef} from "react";
 import React, {forwardRef} from "react";
 import * as Icon from "react-feather";
 import {Button, Input, Form, FormGroup, Label} from "reactstrap";
 import FormSelect from "../../components/FormSelect";
-// import DatePicker from "react-multi-date-picker";
-// import DatePanel from "react-multi-date-picker/plugins/date_panel"
-// import Select from 'react-select';
-// import DatePicker from "react-datepicker";
-// import dayjs from "dayjs";
 
-// import "react-multi-date-picker/styles/layouts/mobile.css"
 import dayjs from "dayjs";
 import DatePicker from "react-datepicker";
 import {NotificationManager} from "react-notifications";
 
 class ImageSidebar extends React.Component {
-    // props { activeChatId, verified, mainSidebar, handleActiveChat, handleUserSidebar, updateImagesToVerify, handleResetImage, handleImagesToNotate }
     constructor(props) {
         super(props);
         this.state = {
@@ -38,14 +30,12 @@ class ImageSidebar extends React.Component {
     refresh = () => {
         this.setState({
             search: "",
-            // selectedDate: [dayjs().format('YYYY-MM-DD')],
             selectedStartDate: new Date(),
             startDate: dayjs().format("YYYY-MM-DD"),
             selectedEndDate: new Date(),
             endDate: dayjs().format("YYYY-MM-DD"),
             categories: {data: ["BLACKLISTED_URL"], errorMessage: '', isValid: true}
         });
-        // this.setState({search: ""});
         this.props.loadData("BLACKLISTED_URL", dayjs().format("YYYY-MM-DD"));
     };
 
@@ -74,15 +64,7 @@ class ImageSidebar extends React.Component {
         ];
 
         const { search, categories, selectedStartDate, selectedEndDate, startDate, endDate } = this.state;
-        // const { verified, toVerify, handleSearch, selectedDate, handleSelectedDate } = this.props;
         const { verified, toVerify, handleSearch, loadData } = this.props;
-// console.log(categories.data?.join(","), selectedDate?.join(","))
-        // const min = dayjs().startOf('year').toDate();
-        // const max = dayjs().endOf('year').toDate();
-
-       /* const CustomInput = forwardRef(({ value, onClick }, ref) => (
-            <Input readOnly ref={ref} type="text" onClick={onClick} defaultValue={value}/>
-        ));*/
 
         const sixMonthEarlier = dayjs().subtract(6, 'month').toDate();
         const twoYearLater = dayjs().add(2, 'year').toDate();
@@ -99,18 +81,14 @@ class ImageSidebar extends React.Component {
                     <div>
                         <Form className="d-flex mx-auto" onSubmit={(e) => {
                             e.preventDefault();
-                            // console.log({search})
                             if(search && (search !== "")) {
                                 this.setState({
-                                    // search: "",
-                                    // selectedDate: [dayjs().format('YYYY-MM-DD')],
                                     selectedStartDate: null,
                                     startDate: "",
                                     selectedEndDate: null,
                                     endDate: "",
                                     categories: {data: [], errorMessage: '', isValid: true}
                                 });
-                                // this.setState({selectedDate: [], categories: {data: [], errorMessage: '', isValid: true}})
                                 handleSearch(search);
                             } else NotificationManager.warning(`Please fill user id`);
                         }}>
@@ -133,18 +111,6 @@ class ImageSidebar extends React.Component {
                             </div>
                         </Form>
                     </div>
-                    {/*<div>
-                        <DatePicker
-                            selectsStart
-                            showMonthYearPicker
-                            selected={selectedDate}
-                            dateFormat="MMMM"
-                            minDate={min}
-                            maxDate={max}
-                            onChange={handleSelectedDate}
-                            customInput={<CustomInput />}
-                        />
-                </div>*/}
                     <div>
                         <strong className="text-primary">{verified}</strong> noted profile(s) / <strong className="text-primary">{toVerify}</strong> profile(s) to note
                         <Button color="primary" className="ml-50 rounded" onClick={this.refresh} size="sm">
@@ -170,26 +136,10 @@ class ImageSidebar extends React.Component {
                                     .format("YYYY-MM-DD")
                             );
                             dates = datesArray?.join(",") || "";
-                            // console.log({categories, datesArray, dates})
                         }
                     }
-                    // console.log({cats, dates})
-                    // categories && (categories !== "") && (categories !== this.state.categories) ||
-                    // dates && (dates !== "") && (dates !== this.state.dates)
-
                     if(cats && (cats !== "") && dates && (dates !== "")) {
-                        this.setState({
-                            search: "",
-                            // selectedDate: [dayjs().format('YYYY-MM-DD')],
-                            // selectedStartDate: null,
-                            // startDate: "",
-                            // selectedEndDate: null,
-                            // endDate: "",
-                            // categories: {data: [], errorMessage: '', isValid: true}
-                        }, () => loadData(cats, dates));
-                        // console.log({categories, dates})
-                        // const dates = selectedDate?.join(",");
-                        // handleComplexSearch(cats, dates)
+                        this.setState({search: ""}, () => loadData(cats, dates));
                     } else NotificationManager.warning(`Please fill all required search fields`);
                 }}>
                     <div className="w-25">
@@ -207,9 +157,7 @@ class ImageSidebar extends React.Component {
                             <Label>Choose start date</Label>
                             <DatePicker
                                 selectsStart
-                                // endDate={now}
                                 selected={selectedStartDate}
-                                // startDate={selectedStartDate}
                                 calendarStartDay={1}
                                 dateFormat="yyyy/MM/dd"
                                 minDate={sixMonthEarlier}
@@ -223,9 +171,7 @@ class ImageSidebar extends React.Component {
                             <DatePicker
                                 selectsEnd
                                 selected={selectedEndDate}
-                                // endDate={selectedEndDate}
                                 minDate={selectedStartDate}
-                                // startDate={selectedStartDate}
                                 calendarStartDay={1}
                                 dateFormat="yyyy/MM/dd"
                                 customInput={<CustomInput />}
@@ -233,17 +179,6 @@ class ImageSidebar extends React.Component {
                                 maxDate={twoYearLater}
                             />
                         </div>
-                        {/*<DatePicker
-                            multiple
-                            // render={<CustomInput />}
-                            value={selectedDate}
-                            // minDate={selectedDate}
-                            onChange={(selectedDate) => this.setState({selectedDate})}
-                            dateSeparator=","
-                            style={{height: "38px"}}
-                            format="YYYY-MM-DD"
-                            plugins={[<DatePanel />]}
-                        />*/}
                     </>
                     <div className="ml-1">
                         <Button size="sm" color="primary" className="rounded mt-2" type="submit" title="Search">

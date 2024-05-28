@@ -72,16 +72,12 @@ export const MEDIA = {
         CREATE: '/media/chatrooms/{chatroomId}/medias',
         CREATE_VIDEO: '/media/chatrooms/{chatroomId}/audios',
         GET_ONE: '/media/chatrooms/{chatroomId}/medias/{mediaId}/info'
-
-        // GET_ONE: '/media/chatrooms/{chatroomId}/medias/{mediaId}?original=true',
     },
     USERS: {
         GET_ONE: '/media/users/{userId}/medias/main/info',
         IMAGES: '/media/users/{userId}/medias',
         IDENTITY: '/media/users/{userId}/identityVerification',
         STATE: '/media/backoffice/users/{userId}/suspiciousstate'
-
-        // GET_ONE: '/media/users/{userId}/medias/main?original=true'
     }
 };
 
