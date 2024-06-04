@@ -56,7 +56,7 @@ class UserDetails extends React.Component {
                 .then(data => {
                     this.setState({ freeConversation: data?.count })
                 })
-                .catch(() => this.setState({ freeConversation: 'ERROR' }));
+                .catch(() => this.setState({ freeConversation: '' }));
         }
     }
 
@@ -73,7 +73,7 @@ class UserDetails extends React.Component {
                         this.setState({ subscription });
                     }
                 })
-                .catch(() => this.setState({ subscription: 'ERROR' }));
+                .catch(() => this.setState({ subscription: '' }));
         }
     }
 

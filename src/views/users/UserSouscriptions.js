@@ -27,7 +27,7 @@ class UserSouscriptions extends React.Component {
                 const souscriptions = data?.map(s => new Souscriptions(s));
                 this.setState({ souscriptions });
             })
-            .catch(error => this.setState({ error }))
+            .catch(() => this.setState({ souscriptions: [] }))
             .finally(() => this.setState({ loading: false }));
     };
 
