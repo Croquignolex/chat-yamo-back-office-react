@@ -50,6 +50,7 @@ class UsersImages extends React.Component {
                 for(const image of (data || [])) {
                     try {
                         const response = await imageExists(
+                            image.enhancedPreSignedUrl ||
                             image.compressedPreSignedUrl ||
                             image.originalPreSignedUrl ||
                             image.compressedUrl ||

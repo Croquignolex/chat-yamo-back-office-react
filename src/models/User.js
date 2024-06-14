@@ -14,6 +14,7 @@ export default class User {
 
     set setAvatar(image) {
         const url = (
+            image?.enhancedPreSignedUrl ||
             image?.compressedPreSignedUrl ||
             image?.originalPreSignedUrl ||
             image?.compressedUrl ||

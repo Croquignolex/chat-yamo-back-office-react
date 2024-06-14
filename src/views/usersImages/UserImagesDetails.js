@@ -69,6 +69,7 @@ class UserImagesDetails extends React.Component {
                         : <strong className="text-danger"><Icon.X size={20}/> Not verified</strong>
                     }
                     <DisplayImage src={
+                        item.enhancedPreSignedUrl ||
                         item.compressedPreSignedUrl ||
                         item.originalPreSignedUrl ||
                         item.compressedUrl ||

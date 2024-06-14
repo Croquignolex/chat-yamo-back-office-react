@@ -157,6 +157,7 @@ class ImageLog extends React.Component {
                                 {
                                     try {
                                         const response = await imageExists(
+                                            image.enhancedPreSignedUrl ||
                                             image.compressedPreSignedUrl ||
                                             image.originalPreSignedUrl ||
                                             image.compressedUrl ||
@@ -363,6 +364,7 @@ class ImageLog extends React.Component {
             return (
                 <CarouselItem onExiting={this.onExiting} onExited={this.onExited} key={item.mediaId}>
                     <DisplayImage src={
+                        item.enhancedPreSignedUrl ||
                         item.compressedPreSignedUrl ||
                         item.originalPreSignedUrl ||
                         item.compressedUrl ||
