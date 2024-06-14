@@ -17,7 +17,7 @@ import {
   getFreeConversation,
   getScore,
   getUserMetaData,
-  getUserSouscriptions
+  getUserSouscriptions, getVideoDates
 } from "../redux/actions/IndependentActions";
 
 import "../assets/scss/pages/users.scss";
@@ -38,6 +38,7 @@ class UserProfile extends React.Component {
       freeConversation: 0,
       score: 0,
       activeCon: 0,
+      vidDates: 0,
       moreCon: false,
       subscription: "",
       // Modals
@@ -54,6 +55,7 @@ class UserProfile extends React.Component {
     this.handleScore();
     this.handleSubscription();
     this.handleConversation();
+    this.handleVideoDates();
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
@@ -63,6 +65,7 @@ class UserProfile extends React.Component {
       this.handleScore();
       this.handleSubscription();
       this.handleConversation();
+      this.handleVideoDates();
     }
   }
 
@@ -114,6 +117,19 @@ class UserProfile extends React.Component {
             this.setState({ activeCon: data?.count, moreCon: data?.moreChatrooms })
           })
           .catch(() => this.setState({ activeCon: '', moreCon: '' }));
+    }
+  }
+
+  handleVideoDates = () => {
+    const id = this.state.activeUser?.id || this.state.activeUser?.userId;
+    this.setState({ vidDates: 0 });
+
+    if(id) {
+      getVideoDates(id)
+          .then(data => {
+            this.setState({ vidDates: data?.count })
+          })
+          .catch(() => this.setState({ vidDates: '' }));
     }
   }
 
@@ -187,7 +203,7 @@ class UserProfile extends React.Component {
 
   render() {
     const {
-      activeCon, moreCon,
+      activeCon, moreCon, vidDates,
       activeUser, metaData, score, freeConversation, subscription, souscriptionModal,
       townEventModal, statusHistoryModal, appDataModal
     } = this.state;
@@ -354,6 +370,12 @@ class UserProfile extends React.Component {
                       ? <div className="font-weight-bold text-success">Yes</div>
                       : <div className="font-weight-bold text-danger">No</div>
                   }
+                </div>
+                <div className="d-flex user-info">
+                  <div className="user-info-title font-weight-bold">
+                    Scheduled video dates
+                  </div>
+                  <div className="font-weight-bold text-primary">{vidDates}</div>
                 </div>
                 <div className="d-flex user-info">
                   <div className="user-info-title font-weight-bold">

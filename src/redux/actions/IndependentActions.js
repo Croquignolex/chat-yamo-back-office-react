@@ -9,7 +9,7 @@ import {
     VALIDATIONS,
     BACKOFFICE_USERS,
     joinBaseUrlWithParams,
-    joinBaseUrlWithRequestParams, NOTIFICATION, CHATROOM,
+    joinBaseUrlWithRequestParams, NOTIFICATION, CHATROOM, PROPOSAL,
 } from "../../utility/urls/backend";
 
 // ===================================== START GET
@@ -36,6 +36,11 @@ export const getScore = async (userId) => {
 
 export const getConversation = async (userId) => {
     const url = joinBaseUrlWithParams(CHATROOM.ACTIVE_CHATS, [{param: 'userId', value: userId}]);
+    return makeRequest('get', url);
+};
+
+export const getVideoDates = async (userId) => {
+    const url = joinBaseUrlWithParams(PROPOSAL.MATCHES_COUNT, [{param: 'userId', value: userId}]);
     return makeRequest('get', url);
 };
 

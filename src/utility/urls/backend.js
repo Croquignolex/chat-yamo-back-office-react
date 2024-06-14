@@ -91,6 +91,10 @@ export const CHATROOM = {
     ACTIVE_CHATS: '/chatrooms/backoffice/users/{userId}/activeChatRooms',
 };
 
+export const PROPOSAL = {
+    MATCHES_COUNT: '/proposal/backoffice/users/{userId}/adMatchesCount',
+};
+
 const BASE = '';
 
 export const joinBaseUrlWithParams = (to, params = [], trueBase = false) => {
