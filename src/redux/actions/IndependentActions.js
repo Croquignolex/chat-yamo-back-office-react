@@ -34,6 +34,11 @@ export const getScore = async (userId) => {
     return makeRequest('get', url);
 };
 
+export const getConversation = async (userId) => {
+    const url = joinBaseUrlWithParams(CHATROOM.ACTIVE_CHATS, [{param: 'userId', value: userId}]);
+    return makeRequest('get', url);
+};
+
 export const getCaseMessages = async (userId) => {
     const url = joinBaseUrlWithParams(FEEDBACKS.GET_ONE, [{param: 'userId', value: userId}]);
     return makeRequest('get', url);

@@ -88,6 +88,7 @@ export const NOTIFICATION = {
 
 export const CHATROOM = {
     FREE_CHAT: '/chatrooms/{userId}/messages/freeChatroomState',
+    ACTIVE_CHATS: '/chatrooms/backoffice/users/{userId}/activeChatRooms',
 };
 
 const BASE = '';

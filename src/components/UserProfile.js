@@ -13,6 +13,7 @@ import UserTownEvents from "../views/users/UserTownEvents";
 import UserStatusHistory from "../views/users/UserStatusHistory";
 import UserSouscriptions from "../views/users/UserSouscriptions";
 import {
+  getConversation,
   getFreeConversation,
   getScore,
   getUserMetaData,
@@ -36,6 +37,8 @@ class UserProfile extends React.Component {
       metaData: null,
       freeConversation: 0,
       score: 0,
+      activeCon: 0,
+      moreCon: false,
       subscription: "",
       // Modals
       townEventModal: {show: false, title: ""},
@@ -50,6 +53,7 @@ class UserProfile extends React.Component {
     this.handleFreeConversation();
     this.handleScore();
     this.handleSubscription();
+    this.handleConversation();
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
@@ -57,7 +61,8 @@ class UserProfile extends React.Component {
       this.showMetaData();
       this.handleFreeConversation();
       this.handleScore();
-      this.handleSubscription()
+      this.handleSubscription();
+      this.handleConversation();
     }
   }
 
@@ -96,6 +101,19 @@ class UserProfile extends React.Component {
             }
           })
           .catch(() => this.setState({ score: '' }));
+    }
+  }
+
+  handleConversation = () => {
+    const id = this.state.activeUser?.id || this.state.activeUser?.userId;
+    this.setState({ activeCon: 0, moreCon: false });
+
+    if(id) {
+      getConversation(id)
+          .then(data => {
+            this.setState({ activeCon: data?.count, moreCon: data?.moreChatrooms })
+          })
+          .catch(() => this.setState({ activeCon: '', moreCon: '' }));
     }
   }
 
@@ -168,7 +186,11 @@ class UserProfile extends React.Component {
   };
 
   render() {
-    const { activeUser, metaData, score, freeConversation, subscription, souscriptionModal, townEventModal, statusHistoryModal, appDataModal } = this.state;
+    const {
+      activeCon, moreCon,
+      activeUser, metaData, score, freeConversation, subscription, souscriptionModal,
+      townEventModal, statusHistoryModal, appDataModal
+    } = this.state;
     const { receiverProfile, handleReceiverSidebar } = this.props;
 
     if (!activeUser) return null;
@@ -317,6 +339,21 @@ class UserProfile extends React.Component {
                     Score
                   </div>
                   <div className="font-weight-bold text-primary">{score}</div>
+                </div>
+                <div className="d-flex user-info">
+                  <div className="user-info-title font-weight-bold">
+                    Active Conversation
+                  </div>
+                  <div className="font-weight-bold text-primary">{activeCon}</div>
+                </div>
+                <div className="d-flex user-info">
+                  <div className="user-info-title font-weight-bold">
+                    More Conversation
+                  </div>
+                  {(moreCon)
+                      ? <div className="font-weight-bold text-success">Yes</div>
+                      : <div className="font-weight-bold text-danger">No</div>
+                  }
                 </div>
                 <div className="d-flex user-info">
                   <div className="user-info-title font-weight-bold">

@@ -446,7 +446,7 @@ class ImageLog extends React.Component {
                                     </div>
                                     {!(this.state.error) && (
                                         <>
-                                            <div>
+                                            <div className="flex-1 text-center">
                                                 {(activeUser?.isBlacklisted)
                                                     ? (
                                                         <div className="badge badge-danger badge-pill font-weight-bold">
@@ -464,7 +464,7 @@ class ImageLog extends React.Component {
                                                     )
                                                 }
                                             </div>
-                                            <div>
+                                            <div className="flex-1 text-right">
                                                 <a
                                                     href="/"
                                                     className="mb-0"
