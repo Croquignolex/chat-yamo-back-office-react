@@ -426,18 +426,22 @@ class UserDetails extends React.Component {
                                     </div>
                                     <hr />
                                     <div className="text-center">
-                                        <Button color="primary" onClick={this.toggleStatusHistoryModal}>
-                                            Status history
-                                        </Button>
-                                        <Button color="primary" onClick={this.toggleTownEventModal} className="ml-50">
-                                            Town event
-                                        </Button>
-                                        <Button color="info" onClick={this.toggleAppDataModal} className="ml-50">
-                                            App Data
-                                        </Button>
-                                        <Button color="info" onClick={this.toggleSearchFilter} className="ml-50">
-                                            Search Filter
-                                        </Button>
+                                        <div className="mb-50 text-center">
+                                            <Button color="primary" onClick={this.toggleStatusHistoryModal} className="mt-50">
+                                                Status history
+                                            </Button>
+                                            <Button color="primary" onClick={this.toggleTownEventModal} className="ml-50 mt-50">
+                                                Town event
+                                            </Button>
+                                        </div>
+                                        <div className="mt-50 text-center">
+                                            <Button color="info" onClick={this.toggleAppDataModal} className="mt-50">
+                                                App Data
+                                            </Button>
+                                            <Button color="info" onClick={this.toggleSearchFilter} className="mt-50 ml-50">
+                                                Search Filter
+                                            </Button>
+                                        </div>
                                     </div>
                                 </>
                             )}

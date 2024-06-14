@@ -202,11 +202,10 @@ class UserProfile extends React.Component {
     };
 
     toggleSearchFilter = () => {
-        const {searchFilterModal} = this.state;
-        const { user } = this.props;
+        const {searchFilterModal, activeUser} = this.state;
         if(searchFilterModal.show) this.setState({searchFilterModal: {...searchFilterModal, show: false}});
         else {
-            const title = user?.isDeleted ? "Deleted user" : `${user?.name} search filter`;
+            const title = activeUser?.isDeleted ? "Deleted user" : `${activeUser?.name} search filter`;
             this.setState({searchFilterModal: {show: true, title}});
         }
     };
@@ -439,7 +438,7 @@ class UserProfile extends React.Component {
                                     )
                                 )}
                                 {(!this.state.loading) && (
-                                    <Button color="primary" className="ml-50 mt-50" onClick={this.toggleSouscriptionModal}>
+                                    <Button color="primary" className="ml-50" onClick={this.toggleSouscriptionModal}>
                                         Souscriptions
                                     </Button>
                                 )}
