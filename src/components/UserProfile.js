@@ -12,7 +12,12 @@ import UserAppData from "../views/users/UserAppData";
 import UserTownEvents from "../views/users/UserTownEvents";
 import UserStatusHistory from "../views/users/UserStatusHistory";
 import UserSouscriptions from "../views/users/UserSouscriptions";
-import {getFreeConversation, getUserMetaData, getUserSouscriptions} from "../redux/actions/IndependentActions";
+import {
+  getFreeConversation,
+  getScore,
+  getUserMetaData,
+  getUserSouscriptions
+} from "../redux/actions/IndependentActions";
 
 import "../assets/scss/pages/users.scss";
 import Souscriptions from "../models/Souscriptions";
@@ -30,6 +35,7 @@ class UserProfile extends React.Component {
       loading: false,
       metaData: null,
       freeConversation: 0,
+      score: 0,
       subscription: "",
       // Modals
       townEventModal: {show: false, title: ""},
@@ -42,6 +48,7 @@ class UserProfile extends React.Component {
   componentDidMount() {
     this.showMetaData();
     this.handleFreeConversation();
+    this.handleScore();
     this.handleSubscription();
   }
 
@@ -49,6 +56,7 @@ class UserProfile extends React.Component {
     if (prevProps.activeUser !== this.props.activeUser) {
       this.showMetaData();
       this.handleFreeConversation();
+      this.handleScore();
       this.handleSubscription()
     }
   }
@@ -73,6 +81,21 @@ class UserProfile extends React.Component {
             this.setState({ freeConversation: data?.count })
           })
           .catch(() => this.setState({ freeConversation: '' }));
+    }
+  }
+
+  handleScore = () => {
+    const id = this.state.activeUser?.id || this.state.activeUser?.userId;
+    this.setState({ score: 0 });
+
+    if(id) {
+      getScore(id)
+          .then(data => {
+            if(data && data.length > 0) {
+              this.setState({ score: data[0]?.score })
+            }
+          })
+          .catch(() => this.setState({ score: '' }));
     }
   }
 
@@ -145,7 +168,7 @@ class UserProfile extends React.Component {
   };
 
   render() {
-    const { activeUser, metaData, freeConversation, subscription, souscriptionModal, townEventModal, statusHistoryModal, appDataModal } = this.state;
+    const { activeUser, metaData, score, freeConversation, subscription, souscriptionModal, townEventModal, statusHistoryModal, appDataModal } = this.state;
     const { receiverProfile, handleReceiverSidebar } = this.props;
 
     if (!activeUser) return null;
@@ -288,6 +311,12 @@ class UserProfile extends React.Component {
                     Free conversation
                   </div>
                   <div className="font-weight-bold text-primary">{freeConversation}</div>
+                </div>
+                <div className="d-flex user-info">
+                  <div className="user-info-title font-weight-bold">
+                    Score
+                  </div>
+                  <div className="font-weight-bold text-primary">{score}</div>
                 </div>
                 <div className="d-flex user-info">
                   <div className="user-info-title font-weight-bold">
