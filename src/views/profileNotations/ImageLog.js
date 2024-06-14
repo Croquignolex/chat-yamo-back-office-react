@@ -45,6 +45,7 @@ import {
     getUserSuspiciousState, deleteUserProfileDescription
 } from "../../redux/actions/IndependentActions";
 import * as Icon from "react-feather";
+import FormatStringWithPopHover from "../../components/FormatStringWithPopHover";
 
 class ImageLog extends React.Component {
     // props { activeChatID, activeUser, mainSidebar, handleReceiverSidebar }
@@ -424,17 +425,23 @@ class ImageLog extends React.Component {
                         <div className="chat_navbar mt-50">
                             <header className="chat_header px-1">
                                 <div className="d-flex align-items-center justify-content-between">
-                                    <div className="d-flex justify-content-between">
+                                    <div className="d-flex flex-1">
                                         <div className="avatar user-profile-toggle m-0 m-0 mr-1 align-content-start">
-                                            <DisplayImage src={activeUser?.avatar} withModal={false} />
+                                            {(activeUser.greetingText)
+                                                ? <DisplayImage src={activeUser?.avatar} withModal={false} width={"50"} height={"50"} />
+                                                : <DisplayImage src={activeUser?.avatar} withModal={false} />
+                                            }
                                         </div>
                                         {(this.state.error) ? <h6 className="text-danger pt-1">User not found</h6> : (
-                                            <h6>
-                                                {activeUser?.name}
-                                                {activeUser?.verified && <span className="ml-1"><CheckCircle size={17} className="text-success" /></span>}
-                                                {activeUser?.isPremium && <span className="ml-1"><Star size={17} className="text-warning" /></span>}
-                                                <br/> {activeUser?.city}, {activeUser?.country}
-                                            </h6>
+                                            <>
+                                                <h6 className="align-content-start">
+                                                    {activeUser?.name}
+                                                    {activeUser?.verified && <span className="ml-1"><CheckCircle size={17} className="text-success" /></span>}
+                                                    {activeUser?.isPremium && <span className="ml-1"><Star size={17} className="text-warning" /></span>}
+                                                    <br/> {activeUser?.city}, {activeUser?.country}
+                                                    <br/> <FormatStringWithPopHover text={activeUser.greetingText} />
+                                                </h6>
+                                            </>
                                         )}
                                     </div>
                                     {!(this.state.error) && (
