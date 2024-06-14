@@ -29,6 +29,11 @@ export const getFreeConversation = async (userId) => {
     return makeRequest('get', url);
 };
 
+export const getScore = async (userId) => {
+    const url = joinBaseUrlWithParams(MEDIA.USERS.SCORE, [{param: 'userId', value: userId}]);
+    return makeRequest('get', url);
+};
+
 export const getCaseMessages = async (userId) => {
     const url = joinBaseUrlWithParams(FEEDBACKS.GET_ONE, [{param: 'userId', value: userId}]);
     return makeRequest('get', url);

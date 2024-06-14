@@ -12,7 +12,12 @@ import FormModal from "../../components/FormModal";
 import UserSouscriptions from "./UserSouscriptions";
 import UserStatusHistory from "./UserStatusHistory";
 import DisplayImage from "../../components/DisplayImage";
-import {getFreeConversation, getUserMetaData, getUserSouscriptions} from "../../redux/actions/IndependentActions";
+import {
+    getFreeConversation,
+    getScore,
+    getUserMetaData,
+    getUserSouscriptions
+} from "../../redux/actions/IndependentActions";
 import Souscriptions from "../../models/Souscriptions";
 import dayjs from "dayjs";
 
@@ -26,6 +31,7 @@ class UserDetails extends React.Component {
             loading: false,
             metaData: null,
             freeConversation: 0,
+            score: 0,
             subscription: "",
             // Modals
             townEventModal: {show: false, title: ""},
@@ -38,6 +44,7 @@ class UserDetails extends React.Component {
     componentDidMount() {
         this.showMetaData();
         this.handleFreeConversation();
+        this.handleScore();
         this.handleSubscription();
     }
 
@@ -57,6 +64,21 @@ class UserDetails extends React.Component {
                     this.setState({ freeConversation: data?.count })
                 })
                 .catch(() => this.setState({ freeConversation: '' }));
+        }
+    }
+
+    handleScore = () => {
+        const id = this.props.user?.id;
+        this.setState({ score: 0 });
+
+        if(id) {
+            getScore(id)
+                .then(data => {
+                    if(data && data.length > 0) {
+                        this.setState({ score: data[0]?.score })
+                    }
+                })
+                .catch(() => this.setState({ score: '' }));
         }
     }
 
@@ -144,7 +166,7 @@ class UserDetails extends React.Component {
 
     render() {
 
-        const { metaData, freeConversation, subscription, souscriptionModal, townEventModal, statusHistoryModal, appDataModal } = this.state;
+        const { metaData, score, freeConversation, subscription, souscriptionModal, townEventModal, statusHistoryModal, appDataModal } = this.state;
         const { user } = this.props;
 
         if (!user) return null;
@@ -285,6 +307,12 @@ class UserDetails extends React.Component {
                                     Free conversation
                                 </div>
                                 <div className="font-weight-bold text-primary">{freeConversation}</div>
+                            </div>
+                            <div className="d-flex user-info">
+                                <div className="user-info-title font-weight-bold">
+                                    Score
+                                </div>
+                                <div className="font-weight-bold text-primary">{score}</div>
                             </div>
                             <div className="d-flex user-info">
                                 <div className="user-info-title font-weight-bold">

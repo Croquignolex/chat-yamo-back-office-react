@@ -75,6 +75,7 @@ export const MEDIA = {
     },
     USERS: {
         GET_ONE: '/media/users/{userId}/medias/main/info',
+        SCORE: '/media/users/{userId}/mediasscore',
         IMAGES: '/media/users/{userId}/medias',
         IDENTITY: '/media/users/{userId}/identityVerification',
         STATE: '/media/backoffice/users/{userId}/suspiciousstate'
