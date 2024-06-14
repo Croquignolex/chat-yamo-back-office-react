@@ -80,6 +80,10 @@ export const getUserAppData = async (userId) => {
     return makeRequest('get', joinBaseUrlWithParams(NOTIFICATION.CONTEXT, [{param: 'userId', value: userId}]));
 };
 
+export const getSearchFilter = async (userId) => {
+    return makeRequest('get', joinBaseUrlWithParams(PROPOSAL.SEARCH_FILTER, [{param: 'userId', value: userId}]));
+};
+
 export const getUserStatusHistory = async (userId) => {
     const url = joinBaseUrlWithParams(USERS.STATUS_HISTORY, [{param: 'userId', value: userId}]);
     return makeRequest('get', url);

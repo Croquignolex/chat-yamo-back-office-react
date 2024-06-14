@@ -15,7 +15,8 @@ import {
     getUserIdentity,
     searchUserImages,
     getUserProfileImage,
-    getUserSuspiciousState
+    getUserSuspiciousState,
+    getSearchFilter
 } from "../../redux/actions/IndependentActions";
 
 class UsersImages extends React.Component {
@@ -74,6 +75,7 @@ class UsersImages extends React.Component {
                 try {
                     user.setStatus = await getUserStatus(user.id);
                     user.setAppData = await getUserAppData(user.id);
+                    user.setSearchFilter = await getSearchFilter(user.id);
                     user.setCertified = await getUserIdentity(user.id);
                     user.setSuspiciousState = await getUserSuspiciousState(user.id);
 

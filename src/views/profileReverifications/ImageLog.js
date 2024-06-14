@@ -2,17 +2,14 @@ import React from "react";
 import ReactDOM from "react-dom"
 import {connect} from "react-redux";
 import {NotificationManager} from "react-notifications";
-
+import * as Icon from "react-feather";
 import {
     Spinner,
     Carousel,
     CarouselItem,
     CarouselControl,
     CarouselIndicators,
-    UncontrolledPopover,
-    PopoverBody,
 } from "reactstrap";
-
 import {
     Star,
     Image,
@@ -30,7 +27,7 @@ import Error500 from "../Error500";
 import User from "../../models/User";
 import {imageExists} from "../../helpers/helpers";
 import DisplayImage from "../../components/DisplayImage";
-
+import FormatStringWithPopHover from "../../components/FormatStringWithPopHover";
 import {
     blockUser,
     reportUser,
@@ -46,10 +43,9 @@ import {
     getUserProfileImage,
     getUserSuspiciousState,
     deleteUserProfileDescription,
-    reVerifiedProfile
+    reVerifiedProfile,
+    getSearchFilter
 } from "../../redux/actions/IndependentActions";
-import * as Icon from "react-feather";
-import FormatStringWithPopHover from "../../components/FormatStringWithPopHover";
 
 class ImageLog extends React.Component {
     constructor(props) {
@@ -136,6 +132,7 @@ class ImageLog extends React.Component {
                         // Not concerned in removal conditions
                         try {
                             user.setAppData = await getUserAppData(userId);
+                            user.setSearchFilter = await getSearchFilter(user.id);
                             user.setCertified = await getUserIdentity(userId);
                             user.setForceStatus = await getUserStatus(userId);
                             user.setSuspiciousState = await getUserSuspiciousState(userId);

@@ -14,11 +14,11 @@ import {
     getUserAppData,
     getUserIdentity,
     getUserProfileImage,
-    getUserSuspiciousState
+    getUserSuspiciousState,
+    getSearchFilter
 } from "../../redux/actions/IndependentActions";
 
 class ImageSidebar extends React.Component {
-    // props { activeChatId, verified, mainSidebar, handleActiveChat, handleUserSidebar, updateImagesToVerify, handleResetImage }
     constructor(props) {
         super(props);
         this.state = {
@@ -87,6 +87,7 @@ class ImageSidebar extends React.Component {
                     try {
                         user.setStatus = await getUserStatus(user.id);
                         user.setAppData = await getUserAppData(user.id);
+                        user.setSearchFilter = await getSearchFilter(user.id);
                         user.setCertified = await getUserIdentity(user.id);
                         user.setSuspiciousState = await getUserSuspiciousState(user.id);
 

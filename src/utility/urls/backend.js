@@ -93,6 +93,7 @@ export const CHATROOM = {
 
 export const PROPOSAL = {
     MATCHES_COUNT: '/proposal/backoffice/users/{userId}/adMatchesCount',
+    SEARCH_FILTER: '/proposal/backoffice/profile/{userId}/searchFilter',
 };
 
 const BASE = '';

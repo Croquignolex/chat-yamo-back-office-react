@@ -92,6 +92,23 @@ export default class User {
         };
     }
 
+    set setSearchFilter(data) {
+        this.searchFilter = {
+            gender : data.gender,
+            minAge : data.minAge,
+            maxAge : data.maxAge,
+            city : data.city,
+            country : data.country,
+            homeCountry : data.homeCountry,
+            certified : data.certified,
+            premiumUsers : data.premiumUsers,
+            lookingFor : data.lookingFor,
+            religion : data.religion,
+            applyAgeFilter : data.applyAgeFilter,
+            language : data.language,
+        };
+    }
+
     get isCertified() {
         return this.certified;
     }

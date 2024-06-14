@@ -1,4 +1,5 @@
 import React from "react";
+import dayjs from "dayjs";
 import * as Icon from "react-feather"
 import {CardBody, Card, Spinner, Button} from "reactstrap";
 
@@ -8,6 +9,8 @@ import Error500 from "../Error500";
 import UserAppData from "./UserAppData";
 import MetaData from "../../models/MetaData";
 import UserTownEvents from "./UserTownEvents";
+import Souscriptions from "../../models/Souscriptions";
+import UserSearchFilter from "./UserSearchFilter";
 import FormModal from "../../components/FormModal";
 import UserSouscriptions from "./UserSouscriptions";
 import UserStatusHistory from "./UserStatusHistory";
@@ -17,16 +20,14 @@ import {
     getFreeConversation,
     getScore,
     getUserMetaData,
-    getUserSouscriptions, getVideoDates
+    getUserSouscriptions,
+    getVideoDates
 } from "../../redux/actions/IndependentActions";
-import Souscriptions from "../../models/Souscriptions";
-import dayjs from "dayjs";
 
 class UserDetails extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            // Metadata state
             show: false,
             error: null,
             loading: false,
@@ -37,11 +38,11 @@ class UserDetails extends React.Component {
             vidDates: 0,
             moreCon: false,
             subscription: "",
-            // Modals
             townEventModal: {show: false, title: ""},
             souscriptionModal: {show: false, title: ""},
             statusHistoryModal: {show: false, title: ""},
-            appDataModal: {show: false, title: ""}
+            appDataModal: {show: false, title: ""},
+            searchFilterModal: {show: false, title: ""},
         }
     }
 
@@ -53,12 +54,6 @@ class UserDetails extends React.Component {
         this.handleSubscription();
         this.handleVideoDates();
     }
-
-    /*componentDidUpdate(prevProps, prevState, snapshot) {
-        if (prevProps.activeUser !== this.props.activeUser) {
-            this.showMetaData();
-        }
-    }*/
 
     handleFreeConversation = () => {
         const id = this.props.user?.id;
@@ -145,17 +140,6 @@ class UserDetails extends React.Component {
         }
     }
 
-    /*handleShowMetaData = () => {
-        this.setState({loading: true, error: null, metaData: null, show: false});
-        getUserMetaData(this.props.user?.id)
-            .then(data => {
-                const metaData = new MetaData(data);
-                this.setState({ metaData, show: true })
-            })
-            .catch(error => this.setState({ error }))
-            .finally(() => this.setState({ loading: false }));
-    }*/
-
     toggleSouscriptionModal = () => {
         const {souscriptionModal} = this.state;
         const { user } = this.props;
@@ -196,12 +180,22 @@ class UserDetails extends React.Component {
         }
     };
 
+    toggleSearchFilter = () => {
+        const {searchFilterModal} = this.state;
+        const { user } = this.props;
+        if(searchFilterModal.show) this.setState({searchFilterModal: {...searchFilterModal, show: false}});
+        else {
+            const title = user?.isDeleted ? "Deleted user" : `${user?.name} search filter`;
+            this.setState({searchFilterModal: {show: true, title}});
+        }
+    };
+
     render() {
 
         const {
             activeCon, moreCon, vidDates,
             metaData, score, freeConversation, subscription, souscriptionModal,
-            townEventModal, statusHistoryModal, appDataModal
+            townEventModal, statusHistoryModal, appDataModal, searchFilterModal
         } = this.state;
         const { user } = this.props;
 
@@ -441,6 +435,9 @@ class UserDetails extends React.Component {
                                         <Button color="info" onClick={this.toggleAppDataModal} className="ml-50">
                                             App Data
                                         </Button>
+                                        <Button color="info" onClick={this.toggleSearchFilter} className="ml-50">
+                                            Search Filter
+                                        </Button>
                                     </div>
                                 </>
                             )}
@@ -459,6 +456,9 @@ class UserDetails extends React.Component {
                 </FormModal>
                 <FormModal small modal={appDataModal} toggleModal={this.toggleAppDataModal}>
                     <UserAppData appData={user?.appData} />
+                </FormModal>
+                <FormModal small modal={searchFilterModal} toggleModal={this.toggleSearchFilter}>
+                    <UserSearchFilter searchFilter={user?.searchFilter} />
                 </FormModal>
             </>
         )
