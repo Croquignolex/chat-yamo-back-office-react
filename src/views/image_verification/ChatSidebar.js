@@ -8,9 +8,9 @@ import Error500 from "../Error500";
 import User from "../../models/User";
 import TicketUserItem from "./TicketUserItem";
 import {getUserImages, getUserProfile, getUserProfileImage} from "../../redux/actions/IndependentActions";
+import {imageExistsStepByStep} from "../../helpers/helpers";
 
 class ChatSidebar extends React.Component {
-    // props { activeChatId, mainSidebar, handleActiveChat, handleUserSidebar }
     constructor(props) {
         super(props);
         this.state = {
@@ -71,11 +71,11 @@ class ChatSidebar extends React.Component {
                     // make user as an object
                     const user = new User(userObject);
                     user.setId = userId;
-                    //user.setLastMessageTime = feedback.createdDate.format("HH:mm")
                     try {
                         if(!user.isDeleted) {
                             // User profile image
-                            user.setAvatar = await getUserProfileImage(userId);
+                            const avatar = await getUserProfileImage(userId);
+                            user.setAvatar = await imageExistsStepByStep(avatar);
                         }
                     } catch (e) {}
                     this.updateUsers(user);

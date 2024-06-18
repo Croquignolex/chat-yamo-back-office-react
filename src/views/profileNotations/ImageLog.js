@@ -25,7 +25,7 @@ import {
 
 import Error500 from "../Error500";
 import User from "../../models/User";
-import {imageExists} from "../../helpers/helpers";
+import {imageExistsStepByStep} from "../../helpers/helpers";
 import DisplayImage from "../../components/DisplayImage";
 import FormatStringWithPopHover from "../../components/FormatStringWithPopHover";
 import {
@@ -127,7 +127,7 @@ class ImageLog extends React.Component {
                         try {
                             // user.setStatus = await getUserStatus(userId);
                             user.setAppData = await getUserAppData(userId);
-                            user.setSearchFilter = await getSearchFilter(user.id);
+                            user.setSearchFilter = await getSearchFilter(userId);
                             user.setCertified = await getUserIdentity(userId);
                             user.setForceStatus = await getUserStatus(userId);
                             user.setSuspiciousState = await getUserSuspiciousState(userId);
@@ -139,70 +139,40 @@ class ImageLog extends React.Component {
                             handleRemoveProfileToList(userId);
                         } else {
                             // User profile image
-                            user.setAvatar = await getUserProfileImage(userId);
+                            const avatar = await getUserProfileImage(userId);
+                            user.setAvatar = await imageExistsStepByStep(avatar);
 
-                            // Check profile image
-                            // Display even when user profile image is not found
-                            // const imgRep = await imageExists(user.avatar);
+                            const images = await searchUserImages(userId);
+                            const exitingImages = [];
 
-                            /*if(!imgRep) {
-                                // Remove profile from list and go to another profile
+                            for(const image of (images || []))
+                            {
+                                try {
+                                    image.chosenUrl = await imageExistsStepByStep(image);
+                                    image.chosenUrl && exitingImages.push(image);
+                                } catch (e) {}
+                            }
+
+                            if(exitingImages.length === 0) {
+                                // No image in the profile
                                 handleRemoveProfileToList(userId);
-                            } else {*/
-                                const images = await searchUserImages(userId);
-                                const exitingImages = [];
+                            } else {
+                                user.setImages = exitingImages;
 
-                                for(const image of (images || []))
-                                {
-                                    try {
-                                        const response = await imageExists(
-                                            image.enhancedPreSignedUrl ||
-                                            image.compressedPreSignedUrl ||
-                                            image.originalPreSignedUrl ||
-                                            image.compressedUrl ||
-                                            image.originalUrl
-                                        );
+                                this.setState({
+                                    images: user.images,
+                                    activeIndex: 0,
+                                    profileData: data,
+                                    activeUser: user,
+                                    deleteDescription: user.greetingText
+                                });
+                                handleActiveUser(user);
 
-                                        response && exitingImages.push(image);
-                                    } catch (e) {}
-                                }
-
-                                if(exitingImages.length === 0) {
-                                    // No image in the profile
-                                    // user.setImages = [{mediaId: null, originalUrl: require("../../assets/img/no-image.png")}]
-                                    handleRemoveProfileToList(userId);
-                                } else {
-                                    user.setImages = exitingImages;
-
-                                    this.setState({
-                                        images: user.images,
-                                        activeIndex: 0,
-                                        profileData: data,
-                                        activeUser: user,
-                                        deleteDescription: user.greetingText
-                                    });
-                                    handleActiveUser(user);
-
-                                    this.setState({ loading: false });
-                                }
-
-                                // Get data but skip deleted
-                                /*if(user.isDeleted) {
-                                    this.loadErrorProfile(data, {message: "Bad profile"});
-                                } else {
-                                    this.setState({
-                                        images: user.images,
-                                        activeIndex: 0,
-                                        profileData: data,
-                                        activeUser: user
-                                    });
-                                    handleActiveUser(user);
-                                }*/
-                            // }
+                                this.setState({ loading: false });
+                            }
                         }
                     } catch (e) {
                         // Manage exception but not blocking
-                        // this.loadErrorProfile(data, {message: "Bad profile"});
                         handleRemoveProfileToList(userId);
                     }
                 })
@@ -268,9 +238,6 @@ class ImageLog extends React.Component {
     notateProfile = (score) => {
         this.setState({ loading: true });
         // Validate all images
-        /*this.state.images.forEach((image) => {
-            verifyUserImage(image.userId, image.mediaId, image.mediaPath, 'true').then();
-        });*/
         notateUserProfile(this.state.activeUser.id, score)
             .then(() => {
                 // Update user side profile show
@@ -362,13 +329,7 @@ class ImageLog extends React.Component {
         const slides = images.map((item) => {
             return (
                 <CarouselItem onExiting={this.onExiting} onExited={this.onExited} key={item.mediaId}>
-                    <DisplayImage src={
-                        item.enhancedPreSignedUrl ||
-                        item.compressedPreSignedUrl ||
-                        item.originalPreSignedUrl ||
-                        item.compressedUrl ||
-                        item.originalUrl
-                    } height={"300"}  width={""} />
+                    <DisplayImage src={item?.chosenUrl} height={"300"} width={""} />
                 </CarouselItem>
             );
         });

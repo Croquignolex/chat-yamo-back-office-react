@@ -8,7 +8,7 @@ import Error500 from "../Error500";
 import User from "../../models/User";
 import Feedback from "../../models/Feedback";
 import ChatSidebarItem from "./ChatSidebarItem";
-import {twoDigitDisplay} from "../../helpers/helpers";
+import {imageExistsStepByStep, twoDigitDisplay} from "../../helpers/helpers";
 import {
     getCases,
     getUserStatus,
@@ -108,7 +108,8 @@ class ChatSidebar extends React.Component {
 
                         if(!user.isDeleted) {
                             // User profile image
-                            user.setAvatar = await getUserProfileImage(userId);
+                            const avatar = await getUserProfileImage(userId);
+                            user.setAvatar = await imageExistsStepByStep(avatar);
                         }
                     } catch (e) {}
                     feedback.setUser = user;

@@ -15,6 +15,7 @@ import {
     getUserSuspiciousState,
     getSearchFilter
 } from "../../redux/actions/IndependentActions";
+import {imageExistsStepByStep} from "../../helpers/helpers";
 
 class Users extends React.Component {
     constructor(props) {
@@ -49,7 +50,8 @@ class Users extends React.Component {
 
                     if(!user.isDeleted) {
                         // User profile image
-                        user.setAvatar = await getUserProfileImage(user.id);
+                        const avatar = await getUserProfileImage(user.id);
+                        user.setAvatar = await imageExistsStepByStep(avatar);
                     }
                 } catch (e) {}
                 this.setState({ user });

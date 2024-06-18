@@ -68,13 +68,7 @@ class UserImagesDetails extends React.Component {
                         ? <strong className="text-success"><Icon.Check size={20}/> Verified</strong>
                         : <strong className="text-danger"><Icon.X size={20}/> Not verified</strong>
                     }
-                    <DisplayImage src={
-                        item.enhancedPreSignedUrl ||
-                        item.compressedPreSignedUrl ||
-                        item.originalPreSignedUrl ||
-                        item.compressedUrl ||
-                        item.originalUrl
-                    } withPercentage />
+                    <DisplayImage src={item?.chosenUrl} withPercentage />
                 </CarouselItem>
             );
         });

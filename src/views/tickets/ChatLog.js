@@ -9,9 +9,9 @@ import Message from "../../models/Message";
 import ChatLogContent from "./ChatLogContent";
 import ChatInput from "./messages-inputs/ChatInput";
 import {getCaseMessages, getMessageImage} from "../../redux/actions/IndependentActions";
+import {imageExistsStepByStep} from "../../helpers/helpers";
 
 class ChatLog extends React.Component {
-    // props { activeChatID, activeUser, mainSidebar, handleReceiverSidebar }
     constructor(props) {
         super(props);
         this.state = {
@@ -63,8 +63,8 @@ class ChatLog extends React.Component {
     loadMessageImage = (message) => {
         return new Promise((resolve) => {
             getMessageImage(message.userId, message.mediaId)
-                .then(data => {
-                    message.setMedia = data;
+                .then(async data => {
+                    message.setMedia = await imageExistsStepByStep(data);
                     // Update message
                     this.setState((prevState) => {
                         const tempMessages = prevState.messages;

@@ -25,7 +25,7 @@ import {
 
 import Error500 from "../Error500";
 import User from "../../models/User";
-import {imageExists} from "../../helpers/helpers";
+import {imageExistsStepByStep} from "../../helpers/helpers";
 import DisplayImage from "../../components/DisplayImage";
 import FormatStringWithPopHover from "../../components/FormatStringWithPopHover";
 import {
@@ -132,7 +132,7 @@ class ImageLog extends React.Component {
                         // Not concerned in removal conditions
                         try {
                             user.setAppData = await getUserAppData(userId);
-                            user.setSearchFilter = await getSearchFilter(user.id);
+                            user.setSearchFilter = await getSearchFilter(userId);
                             user.setCertified = await getUserIdentity(userId);
                             user.setForceStatus = await getUserStatus(userId);
                             user.setSuspiciousState = await getUserSuspiciousState(userId);
@@ -143,7 +143,8 @@ class ImageLog extends React.Component {
                             handleRemoveProfileToList(userId);
                         } else {
                             // User profile image
-                            user.setAvatar = await getUserProfileImage(userId);
+                            const avatar = await getUserProfileImage(userId);
+                            user.setAvatar = await imageExistsStepByStep(avatar);
 
                             const images = await searchUserImages(userId);
                             const exitingImages = [];
@@ -151,15 +152,8 @@ class ImageLog extends React.Component {
                             for(const image of (images || []))
                             {
                                 try {
-                                    const response = await imageExists(
-                                        image.enhancedPreSignedUrl ||
-                                        image.compressedPreSignedUrl ||
-                                        image.originalPreSignedUrl ||
-                                        image.compressedUrl ||
-                                        image.originalUrl
-                                    );
-
-                                    response && exitingImages.push(image);
+                                    image.chosenUrl = await imageExistsStepByStep(image);
+                                    image.chosenUrl && exitingImages.push(image);
                                 } catch (e) {}
                             }
 
@@ -352,13 +346,7 @@ class ImageLog extends React.Component {
         const slides = images.map((item) => {
             return (
                 <CarouselItem onExiting={this.onExiting} onExited={this.onExited} key={item.mediaId}>
-                    <DisplayImage src={
-                        item.enhancedPreSignedUrl ||
-                        item.compressedPreSignedUrl ||
-                        item.originalPreSignedUrl ||
-                        item.compressedUrl ||
-                        item.originalUrl
-                    } height={"300"}  width={""} />
+                    <DisplayImage src={item?.chosenUrl} height={"300"} width={""} />
                 </CarouselItem>
             );
         });

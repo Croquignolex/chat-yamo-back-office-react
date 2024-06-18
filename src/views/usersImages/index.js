@@ -4,7 +4,7 @@ import * as Icon from "react-feather";
 import Error500 from "../Error500";
 import User from "../../models/User";
 import UserDetails from "../users/UserDetails";
-import {imageExists} from "../../helpers/helpers";
+import {imageExistsStepByStep} from "../../helpers/helpers";
 import UserImagesDetails from "./UserImagesDetails";
 import {Col, Row, Form, Input, Button, Spinner} from "reactstrap";
 import Breadcrumbs from "../../components/@vuexy/breadCrumbs/BreadCrumb";
@@ -50,15 +50,8 @@ class UsersImages extends React.Component {
 
                 for(const image of (data || [])) {
                     try {
-                        const response = await imageExists(
-                            image.enhancedPreSignedUrl ||
-                            image.compressedPreSignedUrl ||
-                            image.originalPreSignedUrl ||
-                            image.compressedUrl ||
-                            image.originalUrl
-                        )
-
-                        response && exitingImages.push(image);
+                        image.chosenUrl = await imageExistsStepByStep(image);
+                        image.chosenUrl && exitingImages.push(image);
                     } catch (e) {}
                 }
 
@@ -81,7 +74,8 @@ class UsersImages extends React.Component {
 
                     if(!user.isDeleted) {
                         // User profile image
-                        user.setAvatar = await getUserProfileImage(search);
+                        const avatar = await getUserProfileImage(search);
+                        user.setAvatar = await imageExistsStepByStep(avatar);
                     }
                 } catch (e) {}
                 this.setState({ user })

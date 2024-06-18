@@ -29,7 +29,7 @@ export default class Message {
     }
 
     set setMedia(image) {
-        this.media = image?.enhancedPreSignedUrl || image?.compressedPreSignedUrl || image?.originalPreSignedUrl;
+        this.media = image;
     }
 
     set setType(type) {

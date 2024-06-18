@@ -6,6 +6,7 @@ import {Button, Card, Spinner, Input, Form} from "reactstrap";
 import Error500 from "../Error500";
 import User from "../../models/User";
 import ImageSidebarItem from "../verifications/ImageSidebarItem";
+import {imageExistsStepByStep} from "../../helpers/helpers";
 import {
     getUserStatus,
     getUserProfile,
@@ -90,7 +91,8 @@ class ImageSidebar extends React.Component {
 
                         if(!user.isDeleted) {
                             // User profile image
-                            user.setAvatar = await getUserProfileImage(userId);
+                            const avatar = await getUserProfileImage(userId);
+                            user.setAvatar = await imageExistsStepByStep(avatar);
                         } else {
                             this.setState({toVerify: this.state.toVerify - 1});
                         }

@@ -9,6 +9,7 @@ import ChatInput from "./inputs/ChatInput";
 import ChatLogContent from "./ChatLogContent";
 import DisplayImage from "../../components/DisplayImage";
 import {getCaseMessages, getMessageImage} from "../../redux/actions/IndependentActions";
+import {imageExistsStepByStep} from "../../helpers/helpers";
 
 class ChatLog extends React.Component {
     // props { activeChatID, activeUser, mainSidebar, handleReceiverSidebar }
@@ -66,9 +67,7 @@ class ChatLog extends React.Component {
         return new Promise((resolve) => {
             getMessageImage(message.userId, message.mediaId || message.videoId)
                 .then(async data => {
-                    message.setMedia = data;
-                    // const isImage = await imageExists(message.media);
-                    // message.type = isImage ? "image" : "video";
+                    message.setMedia = await imageExistsStepByStep(data);
                     message.type = message.mediaId ? "image" : "video";
                     // Update message
                     this.setState((prevState) => {

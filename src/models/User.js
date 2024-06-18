@@ -13,15 +13,7 @@ export default class User {
     }
 
     set setAvatar(image) {
-        const url = (
-            image?.enhancedPreSignedUrl ||
-            image?.compressedPreSignedUrl ||
-            image?.originalPreSignedUrl ||
-            image?.compressedUrl ||
-            image?.originalUrl
-        );
-
-        if(url) this.avatar = url;
+        if(image) this.avatar = image;
     }
 
     set setImages(images) {

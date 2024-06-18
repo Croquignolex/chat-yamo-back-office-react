@@ -324,6 +324,32 @@ export const downloadFile = (fileUrl, filename = '') => {
     })
 };
 
+export const imageExistsStepByStep = (image) => {
+    return new Promise(function(resolve) {
+        imageExists(image?.enhancedPreSignedUrl)
+            .then((chosenUrl) => resolve(chosenUrl))
+            .catch(() => {
+                imageExists(image?.compressedPreSignedUrl)
+                    .then((chosenUrl) => resolve(chosenUrl))
+                    .catch(() => {
+                        imageExists(image?.originalPreSignedUrl)
+                            .then((chosenUrl) => resolve(chosenUrl))
+                            .catch(() => {
+                                imageExists(image?.compressedUrl)
+                                    .then((chosenUrl) => resolve(chosenUrl))
+                                    .catch(() => {
+                                        imageExists(image?.originalUrl)
+                                            .then((chosenUrl) => resolve(chosenUrl))
+                                            .catch(() => {
+                                                resolve(null);
+                                            })
+                                    })
+                            })
+                    })
+            })
+    });
+}
+
 export const imageExists = (url) => {
     return new Promise(function(resolve) {
         const img = new Image();

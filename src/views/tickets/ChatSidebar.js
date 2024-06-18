@@ -1,7 +1,7 @@
 import React from "react";
 import dayjs from "dayjs";
 import * as Icon from "react-feather"
-import {Button, Card, Spinner, FormGroup, Input, Form} from "reactstrap";
+import {Button, Card, Spinner, Input, Form} from "reactstrap";
 import PerfectScrollbar from "react-perfect-scrollbar";
 
 import Error500 from "../Error500";
@@ -9,9 +9,9 @@ import User from "../../models/User";
 import Feedback from "../../models/Feedback";
 import TicketUserItem from "./TicketUserItem";
 import {getCases, getUserProfile, getUserProfileImage} from "../../redux/actions/IndependentActions";
+import {imageExistsStepByStep} from "../../helpers/helpers";
 
 class ChatSidebar extends React.Component {
-    // props { activeChatId, mainSidebar, handleActiveChat, handleUserSidebar }
     constructor(props) {
         super(props);
         this.state = {
@@ -56,7 +56,8 @@ class ChatSidebar extends React.Component {
                     try {
                         if(!user.isDeleted) {
                             // User profile image
-                            user.setAvatar = await getUserProfileImage(userId);
+                            const avatar = await getUserProfileImage(userId);
+                            user.setAvatar = await imageExistsStepByStep(avatar);
                         }
                     } catch (e) {}
                     feedback.setUser = user;
