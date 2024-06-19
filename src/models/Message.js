@@ -16,12 +16,16 @@ export default class Message {
 
     set setImageMedia(media) {
         this.type = 'image';
-        this.media = media;
+        if(media) {
+            this.media = media;
+        }
     }
 
     set setVideoMedia(media) {
         this.type = 'video';
-        this.media = media;
+        if(media) {
+            this.media = media;
+        }
     }
 
     set seRequest(request) {
@@ -29,7 +33,9 @@ export default class Message {
     }
 
     set setMedia(image) {
-        this.media = image;
+        if(image) {
+            this.media = image;
+        } 
     }
 
     set setType(type) {

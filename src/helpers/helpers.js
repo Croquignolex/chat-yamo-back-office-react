@@ -351,13 +351,13 @@ export const imageExistsStepByStep = (image) => {
 }
 
 export const imageExists = (url) => {
-    return new Promise(function(resolve) {
+    return new Promise(function(resolve, reject) {
         const img = new Image();
         img.onload = function() {
             resolve(url);
         }
         img.onerror = function() {
-            resolve(null);
+            reject();
         }
         img.src = url;
     });

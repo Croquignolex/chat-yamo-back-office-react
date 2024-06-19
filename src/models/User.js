@@ -13,7 +13,9 @@ export default class User {
     }
 
     set setAvatar(image) {
-        if(image) this.avatar = image;
+        if(image) {
+            this.avatar = image;
+        }
     }
 
     set setImages(images) {
