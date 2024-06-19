@@ -12,7 +12,6 @@ import {getCaseMessages, getMessageImage} from "../../redux/actions/IndependentA
 import {imageExistsStepByStep} from "../../helpers/helpers";
 
 class ChatLog extends React.Component {
-    // props { activeChatID, activeUser, mainSidebar, handleReceiverSidebar }
     constructor(props) {
         super(props);
         this.state = {
@@ -67,8 +66,10 @@ class ChatLog extends React.Component {
         return new Promise((resolve) => {
             getMessageImage(message.userId, message.mediaId || message.videoId)
                 .then(async data => {
-                    message.setMedia = await imageExistsStepByStep(data);
                     message.type = message.mediaId ? "image" : "video";
+                    message.setMedia = message.mediaId
+                        ? await imageExistsStepByStep(data)
+                        : data
                     // Update message
                     this.setState((prevState) => {
                         const tempMessages = prevState.messages;

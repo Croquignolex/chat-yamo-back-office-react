@@ -7,11 +7,9 @@ export default class Message {
         Object.assign(this, message);
         this.id = message.messageId;
 
-        if(this.mediaId) {
+        if(this.mediaId || this.videoId) {
             this.media = require("../assets/img/unknown-user.png");
         }
-
-        // backofficeUserName
     }
 
     set setImageMedia(media) {
@@ -32,10 +30,10 @@ export default class Message {
         this.request = request;
     }
 
-    set setMedia(image) {
-        if(image) {
-            this.media = image;
-        } 
+    set setMedia(media) {
+        if(media) {
+            this.media = media;
+        }
     }
 
     set setType(type) {

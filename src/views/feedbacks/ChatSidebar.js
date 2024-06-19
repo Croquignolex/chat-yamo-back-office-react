@@ -69,11 +69,6 @@ class ChatSidebar extends React.Component {
     loadData = () => {
         // Init request
         this.setState({ loading: true, error: null, feedbacks: [], search: "" });
-
-        console.log('**********************************************')
-        console.log(this.state.date.format('YYYY-MM-DDTHH:mm:ss'))
-        console.log(this.state.hour)
-
         getCases(this.state.date.format('YYYY-MM-DDTHH:mm:ss'))
             .then(data => {
                 const feedbacks = data?.messages.map(f => new Feedback(f));

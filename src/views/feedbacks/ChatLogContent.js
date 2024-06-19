@@ -93,7 +93,7 @@ const ChatLogContent = ({ activeUser, messages }) => {
     const MediaDisplay = ({message}) => {
         if(message.media) {
             if(message.type === 'video') {
-                return <DisplayVideo src={message.media} withWrapper />;
+                return <DisplayVideo src={message.media} withWrapper objSrc />
             } else {
                 return <DisplayImage src={message.media} withWrapper />;
             }

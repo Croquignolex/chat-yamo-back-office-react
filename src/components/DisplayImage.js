@@ -15,7 +15,7 @@ const DisplayImage = ({src, className, withWrapper, withModal, withPercentage, h
     };
 
     const handleErrorImage = (e) =>{
-        e.target.src = require("../assets/img/unknown-user.png");
+        e.target.src = require("../assets/img/unsupported-image.PNG");
     };
 
     return (

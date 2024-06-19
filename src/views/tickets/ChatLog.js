@@ -49,7 +49,7 @@ class ChatLog extends React.Component {
                     this.setState({ messages }, async () => {
                         for(const message of messages) {
                             // Async user data
-                            if(message.mediaId) {
+                            if(message.mediaId || message.videoId) {
                                 await this.loadMessageImage(message);
                             }
                         }
@@ -62,9 +62,12 @@ class ChatLog extends React.Component {
 
     loadMessageImage = (message) => {
         return new Promise((resolve) => {
-            getMessageImage(message.userId, message.mediaId)
+            getMessageImage(message.userId, message.mediaId || message.videoId)
                 .then(async data => {
-                    message.setMedia = await imageExistsStepByStep(data);
+                    message.type = message.mediaId ? "image" : "video";
+                    message.setMedia = message.mediaId
+                        ? await imageExistsStepByStep(data)
+                        : data
                     // Update message
                     this.setState((prevState) => {
                         const tempMessages = prevState.messages;

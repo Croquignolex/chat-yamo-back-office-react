@@ -2,17 +2,15 @@ import {Modal} from "reactstrap";
 import PropTypes from "prop-types";
 import React, {useState} from 'react';
 import styled from "styled-components";
-// import {generateVideoThumbnailViaUrl} from '@rajesh896/video-thumbnails-generator';
 
 // Wrapper style
 const Wrapper = styled.div`background-image: url(${props => props.src})`;
-const errorImage = require("../assets/img/unknown-user.png");
+const errorImage = require("../assets/img/unsupported-video.png");
 const defaultThumbnail = require("../assets/img/video-icon.png");
 
 // Component
-const DisplayVideo = ({src, type, className, withWrapper, withModal, withPercentage, height, width}) => {
+const DisplayVideo = ({src, type, className, withWrapper, withModal, withPercentage, objSrc, height, width}) => {
     const [modal, setModal] = useState(false);
-    // const [thumbnail, setThumbnail] = useState(defaultThumbnail);
 
     const toggleModal = () => {
         setModal(!modal);
@@ -21,11 +19,6 @@ const DisplayVideo = ({src, type, className, withWrapper, withModal, withPercent
     const handleErrorImage = (e) =>{
         e.target.poster = errorImage;
     };
-
-    /*useEffect(() => {
-        generateVideoThumbnailViaUrl(src, 1)
-            .then((res) => setThumbnail(res))
-    }, [src]);*/
 
     return (
         <>
@@ -57,7 +50,29 @@ const DisplayVideo = ({src, type, className, withWrapper, withModal, withPercent
                 <Modal isOpen={modal} toggle={toggleModal} className="modal-dialog-centered" size="lg">
                     {/*<video autoPlay loop muted style={{pointerEvents: 'none'}} preload="auto" onError={handleErrorImage}>*/}
                     <video autoPlay loop muted controls preload="auto" controlsList="nofullscreen" onError={handleErrorImage}>
-                        {type ? <source src={src} type={type} /> : <source src={src} />}
+                        {objSrc ? (
+                            type ? (
+                                <>
+                                    <source src={src?.enhancedPreSignedUrl} type={type} />
+                                    <source src={src?.compressedPreSignedUrl} type={type} />
+                                    <source src={src?.originalPreSignedUrl} type={type} />
+                                    <source src={src?.compressedUrl} type={type} />
+                                    <source src={src?.originalUrl} type={type} />
+                                </>
+                            ) : (
+                                <>
+                                    <source src={src?.enhancedPreSignedUrl} />
+                                    <source src={src?.compressedPreSignedUrl} />
+                                    <source src={src?.originalPreSignedUrl} />
+                                    <source src={src?.compressedUrl} />
+                                    <source src={src?.originalUrl} />
+                                </>
+                            )
+                        ) : (
+                            type
+                                ? <source src={src} type={type} />
+                                : <source src={src} />
+                        )}
                     </video>
                 </Modal>
             )}
@@ -67,7 +82,10 @@ const DisplayVideo = ({src, type, className, withWrapper, withModal, withPercent
 
 // Prop types definition
 DisplayVideo.propTypes = {
-    src: PropTypes.string,
+    src: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.object
+    ]),
     type: PropTypes.string,
     width: PropTypes.string,
     height: PropTypes.string,
@@ -84,7 +102,8 @@ DisplayVideo.defaultProps = {
     className: "",
     withModal: true,
     withWrapper: false,
-    withPercentage: false
+    withPercentage: false,
+    objSrc: false,
 }
 
 export default DisplayVideo;
