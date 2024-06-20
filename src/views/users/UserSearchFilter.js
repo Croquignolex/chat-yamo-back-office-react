@@ -30,8 +30,16 @@ class UserSearchFilter extends React.Component {
                         <td className="font-weight-bold">{this.props.searchFilter?.city}</td>
                     </tr>
                     <tr>
+                        <td>All cities</td>
+                        <td className="font-weight-bold">{this.props.searchFilter?.allCities}</td>
+                    </tr>
+                    <tr>
                         <td>Country</td>
                         <td className="font-weight-bold">{this.props.searchFilter?.country}</td>
+                    </tr>
+                    <tr>
+                        <td>All countries</td>
+                        <td className="font-weight-bold">{this.props.searchFilter?.allCountries}</td>
                     </tr>
                     <tr>
                         <td>Home Country</td>
