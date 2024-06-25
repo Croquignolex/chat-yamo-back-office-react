@@ -117,8 +117,12 @@ export const getUserImagesForNotation = async (date) => {
 };
 
 export const getUserProfileImagesForNotation = async (week) => {
+    const config = {headers: {
+            "CHAT-ET-YAMO-MEDIA-SERVICE-VIDEO-MEDIA": "true",
+        }
+    };
     // return makeRequest('get', NOTATIONS.GET_PROFILE_IMAGES + '?numberOfWeek =' + week);
-    return makeRequest('get', NOTATIONS.GET_PROFILE_IMAGES);
+    return makeRequest('get', NOTATIONS.GET_PROFILE_IMAGES, null, config);
 };
 
 export const getProfilesToDoubleCheck = async (categories, dates) => {
