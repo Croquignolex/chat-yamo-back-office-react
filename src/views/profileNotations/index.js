@@ -158,36 +158,43 @@ class ImageVerification extends React.Component {
 
     handleRemoveProfileToList = (userId) => {
         // Init request
-        this.setState({ loading: true, error: null, search: ""});
+        this.setState({loading: true, error: null, search: ""});
 
         const users = this.state.users;
-        const filterUsers = users.filter(user => (user.id !== userId));
 
-        const length = filterUsers.length;
+        try {
+            if(users && users.length > 0) {
+                const filterUsers = users.filter(user => (user?.id !== userId));
 
-        let currentIndex = 0;
-        let i = 0;
+                const length = filterUsers.length;
 
-        users.forEach(user => {
-            if(user.id === userId) currentIndex = i;
-            i++;
-        });
+                let currentIndex = 0;
+                let i = 0;
 
-        let nextIndex = this.state.lastActionNext ? currentIndex : currentIndex - 1;
+                users.forEach(user => {
+                    if(user?.id === userId) currentIndex = i;
+                    i++;
+                });
 
-        if(nextIndex < 0) nextIndex = 0;
-        else if(nextIndex > (length - 1)) nextIndex = (length - 1);
+                let nextIndex = this.state.lastActionNext ? currentIndex : currentIndex - 1;
 
-        const activeUser = filterUsers[nextIndex];
+                if(nextIndex < 0) nextIndex = 0;
+                else if(nextIndex > (length - 1)) nextIndex = (length - 1);
 
-        this.setState({
-            toVerify: filterUsers.length,
-            users: filterUsers,
-            activeUser,
-            loading: false,
-            activeUserIndex: nextIndex,
-            activeChatID: activeUser.id
-        });
+                const activeUser = filterUsers[nextIndex];
+
+                this.setState({
+                    toVerify: filterUsers.length,
+                    users: filterUsers,
+                    activeUser,
+                    loading: false,
+                    activeUserIndex: nextIndex,
+                    activeChatID: activeUser?.id
+                });
+            } else this.setState({loading: false, activeUser: null});
+        } catch (e) {
+            this.setState({loading: false});
+        }
     };
 
     handleSelectedDate = (selectedDate) => {

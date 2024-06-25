@@ -45,6 +45,7 @@ import {
     deleteUserProfileDescription,
     getSearchFilter
 } from "../../redux/actions/IndependentActions";
+import DisplayVideo from "../../components/DisplayVideo";
 
 class ImageLog extends React.Component {
     constructor(props) {
@@ -148,8 +149,12 @@ class ImageLog extends React.Component {
                             for(const image of (images || []))
                             {
                                 try {
-                                    image.chosenUrl = await imageExistsStepByStep(image);
-                                    image.chosenUrl && exitingImages.push(image);
+                                    if(!image.isVideo) {
+                                        image.chosenUrl = await imageExistsStepByStep(image);
+                                        image.chosenUrl && exitingImages.push(image);
+                                    } else {
+                                        exitingImages.push(image);
+                                    }
                                 } catch (e) {}
                             }
 
@@ -329,7 +334,10 @@ class ImageLog extends React.Component {
         const slides = images.map((item) => {
             return (
                 <CarouselItem onExiting={this.onExiting} onExited={this.onExited} key={item.mediaId}>
-                    <DisplayImage src={item?.chosenUrl} height={"300"} width={""} />
+                    {item.isVideo
+                        ? <DisplayVideo src={item} height={"200"} width={""} objSrc />
+                        : <DisplayImage src={item?.chosenUrl} height={"300"} width={""} />
+                    }
                 </CarouselItem>
             );
         });

@@ -172,7 +172,8 @@ export const getMessageImage = async (userId, mediaId) => {
 
 export const searchUserImages = async (userId) => {
     const config = {headers: {
-            "CHAT-ET-YAMO-MEDIA-SERVICE-ALL-USER-IMAGES": "true"
+            "CHAT-ET-YAMO-MEDIA-SERVICE-ALL-USER-IMAGES": "true",
+            "CHAT-ET-YAMO-MEDIA-SERVICE-VIDEO-MEDIA": "true",
         }
     };
     const url = joinBaseUrlWithParams(MEDIA.USERS.IMAGES, [{param: 'userId', value: userId}]);
