@@ -18,6 +18,7 @@ import DisplayImage from "../../components/DisplayImage";
 import {
     getConversation,
     getFreeConversation,
+    getPendingResLikes,
     getScore,
     getUserMetaData,
     getUserSouscriptions,
@@ -36,6 +37,7 @@ class UserDetails extends React.Component {
             score: 0,
             activeCon: 0,
             vidDates: 0,
+            penResLikes: 0,
             moreCon: false,
             subscription: "",
             townEventModal: {show: false, title: ""},
@@ -53,6 +55,7 @@ class UserDetails extends React.Component {
         this.handleConversation();
         this.handleSubscription();
         this.handleVideoDates();
+        this.handlePendingResLikes();
     }
 
     handleFreeConversation = () => {
@@ -106,6 +109,19 @@ class UserDetails extends React.Component {
                     this.setState({ vidDates: data?.count })
                 })
                 .catch(() => this.setState({ vidDates: '' }));
+        }
+    }
+
+    handlePendingResLikes = () => {
+        const id = this.props.user?.id;
+        this.setState({ penResLikes: 0 });
+
+        if(id) {
+            getPendingResLikes(id)
+                .then(data => {
+                    this.setState({ penResLikes: data?.count })
+                })
+                .catch(() => this.setState({ penResLikes: '' }));
         }
     }
 
@@ -193,7 +209,7 @@ class UserDetails extends React.Component {
     render() {
 
         const {
-            activeCon, moreCon, vidDates,
+            activeCon, moreCon, vidDates, penResLikes,
             metaData, score, freeConversation, subscription, souscriptionModal,
             townEventModal, statusHistoryModal, appDataModal, searchFilterModal
         } = this.state;
@@ -207,9 +223,9 @@ class UserDetails extends React.Component {
                     <CardBody>
                         <div className="header-profile-sidebar">
                             <div className="avatar">
-                                <DisplayImage src={user.imageSrc} height="70" width="70" />
+                                <DisplayImage src={user?.imageSrc} height="70" width="70" />
                             </div>
-                            {!user.isBlocked
+                            {!user?.isBlocked
                                 ? <Icon.Unlock size={20} className="text-success" />
                                 : <Icon.Lock size={20} className="text-danger" />
                             }
@@ -220,7 +236,7 @@ class UserDetails extends React.Component {
                                 <div className="user-info-title font-weight-bold">
                                     Premium
                                 </div>
-                                {(user.isPremium)
+                                {(user?.isPremium)
                                     ? <div className="font-weight-bold text-success">Yes</div>
                                     : <div className="font-weight-bold text-danger">No</div>
                                 }
@@ -246,7 +262,7 @@ class UserDetails extends React.Component {
                                 <div className="user-info-title font-weight-bold">
                                     Verified
                                 </div>
-                                {(user.verified)
+                                {(user?.verified)
                                     ? <div className="font-weight-bold text-success">Yes</div>
                                     : <div className="font-weight-bold text-danger">No</div>
                                 }
@@ -255,7 +271,7 @@ class UserDetails extends React.Component {
                                 <div className="user-info-title font-weight-bold">
                                     Blocked
                                 </div>
-                                {(user.isBlocked)
+                                {(user?.isBlocked)
                                     ? <div className="font-weight-bold text-danger">Yes</div>
                                     : <div className="font-weight-bold text-success">No</div>
                                 }
@@ -264,7 +280,7 @@ class UserDetails extends React.Component {
                                 <div className="user-info-title font-weight-bold">
                                     Deleted
                                 </div>
-                                {(user.isDeleted)
+                                {(user?.isDeleted)
                                     ? <div className="font-weight-bold text-danger">Yes</div>
                                     : <div className="font-weight-bold text-success">No</div>
                                 }
@@ -273,7 +289,7 @@ class UserDetails extends React.Component {
                                 <div className="user-info-title font-weight-bold">
                                     Blacklisted
                                 </div>
-                                {(user.isBlacklisted)
+                                {(user?.isBlacklisted)
                                     ? <div className="font-weight-bold text-danger">Yes</div>
                                     : <div className="font-weight-bold text-success">No</div>
                                 }
@@ -367,9 +383,15 @@ class UserDetails extends React.Component {
                             </div>
                             <div className="d-flex user-info">
                                 <div className="user-info-title font-weight-bold">
+                                    Pending received likes
+                                </div>
+                                <div className="font-weight-bold text-primary">{penResLikes}</div>
+                            </div>
+                            <div className="d-flex user-info">
+                                <div className="user-info-title font-weight-bold">
                                     End subcription
                                 </div>
-                                {(user.verified)
+                                {(user?.verified)
                                     ? <div className="font-weight-bold text-success">{user.subscriptionEndDate}</div>
                                     : <div className="font-weight-bold text-danger">{user.subscriptionEndDate}</div>
                                 }
@@ -384,7 +406,7 @@ class UserDetails extends React.Component {
                                 <div className="user-info-title font-weight-bold">
                                     User ID
                                 </div>
-                                <div className="font-weight-bold text-primary">{user.id}</div>
+                                <div className="font-weight-bold text-primary">{user?.id}</div>
                             </div>
                             {!(this.props.simplify) && (
                                 <>

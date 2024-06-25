@@ -18,6 +18,7 @@ import UserSouscriptions from "../views/users/UserSouscriptions";
 import {
     getConversation,
     getFreeConversation,
+    getPendingResLikes,
     getScore,
     getUserMetaData,
     getUserSouscriptions,
@@ -39,6 +40,7 @@ class UserProfile extends React.Component {
             score: 0,
             activeCon: 0,
             vidDates: 0,
+            penResLikes: 0,
             moreCon: false,
             subscription: "",
             townEventModal: {show: false, title: ""},
@@ -56,6 +58,7 @@ class UserProfile extends React.Component {
         this.handleSubscription();
         this.handleConversation();
         this.handleVideoDates();
+        this.handlePendingResLikes();
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
@@ -66,6 +69,7 @@ class UserProfile extends React.Component {
             this.handleSubscription();
             this.handleConversation();
             this.handleVideoDates();
+            this.handlePendingResLikes();
         }
     }
 
@@ -130,6 +134,19 @@ class UserProfile extends React.Component {
                     this.setState({ vidDates: data?.count })
                 })
                 .catch(() => this.setState({ vidDates: '' }));
+        }
+    }
+
+    handlePendingResLikes = () => {
+        const id = this.state.activeUser?.id || this.state.activeUser?.userId;
+        this.setState({ penResLikes: 0 });
+
+        if(id) {
+            getPendingResLikes(id)
+                .then(data => {
+                    this.setState({ penResLikes: data?.count })
+                })
+                .catch(() => this.setState({ penResLikes: '' }));
         }
     }
 
@@ -212,14 +229,14 @@ class UserProfile extends React.Component {
 
     render() {
         const {
-            activeCon, moreCon, vidDates,
+            activeCon, moreCon, vidDates, penResLikes,
             activeUser, metaData, score, freeConversation, subscription, souscriptionModal,
             townEventModal, statusHistoryModal, appDataModal, searchFilterModal
         } = this.state;
         const { receiverProfile, handleReceiverSidebar } = this.props;
 
         if (!activeUser) return null;
-// console.log({metaData})
+
         return (
             <>
                 <div className={`user-profile-sidebar ${receiverProfile ? "show" : null}`}>
@@ -385,6 +402,12 @@ class UserProfile extends React.Component {
                                     Scheduled video dates
                                 </div>
                                 <div className="font-weight-bold text-primary">{vidDates}</div>
+                            </div>
+                            <div className="d-flex user-info">
+                                <div className="user-info-title font-weight-bold">
+                                    Pending received likes
+                                </div>
+                                <div className="font-weight-bold text-primary">{penResLikes}</div>
                             </div>
                             <div className="d-flex user-info">
                                 <div className="user-info-title font-weight-bold">

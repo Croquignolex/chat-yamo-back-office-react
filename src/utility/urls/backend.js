@@ -94,6 +94,7 @@ export const CHATROOM = {
 export const PROPOSAL = {
     MATCHES_COUNT: '/proposal/backoffice/users/{userId}/adMatchesCount',
     SEARCH_FILTER: '/proposal/backoffice/profile/{userId}/searchFilter',
+    PENDING_REL_COUNT: '/proposal/backoffice/profile/{userId}/pendingReceivedRelationshipsCount',
 };
 
 const BASE = '';

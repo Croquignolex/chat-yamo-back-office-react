@@ -44,6 +44,11 @@ export const getVideoDates = async (userId) => {
     return makeRequest('get', url);
 };
 
+export const getPendingResLikes = async (userId) => {
+    const url = joinBaseUrlWithParams(PROPOSAL.PENDING_REL_COUNT, [{param: 'userId', value: userId}]);
+    return makeRequest('get', url);
+};
+
 export const getCaseMessages = async (userId) => {
     const url = joinBaseUrlWithParams(FEEDBACKS.GET_ONE, [{param: 'userId', value: userId}]);
     return makeRequest('get', url);
