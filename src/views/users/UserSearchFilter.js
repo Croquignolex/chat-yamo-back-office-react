@@ -31,7 +31,12 @@ class UserSearchFilter extends React.Component {
                     </tr>
                     <tr>
                         <td>All cities</td>
-                        <td className="font-weight-bold">{this.props.searchFilter?.allCities}</td>
+                        <td className="font-weight-bold">
+                        {(this.props.searchFilter?.allCities)
+                            ? <div className="text-success">True</div>
+                            : <div className="text-danger">False</div>
+                        }
+                        </td>
                     </tr>
                     <tr>
                         <td>Country</td>
@@ -39,7 +44,12 @@ class UserSearchFilter extends React.Component {
                     </tr>
                     <tr>
                         <td>All countries</td>
-                        <td className="font-weight-bold">{this.props.searchFilter?.allCountries}</td>
+                        <td className="font-weight-bold">
+                        {(this.props.searchFilter?.allCountries)
+                            ? <div className="text-success">True</div>
+                            : <div className="text-danger">False</div>
+                        }
+                        </td>
                     </tr>
                     <tr>
                         <td>Home Country</td>
