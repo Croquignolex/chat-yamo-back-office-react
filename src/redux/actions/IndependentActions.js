@@ -155,6 +155,16 @@ export const getUserProfileImage = async (userId) => {
     return makeRequest('get', url, null, config);
 };
 
+export const getUserProfileImageOrVideo = async (userId) => {
+    const config = {headers: {
+            "CHAT-ET-YAMO-MEDIA-SERVICE-ALL-USER-IMAGES": "true",
+            "CHAT-ET-YAMO-MEDIA-SERVICE-VIDEO-MEDIA": "true",
+        }
+    };
+    const url = joinBaseUrlWithParams(MEDIA.USERS.GET_ONE, [{param: 'userId', value: userId}]);
+    return makeRequest('get', url, null, config);
+};
+
 export const getMessageImage = async (userId, mediaId) => {
     const config = {headers: {
             "CHAT-ET-YAMO-MEDIA-SERVICE-ALL-USER-IMAGES": "true"

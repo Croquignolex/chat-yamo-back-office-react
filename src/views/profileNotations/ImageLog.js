@@ -28,6 +28,7 @@ import User from "../../models/User";
 import {imageExistsStepByStep} from "../../helpers/helpers";
 import DisplayImage from "../../components/DisplayImage";
 import FormatStringWithPopHover from "../../components/FormatStringWithPopHover";
+import DisplayVideo from "../../components/DisplayVideo";
 import {
     blockUser,
     reportUser,
@@ -40,12 +41,10 @@ import {
     searchUserImages,
     notateUserProfile,
     updateUserProfile,
-    getUserProfileImage,
     getUserSuspiciousState,
     deleteUserProfileDescription,
-    getSearchFilter
+    getSearchFilter, getUserProfileImageOrVideo
 } from "../../redux/actions/IndependentActions";
-import DisplayVideo from "../../components/DisplayVideo";
 
 class ImageLog extends React.Component {
     constructor(props) {
@@ -115,24 +114,21 @@ class ImageLog extends React.Component {
 
     loadData = () => {
         const {activeUser, handleActiveUser, handleRemoveProfileToList} = this.props;
-        if(activeUser !== null) {
-            this.setState({ loading: true, error: null, images: []});
+        if((activeUser !== null) && activeUser?.id) {
+            this.setState({loading: true, error: null, images: []});
             const userId = activeUser.id;
             getUserProfile(userId)
                 .then(async data => {
                     // Make user as an object
                     const user = new User(data);
-
                     try {
                         // Not concerned in removal conditions
                         try {
-                            // user.setStatus = await getUserStatus(userId);
                             user.setAppData = await getUserAppData(userId);
                             user.setSearchFilter = await getSearchFilter(userId);
                             user.setCertified = await getUserIdentity(userId);
                             user.setForceStatus = await getUserStatus(userId);
                             user.setSuspiciousState = await getUserSuspiciousState(userId);
-
                         } catch (e) {}
 
                         if(user.isDeleted) {
@@ -140,8 +136,8 @@ class ImageLog extends React.Component {
                             handleRemoveProfileToList(userId);
                         } else {
                             // User profile image
-                            const avatar = await getUserProfileImage(userId);
-                            user.setAvatar = await imageExistsStepByStep(avatar);
+                            const avatar = await getUserProfileImageOrVideo(userId);
+                            user.setAvatar = avatar?.isVideo ? avatar : await imageExistsStepByStep(avatar);
 
                             const images = await searchUserImages(userId);
                             const exitingImages = [];
@@ -179,26 +175,26 @@ class ImageLog extends React.Component {
                     } catch (e) {
                         // Manage exception but not blocking
                         handleRemoveProfileToList(userId);
+                        this.setState({ loading: false });
                     }
                 })
                 .catch((error) => {
                     this.loadErrorProfile(activeUser, error);
-                    this.setState({ loading: false });
                 });
         }
     };
 
     loadErrorProfile = (activeUser, error) => {
         const {handleActiveUser} = this.props;
-        console.log("error ", error);
         const user = new User(activeUser);
         user.setImages = [{mediaId: null, originalUrl: require("../../assets/img/no-image.png")}]
         this.setState({
             images: user.images,
             activeIndex: 0,
             profileData: {},
-            activeUser: user,
-            error
+            activeUser: null,
+            error,
+            loading: false
         });
         handleActiveUser(user);
     };
@@ -329,8 +325,9 @@ class ImageLog extends React.Component {
     };
 
     render() {
-        const { activeIndex, profileData, images } = this.state;
+        const { activeIndex, profileData, images, error } = this.state;
         const { activeUser, handleReceiverSidebar, showPreviousNavigation, showNextNavigation, handleChangeUser, toVerify, activeUserIndex } = this.props;
+
         const slides = images.map((item) => {
             return (
                 <CarouselItem onExiting={this.onExiting} onExited={this.onExited} key={item.mediaId}>
@@ -342,7 +339,7 @@ class ImageLog extends React.Component {
             );
         });
 
-        if(this.props.error !== null) {
+        if(this.props.error !== null || error !== null) {
             return (
                 <div className="content-right float-left width-100-percent">
                     <div className="chat-app-window">
@@ -354,7 +351,7 @@ class ImageLog extends React.Component {
             )
         }
 
-        if(this.props.activeUser === null) {
+        if(this.props.activeUser === null || this.state.images?.length === 0) {
             return (
                 <div className="content-right float-left width-100-percent">
                     <div className="chat-app-window">
@@ -388,6 +385,20 @@ class ImageLog extends React.Component {
             )
         }
 
+        const ProfileImage = () => (
+            <div className="avatar user-profile-toggle m-0 m-0 mr-1 align-content-start">
+                {(activeUser?.avatar?.isVideo) ? (
+                    (activeUser.greetingText)
+                        ? <DisplayVideo src={activeUser?.avatar} withModal={false} width={"50"} height={"50"} objSrc />
+                        : <DisplayVideo src={activeUser?.avatar} withModal={false} objSrc />
+                ) : (
+                    (activeUser.greetingText)
+                        ? <DisplayImage src={activeUser?.avatar} withModal={false} width={"50"} height={"50"} />
+                        : <DisplayImage src={activeUser?.avatar} withModal={false} />
+                )}
+            </div>
+        );
+
         return (
             <div className="content-right float-left width-100-percent">
                 <div className="chat-app-window">
@@ -396,12 +407,7 @@ class ImageLog extends React.Component {
                             <header className="chat_header px-1">
                                 <div className="d-flex align-items-center justify-content-between">
                                     <div className="d-flex flex-1">
-                                        <div className="avatar user-profile-toggle m-0 m-0 mr-1 align-content-start">
-                                            {(activeUser.greetingText)
-                                                ? <DisplayImage src={activeUser?.avatar} withModal={false} width={"50"} height={"50"} />
-                                                : <DisplayImage src={activeUser?.avatar} withModal={false} />
-                                            }
-                                        </div>
+                                        <ProfileImage />
                                         {(this.state.error) ? <h6 className="text-danger pt-1">User not found</h6> : (
                                             <>
                                                 <h6 className="align-content-start">
