@@ -110,6 +110,11 @@ class ImageLog extends React.Component {
             this.loadData();
             this.scrollToBottom();
         }
+        if (prevProps.toVerify !== this.props.toVerify) {
+            if(this.props.toVerify === 0) {
+                this.setState({ loading: false });
+            }
+        }
     }
 
     loadData = () => {
@@ -175,7 +180,6 @@ class ImageLog extends React.Component {
                     } catch (e) {
                         // Manage exception but not blocking
                         handleRemoveProfileToList(userId);
-                        this.setState({ loading: false });
                     }
                 })
                 .catch((error) => {
@@ -185,7 +189,7 @@ class ImageLog extends React.Component {
     };
 
     loadErrorProfile = (activeUser, error) => {
-        const {handleActiveUser} = this.props;
+        const {handleActiveUser, clear} = this.props;
         const user = new User(activeUser);
         user.setImages = [{mediaId: null, originalUrl: require("../../assets/img/no-image.png")}]
         this.setState({
@@ -197,6 +201,7 @@ class ImageLog extends React.Component {
             loading: false
         });
         handleActiveUser(user);
+        clear();
     };
 
     scrollToBottom = () => {
@@ -339,6 +344,23 @@ class ImageLog extends React.Component {
             );
         });
 
+        if(this.state.loading || this.props.loading) {
+            return (
+                <div className="content-right float-left width-100-percent">
+                    <div className="chat-app-window">
+                        <div className={`start-chat-area d-flex`}>
+                            <span className="mb-1 start-chat-icon">
+                                <Image size={50} />
+                            </span>
+                            <h4 className="py-50 px-1 sidebar-toggle start-chat-text">
+                                <Spinner color="primary" />
+                            </h4>
+                        </div>
+                    </div>
+                </div>
+            )
+        }
+
         if(this.props.error !== null || error !== null) {
             return (
                 <div className="content-right float-left width-100-percent">
@@ -361,23 +383,6 @@ class ImageLog extends React.Component {
                             </span>
                             <h4 className="py-50 px-1 sidebar-toggle start-chat-text">
                                 No data found
-                            </h4>
-                        </div>
-                    </div>
-                </div>
-            )
-        }
-
-        if(this.state.loading || this.props.loading) {
-            return (
-                <div className="content-right float-left width-100-percent">
-                    <div className="chat-app-window">
-                        <div className={`start-chat-area d-flex`}>
-                            <span className="mb-1 start-chat-icon">
-                                <Image size={50} />
-                            </span>
-                            <h4 className="py-50 px-1 sidebar-toggle start-chat-text">
-                                <Spinner color="primary" />
                             </h4>
                         </div>
                     </div>

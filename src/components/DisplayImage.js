@@ -57,7 +57,10 @@ const DisplayImage = ({src, className, withWrapper, withModal, withPercentage, h
 
 // Prop types definition
 DisplayImage.propTypes = {
-    src: PropTypes.string,
+    src: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.object
+    ]),
     width: PropTypes.string,
     height: PropTypes.string,
     withModal: PropTypes.bool,

@@ -162,45 +162,45 @@ class ImageVerification extends React.Component {
 
         const users = this.state.users;
 
-        try {
-            if(users && users.length > 0) {
-                const filterUsers = users.filter(user => (user?.id !== userId));
+        if(users && users.length > 1) {
+            const filterUsers = users.filter(user => (user?.id !== userId));
 
-                const length = filterUsers.length;
+            const length = filterUsers.length;
 
-                let currentIndex = 0;
-                let i = 0;
+            let currentIndex = 0;
+            let i = 0;
 
-                users.forEach(user => {
-                    if(user?.id === userId) currentIndex = i;
-                    i++;
-                });
+            users.forEach(user => {
+                if(user?.id === userId) currentIndex = i;
+                i++;
+            });
 
-                let nextIndex = this.state.lastActionNext ? currentIndex : currentIndex - 1;
+            let nextIndex = this.state.lastActionNext ? currentIndex : currentIndex - 1;
 
-                if(nextIndex < 0) nextIndex = 0;
-                else if(nextIndex > (length - 1)) nextIndex = (length - 1);
+            if(nextIndex < 0) nextIndex = 0;
+            else if(nextIndex > (length - 1)) nextIndex = (length - 1);
 
-                const activeUser = filterUsers[nextIndex];
+            const activeUser = filterUsers[nextIndex];
 
-                this.setState({
-                    toVerify: filterUsers.length,
-                    users: filterUsers,
-                    activeUser,
-                    loading: false,
-                    activeUserIndex: nextIndex,
-                    activeChatID: activeUser?.id
-                });
-            } else this.setState({loading: false, activeUser: null});
-        } catch (e) {
-            this.setState({loading: false});
-        }
+            this.setState({
+                toVerify: filterUsers.length,
+                users: filterUsers,
+                activeUser,
+                loading: false,
+                activeUserIndex: nextIndex,
+                activeChatID: activeUser?.id
+            });
+        } else this.clear();
     };
 
     handleSelectedDate = (selectedDate) => {
         const date = dayjs(selectedDate).format("M");
         this.setState({selectedDate});
         this.loadData(date);
+    };
+
+    clear = () => {
+        this.setState({toVerify: 0, users: [], loading: false, activeUser: null, activeUserIndex: 0, activeChatID: 0});
     };
  
   render() {
@@ -238,6 +238,7 @@ class ImageVerification extends React.Component {
             activeUserIndex={activeUserIndex}
             toVerify={toVerify}
             date={toVerify}
+            clear={this.clear}
             showPreviousNavigation={activeUserIndex > 0}
             showNextNavigation={activeUserIndex < (users.length - 1)}
             handleChangeUser={this.handleChangeUser}
