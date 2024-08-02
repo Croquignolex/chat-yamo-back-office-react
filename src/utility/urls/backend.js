@@ -49,6 +49,7 @@ export const USERS = {
     GET_ONE: '/profile/{userId}',
     GET_ONE_V2: '/profile/v2/{userId}',
     SEARCH: '/profile/backoffice/checkuser',
+    LIFE_STYLE: '/profile/backoffice/{userId}/metadata',
 
     BLOCK: '/authentication/user/{userId}/block',
     STATUS: '/authentication/backoffice/user/{userId}/status',

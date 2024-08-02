@@ -16,7 +16,7 @@ import {
     getUserIdentity,
     getUserProfileImage,
     getUserSuspiciousState,
-    getSearchFilter
+    getSearchFilter, getUserLifeStyle
 } from "../../redux/actions/IndependentActions";
 
 class ImageSidebar extends React.Component {
@@ -89,6 +89,7 @@ class ImageSidebar extends React.Component {
                         user.setStatus = await getUserStatus(user.id);
                         user.setAppData = await getUserAppData(user.id);
                         user.setSearchFilter = await getSearchFilter(user.id);
+                        user.setLifeStyle = await getUserLifeStyle(user.id);
                         user.setCertified = await getUserIdentity(user.id);
                         user.setSuspiciousState = await getUserSuspiciousState(user.id);
 

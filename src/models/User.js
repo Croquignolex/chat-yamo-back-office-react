@@ -117,6 +117,35 @@ export default class User {
         });
     }
 
+    set setLifeStyle(data) {
+        this.lifeStyle = {
+            userId: data.userId,
+            size: data.size,
+            shape: data.shape,
+            wayOfLiving: data.wayOfLiving,
+            activity: data.activity,
+            levelOfEducation: data.levelOfEducation,
+            childrenNumber: data.childrenNumber,
+            lookingFor: data.lookingFor,
+            smokingLevel: data.smokingLevel,
+            alcoholLevel: data.alcoholLevel,
+            religion: data.religion,
+            language: data.language,
+            // sizeInCM: 0, // à ignorer
+            musicGenre: data.musicGenre,
+            firstDateBeLike: data.firstDateBeLike,
+            followingDatesBeLike: data.followingDatesBeLike,
+            kissMetric: data.kissMetric,
+            aboutFuture: data.aboutFuture,
+            socialMood: data.socialMood,
+            children: data.children,
+            travels: data.travels,
+            countriesVisited: data.countriesVisited,
+            nextCountryToVisit: data.nextCountryToVisit,
+            interests: data.interests
+        };
+    }
+
     get isCertified() {
         return this.certified;
     }

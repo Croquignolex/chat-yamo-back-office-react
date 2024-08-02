@@ -15,6 +15,7 @@ import UserAppData from "../views/users/UserAppData";
 import UserTownEvents from "../views/users/UserTownEvents";
 import UserStatusHistory from "../views/users/UserStatusHistory";
 import UserSouscriptions from "../views/users/UserSouscriptions";
+import UserLifeStyle from "../views/users/UserLifeStyle";
 import {
     getConversation,
     getFreeConversation,
@@ -48,6 +49,7 @@ class UserProfile extends React.Component {
             statusHistoryModal: {show: false, title: ""},
             appDataModal: {show: false, title: ""},
             searchFilterModal: {show: false, title: ""},
+            lifeStyleModal: {show: false, title: ""},
         }
     }
 
@@ -218,7 +220,7 @@ class UserProfile extends React.Component {
         }
     };
 
-    toggleSearchFilter = () => {
+    toggleSearchFilterModal = () => {
         const {searchFilterModal, activeUser} = this.state;
         if(searchFilterModal.show) this.setState({searchFilterModal: {...searchFilterModal, show: false}});
         else {
@@ -227,11 +229,20 @@ class UserProfile extends React.Component {
         }
     };
 
+    toggleLifeStyleModal = () => {
+        const {lifeStyleModal, activeUser} = this.state;
+        if(lifeStyleModal.show) this.setState({lifeStyleModal: {...lifeStyleModal, show: false}});
+        else {
+            const title = activeUser?.isDeleted ? "Deleted user" : `${activeUser?.name} life style`;
+            this.setState({lifeStyleModal: {show: true, title}});
+        }
+    };
+
     render() {
         const {
             activeCon, moreCon, vidDates, penResLikes,
             activeUser, metaData, score, freeConversation, subscription, souscriptionModal,
-            townEventModal, statusHistoryModal, appDataModal, searchFilterModal
+            townEventModal, statusHistoryModal, appDataModal, searchFilterModal, lifeStyleModal
         } = this.state;
         const { receiverProfile, handleReceiverSidebar } = this.props;
 
@@ -480,8 +491,13 @@ class UserProfile extends React.Component {
                                     <Button color="info" onClick={this.toggleAppDataModal} className="mt-50">
                                         App Data
                                     </Button>
-                                    <Button color="info" onClick={this.toggleSearchFilter} className="mt-50 ml-50">
+                                    <Button color="info" onClick={this.toggleSearchFilterModal} className="mt-50 ml-50">
                                         Search Filter
+                                    </Button>
+                                </div>
+                                <div className="mt-50 text-center">
+                                    <Button color="info" onClick={this.toggleLifeStyleModal} className="mt-50">
+                                        Life Style
                                     </Button>
                                 </div>
                             </div>
@@ -500,8 +516,11 @@ class UserProfile extends React.Component {
                 <FormModal small modal={appDataModal} toggleModal={this.toggleAppDataModal}>
                     <UserAppData appData={activeUser?.appData} />
                 </FormModal>
-                <FormModal small modal={searchFilterModal} toggleModal={this.toggleSearchFilter}>
+                <FormModal small modal={searchFilterModal} toggleModal={this.toggleSearchFilterModal}>
                     <UserSearchFilter searchFilter={activeUser?.searchFilter} />
+                </FormModal>
+                <FormModal small modal={lifeStyleModal} toggleModal={this.toggleLifeStyleModal}>
+                    <UserLifeStyle lifeStyle={activeUser?.lifeStyle} />
                 </FormModal>
             </>
         )

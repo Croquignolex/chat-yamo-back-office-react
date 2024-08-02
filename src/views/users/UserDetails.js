@@ -15,6 +15,7 @@ import FormModal from "../../components/FormModal";
 import UserSouscriptions from "./UserSouscriptions";
 import UserStatusHistory from "./UserStatusHistory";
 import DisplayImage from "../../components/DisplayImage";
+import UserLifeStyle from "./UserLifeStyle";
 import {
     getConversation,
     getFreeConversation,
@@ -45,6 +46,7 @@ class UserDetails extends React.Component {
             statusHistoryModal: {show: false, title: ""},
             appDataModal: {show: false, title: ""},
             searchFilterModal: {show: false, title: ""},
+            lifeStyleModal: {show: false, title: ""},
         }
     }
 
@@ -196,7 +198,7 @@ class UserDetails extends React.Component {
         }
     };
 
-    toggleSearchFilter = () => {
+    toggleSearchFilterModal = () => {
         const {searchFilterModal} = this.state;
         const { user } = this.props;
         if(searchFilterModal.show) this.setState({searchFilterModal: {...searchFilterModal, show: false}});
@@ -206,12 +208,22 @@ class UserDetails extends React.Component {
         }
     };
 
+    toggleLifeStyleModal = () => {
+        const {lifeStyleModal} = this.state;
+        const { user } = this.props;
+        if(lifeStyleModal.show) this.setState({lifeStyleModal: {...lifeStyleModal, show: false}});
+        else {
+            const title = user?.isDeleted ? "Deleted user" : `${user?.name} life style`;
+            this.setState({lifeStyleModal: {show: true, title}});
+        }
+    };
+
     render() {
 
         const {
             activeCon, moreCon, vidDates, penResLikes,
             metaData, score, freeConversation, subscription, souscriptionModal,
-            townEventModal, statusHistoryModal, appDataModal, searchFilterModal
+            townEventModal, statusHistoryModal, appDataModal, searchFilterModal, lifeStyleModal
         } = this.state;
         const { user } = this.props;
 
@@ -460,8 +472,13 @@ class UserDetails extends React.Component {
                                             <Button color="info" onClick={this.toggleAppDataModal} className="mt-50">
                                                 App Data
                                             </Button>
-                                            <Button color="info" onClick={this.toggleSearchFilter} className="mt-50 ml-50">
+                                            <Button color="info" onClick={this.toggleSearchFilterModal} className="mt-50 ml-50">
                                                 Search Filter
+                                            </Button>
+                                        </div>
+                                        <div className="mt-50 text-center">
+                                            <Button color="info" onClick={this.toggleLifeStyleModal} className="mt-50">
+                                                Life Style
                                             </Button>
                                         </div>
                                     </div>
@@ -483,8 +500,11 @@ class UserDetails extends React.Component {
                 <FormModal small modal={appDataModal} toggleModal={this.toggleAppDataModal}>
                     <UserAppData appData={user?.appData} />
                 </FormModal>
-                <FormModal small modal={searchFilterModal} toggleModal={this.toggleSearchFilter}>
+                <FormModal small modal={searchFilterModal} toggleModal={this.toggleSearchFilterModal}>
                     <UserSearchFilter searchFilter={user?.searchFilter} />
+                </FormModal>
+                <FormModal small modal={lifeStyleModal} toggleModal={this.toggleLifeStyleModal}>
+                    <UserLifeStyle lifeStyle={user?.lifeStyle} />
                 </FormModal>
             </>
         )

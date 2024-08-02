@@ -24,6 +24,11 @@ export const getUserMetaData = async (userId) => {
     return makeRequest('get', url);
 };
 
+export const getUserLifeStyle = async (userId) => {
+    const url = joinBaseUrlWithParams(USERS.LIFE_STYLE, [{param: 'userId', value: userId}]);
+    return makeRequest('get', url);
+};
+
 export const getFreeConversation = async (userId) => {
     const url = joinBaseUrlWithParams(CHATROOM.FREE_CHAT, [{param: 'userId', value: userId}]);
     return makeRequest('get', url);

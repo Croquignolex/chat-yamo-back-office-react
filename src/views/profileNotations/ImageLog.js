@@ -43,7 +43,9 @@ import {
     updateUserProfile,
     getUserSuspiciousState,
     deleteUserProfileDescription,
-    getSearchFilter, getUserProfileImageOrVideo
+    getSearchFilter,
+    getUserProfileImageOrVideo,
+    getUserLifeStyle
 } from "../../redux/actions/IndependentActions";
 
 class ImageLog extends React.Component {
@@ -131,6 +133,7 @@ class ImageLog extends React.Component {
                         try {
                             user.setAppData = await getUserAppData(userId);
                             user.setSearchFilter = await getSearchFilter(userId);
+                            user.setLifeStyle = await getUserLifeStyle(userId);
                             user.setCertified = await getUserIdentity(userId);
                             user.setForceStatus = await getUserStatus(userId);
                             user.setSuspiciousState = await getUserSuspiciousState(userId);
