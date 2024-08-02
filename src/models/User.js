@@ -70,6 +70,22 @@ export default class User {
     }
 
     set setAppData(data) {
+        if(data.maybeSearchCriteria) {
+            this.reduceSearchFilterField({
+                gender : data.gender,
+                minAge : data.minAge,
+                maxAge : data.maxAge,
+                applyAgeFilter : data.applyAgeFilter,
+            });
+        } else {
+            this.reduceSearchFilterField({
+                gender : "",
+                minAge : 18,
+                maxAge : 120,
+                applyAgeFilter : false,
+            })
+        }
+
         this.appData = {
             status : data.status,
             deviceType : data.deviceType,
@@ -87,10 +103,7 @@ export default class User {
     }
 
     set setSearchFilter(data) {
-        this.searchFilter = {
-            gender : data.gender,
-            minAge : data.minAge,
-            maxAge : data.maxAge,
+        this.reduceSearchFilterField({
             city : data.city,
             allCities : data.allCities,
             country : data.country,
@@ -100,9 +113,8 @@ export default class User {
             premiumUsers : data.premiumUsers,
             lookingFor : data.lookingFor,
             religion : data.religion,
-            applyAgeFilter : data.applyAgeFilter,
             language : data.language,
-        };
+        });
     }
 
     get isCertified() {
@@ -135,5 +147,16 @@ export default class User {
 
     get isSubscriptionAvailable() {
         return this.subscriptionEnd && dayjs().isAfter(dayjs(this.subscriptionEnd));
+    }
+
+    reduceSearchFilterField(data) {
+        const searchFilter = this.searchFilter;
+
+        if(searchFilter) {
+            this.searchFilter = {
+                ...searchFilter,
+                ...data,
+            }
+        } else this.searchFilter = data;
     }
 }
