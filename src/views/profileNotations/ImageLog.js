@@ -336,17 +336,6 @@ class ImageLog extends React.Component {
         const { activeIndex, profileData, images, error } = this.state;
         const { activeUser, handleReceiverSidebar, showPreviousNavigation, showNextNavigation, handleChangeUser, toVerify, activeUserIndex } = this.props;
 
-        const slides = images.map((item) => {
-            return (
-                <CarouselItem onExiting={this.onExiting} onExited={this.onExited} key={item.mediaId}>
-                    {item.isVideo
-                        ? <DisplayVideo src={item} height={"200"} width={""} objSrc />
-                        : <DisplayImage src={item?.chosenUrl} height={"300"} width={""} />
-                    }
-                </CarouselItem>
-            );
-        });
-
         if(this.state.loading || this.props.loading) {
             return (
                 <div className="content-right float-left width-100-percent">
@@ -393,6 +382,17 @@ class ImageLog extends React.Component {
             )
         }
 
+        const slides = images.map((item) => {
+            return (
+                <CarouselItem onExiting={this.onExiting} onExited={this.onExited} key={item.mediaId}>
+                    {item.isVideo
+                        ? <DisplayVideo src={item} height={"200"} width={""} objSrc />
+                        : <DisplayImage src={item?.chosenUrl} height={"300"} width={""} />
+                    }
+                </CarouselItem>
+            );
+        });
+
         const ProfileImage = () => (
             <div className="avatar user-profile-toggle m-0 m-0 mr-1 align-content-start">
                 {(activeUser?.avatar?.isVideo) ? (
@@ -406,6 +406,36 @@ class ImageLog extends React.Component {
                 )}
             </div>
         );
+
+        console.log({images, activeIndex})
+
+        const VideoLink = () => {
+            const {activeIndex} = this.state;
+            let i = 0;
+            let link = null;
+
+            images.forEach((item) => {
+                if(activeIndex === i && item.isVideo) {
+                    link = (
+                        item?.enhancedPreSignedUrl ||
+                        item?.compressedPreSignedUrl ||
+                        item?.originalPreSignedUrl ||
+                        item?.compressedUrl ||
+                        item?.originalUrl
+                    );
+                }
+                i++;
+            });
+
+            if(!link) return null;
+
+            return (
+                <div className="font-weight-bold text-left d-flex justify-content-between w-50">
+                    <div className="text-danger width-100 mr-50">Link:</div>
+                    <div>{link}</div>
+                </div>
+            );
+        }
 
         return (
             <div className="content-right float-left width-100-percent">
@@ -586,6 +616,7 @@ class ImageLog extends React.Component {
                                     </div>
                                 </div>
                             </div>
+                            <VideoLink />
                         </div>
                     </div>
                 </div>
