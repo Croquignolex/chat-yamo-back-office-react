@@ -27,12 +27,9 @@ class ImageVerification extends React.Component {
             loading: false,
             error: null,
             lastActionNext: true,
-            // activeChat: null,
             userProfile: false,
             userSidebar: false,
             receiverProfile: false,
-            // date: dayjs().startOf('day'),
-            // deletedImages: [],
             sidebarOpen: false,
             sidebarDocked: mql.matches,
 
@@ -151,7 +148,6 @@ class ImageVerification extends React.Component {
                     }
                 }
             })
-            // .catch(error => console.log("error ", error))
             .catch(error => this.setState({ error }))
             .finally(() => this.setState({ loading: false }));
     };

@@ -6,9 +6,6 @@ export default class Souscriptions {
 
         this.type = this.subscriptionType || "";
         this.pack = this.subscriptionPack || "";
-
-        //"subscriptionType": "SOLO",
-        //"subscriptionPack": "SOLO"
     }
 
     get startDate() {

@@ -36,20 +36,12 @@ export default class Message {
         }
     }
 
-    set setType(type) {
-        this.type = type;
-    }
-
     get isBackUser() {
         return this.authorId === REACT_APP_CHAT_BACKOFFICE_USER_ID;
     }
 
     get backofficeUser() { 
         return this.backofficeUserName?.split(' ').map(word => word[0]).join('').toUpperCase();
-    }
-
-    get createdFullDate() {
-        return this.createdDate.format("DD-MM-YYYY HH:mm:ss");
     }
 
     get createdTime() {

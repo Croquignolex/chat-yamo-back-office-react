@@ -3,7 +3,7 @@ import {connect} from "react-redux";
 import React, { PureComponent } from "react";
 
 import Navbar from "./components/navbar/Navbar";
-import Footer from "./components/footer/Footer";
+import Footer from "./components/Footer";
 import Sidebar from "./components/menu/vertical-menu/Sidebar";
 class VerticalLayout extends PureComponent {
   state = {

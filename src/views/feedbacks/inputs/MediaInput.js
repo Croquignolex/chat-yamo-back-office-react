@@ -16,8 +16,6 @@ import "../../../assets/scss/plugins/extensions/dropzone.scss";
 
 const MediaInput = ({ message, files, onMsgChange, onFilesLoad, show, onClose, onSubmit }) => {
     const { getRootProps, getInputProps } = useDropzone({
-        // maxFiles: 1,
-        // accept: "image/jpg,image/jpeg,image/png,video/mp4,video/webm,video/x-msvideo",
         accept: "image/jpg,image/jpeg,image/png,video/mp4,video/webm",
         onDrop: acceptedFiles => {
             onFilesLoad(
@@ -35,7 +33,6 @@ const MediaInput = ({ message, files, onMsgChange, onFilesLoad, show, onClose, o
             <div className="dz-thumb-inner">
                 {['image/jpg', 'image/jpeg', 'image/png'].includes(file.type) && <DisplayImage src={file.preview} withPercentage /> }
                 {['video/mp4', 'video/webm', 'video/mpeg'].includes(file.type) && <DisplayVideo src={file.preview} type={file.type} withPercentage />}
-                {/*{['video/mp4', 'video/webm', 'video/x-msvideo'].includes(file.type) && <DisplayVideo src={file.preview} type={file.type} withPercentage />}*/}
             </div>
         </div>
     ));
@@ -63,7 +60,6 @@ const MediaInput = ({ message, files, onMsgChange, onFilesLoad, show, onClose, o
                             <p className="mx-1 mt-50 text-center text-danger">
                                 Drop files or click to upload <br/>
                                 Allowed extensions:  JPEG, JPG, PNG, MP4, MPEG, WEBM.
-                                {/*Allowed extensions:  JPEG, JPG, PNG, MP4, MOV, AVI, WMV.*/}
                             </p>
                         </div>
                         <aside className="thumb-container">{thumbs}</aside>

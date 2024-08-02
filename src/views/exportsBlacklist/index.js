@@ -54,7 +54,7 @@ class TownEvents extends React.Component {
     render() {
 
         const {error, loading, answer, reason, phone} = this.state;
-// console.log({error}, error?.response.status)
+
         return ( 
             <>
                 <Breadcrumbs

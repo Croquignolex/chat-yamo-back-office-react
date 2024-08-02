@@ -43,10 +43,6 @@ export const loginWithJWT = user => dispatch => {
                 entityId:  response.data.entityId,
                 accessToken:  response.data.userToken,
                 userDetails:  response.data.userDetails,
-                // userAccessToken: response.data.userToken,
-                // tokenType: response.data.tokenType,
-                // expiresIn: response.data.expiresIn,
-                // refreshToken: response.data.refreshToken,
             };
 
             // Persist data into localstorage
@@ -59,23 +55,6 @@ export const loginWithJWT = user => dispatch => {
                 data.userDetails || {},
                 // roles || []
             );
-
-            /*api.get(AUTH.ROLES)
-                .then(response => {
-                    // Build Roles
-                    const roles = response.data?.roles?.map((role) => {
-                        return {
-                            label: role,
-                            value: role,
-                            color: "#" + Math.floor(Math.random()*16777215).toString(16),
-                        }
-                    });
-
-                    return Promise.resolve();
-                })
-                .catch(() => {
-                    return Promise.reject()
-                });*/
 
             // Fetch user data
             dispatch(setAuthUser());

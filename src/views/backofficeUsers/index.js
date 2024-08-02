@@ -217,7 +217,6 @@ const mapStateToProps = state => {
     return {
         backOfficeUserId: state.authUser?.data?.entityId,
         backOfficeUserRoles: state.authUser?.data?.roles,
-        // allRoles: state.authUser?.data?.allRoles
     }
 };
 

@@ -11,7 +11,7 @@ import {REACT_APP_CHAT_BACKOFFICE_USER_ID} from "../../../configs/AppConfig";
 import {createMedia, createVideoMedia, sendMessage} from "../../../redux/actions/IndependentActions";
 
 class ChatInput extends Component {
-    // props { caseId, activeChatID, activeUser, notifyChanges }
+
     state = {
         msg: '',
         files: [],

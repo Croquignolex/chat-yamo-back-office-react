@@ -16,7 +16,8 @@ import {
     searchUserImages,
     getUserProfileImage,
     getUserSuspiciousState,
-    getSearchFilter, getUserLifeStyle
+    getSearchFilter,
+    getUserLifeStyle
 } from "../../redux/actions/IndependentActions";
 
 class UsersImages extends React.Component {

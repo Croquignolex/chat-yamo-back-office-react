@@ -138,12 +138,4 @@ class NewBackofficeUser extends React.Component {
     }
 }
 
-/*
-const mapStateToProps = ({ authUser }) => {
-    const allRoles = authUser.data?.allRoles || [];
-    return { allRoles };
-};
-*/
-
-// export default connect(mapStateToProps)(NewBackofficeUser);
 export default NewBackofficeUser;

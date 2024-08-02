@@ -1,74 +1,4 @@
-import _ from 'lodash';
-import moment from 'moment';
 import api from "../utility/api";
-import {NotificationManager} from 'react-notifications';
-
-/**
- * Function to convert hex to rgba
- */
-export function hexToRgbA(hex, alpha) {
-    var c;
-    if (/^#([A-Fa-f0-9]{3}){1,2}$/.test(hex)) {
-        c = hex.substring(1).split('');
-        if (c.length === 3) {
-            c = [c[0], c[0], c[1], c[1], c[2], c[2]];
-        }
-        c = '0x' + c.join('');
-        return 'rgba(' + [(c >> 16) & 255, (c >> 8) & 255, c & 255].join(',') + ',' + alpha + ')';
-    }
-    throw new Error('Bad Hex');
-}
-
-/**
- * Text Truncate
- */
-export function textTruncate(str, length, ending) {
-    if (!str) {
-        return "";
-    }
-    if (length == null) {
-        length = 100;
-    }
-    if (ending == null) {
-        ending = '...';
-    }
-    if (str.length > length) {
-        return str.substring(0, length - ending.length) + ending;
-    } else {
-        return str;
-    }
-}
-
-/**
- * Get Date
- */
-export function getTheDate(timestamp, format) {
-    let time = timestamp * 1000;
-    let formatDate = format ? format : 'MM-DD-YYYY';
-    return moment(time).format(formatDate);
-}
-
-/**
- * Convert Date To Timestamp
-*/
-export function convertDateToTimeStamp(date, format) {
-    let formatDate = format ? format : 'YYYY-MM-DD';
-    return moment(date, formatDate).unix();
-}
-
-/**
- * Function to return current app layout
- */
-export function getAppLayout(url) {
-    let location = url.pathname;
-    let path = location.split('/');
-    return path[1];
-}
-
-export const getLocaleFromBrowser = () => {
-    const browserLanguage = window.navigator.userLanguage || window.navigator.language;
-    return browserLanguage.split('-')[0];
-};
 
 /**
  * Deep mapping an object
@@ -100,18 +30,6 @@ export function deepMapObject(obj, callback) {
 }
 
 /**
- * Convert an object to camelCase
- * @param obj
- */
-export function toCamelCase(obj) {
-    // function to execute on each key
-    const callback = key => key.replace(/(_\w)/g, k => k[1].toUpperCase());
-
-    // call a generic method
-    return deepMapObject(obj, callback);
-}
-
-/**
  * Convert an object to snake case
  * @param obj
  */
@@ -137,110 +55,12 @@ export const objectToFormData = (obj) => {
 };
 
 /**
- * Get query of url
- * @param useLocation
- * @returns {URLSearchParams}
- */
-export const useQuery = (useLocation) => new URLSearchParams(useLocation().search);
-
-/**
- * Perform a global search on any data type
- * @param data
- * @param searched
- * @returns {Array|*}
- */
-export const globalSearch = (data, searched) => {
-    if (!searched) {
-        return data;
-    }
-
-    const _searched = typeof searched === 'string' ? searched.toLowerCase() : searched;
-    return _.filter(data, o => {
-        return Object.values(o)
-            .filter(f => typeof f === 'string' || typeof f === 'number')
-            .join(' ')
-            .toLowerCase()
-            .includes(_searched)
-    });
-};
-
-/**
- * Extension of can action to handle array
- * @param permissions {Array}
- * @param some {boolean}
- * @returns {boolean|*}
- */
-export const canArray = (permissions, some = true) => {
-    if (permissions && Array.isArray(permissions)) {
-        // If the array is empty then the user have permissions since there is no restrictions to that
-        if (permissions.length === 0) return true;
-
-        return permissions.reduce((a,b) => some
-            ? a || b
-            : a && b
-        );
-    }
-
-    return false;
-};
-
-
-/**
  * Generate an unique id
- *
- * From StackOverFlow https://stackoverflow.com/questions/105034/create-guid-uuid-in-javascript
  *
  * @returns {number}
  */
 export const getUniqueId = () => {
-    /*const d0 = Math.random()*0xffffffff|0;
-    const d1 = Math.random()*0xffffffff|0;
-    const d2 = Math.random()*0xffffffff|0;
-    const d3 = Math.random()*0xffffffff|0;
-    return TABLE_OF_256_HEXADECIMAL[d0&0xff]+TABLE_OF_256_HEXADECIMAL[d0>>8&0xff]+TABLE_OF_256_HEXADECIMAL[d0>>16&0xff]+TABLE_OF_256_HEXADECIMAL[d0>>24&0xff]+'-'+
-        TABLE_OF_256_HEXADECIMAL[d1&0xff]+TABLE_OF_256_HEXADECIMAL[d1>>8&0xff]+'-'+TABLE_OF_256_HEXADECIMAL[d1>>16&0x0f|0x40]+TABLE_OF_256_HEXADECIMAL[d1>>24&0xff]+'-'+
-        TABLE_OF_256_HEXADECIMAL[d2&0x3f|0x80]+TABLE_OF_256_HEXADECIMAL[d2>>8&0xff]+'-'+TABLE_OF_256_HEXADECIMAL[d2>>16&0xff]+TABLE_OF_256_HEXADECIMAL[d2>>24&0xff]+
-        TABLE_OF_256_HEXADECIMAL[d3&0xff]+TABLE_OF_256_HEXADECIMAL[d3>>8&0xff]+TABLE_OF_256_HEXADECIMAL[d3>>16&0xff]+TABLE_OF_256_HEXADECIMAL[d3>>24&0xff];*/
-
     return new Date().getTime();
-};
-
-/**
- * Get or create session id
- * @returns {string}
- */
-export const getSessonId = () => {
-    const sessionId = localStorage.getItem('ssid');
-    if (sessionId) {
-        return sessionId;
-    } else {
-        const newSessionId = getUniqueId();
-        localStorage.setItem('ssid', newSessionId);
-        return newSessionId;
-    }
-};
-
-export const copyToClipboard = (text) => {
-    return new Promise(async (resolve, reject) => {
-        try {
-            if (navigator.clipboard) {
-                await navigator.clipboard.writeText(text);
-            } else {
-                const textField = document.createElement('textarea');
-                textField.innerText = text;
-                document.body.appendChild(textField);
-                textField.select();
-                document.execCommand('copy');
-                textField.remove();
-            }
-
-            NotificationManager.success("Lien copié", null, 5000);
-            resolve();
-        } catch (e) {
-            NotificationManager.error("Impossible de copier le lien", null, 5000, null, true);
-            reject();
-        }
-    })
 };
 
 /**
@@ -258,7 +78,6 @@ export const makeRequest = (verb, url, data = null, config = {}) => {
             Object.entries(data).forEach(item => {
                 const encoded = encodeURIComponent(item[1]);
                 const character = _url.includes('?') ? '&' : '?';
-                // TODO: auto add entityId to request
                 _url = `${_url}${character}${toSnakeCase(item[0])}=${encoded}`
             });
         }
@@ -268,30 +87,6 @@ export const makeRequest = (verb, url, data = null, config = {}) => {
             .catch(error => reject(error));
     });
 };
-
-/**
- * Perform action request
- * @param verb
- * @param url
- * @param typeBase
- * @param dispatch
- * @param data
- * @param config
- * @returns {Promise<any> | * | Promise<T | never> | undefined}
- */
-export const makeActionRequest = (verb, url, typeBase, dispatch, data = null, config = {} ) => {
-    dispatch({ type: typeBase });
-    return makeRequest(verb, url, data, config)
-        .then((response) => {
-            dispatch({ type: `${typeBase}_SUCCESS`, payload: response });
-            return Promise.resolve(response);
-        })
-        .catch((error) => {
-            dispatch({ type: `${typeBase}_FAILURE` });
-            return Promise.reject(error);
-        });
-};
-
 
 /**
  * Download a file
@@ -364,47 +159,10 @@ export const imageExists = (url) => {
 }
 
 /**
- * Get price with a currency according to nation
- * @param price
- * @returns {string}
- */
-export const getPriceWithCurrency = (price) => {
-    const currency = localStorage.getItem('currencyCode');
-    return currency ? `${price} ${currency}` : `${price}`;
-};
-
-/**
- * Get currency according to nation
- * @returns {string}
- */
-export const getCurrency = () => {
-    return localStorage.getItem('currencyCode');
-};
-
-/**
- * Reverse object.entries operation
- * @param arr {Array}
- * @returns {Object}
- */
-export const fromEntries = (arr) => {
-    return arr.reduce((acc,[k,v])=>({...acc,[k]:v}),{});
-};
-
-/**
  *
  * @param msg
  */
 export const formatMessage = msg => msg;
-
-/**
- * Get the value of a given parameter in the browser url
- * @param param
- * @returns {string}
- */
-export const searchUrlParams = (param) => {
-    const url = new URL(window.location);
-    return url.searchParams.get(param);
-};
 
 /**
  *
@@ -507,15 +265,4 @@ export const extractCroppedImage = (imageSrc, pixelCrop) => {
             })
             .catch((error) => reject(error));
     });
-};
-
-export const formatString = (text, maxCharacters) => {
-    try {
-        if(text.length > maxCharacters) {
-            return text.substring(0, maxCharacters) + '...';
-        }
-    } catch (e) {
-        console.log("Format string function error", {text, maxCharacters, exception: e});
-    }
-    return text;
 };

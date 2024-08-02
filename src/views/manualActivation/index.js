@@ -104,7 +104,6 @@ class Exports extends React.Component {
         const {error, loading, data, user, code, file, subscription, pictureCropperModal} = this.state;
 
         const selectItems = [
-            // {label: 'Default', value: 'DEFAULT'},
             {label: 'Solo', value: 'PREMIUM'},
             {label: 'Diaspora Elite', value: 'DIASPORA'},
             {label: 'Premium Plus', value: 'ADVANCED_FILTERS'},

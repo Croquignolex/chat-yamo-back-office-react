@@ -6,6 +6,7 @@ import User from "../../models/User";
 import UserDetails from "./UserDetails";
 import {Col, Row, Form, Input, Button, Spinner} from "reactstrap";
 import Breadcrumbs from "../../components/@vuexy/breadCrumbs/BreadCrumb";
+import {imageExistsStepByStep} from "../../helpers/helpers";
 import {
     searchUser,
     getUserStatus,
@@ -15,7 +16,6 @@ import {
     getUserSuspiciousState,
     getSearchFilter, getUserLifeStyle
 } from "../../redux/actions/IndependentActions";
-import {imageExistsStepByStep} from "../../helpers/helpers";
 
 class Users extends React.Component {
     constructor(props) {

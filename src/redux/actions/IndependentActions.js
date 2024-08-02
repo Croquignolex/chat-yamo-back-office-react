@@ -9,7 +9,10 @@ import {
     VALIDATIONS,
     BACKOFFICE_USERS,
     joinBaseUrlWithParams,
-    joinBaseUrlWithRequestParams, NOTIFICATION, CHATROOM, PROPOSAL,
+    joinBaseUrlWithRequestParams,
+    NOTIFICATION,
+    CHATROOM,
+    PROPOSAL,
 } from "../../utility/urls/backend";
 
 // ===================================== START GET
@@ -126,12 +129,10 @@ export const getUserProfileImagesForNotation = async (week) => {
             "CHAT-ET-YAMO-MEDIA-SERVICE-VIDEO-MEDIA": "true",
         }
     };
-    // return makeRequest('get', NOTATIONS.GET_PROFILE_IMAGES + '?numberOfWeek =' + week);
     return makeRequest('get', NOTATIONS.GET_PROFILE_IMAGES, null, config);
 };
 
 export const getProfilesToDoubleCheck = async (categories, dates) => {
-    // return makeRequest('get', NOTATIONS.GET_PROFILE_IMAGES + '?numberOfWeek =' + week);
     return makeRequest('get', `${FEEDBACKS.DOUBLE_CHECK}?localDates=${dates}&categories=${categories}`) ;
 };
 

@@ -44,16 +44,7 @@ class ChatSidebar extends React.Component {
                 const minDate = dayjs().startOf('day').add(i, 'hour');
                 const maxDate = dayjs().startOf('day').add(i + 6, 'hour');
 
-                /*console.log('###############################################')
-                console.log(minDate.format('YYYY-MM-DDTHH:mm:ss'))
-                console.log(now.format('YYYY-MM-DDTHH:mm:ss'))
-                console.log(maxDate.format('YYYY-MM-DDTHH:mm:ss'))
-                console.log('i ===========>', i)
-                console.log('i+6 ===========>', i+6)
-                console.log(minDate.isBefore(now) && maxDate.isAfter(now))*/
-
-                if(minDate.isBefore(now) && maxDate.isAfter(now))
-                {
+                if(minDate.isBefore(now) && maxDate.isAfter(now)) {
                     nextHour = (i + 6) > 24 ? nextHour : i;
                     nextDate = nextDate.add(i, 'hour');
                 }
@@ -196,7 +187,6 @@ class ChatSidebar extends React.Component {
                     <div className="d-flex align-items-center">
                         <Button color="primary" className="mr-50 rounded" onClick={this.loadData} size="sm">
                             <Icon.RefreshCcw size={15} />
-                            {/*<span className="d-lg-block d-none">Refresh</span>*/}
                         </Button>
                         <Button size="sm" color="primary" className="mr-50 rounded" onClick={this.handlePrevDate} title="Previous day">
                             <Icon.ArrowLeft size={15} />

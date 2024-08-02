@@ -39,7 +39,6 @@ export const NOTATIONS = {
     PROFILE: '/media/users/{userId}/medias/note',
     GET_IMAGES_TO_NOTATE_COUNT: '/media/alltonote',
     GET_PROFILE_IMAGES: '/media/users/toBeNotedProfilesByWeek',
-    // GET_PROFILE_IMAGES: '/media/users/toBeNotedProfile',
     UPDATE_NOTED_IMAGES: '/media/users/{backOfficeUserId}/noted',
     NOTATE_ONE: '/media/users/{userId}/medias/{mediaId}/score/{score}',
     GET_NOTED_IMAGES_COUNT: '/media/users/{backOfficeUserId}/allnoted',

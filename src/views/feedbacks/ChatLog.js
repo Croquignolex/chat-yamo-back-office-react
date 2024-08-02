@@ -90,7 +90,6 @@ class ChatLog extends React.Component {
         const messages = [...this.state.messages];
 
         if(messages.length > 0) {
-            // if(message.caseId === `${this.props.activeUser.id}:${message.authorId}`) {
             if(message.caseId === messages[0]?.caseId) {
                 const messageIndex = messages.findIndex(m => m.id === message.id);
                 // Update

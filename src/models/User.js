@@ -174,10 +174,6 @@ export default class User {
         return this.subscriptionEnd && dayjs(this.subscriptionEnd).format('LL');
     }
 
-    get isSubscriptionAvailable() {
-        return this.subscriptionEnd && dayjs().isAfter(dayjs(this.subscriptionEnd));
-    }
-
     reduceSearchFilterField(data) {
         const searchFilter = this.searchFilter;
 
