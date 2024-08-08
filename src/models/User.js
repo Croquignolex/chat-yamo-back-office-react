@@ -72,10 +72,10 @@ export default class User {
     set setAppData(data) {
         if(data.maybeSearchCriteria) {
             this.reduceSearchFilterField({
-                gender : data.gender,
-                minAge : data.minAge,
-                maxAge : data.maxAge,
-                applyAgeFilter : data.applyAgeFilter,
+                gender : data.maybeSearchCriteria.gender,
+                minAge : data.maybeSearchCriteria.minAge,
+                maxAge : data.maybeSearchCriteria.maxAge,
+                applyAgeFilter : data.maybeSearchCriteria.applyAgeFilter,
             });
         } else {
             this.reduceSearchFilterField({

@@ -14,10 +14,6 @@ class UserLifeStyle extends React.Component {
                 </thead>
                 <tbody>
                     <tr>
-                        <td>UserId</td>
-                        <td className="font-weight-bold">{this.props.lifeStyle?.userId}</td>
-                    </tr>
-                    <tr>
                         <td>Size</td>
                         <td className="font-weight-bold">{this.props.lifeStyle?.size}</td>
                     </tr>
