@@ -430,9 +430,8 @@ class ImageLog extends React.Component {
             if(!link) return null;
 
             return (
-                <div className="font-weight-bold text-left d-flex justify-content-between w-50">
-                    <div className="text-danger width-100 mr-50">Link:</div>
-                    <div>{link}</div>
+                <div className="font-weight-bold text-left">
+                    <span className="text-danger">Link: </span>{link}
                 </div>
             );
         }
