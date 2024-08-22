@@ -27,6 +27,7 @@ import {
 } from "../redux/actions/IndependentActions";
 
 import "../assets/scss/pages/users.scss";
+import UserCustomerJourney from "../views/users/UserCustomerJourney";
 
 class UserProfile extends React.Component {
     constructor(props) {
@@ -50,6 +51,7 @@ class UserProfile extends React.Component {
             appDataModal: {show: false, title: ""},
             searchFilterModal: {show: false, title: ""},
             lifeStyleModal: {show: false, title: ""},
+            customerJourneyModal: {show: false, title: ""},
         }
     }
 
@@ -238,10 +240,19 @@ class UserProfile extends React.Component {
         }
     };
 
+    toggleCustomerJourneyModal = () => {
+        const {customerJourneyModal, activeUser} = this.state;
+        if(customerJourneyModal.show) this.setState({customerJourneyModal: {...customerJourneyModal, show: false}});
+        else {
+            const title = activeUser?.isDeleted ? "Deleted user" : `${activeUser?.name} customer journey`;
+            this.setState({customerJourneyModal: {show: true, title}});
+        }
+    };
+
     render() {
         const {
             activeCon, moreCon, vidDates, penResLikes,
-            activeUser, metaData, score, freeConversation, subscription, souscriptionModal,
+            activeUser, metaData, score, freeConversation, subscription, souscriptionModal, customerJourneyModal,
             townEventModal, statusHistoryModal, appDataModal, searchFilterModal, lifeStyleModal
         } = this.state;
         const { receiverProfile, handleReceiverSidebar } = this.props;
@@ -487,17 +498,21 @@ class UserProfile extends React.Component {
                                         Town event
                                     </Button>
                                 </div>
+                                <hr />
                                 <div className="mt-50 text-center">
-                                    <Button color="info" onClick={this.toggleAppDataModal} className="mt-50">
+                                    <Button color="success" onClick={this.toggleAppDataModal} className="mt-50">
                                         App Data
                                     </Button>
-                                    <Button color="info" onClick={this.toggleSearchFilterModal} className="mt-50 ml-50">
+                                    <Button color="success" onClick={this.toggleSearchFilterModal} className="mt-50 ml-50">
                                         Search Filter
                                     </Button>
                                 </div>
                                 <div className="mt-50 text-center">
-                                    <Button color="info" onClick={this.toggleLifeStyleModal} className="mt-50">
+                                    <Button color="success" onClick={this.toggleLifeStyleModal} className="mt-50">
                                         Life Style
+                                    </Button>
+                                    <Button color="success" onClick={this.toggleCustomerJourneyModal} className="mt-50 ml-50">
+                                        Customer Journey
                                     </Button>
                                 </div>
                             </div>
@@ -513,14 +528,17 @@ class UserProfile extends React.Component {
                 <FormModal small modal={statusHistoryModal} toggleModal={this.toggleStatusHistoryModal}>
                     <UserStatusHistory userId={activeUser?.id} />
                 </FormModal>
-                <FormModal small modal={appDataModal} toggleModal={this.toggleAppDataModal}>
+                <FormModal color={"success"} small modal={appDataModal} toggleModal={this.toggleAppDataModal}>
                     <UserAppData appData={activeUser?.appData} />
                 </FormModal>
-                <FormModal small modal={searchFilterModal} toggleModal={this.toggleSearchFilterModal}>
+                <FormModal color={"success"} small modal={searchFilterModal} toggleModal={this.toggleSearchFilterModal}>
                     <UserSearchFilter searchFilter={activeUser?.searchFilter} />
                 </FormModal>
-                <FormModal small modal={lifeStyleModal} toggleModal={this.toggleLifeStyleModal}>
+                <FormModal color={"success"} small modal={lifeStyleModal} toggleModal={this.toggleLifeStyleModal}>
                     <UserLifeStyle lifeStyle={activeUser?.lifeStyle} />
+                </FormModal>
+                <FormModal color={"success"} small modal={customerJourneyModal} toggleModal={this.toggleCustomerJourneyModal}>
+                    <UserCustomerJourney customerJourney={activeUser?.customerJourney} />
                 </FormModal>
             </>
         )

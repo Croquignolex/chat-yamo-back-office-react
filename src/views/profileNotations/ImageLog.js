@@ -45,7 +45,7 @@ import {
     deleteUserProfileDescription,
     getSearchFilter,
     getUserProfileImageOrVideo,
-    getUserLifeStyle
+    getUserLifeStyle, getUserCustomerJourney
 } from "../../redux/actions/IndependentActions";
 
 class ImageLog extends React.Component {
@@ -134,6 +134,7 @@ class ImageLog extends React.Component {
                             user.setAppData = await getUserAppData(userId);
                             user.setSearchFilter = await getSearchFilter(userId);
                             user.setLifeStyle = await getUserLifeStyle(userId);
+                            user.setCustomerJourney = await getUserCustomerJourney(userId);
                             user.setCertified = await getUserIdentity(userId);
                             user.setForceStatus = await getUserStatus(userId);
                             user.setSuspiciousState = await getUserSuspiciousState(userId);

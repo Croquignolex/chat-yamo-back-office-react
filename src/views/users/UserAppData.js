@@ -6,7 +6,7 @@ class UserAppData extends React.Component {
     render() {
         return (
             <Table hover bordered responsive className="mt-2">
-                <thead className="bg-primary text-white">
+                <thead className="bg-success text-white">
                 <tr>
                     <th>DATA</th>
                     <th>VALUE</th>

@@ -146,6 +146,19 @@ export default class User {
         };
     }
 
+    set setCustomerJourney(data) {
+        this.customerJourney = {
+            currentLevelName: data.currentLevelName,
+            currentLevelUsedCredits: data.currentLevelUsedCredits,
+            currentLevelTotalCredits: data.currentLevelTotalCredits,
+            currentLevelActivationDate: data.currentLevelActivationDate,
+            totalUsedCredits: data.totalUsedCredits,
+            totalCredits: data.totalCredits,
+            passedLevels: data.passedLevels,
+            creationDate: data.creationDate,
+        };
+    }
+
     get isCertified() {
         return this.certified;
     }
