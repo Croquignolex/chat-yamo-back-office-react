@@ -155,7 +155,7 @@ export default class User {
             totalUsedCredits: data.totalUsedCredits,
             totalCredits: data.totalCredits,
             passedLevels: data.passedLevels,
-            creationDate: data.creationDate,
+            activationDate: data.activationDate,
         };
     }
 
