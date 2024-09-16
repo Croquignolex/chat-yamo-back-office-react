@@ -82,6 +82,11 @@ export const getUserSouscriptions = async (userId) => {
     return makeRequest('get', url);
 };
 
+export const getUserAutomaticPayments = async (userId) => {
+    const url = joinBaseUrlWithParams(USERS.AUTOMATIC_PAYMENTS, [{param: 'userId', value: userId}]);
+    return makeRequest('get', url);
+};
+
 export const getUserStatus = async (userId) => {
     return makeRequest('get', joinBaseUrlWithParams(USERS.STATUS, [{param: 'userId', value: userId}]));
 };

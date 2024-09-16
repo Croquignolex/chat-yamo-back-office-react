@@ -28,6 +28,7 @@ import {
 
 import "../assets/scss/pages/users.scss";
 import UserCustomerJourney from "../views/users/UserCustomerJourney";
+import UserAutomaticPayments from "../views/users/UserAutomaticPayments";
 
 class UserProfile extends React.Component {
     constructor(props) {
@@ -47,6 +48,7 @@ class UserProfile extends React.Component {
             subscription: "",
             townEventModal: {show: false, title: ""},
             souscriptionModal: {show: false, title: ""},
+            automaticPaymentModal: {show: false, title: ""},
             statusHistoryModal: {show: false, title: ""},
             appDataModal: {show: false, title: ""},
             searchFilterModal: {show: false, title: ""},
@@ -195,6 +197,15 @@ class UserProfile extends React.Component {
         }
     };
 
+    toggleAutomaticPaymentModal = () => {
+        const {automaticPaymentModal, activeUser} = this.state;
+        if(automaticPaymentModal.show) this.setState({automaticPaymentModal: {...automaticPaymentModal, show: false}});
+        else {
+            const title = activeUser?.isDeleted ? "Deleted user" : `${activeUser?.name} automatic payment`;
+            this.setState({automaticPaymentModal: {show: true, title}});
+        }
+    };
+
     toggleTownEventModal = () => {
         const {townEventModal, activeUser} = this.state;
         if(townEventModal.show) this.setState({townEventModal: {...townEventModal, show: false}});
@@ -251,7 +262,7 @@ class UserProfile extends React.Component {
 
     render() {
         const {
-            activeCon, moreCon, vidDates, penResLikes,
+            activeCon, moreCon, vidDates, penResLikes, automaticPaymentModal,
             activeUser, metaData, score, freeConversation, subscription, souscriptionModal, customerJourneyModal,
             townEventModal, statusHistoryModal, appDataModal, searchFilterModal, lifeStyleModal
         } = this.state;
@@ -497,6 +508,11 @@ class UserProfile extends React.Component {
                                     <Button color="primary" onClick={this.toggleTownEventModal} className="ml-50 mt-50">
                                         Town event
                                     </Button>
+                                    {(!this.state.loading) && (
+                                        <Button color="primary" className="ml-50 mt-50" onClick={this.toggleAutomaticPaymentModal}>
+                                            Automatic Payment
+                                        </Button>
+                                    )}
                                 </div>
                                 <hr />
                                 <div className="mt-50 text-center">
@@ -521,6 +537,9 @@ class UserProfile extends React.Component {
                 </div>
                 <FormModal small modal={souscriptionModal} toggleModal={this.toggleSouscriptionModal}>
                     <UserSouscriptions userId={activeUser?.id} />
+                </FormModal>
+                <FormModal modal={automaticPaymentModal} toggleModal={this.toggleAutomaticPaymentModal}>
+                    <UserAutomaticPayments userId={activeUser?.id} />
                 </FormModal>
                 <FormModal small modal={townEventModal} toggleModal={this.toggleTownEventModal}>
                     <UserTownEvents userId={activeUser?.id} />

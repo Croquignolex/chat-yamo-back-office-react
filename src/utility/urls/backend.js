@@ -56,6 +56,7 @@ export const USERS = {
     METADATA: '/authentication/backoffice/user/{userId}/metadata',
     CHECK_TOWN_EVENT: '/authentication/user/{userId}/checktownevent',
     SOUSCRIPTIONS: '/authentication/user/{userId}/subscriptionhistory', 
+    AUTOMATIC_PAYMENTS: '/authentication/user/{userId}/subscriptions',
     STATUS_HISTORY: '/authentication/backoffice/user/{userId}/statusreason',
     ACTIVATE_SUBSCRIPTION: '/authentication/backoffice/user/{userId}/activatesubscription',
 
