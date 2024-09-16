@@ -527,7 +527,7 @@ class UserProfile extends React.Component {
                                     <Button color="success" onClick={this.toggleLifeStyleModal} className="mt-50">
                                         Life Style
                                     </Button>
-                                    <Button color="success" onClick={this.toggleCustomerJourneyModal} className="mt-50 ml-50">
+                                    <Button color="dark" onClick={this.toggleCustomerJourneyModal} className="mt-50 ml-50">
                                         Customer Journey
                                     </Button>
                                 </div>
@@ -556,8 +556,8 @@ class UserProfile extends React.Component {
                 <FormModal color={"success"} small modal={lifeStyleModal} toggleModal={this.toggleLifeStyleModal}>
                     <UserLifeStyle lifeStyle={activeUser?.lifeStyle} />
                 </FormModal>
-                <FormModal color={"success"} small modal={customerJourneyModal} toggleModal={this.toggleCustomerJourneyModal}>
-                    <UserCustomerJourney customerJourney={activeUser?.customerJourney} />
+                <FormModal color={"dark"} small modal={customerJourneyModal} toggleModal={this.toggleCustomerJourneyModal}>
+                    <UserCustomerJourney userId={activeUser?.id} />
                 </FormModal>
             </>
         )
