@@ -100,7 +100,7 @@ class UserCustomerJourney extends React.Component {
                                                     <Check size={20} />
                                                 </div>
                                                 <div className="timeline-info">
-                                                    <p className="font-weight-bold mb-0">{action}</p>
+                                                    <p className="font-weight-bold mb-0">{kction}</p>
                                                     <span className="text-dark">
                                                         {message.split('\n').map(str => {
                                                             return (
