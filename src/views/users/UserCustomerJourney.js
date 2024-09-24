@@ -52,22 +52,27 @@ class UserCustomerJourney extends React.Component {
     render() {
         const {currentLevelName, passedAvailableCredits, userId, creationDate, actualLevel, levels} = this.state;
 
-        const colors = ["primary", "danger", "secondary", "warning", "success", "info"];
+        const colors = ["custom-blue", "custom-brown", "custom-gray", "custom-yellow", "primary", "danger", "secondary", "warning", "success", "info"];
 
         return (
             <>
                 <h3 className="text-center text-primary font-weight-bold">Parcours du Célibataire</h3>
 
-                <div className="mt-2">
-                    Niveau actuel
-                    <Badge color="light-primary" className="ml-50 badge-pill font-weight-bold">
-                        {currentLevelName}
-                    </Badge>
-                </div>
-                <div className="mt-50 mb-2">
-                    Date de début: <strong className="text-primary">{creationDate}</strong><br/>
-                    Crédits restant: <strong className="text-primary">{passedAvailableCredits}</strong>
-                </div>
+                {currentLevelName && (
+                    <div className="mt-2">
+                        Niveau actuel
+                        <Badge color="light-primary" className="ml-50 badge-pill font-weight-bold">
+                            {currentLevelName}
+                        </Badge>
+                    </div>
+                )}
+
+                {(creationDate && passedAvailableCredits) && (
+                    <div className="mt-50 mb-2">
+                        Date de début: <strong className="text-primary">{creationDate}</strong><br/>
+                        Crédits restant: <strong className="text-primary">{passedAvailableCredits}</strong>
+                    </div>
+                )}
 
                 {levels.map((level, index) => {
                     const color = colors[index];
@@ -76,9 +81,12 @@ class UserCustomerJourney extends React.Component {
                         <Card className={`bg-${color} text-white`} key={index}>
                             <CardBody>
                                 <h4 className="text-white font-weight-bold">{level?.name}</h4>
-                                <span className="text-dark">
-                                    Commencé le <b>{dayjs(level?.startedAt).format("YYYY-MM-DD HH:mm")}</b>
-                                </span>
+
+                                {level?.startedAt && (
+                                    <span className="text-dark">
+                                        Commencé le <b>{dayjs(level?.startedAt).format("YYYY-MM-DD HH:mm")}</b>
+                                    </span>
+                                )}
 
                                 <ul className="activity-timeline timeline-left list-unstyled mt-3">
                                     {level?.credits.map((credit, index2) => {
