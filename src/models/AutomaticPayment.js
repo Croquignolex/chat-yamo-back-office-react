@@ -11,11 +11,16 @@ export default class AutomaticPayment {
         this.source = this.source || "";
     }
 
-    get startDate() {
-        return this.startedAt ? dayjs(this.startedAt) : dayjs();
+    get startDate() { 
+        return this.startedAt ? dayjs(this.timestamp(this.startedAt)) : null;
     }
 
     get renewingDate() {
-        return this.renewingAt ? dayjs(this.renewingAt) : dayjs();
+        return this.renewingAt ? dayjs(this.timestamp(this.renewingAt)) : null;
+    }
+	
+	timestamp(data) {
+        let myDate = new Date(data * 1000);
+		return myDate.toLocaleString("en-US", {timeZone: "Africa/Douala"});
     }
 }

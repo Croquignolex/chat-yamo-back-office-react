@@ -66,8 +66,8 @@ class UserAutomaticPayments extends React.Component {
                                 <td>{automaticPayment.currency}</td>
                                 <td>{automaticPayment.amount}</td>
                                 <td>{automaticPayment.period}</td>
-                                <td className="font-weight-bold text-success">{automaticPayment.startDate?.format('YYYY-MM-DD HH:mm')}</td>
-                                <td className="font-weight-bold text-danger">{automaticPayment.renewingDate?.format('YYYY-MM-DD HH:mm')}</td>
+                                <td className="font-weight-bold text-success">{automaticPayment.startDate?.format('YYYY-MM-DD HH:mm') || ""}</td>
+                                <td className="font-weight-bold text-danger">{automaticPayment.renewingDate?.format('YYYY-MM-DD HH:mm') || ""}</td>
                                 <td>{automaticPayment.source}</td>
                             </tr>
                         ))
