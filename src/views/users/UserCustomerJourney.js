@@ -90,6 +90,7 @@ class UserCustomerJourney extends React.Component {
 
                                 <ul className="activity-timeline timeline-left list-unstyled mt-3">
                                     {level?.credits.map((credit, index2) => {
+                                        const availableCredits = credit?.creditCount - credit?.consumptionCount;
                                         const done = !!credit?.requiredActionDone;
                                         const action = credit?.requiredActionLocalization?.localizations[0]?.requiredAction;
                                         const message = credit?.requiredActionLocalization?.localizations[0]?.requiredActionMessage;
@@ -99,7 +100,7 @@ class UserCustomerJourney extends React.Component {
                                                 <div className="float-right">
                                                     <Badge className={`badge-pill font-weight-bold text-${color} bg-white px-1`}>
                                                         <span className="font-medium-1 mr-50">
-                                                            {credit?.creditCount}
+                                                            {availableCredits}
                                                         </span>
                                                         <ShoppingBag size={20} />
                                                     </Badge>
