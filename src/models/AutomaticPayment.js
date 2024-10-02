@@ -20,7 +20,9 @@ export default class AutomaticPayment {
     }
 	
 	timestamp(data) {
-        let myDate = new Date(data * 1000);
+        const timestamp = (this.source === "PAYPAL") ? data : data * 1000;
+
+        let myDate = new Date(timestamp);
 		return myDate.toLocaleString("en-US", {timeZone: "Africa/Douala"});
     }
 }
